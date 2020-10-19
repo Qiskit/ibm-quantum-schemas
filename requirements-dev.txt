@@ -1,0 +1,4 @@
+fastjsonschema
+jsonschema
+jsonschema-rs
+ddt
