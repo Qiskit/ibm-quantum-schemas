@@ -162,6 +162,11 @@
                     "minItems": 0,
                     "description": "Instructions supported by the backend.",
                     "items": {"type": "string"}
+                    },
+                "quantum_volume": {
+                    "type": "integer",
+                    "description": "Backend quantum volume",
+                    "minimum": 1
                     }
                 }
             },
