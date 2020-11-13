@@ -293,7 +293,7 @@
               "t0": 0,
               "ch": "d0",
               "pulse_shape": "gaussian",
-              "label": "pulse1",
+              "label": "pulse_with_name_label",
               "parameters": {
                 "duration": 128,
                 "amp": [
@@ -308,7 +308,6 @@
               "t0": 128,
               "ch": "d0",
               "pulse_shape": "gaussian",
-              "label": "pulse1",
               "parameters": {
                 "duration": 128,
                 "amp": [
@@ -382,7 +381,21 @@
                   "t0": 0,
                   "ch": "d0",
                   "pulse_shape": "gaussian",
-                  "label": "pulse1",
+                  "label": "pulse_with_name_label",
+                  "parameters": {
+                    "duration": 128,
+                    "amp": [
+                      0.2,
+                      0
+                    ],
+                    "sigma": 16
+                  }
+                },
+                {
+                  "name": "parametric_pulse",
+                  "t0": 128,
+                  "ch": "d0",
+                  "pulse_shape": "gaussian",
                   "parameters": {
                     "duration": 128,
                     "amp": [
