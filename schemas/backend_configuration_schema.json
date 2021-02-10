@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "id": "http://www.qiskit.org/schemas/backend_config_schema.json",
     "description": "Qiskit device backend configuration",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "definitions": {
       "hamiltonian": {
           "type": "object",
@@ -167,7 +167,25 @@
                     "type": "integer",
                     "description": "Backend quantum volume",
                     "minimum": 1
-                    }
+                    },
+                "processor_type": {
+                    "type": "object",
+                    "required": ["family", "revision", "segment"],
+                    "properties": {
+                        "family": {
+                            "type": "string",
+                            "description": "Processor family"
+                            },
+                        "revision": {
+                            "type": "string",
+                            "pattern": "[a-zA-Z0-9]+.[a-zA-Z0-9]+.[a-zA-Z0-9]+$",
+                            "description": "Processor revision semvar"
+                          },
+                        "segment": {
+                            "type": "string",
+                            "description": "Processor family"
+                        }
+                }
                 }
             },
             "openpulse_config":{

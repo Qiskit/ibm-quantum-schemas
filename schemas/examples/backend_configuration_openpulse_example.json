@@ -56,5 +56,10 @@
     "discriminators": ["disc1","dis2"],
     "acquisition_latency": [[100,120],[90,150],[500,100]],
     "conditional_latency": [[200,200],[190,160],[500,100],[200,200],[190,160],[200,200],[190,160],[500,100]],
-    "parametric_pulses": ["constant", "gaussian_square", "gaussian"]
+    "parametric_pulses": ["constant", "gaussian_square", "gaussian"],
+    "processor_type": {
+        "family": "Canary",
+        "revision": "1.0.0",
+        "segment": "A"
+    }
 }
