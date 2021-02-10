@@ -184,7 +184,7 @@
                             "type": "string",
                             "description": "Processor family"
                         }
-                }
+                    }
                 }
             },
             "openpulse_config":{
