@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "id": "http://www.qiskit.org/schemas/backend_config_schema.json",
     "description": "Qiskit device backend configuration",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "definitions": {
       "hamiltonian": {
           "type": "object",
@@ -170,19 +170,19 @@
                     },
                 "processor_type": {
                     "type": "object",
-                    "required": ["family", "revision", "segment"],
+                    "required": ["family", "revision"],
                     "properties": {
                         "family": {
                             "type": "string",
-                            "description": "Processor family of this processor"
+                            "description": "Processor family indicates quantum chip architecture"
                         },
                         "revision": {
                             "type": "number",
-                            "description": "Revision number of this processor"
+                            "description": "Revision number reflects design variants within a given processor family"
                         },
                         "segment": {
                             "type": "string",
-                            "description": "Segment this processor belongs to within a larger chip"
+                            "description": "Segment, if indicated, is used to distinguish different subsets of the qubit fabric/chip"
                         }
                     }
                 }
