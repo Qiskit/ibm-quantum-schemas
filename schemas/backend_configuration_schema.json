@@ -175,12 +175,11 @@
                         "family": {
                             "type": "string",
                             "description": "Processor family"
-                            },
+                        },
                         "revision": {
-                            "type": "string",
-                            "pattern": "[a-zA-Z0-9]+.[a-zA-Z0-9]+.[a-zA-Z0-9]+$",
-                            "description": "Processor revision semvar"
-                          },
+                            "type": "number",
+                            "description": "Processor revision number"
+                        },
                         "segment": {
                             "type": "string",
                             "description": "Processor family"
