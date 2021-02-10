@@ -174,15 +174,15 @@
                     "properties": {
                         "family": {
                             "type": "string",
-                            "description": "Processor family"
+                            "description": "Processor family of this processor"
                         },
                         "revision": {
                             "type": "number",
-                            "description": "Processor revision number"
+                            "description": "Revision number of this processor"
                         },
                         "segment": {
                             "type": "string",
-                            "description": "Processor family"
+                            "description": "Segment this processor belongs to within a larger chip"
                         }
                     }
                 }
