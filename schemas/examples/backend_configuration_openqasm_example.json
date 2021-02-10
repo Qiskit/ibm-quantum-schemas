@@ -37,5 +37,10 @@
     "credits_required": false,
     "open_pulse": false,
     "dt": 1.33,
-    "dtm": 10.5
+    "dtm": 10.5,
+    "processor_type": {
+        "family": "Canary",
+        "revision": 1.0,
+        "segment": "A"
+    }
 }
