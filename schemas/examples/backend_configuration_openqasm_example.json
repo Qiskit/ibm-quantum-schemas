@@ -40,7 +40,7 @@
     "dtm": 10.5,
     "processor_type": {
         "family": "Canary",
-        "revision": 1.0,
+        "revision": "1.0",
         "segment": "A"
     }
 }

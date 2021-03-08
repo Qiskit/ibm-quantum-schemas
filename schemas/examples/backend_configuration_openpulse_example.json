@@ -59,7 +59,7 @@
     "parametric_pulses": ["constant", "gaussian_square", "gaussian"],
     "processor_type": {
         "family": "Canary",
-        "revision": 1.0,
+        "revision": "1.0",
         "segment": "A"
     }
 }

@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "id": "http://www.qiskit.org/schemas/backend_config_schema.json",
     "description": "Qiskit device backend configuration",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "definitions": {
       "hamiltonian": {
           "type": "object",
@@ -177,8 +177,8 @@
                             "description": "Processor family indicates quantum chip architecture"
                         },
                         "revision": {
-                            "type": "number",
-                            "description": "Revision number reflects design variants within a given processor family"
+                            "type": "string",
+                            "description": "Revision number reflects design variants within a given processor family. Is typically a semantic versioning value without the patch value, eg., \"1.0\"."
                         },
                         "segment": {
                             "type": "string",
