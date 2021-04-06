@@ -42,5 +42,7 @@
         "family": "Canary",
         "revision": "1.0",
         "segment": "A"
-    }
+    },
+    "qubit_lo_range": [[5,6],[5,6],[5,6]],
+    "meas_lo_range": [[6.5,7.5],[6.5,7.5],[6.5,7.5]]
 }

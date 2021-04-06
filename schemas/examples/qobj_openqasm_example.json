@@ -8,7 +8,9 @@
     "config": {
         "shots": 1024,
         "memory_slots": 1,
-        "init_qubits": true
+        "init_qubits": true,
+        "qubit_lo_freq": [5.5, 5.5, 5.5],
+        "meas_lo_freq": [6.7, 6.7, 6.7]
         },
     "experiments": [
         {
@@ -48,6 +50,5 @@
             {"name": "u1", "qubits": [1], "params": [0.4], "conditional": 2}
             ]
         }
-        ]    
+        ]
 }
-
