@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "id": "http://www.qiskit.org/schemas/backend_config_schema.json",
     "description": "Qiskit device backend configuration",
-    "version": "1.4.3",
+    "version": "1.4.4",
     "definitions": {
       "hamiltonian": {
           "type": "object",
@@ -155,6 +155,11 @@
                 "dynamic_reprate_enabled": {
                     "type": "boolean",
                     "description": "Whether delay between programs can be set dynamically using 'rep_delay').",
+                    "default": false
+                    },
+                "measure_esp_enabled": {
+                    "type": "boolean",
+                    "description": "Whether ESP readout is supported by the backend.",
                     "default": false
                     },
                 "supported_instructions": {
