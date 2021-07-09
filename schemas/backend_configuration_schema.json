@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "id": "http://www.qiskit.org/schemas/backend_config_schema.json",
     "description": "Qiskit device backend configuration",
-    "version": "1.4.4",
+    "version": "1.5.4",
     "definitions": {
       "hamiltonian": {
           "type": "object",
@@ -202,6 +202,28 @@
                     "minItems": 1,
                     "description": "Frequency range for the measurement LO",
                     "items": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number"}}
+                },
+                "timing_constraints": {
+                    "type": "object",
+                    "required": ["granularity", "min_length", "pulse_alignment", "acquire_alignment"],
+                    "properties": {
+                        "granularity": {
+                            "type": "integer",
+                            "description": "Waveform memory data chunk size"
+                        },
+                        "min_length": {
+                            "type": "integer",
+                            "description": "Minimum number of samples required to define a pulse"
+                        },
+                        "pulse_alignment": {
+                            "type": "integer",
+                            "description": "Instruction triggering time resolution of pulse channel in units of dt"
+                        },
+                        "acquire_alignment": {
+                            "type": "integer",
+                            "description": "Instruction triggering time resolution of acquisition channel in units of dt"
+                        }
+                    }
                 }
             }
         },
