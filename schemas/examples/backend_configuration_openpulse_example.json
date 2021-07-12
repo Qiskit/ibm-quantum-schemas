@@ -61,5 +61,11 @@
         "family": "Canary",
         "revision": "1.0",
         "segment": "A"
+    },
+    "timing_constraints": {
+        "granularity": 16,
+        "min_length": 64,
+        "pulse_alignment": 1,
+        "acquire_alignment": 16
     }
 }

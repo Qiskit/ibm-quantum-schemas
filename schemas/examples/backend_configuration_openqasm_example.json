@@ -44,5 +44,11 @@
         "segment": "A"
     },
     "qubit_lo_range": [[5,6],[5,6],[5,6]],
-    "meas_lo_range": [[6.5,7.5],[6.5,7.5],[6.5,7.5]]
+    "meas_lo_range": [[6.5,7.5],[6.5,7.5],[6.5,7.5]],
+    "timing_constraints": {
+        "granularity": 16,
+        "min_length": 64,
+        "pulse_alignment": 1,
+        "acquire_alignment": 16
+    }
 }
