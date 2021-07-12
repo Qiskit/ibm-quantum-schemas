@@ -205,7 +205,6 @@
                 },
                 "timing_constraints": {
                     "type": "object",
-                    "required": ["granularity", "min_length", "pulse_alignment", "acquire_alignment"],
                     "properties": {
                         "granularity": {
                             "type": "integer",
