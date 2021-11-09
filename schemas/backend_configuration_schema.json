@@ -171,7 +171,7 @@
                 "supported_features": {
                     "type": "array",
                     "minItems": 0,
-                    "description": "Features supported by the backend like qobj, qasm3 etc.",
+                    "description": "Array of features supported by the backend such as qobj, qasm3, etc.",
                     "items": {"type": "string"}
                     },
                 "quantum_volume": {
