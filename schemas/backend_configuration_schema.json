@@ -168,6 +168,12 @@
                     "description": "Instructions supported by the backend.",
                     "items": {"type": "string"}
                     },
+                "supported_features": {
+                    "type": "array",
+                    "minItems": 0,
+                    "description": "Features supported by the backend like qobj, qasm3 etc.",
+                    "items": {"type": "string"}
+                    },
                 "quantum_volume": {
                     "type": "integer",
                     "description": "Backend quantum volume",
