@@ -1207,12 +1207,11 @@
             "properties": {
                 "config": {
                     "properties": {
-                        "meas_level": {
-                            "enum": [
-                                0,
-                                1,
-                                2
-                            ]
+                        "meas_level":{
+                            "oneOf": [
+                                {"type": "integer", "enum": [0, 1, 2]},
+                                {"type": "array", "items": {"type": "integer", "enum": [0, 1, 2]}}
+                           ]
                         },
                         "meas_return": {
                             "description": "Return each shot of data or average over the shots",
