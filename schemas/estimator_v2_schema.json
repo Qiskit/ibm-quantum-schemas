@@ -1,0 +1,80 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "http://www.qiskit.org/schemas/estimator_v2_schema.json",
+    "title": "EstimatorV2 input",
+    "description": "The input for an EstimatorV2 API call",
+    "version": "1.0.0",
+    "type": "object",
+    "required": ["pubs"],
+    "properties": {
+        "pubs": {
+            "type": "array",
+            "description": "Circuits/Observbles/Parameters to run",
+            "items": {
+                "type": "array",
+                "prefixItems": [
+                    {"description": "The quantum circuit", "type": "object"},
+                    {"description": "The observable array", "type": "object"},
+                    {"description": "The parameter values", "type": "object"}
+                ]
+            }
+        },
+        "transpilation": {
+          "description": "Transpilation settings.",
+          "type": "object",
+          "properties": {
+              "optimization_level": {
+                "description": "How much optimization to perform on the circuits",
+                "type": "integer",
+                "enum": [0, 1]
+              }
+          }
+        },
+        "resilience_level": {
+            "description": "How much resilience to build against errors",
+            "type": "integer",
+            "enum": [0, 1, 2]
+        },
+        "resilience": {
+            "description": "Advanced resilience options to fine tune the resilience strategy",
+            "type": "object",
+            "properties": {
+                "measure_noise_mitigation": {
+                    "description": "Whether to enable measurement error mitigation method",
+                    "type": "boolean"
+                },
+                "zne_mitigation": {
+                    "description": "Whether to turn on Zero Noise Extrapolation error mitigation method",
+                    "type": "boolean"
+                },
+                "zne_noise_factors": {
+                    "description": "A list of real valued noise factors that determine by what amount the circuits' noise is amplified",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "zne_extrapolator": {
+                    "description": "A list of extrapolation strategies",
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": ["exponential", "double_exponential", "linear", "polynomial_degree_1", "polynomial_degree_2", "polynomial_degree_3", "polynomial_degree_4"]
+                            }
+                        },
+                        {
+                            "type": "string",
+                            "enum": ["exponential", "double_exponential", "linear", "polynomial_degree_1", "polynomial_degree_2", "polynomial_degree_3", "polynomial_degree_4"]
+                        }
+                    ]
+                },
+                "zne_stderr_threshold": {
+                    "description": "A standard error threshold for accepting the ZNE result",
+                    "type": "number"
+                }
+            }
+        }
+    }
+}
