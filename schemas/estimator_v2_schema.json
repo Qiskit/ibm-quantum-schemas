@@ -75,6 +75,51 @@
                     "type": "number"
                 }
             }
+        },
+        "execution": {
+            "description": "Execution options",
+            "type": "object",
+            "properties": {
+                "shots": {
+                    "description": "Number of repetitions of each circuit, for sampling",
+                    "type": "number"
+                },
+                "init_qubits": {
+                    "description": "Whether to reset the qubits to the ground state for each shot",
+                    "type": "boolean"
+                },
+                "samples": {
+                    "description": "The number of samples of each measurement circuit to run",
+                    "type": "number"
+                },
+                "shots_per_sample": {
+                    "description": "The number of shots per sample of each measurement circuit to run",
+                    "type": "number"
+                },
+                 "interleave_samples": {
+                    "description": "Whether to interleave samples from different measurement circuits when running or run them in order",
+                    "type": "boolean"
+                }
+            }
+        },
+        "twirling": {
+            "description": "Twirling options",
+            "type": "object",
+            "properties": {
+                "gates": {
+                    "description": "Whether to apply 2-qubit gate twirling",
+                    "type": "boolean"
+                },
+                "measure": {
+                    "description": "Whether to apply measurement twirling",
+                    "type": "boolean"
+                },
+                 "strategy": {
+                    "description": "The strategy of twirling qubits in identified layers of 2-qubit twirled gates",
+                    "type": "string",
+                    "enum": ["active", "active-circuit", "active-accum", "all"]
+                }
+            }
         }
     }
 }
