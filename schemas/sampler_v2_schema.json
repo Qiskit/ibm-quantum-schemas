@@ -12,9 +12,11 @@
             "description": "Circuits/Parameters to run",
             "items": {
                 "type": "array",
+                "minItems": 1,
                 "prefixItems": [
                     {"description": "The quantum circuit", "type": "object"},
-                    {"description": "The parameter values", "type": "object"}
+                    {"description": "The parameter values", "type": "object"},
+                    {"description": "The numebr of shots to use in this pub", "type": "integer"}
                 ]
             }
         },
@@ -51,20 +53,6 @@
                         }
                     }
                 },
-                "transpilation": {
-                    "description": "Transpilation settings",
-                    "type": "object",
-                    "properties": {
-                        "optimization_level": {
-                            "description": "How much optimization to perform on the circuits",
-                            "type": "integer",
-                            "enum": [
-                                0,
-                                1
-                            ]
-                        }
-                    }
-                },
                 "execution": {
                     "description": "Execution options",
                     "type": "object",
@@ -78,8 +66,12 @@
                             "type": "number"
                         }
                     }
-                },
+                }
             }
+        },
+        "version": {
+            "description": "For SamplerV2, version should always be 2",
+            "enum": [2]
         }
     }
 }

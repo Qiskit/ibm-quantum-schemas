@@ -12,10 +12,12 @@
             "description": "Circuits/Observbles/Parameters to run",
             "items": {
                 "type": "array",
+                "minItems": 2,
                 "prefixItems": [
                     {"description": "The quantum circuit in base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.", "type": "object"},
                     {"description": "One or more observables.", "type": "array"},
-                    {"description": "The parameter values", "type": "object"}
+                    {"description": "The parameter values", "type": "object"},
+                    {"description": "The precision for this specific pub", "type": "number"}
                 ]
             }
         },
@@ -73,15 +75,6 @@
                             ]
                         }
                     }
-                },
-                "resilience_level": {
-                    "description": "How much resilience to build against errors",
-                    "type": "integer",
-                    "enum": [
-                        0,
-                        1,
-                        2
-                    ]
                 },
                 "resilience": {
                     "description": "Advanced resilience options to fine tune the resilience strategy",
@@ -259,6 +252,19 @@
                     }
                 }
             }
+        },
+        "resilience_level": {
+                    "description": "How much resilience to build against errors",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2
+                    ]
+                },
+        "version": {
+            "description": "For EstimatorV2, version should always be 2",
+            "enum": [2]
         }
     }
 }
