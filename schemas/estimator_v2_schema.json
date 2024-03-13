@@ -40,7 +40,7 @@
                     "type": "object",
                     "properties": {
                         "enable": {
-                            "description": "Whether to enable DD as specified by the other options in this class",
+                            "description": "Whether to enable dynamical decoupling.",
                             "type": "boolean"
                         },
                         "sequence_type": {
