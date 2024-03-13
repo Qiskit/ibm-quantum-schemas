@@ -14,7 +14,7 @@
                 "type": "array",
                 "prefixItems": [
                     {"description": "The quantum circuit in base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.", "type": "object"},
-                    {"description": "The observable array", "type": "object"},
+                    {"description": "One or more observables.", "type": "array"},
                     {"description": "The parameter values", "type": "object"}
                 ]
             }
