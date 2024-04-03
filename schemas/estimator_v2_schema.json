@@ -196,7 +196,8 @@
                                 },
                                 "num_randomizations": {
                                     "description": "The number of random circuits to use per learning circuit configuration",
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "minimum": 1
                                 },
                                 "layer_pair_depths": {
                                     "description": "The circuit depths (measured in number of pairs) to use in learning experiments",
