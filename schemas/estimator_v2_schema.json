@@ -167,7 +167,7 @@
                                 "max_overhead": {
                                     "description": "The maximum circuit sampling overhead allowed",
                                     "oneOf": [
-                                      {"type": "number"},
+                                      {"type": "number", "exclusiveMinimum": 0},
                                       {"type": "null"}
                                     ]
                                 },
