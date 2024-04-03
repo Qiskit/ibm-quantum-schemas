@@ -203,7 +203,8 @@
                                     "description": "The circuit depths (measured in number of pairs) to use in learning experiments",
                                     "type": "array",
                                     "items": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "minimum": 0
                                     }
                                 }
                             }
