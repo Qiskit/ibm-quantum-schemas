@@ -174,7 +174,7 @@
                                 "noise_gain": {
                                     "description": "The amount by which to scale the noise",
                                     "oneOf": [
-                                        {"type":  "numebr"},
+                                        {"type":  "number", "exclusiveMinimum": 0},
                                         {"enum":  ["auto"]}
                                     ]
                                 }
