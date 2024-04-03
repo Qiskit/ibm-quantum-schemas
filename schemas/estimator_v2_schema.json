@@ -91,7 +91,8 @@
                             "properties": {
                                 "num_randomizations": {
                                     "description": "The number of random circuits to draw for the measurement learning experiment",
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "minimum": 1
                                 },
                                 "shots_per_randomization": {
                                     "description": "The number of shots to use for the learning experiment per random circuit.",
