@@ -30,7 +30,7 @@ class TestEstimatorV2Schema(unittest.TestCase):
     def setUp(self) -> None:
         with open(os.path.join(SCHEMAS_PATH, 'estimator_v2_schema.json'), 'r') as fd:
             self.estimator_schema = json.load(fd)
-        self.validator = jsonschema.Draft4Validator(schema=self.estimator_schema)
+        self.validator = jsonschema.Draft202012Validator(schema=self.estimator_schema)
         self.backend = "ibmq_qasm_simulator"
 
     @staticmethod
@@ -41,6 +41,24 @@ class TestEstimatorV2Schema(unittest.TestCase):
         if 'pubs' not in options_dict:
             options_dict['pubs'] = []
         return options_dict
+
+    def assert_valid_options(self, estimator, options_to_check, options_path=""):
+        """Verifies the schema validation gives the same result as attempting
+        to set the options in the estimator"""
+        options = estimator.options
+        try:
+            for option_name, value in options_to_check.items():
+                setattr(options, option_name, value)
+            options_dict = TestEstimatorV2Schema.get_options_dict(estimator)
+            self.assertTrue(self.validator.is_valid(options_dict))
+        except Exception:
+            options_dict = TestEstimatorV2Schema.get_options_dict(estimator)
+            for option_name, value in options_to_check.items():
+                dict_to_change = options_dict
+                for key in options_path:
+                    dict_to_change = dict_to_change[key]
+                dict_to_change[option_name] = value
+            self.assertFalse(self.validator.is_valid(options_dict))
     def test_basic(self):
         """Testing the bare-bones options for an estimator"""
         estimator = EstimatorV2(backend=self.backend)
@@ -49,17 +67,31 @@ class TestEstimatorV2Schema(unittest.TestCase):
 
     @ddt.data(0, 1, 2, 3, -1, 17, 3.5)
     def test_resilience_level(self, level):
-        """Testing various valeus of the resilience level"""
+        """Testing various values of the resilience level"""
         estimator = EstimatorV2(backend=self.backend)
-        try:
-            estimator.options.resilience_level = level
-            options = self.get_options_dict(estimator)
-            self.assertIsNone(self.validator.validate(options))
-        except Exception:
-            # If the estimator's inner option validation failed
-            # verify our own validation fail as well
-            options = self.get_options_dict(estimator)
-            options['resilience_level'] = level
-            self.assertFalse(self.validator.is_valid(options))
+        options_to_set = {'resilience_level': level}
+        self.assert_valid_options(estimator, options_to_set)
 
+    @ddt.data(0, 1, 3.5)
+    def test_seed_estimator(self, seed):
+        """Testing various values of the seed estimator"""
+        estimator = EstimatorV2(backend=self.backend)
+        options_path = ['options']
+        options_to_set = {'seed_estimator': seed}
+        self.assert_valid_options(estimator, options_to_set, options_path)
 
+    @ddt.data(0, 1, 3.5)
+    def test_default_precision(self, precision):
+        """Testing various values of the default precision"""
+        estimator = EstimatorV2(backend=self.backend)
+        options_path = ['options']
+        options_to_set = {'default_precision': precision}
+        self.assert_valid_options(estimator, options_to_set, options_path)
+
+    @ddt.data(0, 1, 3.5, -2)
+    def test_default_shots(self, shots):
+        """Testing various values of the default shots"""
+        estimator = EstimatorV2(backend=self.backend)
+        options_path = ['options']
+        options_to_set = {'default_shots': shots}
+        self.assert_valid_options(estimator, options_to_set, options_path)
