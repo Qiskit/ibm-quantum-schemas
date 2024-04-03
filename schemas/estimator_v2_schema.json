@@ -240,7 +240,7 @@
                         },
                         "num_randomizations": {
                             "description": "The number of random samples to use when twirling or performing sampled mitigation",
-                            "oneOf": [{"type": "integer"}, {"enum": ["auto"]}]
+                            "oneOf": [{"type": "integer", "minimum": 1}, {"enum": ["auto"]}]
                         },
                         "shots_per_randomization": {
                             "description": "The number of shots to run for each random sample",
