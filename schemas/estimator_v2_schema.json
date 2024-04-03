@@ -186,7 +186,8 @@
                             "properties": {
                                 "max_layers_to_learn": {
                                     "description": "The max number of unique layers to learn",
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "minimum": 0
                                 },
                                 "shots_per_randomization": {
                                     "description": "The total number of shots to use per random learning circuit",
