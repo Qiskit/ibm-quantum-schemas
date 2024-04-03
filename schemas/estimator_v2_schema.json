@@ -191,7 +191,8 @@
                                 },
                                 "shots_per_randomization": {
                                     "description": "The total number of shots to use per random learning circuit",
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "minimum": 1
                                 },
                                 "num_randomizations": {
                                     "description": "The number of random circuits to use per learning circuit configuration",
