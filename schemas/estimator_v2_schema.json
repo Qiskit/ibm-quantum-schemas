@@ -34,7 +34,7 @@
                     "type": "number"
                 },
                 "default_shots": {
-                    "description": "The total number of shots to use per circuit per configuration",
+                    "description": "The total number of shots to use per circuit per configuration. If set, this value overrides default_precision.",
                     "type": "integer",
                     "minimum": 0
                 },
