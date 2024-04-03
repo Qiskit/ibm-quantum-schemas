@@ -35,7 +35,8 @@
                 },
                 "default_shots": {
                     "description": "The total number of shots to use per circuit per configuration",
-                    "type": "integer"
+                    "type": "integer",
+                    "minimum": 0
                 },
                 "dynamical_decoupling": {
                     "description": "Suboptions for dynamical decoupling",
