@@ -15,7 +15,7 @@
                 "minItems": 1,
                 "prefixItems": [
                     {"description": "The quantum circuit", "type": "object"},
-                    {"description": "The parameter values", "type": "object"},
+                    {"description": "The parameter values. The keys are the names of the parameters, and the values are the actual parameter values.", "type": "object"},
                     {"description": "The numebr of shots to use in this pub", "type": "integer"}
                 ]
             }
