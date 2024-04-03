@@ -2,3 +2,4 @@ fastjsonschema
 jsonschema
 jsonschema-rs
 ddt
+qiskit-ibm-runtime>=0.22
