@@ -244,7 +244,7 @@
                         },
                         "shots_per_randomization": {
                             "description": "The number of shots to run for each random sample",
-                            "oneOf": [{"type": "integer"}, {"enum": ["auto"]}]
+                            "oneOf": [{"type": "integer", "minimum": 1}, {"enum": ["auto"]}]
                         },
                         "strategy": {
                             "description": "The strategy of twirling qubits in identified layers of 2-qubit twirled gates",
