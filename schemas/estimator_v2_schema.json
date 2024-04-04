@@ -97,7 +97,15 @@
                                 },
                                 "shots_per_randomization": {
                                     "description": "The number of shots to use for the learning experiment per random circuit.",
-                                    "oneOf": [{"type": "integer", "minimum": 1}, {"enum": "auto"}]
+                                    "oneOf": [
+                                        {
+                                            "type": "integer",
+                                            "minimum": 1
+                                        },
+                                        {
+                                            "enum": "auto"
+                                        }
+                                    ]
                                 }
                             }
                         },
@@ -167,15 +175,27 @@
                                 "max_overhead": {
                                     "description": "The maximum circuit sampling overhead allowed",
                                     "oneOf": [
-                                      {"type": "number", "exclusiveMinimum": 0},
-                                      {"type": "null"}
+                                        {
+                                            "type": "number",
+                                            "exclusiveMinimum": 0
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "noise_gain": {
                                     "description": "The amount by which to scale the noise",
                                     "oneOf": [
-                                        {"type":  "number", "exclusiveMinimum": 0},
-                                        {"enum":  ["auto"]}
+                                        {
+                                            "type": "number",
+                                            "exclusiveMinimum": 0
+                                        },
+                                        {
+                                            "enum": [
+                                                "auto"
+                                            ]
+                                        }
                                     ]
                                 }
                             }
@@ -209,8 +229,25 @@
                                 }
                             }
                         }
-
-                    }
+                    },
+                    "allOf": [
+                        {
+                            "not": {
+                                "required": [
+                                    "zne_mitigation",
+                                    "pec_mitigation"
+                                ],
+                                "properties": {
+                                    "zne_mitigation": {
+                                        "const": true
+                                    },
+                                    "pec_mitigation": {
+                                        "const": true
+                                    }
+                                }
+                            }
+                        }
+                    ]
                 },
                 "execution": {
                     "description": "Execution options",

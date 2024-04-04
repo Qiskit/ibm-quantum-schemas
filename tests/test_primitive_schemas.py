@@ -119,3 +119,26 @@ class TestEstimatorV2Schema(unittest.TestCase):
             'scheduling_method': scheduling_method
         }
         self.assert_valid_options(estimator, options_to_set, options_path, estimator.options.dynamical_decoupling)
+
+    @ddt.data(0, 1, 3.5, -2)
+    def test_transpilation(self, optimization_level):
+        """Testing various values of the transpilation options"""
+        estimator = EstimatorV2(backend=self.backend)
+        options_path = ['options', 'transpilation']
+        options_to_set = {'optimization_level': optimization_level}
+        self.assert_valid_options(estimator, options_to_set, options_path)
+
+    @combine(measure_mitigation=[True, False, 13, "False"],
+             zne_mitigation=[True, False, 13, "False"],
+             pec_mitigation=[True, False, 13, "False"],
+             )
+    def test_resilience(self, measure_mitigation, zne_mitigation, pec_mitigation):
+        """Testing various values of resilience"""
+        estimator = EstimatorV2(backend=self.backend)
+        options_path = ['options', 'resilience']
+        options_to_set = {
+            'measure_mitigation': measure_mitigation,
+            'zne_mitigation': zne_mitigation,
+            'pec_mitigation': pec_mitigation,
+        }
+        self.assert_valid_options(estimator, options_to_set, options_path, estimator.options.resilience)
