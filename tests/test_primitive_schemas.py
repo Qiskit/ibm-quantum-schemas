@@ -17,8 +17,8 @@ import ddt
 from dataclasses import asdict
 import jsonschema
 
-
 from qiskit_ibm_runtime import SamplerV2, EstimatorV2
+from tests import combine
 
 SCHEMAS_PATH = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -42,20 +42,27 @@ class TestEstimatorV2Schema(unittest.TestCase):
             options_dict['pubs'] = []
         return options_dict
 
-    def assert_valid_options(self, estimator, options_to_check, options_path=""):
+    def assert_valid_options(self, estimator, options_to_check, options_path="", options_object=None):
         """Verifies the schema validation gives the same result as attempting
         to set the options in the estimator"""
-        options = estimator.options
+        if options_object is None:
+            options = estimator.options
+        else:
+            options = options_object
         try:
             for option_name, value in options_to_check.items():
                 setattr(options, option_name, value)
             options_dict = TestEstimatorV2Schema.get_options_dict(estimator)
             self.assertTrue(self.validator.is_valid(options_dict))
+        except AssertionError as err:
+            raise err
         except Exception:
             options_dict = TestEstimatorV2Schema.get_options_dict(estimator)
             for option_name, value in options_to_check.items():
                 dict_to_change = options_dict
                 for key in options_path:
+                    if key not in dict_to_change:
+                        dict_to_change[key] = {}
                     dict_to_change = dict_to_change[key]
                 dict_to_change[option_name] = value
             self.assertFalse(self.validator.is_valid(options_dict))
@@ -95,3 +102,20 @@ class TestEstimatorV2Schema(unittest.TestCase):
         options_path = ['options']
         options_to_set = {'default_shots': shots}
         self.assert_valid_options(estimator, options_to_set, options_path)
+
+    @combine(enable=[True, False, 13, "False"],
+             sequence_type=["XX", "XpXm", "XY4", "ZZ", 13],
+             extra_slack_distribution=["middle", "edges", "end", 13],
+             scheduling_method=["alap", "asap", "lapsap", 13]
+             )
+    def test_dynamical_decoupling(self, enable, sequence_type, extra_slack_distribution, scheduling_method):
+        """Testing various values of dynamical decoupling"""
+        estimator = EstimatorV2(backend=self.backend)
+        options_path = ['options', 'dynamical_decoupling']
+        options_to_set = {
+            'enable': enable,
+            'sequence_type': sequence_type,
+            'extra_slack_distribution': extra_slack_distribution,
+            'scheduling_method': scheduling_method
+        }
+        self.assert_valid_options(estimator, options_to_set, options_path, estimator.options.dynamical_decoupling)
