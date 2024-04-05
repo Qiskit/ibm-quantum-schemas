@@ -103,7 +103,7 @@
                                             "minimum": 1
                                         },
                                         {
-                                            "enum": "auto"
+                                            "enum": ["auto"]
                                         }
                                     ]
                                 }
@@ -117,14 +117,14 @@
                             "description": "Additional zero noise extrapolation mitigation options",
                             "type": "object",
                             "properties": {
-                                "zne_noise_factors": {
+                                "noise_factors": {
                                     "description": "Noise factors to use for noise amplification",
                                     "type": "array",
                                     "items": {
                                         "type": "number"
                                     }
                                 },
-                                "zne_extrapolator": {
+                                "extrapolator": {
                                     "description": "Extrapolator(s) to try (in order) for extrapolating to zero noise",
                                     "oneOf": [
                                         {
@@ -162,7 +162,240 @@
                                         }
                                     ]
                                 }
-                            }
+                            },
+                            "allOf": [
+                                {
+                                    "if": {
+                                        "$comment": "linear, exponential and polynomial_degree_1 require at least 2 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "anyOf": [
+                                                            {"const": "linear"},
+                                                            {"const": "exponential"},
+                                                            {"const": "polynomial_degree_1"}
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "anyOf": [
+                                                                {"const": "linear"},
+                                                                {"const": "exponential"},
+                                                                {"const": "polynomial_degree_1"}
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 2
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "if": {
+                                        "$comment": "polynomial_degree_2 requires at least 3 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "const": "polynomial_degree_2"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "const": "polynomial_degree_2"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 3
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "if": {
+                                        "$comment": "double_exponential and polynomial_degree_3 require at least 4 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "anyOf": [
+                                                            {"const": "double_exponential"},
+                                                            {"const": "polynomial_degree_3"}
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "anyOf": [
+                                                                {"const": "double_exponential"},
+                                                                {"const": "polynomial_degree_3"}
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 4
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "if": {
+                                        "$comment": "polynomial_degree_4 requires at least 5 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "const": "polynomial_degree_4"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "const": "polynomial_degree_4"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 5
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "if": {
+                                        "$comment": "polynomial_degree_5 requires at least 6 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "const": "polynomial_degree_5"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "const": "polynomial_degree_5"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 6
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "if": {
+                                        "$comment": "polynomial_degree_6 requires at least 7 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "const": "polynomial_degree_6"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "const": "polynomial_degree_6"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 7
+                                            }
+                                        }
+                                    }
+                                },
+                                 {
+                                    "if": {
+                                        "$comment": "polynomial_degree_7 requires at least 8 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "const": "polynomial_degree_7"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "const": "polynomial_degree_7"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 8
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         },
                         "pec_mitigation": {
                             "description": "Whether to turn on Probabilistic Error Cancellation error mitigation method",

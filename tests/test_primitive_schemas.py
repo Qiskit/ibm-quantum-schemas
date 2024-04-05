@@ -53,6 +53,7 @@ class TestEstimatorV2Schema(unittest.TestCase):
             for option_name, value in options_to_check.items():
                 setattr(options, option_name, value)
             options_dict = TestEstimatorV2Schema.get_options_dict(estimator)
+            print(options_dict)
             self.assertTrue(self.validator.is_valid(options_dict))
         except AssertionError as err:
             raise err
@@ -66,6 +67,7 @@ class TestEstimatorV2Schema(unittest.TestCase):
                     dict_to_change = dict_to_change[key]
                 dict_to_change[option_name] = value
             self.assertFalse(self.validator.is_valid(options_dict))
+
     def test_basic(self):
         """Testing the bare-bones options for an estimator"""
         estimator = EstimatorV2(backend=self.backend)
@@ -142,3 +144,35 @@ class TestEstimatorV2Schema(unittest.TestCase):
             'pec_mitigation': pec_mitigation,
         }
         self.assert_valid_options(estimator, options_to_set, options_path, estimator.options.resilience)
+
+    @combine(num_randomizations=[0, 1, 2, True, "False"],
+             shots_per_randomization=[0, 1, 2, True, "False", "auto"],
+             )
+    def test_measure_noise_learning(self, num_randomizations, shots_per_randomization):
+        """Testing various values of measure noise learning"""
+        estimator = EstimatorV2(backend=self.backend)
+        options_path = ['options', 'resilience', 'measure_noise_learning']
+        options_to_set = {
+            'num_randomizations': num_randomizations,
+            'shots_per_randomization': shots_per_randomization,
+        }
+        self.assert_valid_options(estimator, options_to_set, options_path, estimator.options.resilience.measure_noise_learning)
+
+    @combine(noise_factors=[[17], [1,2], [1,4,8], [1.3, 3.2], False],
+             extrapolator=["linear", "exponential", "double_exponential",
+                               "polynomial_degree_1", "polynomial_degree_2", "polynomial_degree_3",
+                               "polynomial_degree_4", "polynomial_degree_5", "polynomial_degree_6",
+                               "polynomial_degree_7", ["linear", "exponential", "polynomial_degree_3"], "false_extrapolator",
+                               13, False, [13, "linear"]
+                               ]
+             )
+    def test_zne_mitigation_options(self, noise_factors, extrapolator):
+        """Testing various values of measure noise learning"""
+        estimator = EstimatorV2(backend=self.backend)
+        options_path = ['options', 'resilience', 'zne']
+        options_to_set = {
+            'noise_factors': noise_factors,
+            'extrapolator': extrapolator,
+        }
+        self.assert_valid_options(estimator, options_to_set, options_path,
+                                  estimator.options.resilience.zne)
