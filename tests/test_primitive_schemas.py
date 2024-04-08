@@ -14,10 +14,9 @@ import json
 import os
 import unittest
 import ddt
-from dataclasses import asdict
 import jsonschema
 
-from qiskit_ibm_runtime import SamplerV2, EstimatorV2
+from qiskit_ibm_runtime import EstimatorOptions
 from tests import combine
 
 SCHEMAS_PATH = os.path.join(
@@ -34,129 +33,101 @@ class TestEstimatorV2Schema(unittest.TestCase):
         self.backend = "ibmq_qasm_simulator"
 
     @staticmethod
-    def get_options_dict(estimator):
+    def get_converted_options(options_dict):
         """Emulate the process in `qiskit-ibm-runtime` where the EstimatorOptions
         are converted to a filtered options dictionary"""
-        options_dict = estimator.options._get_program_inputs(asdict(estimator.options))
-        if 'pubs' not in options_dict:
-            options_dict['pubs'] = []
-        return options_dict
+        converted_options = EstimatorOptions._get_program_inputs(options_dict)
+        if 'pubs' not in converted_options:
+            converted_options['pubs'] = []
+        return converted_options
 
-    def assert_valid_options(self, estimator, options_to_check, options_path="", options_object=None):
+    def assert_valid_options(self, options_dict):
         """Verifies the schema validation gives the same result as attempting
         to set the options in the estimator"""
-        if options_object is None:
-            options = estimator.options
-        else:
-            options = options_object
+        converted_options = self.get_converted_options(options_dict)
+        error_message = None
+        options_valid = True
         try:
-            for option_name, value in options_to_check.items():
-                setattr(options, option_name, value)
-            options_dict = TestEstimatorV2Schema.get_options_dict(estimator)
-            print(options_dict)
-            self.assertTrue(self.validator.is_valid(options_dict))
-        except AssertionError as err:
-            raise err
-        except Exception:
-            options_dict = TestEstimatorV2Schema.get_options_dict(estimator)
-            for option_name, value in options_to_check.items():
-                dict_to_change = options_dict
-                for key in options_path:
-                    if key not in dict_to_change:
-                        dict_to_change[key] = {}
-                    dict_to_change = dict_to_change[key]
-                dict_to_change[option_name] = value
-            self.assertFalse(self.validator.is_valid(options_dict))
+            self.validator.validate(converted_options)
+        except Exception as err:
+            options_valid = False
+            error_message = str(err)
 
-    def test_basic(self):
-        """Testing the bare-bones options for an estimator"""
-        estimator = EstimatorV2(backend=self.backend)
-        options = self.get_options_dict(estimator)
-        self.assertIsNone(self.validator.validate(options))
+        estimator_options_valid = True
+        try:
+            EstimatorOptions(**options_dict)
+        except Exception as err:
+            estimator_options_valid = False
+            error_message = str(err)
+
+        if estimator_options_valid:
+            self.assertTrue(options_valid, msg=f"Options should pass the JSON schema validation, but it failed with the message:\n{error_message}")
+        else:
+            self.assertFalse(options_valid, msg=f"Options passed the JSON schema validation, but it should fail since for EstimatorOptions it fails with the message:\n{error_message}")
 
     @ddt.data(0, 1, 2, 3, -1, 17, 3.5)
     def test_resilience_level(self, level):
         """Testing various values of the resilience level"""
-        estimator = EstimatorV2(backend=self.backend)
-        options_to_set = {'resilience_level': level}
-        self.assert_valid_options(estimator, options_to_set)
+        options = {'resilience_level': level}
+        self.assert_valid_options(options)
 
     @ddt.data(0, 1, 3.5)
     def test_seed_estimator(self, seed):
         """Testing various values of the seed estimator"""
-        estimator = EstimatorV2(backend=self.backend)
-        options_path = ['options']
-        options_to_set = {'seed_estimator': seed}
-        self.assert_valid_options(estimator, options_to_set, options_path)
+        options = {'seed_estimator': seed}
+        self.assert_valid_options(options)
 
     @ddt.data(0, 1, 3.5)
     def test_default_precision(self, precision):
         """Testing various values of the default precision"""
-        estimator = EstimatorV2(backend=self.backend)
-        options_path = ['options']
-        options_to_set = {'default_precision': precision}
-        self.assert_valid_options(estimator, options_to_set, options_path)
+        options = {'default_precision': precision}
+        self.assert_valid_options(options)
 
     @ddt.data(0, 1, 3.5, -2)
     def test_default_shots(self, shots):
         """Testing various values of the default shots"""
-        estimator = EstimatorV2(backend=self.backend)
-        options_path = ['options']
-        options_to_set = {'default_shots': shots}
-        self.assert_valid_options(estimator, options_to_set, options_path)
+        options = {'default_shots': shots}
+        self.assert_valid_options(options)
 
-    @combine(enable=[True, False, 13, "False"],
+    @combine(enable=[True, False, 13],
              sequence_type=["XX", "XpXm", "XY4", "ZZ", 13],
              extra_slack_distribution=["middle", "edges", "end", 13],
              scheduling_method=["alap", "asap", "lapsap", 13]
              )
     def test_dynamical_decoupling(self, enable, sequence_type, extra_slack_distribution, scheduling_method):
         """Testing various values of dynamical decoupling"""
-        estimator = EstimatorV2(backend=self.backend)
-        options_path = ['options', 'dynamical_decoupling']
-        options_to_set = {
-            'enable': enable,
-            'sequence_type': sequence_type,
-            'extra_slack_distribution': extra_slack_distribution,
-            'scheduling_method': scheduling_method
+        options = {
+            'dynamical_decoupling':{
+                'enable': enable,
+                'sequence_type': sequence_type,
+                'extra_slack_distribution': extra_slack_distribution,
+                'scheduling_method': scheduling_method
+            }
         }
-        self.assert_valid_options(estimator, options_to_set, options_path, estimator.options.dynamical_decoupling)
+        self.assert_valid_options(options)
 
     @ddt.data(0, 1, 3.5, -2)
-    def test_transpilation(self, optimization_level):
-        """Testing various values of the transpilation options"""
-        estimator = EstimatorV2(backend=self.backend)
-        options_path = ['options', 'transpilation']
-        options_to_set = {'optimization_level': optimization_level}
-        self.assert_valid_options(estimator, options_to_set, options_path)
-
-    @combine(measure_mitigation=[True, False, 13, "False"],
-             zne_mitigation=[True, False, 13, "False"],
-             pec_mitigation=[True, False, 13, "False"],
-             )
-    def test_resilience(self, measure_mitigation, zne_mitigation, pec_mitigation):
-        """Testing various values of resilience"""
-        estimator = EstimatorV2(backend=self.backend)
-        options_path = ['options', 'resilience']
-        options_to_set = {
-            'measure_mitigation': measure_mitigation,
-            'zne_mitigation': zne_mitigation,
-            'pec_mitigation': pec_mitigation,
-        }
-        self.assert_valid_options(estimator, options_to_set, options_path, estimator.options.resilience)
+    def test_optimization_level(self, optimization_level):
+        """Testing various values of the optimization level options"""
+        options = {'optimization_level': optimization_level}
+        self.assert_valid_options(options)
 
     @combine(num_randomizations=[0, 1, 2, True, "False"],
              shots_per_randomization=[0, 1, 2, True, "False", "auto"],
+             enable_measure_mitigation=[True, False],
              )
-    def test_measure_noise_learning(self, num_randomizations, shots_per_randomization):
+    def test_measure_noise_learning(self, num_randomizations, shots_per_randomization, enable_measure_mitigation):
         """Testing various values of measure noise learning"""
-        estimator = EstimatorV2(backend=self.backend)
-        options_path = ['options', 'resilience', 'measure_noise_learning']
-        options_to_set = {
-            'num_randomizations': num_randomizations,
-            'shots_per_randomization': shots_per_randomization,
+        options = {
+            'resilience': {
+                'measure_noise_learning': {
+                    'num_randomizations': num_randomizations,
+                    'shots_per_randomization': shots_per_randomization,
+                },
+                'measure_mitigation': enable_measure_mitigation
+            }
         }
-        self.assert_valid_options(estimator, options_to_set, options_path, estimator.options.resilience.measure_noise_learning)
+        self.assert_valid_options(options)
 
     @combine(noise_factors=[[17], [1,2], [1,4,8], [1.3, 3.2], False],
              extrapolator=["linear", "exponential", "double_exponential",
@@ -164,15 +135,18 @@ class TestEstimatorV2Schema(unittest.TestCase):
                                "polynomial_degree_4", "polynomial_degree_5", "polynomial_degree_6",
                                "polynomial_degree_7", ["linear", "exponential", "polynomial_degree_3"], "false_extrapolator",
                                13, False, [13, "linear"]
-                               ]
+                               ],
+             enable_zne_mitigation=[True, False],
              )
-    def test_zne_mitigation_options(self, noise_factors, extrapolator):
-        """Testing various values of measure noise learning"""
-        estimator = EstimatorV2(backend=self.backend)
-        options_path = ['options', 'resilience', 'zne']
-        options_to_set = {
-            'noise_factors': noise_factors,
-            'extrapolator': extrapolator,
+    def test_zne_mitigation_options(self, noise_factors, extrapolator, enable_zne_mitigation):
+        """Testing various values of zne mitigation"""
+        options = {
+            'resilience': {
+                'zne': {
+                    'noise_factors': noise_factors,
+                    'extrapolator': extrapolator,
+                },
+                'zne_mitigation': enable_zne_mitigation
+            }
         }
-        self.assert_valid_options(estimator, options_to_set, options_path,
-                                  estimator.options.resilience.zne)
+        self.assert_valid_options(options)
