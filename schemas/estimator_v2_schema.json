@@ -397,6 +397,7 @@
                                 }
                             ]
                         },
+
                         "pec_mitigation": {
                             "description": "Whether to turn on Probabilistic Error Cancellation error mitigation method",
                             "type": "boolean"
@@ -475,6 +476,40 @@
                                         "const": true
                                     },
                                     "pec_mitigation": {
+                                        "const": true
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "if": {
+                                "$comment": "measure noise learning options requires measure_mitigation=True",
+                                "properties": {
+                                    "measure_noise_learning": {
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "measure_mitigation": {
+                                        "const": true
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "if": {
+                                "$comment": "zne options requires zne_mitigation=True",
+                                "properties": {
+                                    "zne": {
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "zne_mitigation": {
                                         "const": true
                                     }
                                 }
