@@ -139,7 +139,7 @@ class TestEstimatorV2Schema(unittest.TestCase):
              enable_zne_mitigation=[True, False],
              )
     def test_zne_mitigation_options(self, noise_factors, extrapolator, enable_zne_mitigation):
-        """Testing various values of zne mitigation"""
+        """Testing various values of pec mitigation"""
         options = {
             'resilience': {
                 'zne': {
@@ -150,6 +150,26 @@ class TestEstimatorV2Schema(unittest.TestCase):
             }
         }
         self.assert_valid_options(options)
+
+    @combine(max_layers_to_learn=[0, 1, 15, -3],
+             shots_per_randomization=[0, 1, 15, -3],
+             num_randomizations=[0, 1, 15, -3],
+             layer_pair_depths=[[0, 1, 15], 15, [0, -3]]
+             )
+    def test_layer_noise_learning_options(self, max_layers_to_learn, shots_per_randomization, num_randomizations, layer_pair_depths):
+        """Testing various values of layer noise learning"""
+        options = {
+            'resilience': {
+                'layer_noise_learning': {
+                    'max_layers_to_learn': max_layers_to_learn,
+                    'shots_per_randomization': shots_per_randomization,
+                    'num_randomizations': num_randomizations,
+                    'layer_pair_depths': layer_pair_depths,
+                },
+            }
+        }
+        self.assert_valid_options(options)
+
 
     @combine(max_overhead=[0, 1, 18, None, "error"],
              noise_gain=[0, 1, 18, "auto", None, "error"],

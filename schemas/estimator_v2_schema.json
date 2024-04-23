@@ -397,7 +397,6 @@
                                 }
                             ]
                         },
-
                         "pec_mitigation": {
                             "description": "Whether to turn on Probabilistic Error Cancellation error mitigation method",
                             "type": "boolean"
