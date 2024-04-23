@@ -187,3 +187,36 @@ class TestEstimatorV2Schema(unittest.TestCase):
             }
         }
         self.assert_valid_options(options)
+
+    @combine(init_qubits=[True, False, 13],
+             rep_delay=[0, 13, 0.3, -5, 'error'],
+             )
+    def test_execution_options(self, init_qubits, rep_delay):
+        """Testing various values of execution options"""
+        options = {
+            'execution': {
+                'init_qubits': init_qubits,
+                'rep_delay': rep_delay,
+            }
+        }
+        self.assert_valid_options(options)
+
+    @combine(enable_gates=[True, False, 13],
+             enable_measure=[True, False, 13],
+             num_randomizations=[0, 1, 18, -3, "auto", None, "error"],
+             shots_per_randomization=[0, 1, 18, -3, "auto", None, "error"],
+             strategy=["active", "active-circuit", "active-accum", "all", "auto", "error", 42],
+             )
+    def test_twirling_options(self, enable_gates, enable_measure, num_randomizations, shots_per_randomization, strategy):
+        """Testing various values of twirling options"""
+        options = {
+            'twirling': {
+                'enable_gates': enable_gates,
+                'enable_measure': enable_measure,
+                'num_randomizations': num_randomizations,
+                'shots_per_randomization': shots_per_randomization,
+                'strategy': strategy,
+            }
+        }
+        self.assert_valid_options(options)
+
