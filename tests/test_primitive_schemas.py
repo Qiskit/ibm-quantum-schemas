@@ -151,30 +151,19 @@ class TestEstimatorV2Schema(unittest.TestCase):
         }
         self.assert_valid_options(options)
 
-# options = {"resilience": {"zne": {"noise_factors": [1, 3]}}}
-# #est_options = EstimatorOptions(**options)
-# a = TestEstimatorV2Schema()
-# a.setUp()
-# print(a.get_converted_options(options))
-# a.validator.validate(a.get_converted_options(options))
-# options = {'transpilation': {'optimization_level': 0}}
-# est_options = EstimatorOptions(**options)
-# options = {'resilience_level': 1, "resilience": {"zne": {"noise_factors": []}}}
-# res = EstimatorOptions._get_program_inputs(options)
-# print(res)
-# a = TestEstimatorV2Schema()
-# a.setUp()
-# options_dict = {'options': {'resilience': {'zne': {'noise_factors': [1.0, 4.0, 8.0], 'extrapolator': 'linear'}}}, 'version': 2, 'support_qiskit': True, 'pubs': []}
-# a.validator.validate(options_dict)
-# print(a.validator.is_valid(options_dict))
-# estimator = EstimatorV2(backend="ibmq_qasm_simulator")
-# estimator.options.resilience.zne_mitigation = True
-# estimator.options.resilience.zne.extrapolator = "linear"
-# estimator.options.resilience.zne.noise_factors = []
-# print(estimator.options._get_program_inputs(asdict(estimator.options)))
-
-#options = {"resilience": {"zne_mitigation": True, "zne": {"noise_factors": []}}}
-# options = {"resilience": {"zne": {"noise_factors": [1, 3, 5]}}}
-# est_options = EstimatorOptions(**options)
-# print(est_options)
-# print(est_options._get_program_inputs(asdict(est_options)))
+    @combine(max_overhead=[0, 1, 18, None, "error"],
+             noise_gain=[0, 1, 18, "auto", None, "error"],
+             enable_pec_mitigation=[True, False],
+             )
+    def test_pec_mitigation_options(self, max_overhead, noise_gain, enable_pec_mitigation):
+        """Testing various values of pec mitigation"""
+        options = {
+            'resilience': {
+                'pec': {
+                    'max_overhead': max_overhead,
+                    'noise_gain': noise_gain,
+                },
+                'pec_mitigation': enable_pec_mitigation
+            }
+        }
+        self.assert_valid_options(options)

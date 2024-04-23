@@ -403,7 +403,7 @@
                             "type": "boolean"
                         },
                         "pec": {
-                            "description": "Additional probabalistic error cancellation mitigation options",
+                            "description": "Additional probabilistic error cancellation mitigation options",
                             "type": "object",
                             "properties": {
                                 "max_overhead": {
@@ -510,6 +510,23 @@
                             "then": {
                                 "properties": {
                                     "zne_mitigation": {
+                                        "const": true
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "if": {
+                                "$comment": "pec options requires pec_mitigation=True",
+                                "properties": {
+                                    "pec": {
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "pec_mitigation": {
                                         "const": true
                                     }
                                 }
