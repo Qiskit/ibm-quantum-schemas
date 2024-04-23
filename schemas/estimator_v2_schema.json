@@ -594,6 +594,10 @@
                     "description": "Default precision level which applies to all pubs without precision",
                     "type": "number"
                 },
+        "support_qiskit": {
+            "description": "If True, returns a qiskit-style output, meant to be parsed using the runtime result decoder, or resort to returning pure JSON results (resulting in larger objects)",
+            "type": "bool"
+        },
         "version": {
             "description": "For EstimatorV2, version should always be 2",
             "enum": [2]
