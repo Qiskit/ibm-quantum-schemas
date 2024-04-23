@@ -16,7 +16,7 @@ import unittest
 import ddt
 import jsonschema
 
-from qiskit_ibm_runtime import EstimatorOptions
+from qiskit_ibm_runtime import EstimatorOptions, SamplerOptions
 from tests import combine
 
 SCHEMAS_PATH = os.path.join(
@@ -30,7 +30,6 @@ class TestEstimatorV2Schema(unittest.TestCase):
         with open(os.path.join(SCHEMAS_PATH, 'estimator_v2_schema.json'), 'r') as fd:
             self.estimator_schema = json.load(fd)
         self.validator = jsonschema.Draft202012Validator(schema=self.estimator_schema)
-        self.backend = "ibmq_qasm_simulator"
 
     @staticmethod
     def get_converted_options(options_dict):
@@ -220,3 +219,80 @@ class TestEstimatorV2Schema(unittest.TestCase):
         }
         self.assert_valid_options(options)
 
+
+@ddt.ddt
+class TestSamplerV2Schema(unittest.TestCase):
+    """Tests the sampler schema agrees with the format of the qiskit runtime sampler API calls"""
+    def setUp(self) -> None:
+        with open(os.path.join(SCHEMAS_PATH, 'sampler_v2_schema.json'), 'r') as fd:
+            self.sampler_schema = json.load(fd)
+        self.validator = jsonschema.Draft202012Validator(schema=self.sampler_schema)
+
+    @staticmethod
+    def get_converted_options(options_dict):
+        """Emulate the process in `qiskit-ibm-runtime` where the EstimatorOptions
+        are converted to a filtered options dictionary"""
+        converted_options = SamplerOptions._get_program_inputs(options_dict)
+        if 'pubs' not in converted_options:
+            converted_options['pubs'] = []
+        return converted_options
+
+    def assert_valid_options(self, options_dict):
+        """Verifies the schema validation gives the same result as attempting
+        to set the options in the estimator"""
+        converted_options = self.get_converted_options(options_dict)
+        error_message = None
+        options_valid = True
+        try:
+            self.validator.validate(converted_options)
+        except Exception as err:
+            options_valid = False
+            error_message = str(err)
+
+        sampler_options_valid = True
+        try:
+            SamplerOptions(**options_dict)
+        except Exception as err:
+            sampler_options_valid = False
+            error_message = str(err)
+
+        if sampler_options_valid:
+            self.assertTrue(options_valid, msg=f"Options should pass the JSON schema validation, but it failed with the message:\n{error_message}")
+        else:
+            self.assertFalse(options_valid, msg=f"Options passed the JSON schema validation, but it should fail since for SamplerOptions it fails with the message:\n{error_message}")
+
+    @ddt.data(0, 1, 3.5, -2)
+    def test_default_shots(self, shots):
+        """Testing various values of the default shots"""
+        options = {'default_shots': shots}
+        self.assert_valid_options(options)
+
+    @combine(enable=[True, False, 13],
+             sequence_type=["XX", "XpXm", "XY4", "ZZ", 13],
+             extra_slack_distribution=["middle", "edges", "end", 13],
+             scheduling_method=["alap", "asap", "lapsap", 13]
+             )
+    def test_dynamical_decoupling(self, enable, sequence_type, extra_slack_distribution, scheduling_method):
+        """Testing various values of dynamical decoupling"""
+        options = {
+            'dynamical_decoupling': {
+                'enable': enable,
+                'sequence_type': sequence_type,
+                'extra_slack_distribution': extra_slack_distribution,
+                'scheduling_method': scheduling_method
+            }
+        }
+        self.assert_valid_options(options)
+
+    @combine(init_qubits=[True, False, 13],
+             rep_delay=[0, 13, 0.3, -5, 'error'],
+             )
+    def test_execution_options(self, init_qubits, rep_delay):
+        """Testing various values of execution options"""
+        options = {
+            'execution': {
+                'init_qubits': init_qubits,
+                'rep_delay': rep_delay,
+            }
+        }
+        self.assert_valid_options(options)
