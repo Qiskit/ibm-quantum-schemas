@@ -69,6 +69,10 @@
                 }
             }
         },
+        "shots": {
+                    "description": "Default number of shots which applies to all pubs without shots",
+                    "type": "integer"
+                },
         "version": {
             "description": "For SamplerV2, version should always be 2",
             "enum": [2]

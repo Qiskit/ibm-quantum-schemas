@@ -590,6 +590,10 @@
                         2
                     ]
                 },
+        "precision": {
+                    "description": "Default precision level which applies to all pubs without precision",
+                    "type": "number"
+                },
         "version": {
             "description": "For EstimatorV2, version should always be 2",
             "enum": [2]
