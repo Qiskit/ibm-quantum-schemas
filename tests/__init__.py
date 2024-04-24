@@ -15,6 +15,7 @@
 import itertools
 from ddt import data, unpack
 
+
 class Case(dict):
     """<no description>"""
 
