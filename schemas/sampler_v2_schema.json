@@ -9,14 +9,14 @@
     "properties": {
         "pubs": {
             "type": "array",
-            "description": "Circuits/Parameters to run",
+            "description": "Primitive Unit Blocs of data. Each PUB is of the form (Circuit, Parameters, Shots) where the circuit is required, parameters should be passed only for parametrized circuits, and shots is optional",
             "items": {
                 "type": "array",
                 "minItems": 1,
                 "prefixItems": [
-                    {"description": "The quantum circuit in base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.", "type": "object"},
-                    {"description": "The parameter values. The keys are the names of the parameters, and the values are the actual parameter values.", "type": "object"},
-                    {"description": "The numebr of shots to use in this pub", "type": "integer"}
+                    {"description": "The quantum circuit in QASM string or base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.", "type": "object"},
+                    {"description": "A dictionary of the parameter values. The keys are the names of the parameters, and the values are the actual parameter values.", "type": "object"},
+                    {"description": "The number of shots to use in this pub", "type": "integer"}
                 ]
             }
         },

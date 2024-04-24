@@ -9,13 +9,13 @@
     "properties": {
         "pubs": {
             "type": "array",
-            "description": "Circuits/Observbles/Parameters to run",
+            "description": "Primitive Unit Blocs of data. Each PUB is of the form (Circuit, Observables, Parameters, Precision) where the circuit and observables are required, parameters should be passed only for parametrized circuits, and precision is optional",
             "items": {
                 "type": "array",
                 "minItems": 2,
                 "prefixItems": [
-                    {"description": "The quantum circuit in base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.", "type": "object"},
-                    {"description": "One or more observables.", "type": "array"},
+                    {"description": "The quantum circuit in QASM string or base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.", "type": "object"},
+                    {"description": "One or more observables, which can be given as strings.", "type": "array"},
                     {"description": "The parameter values. The keys are the names of the parameters, and the values are the actual parameter values.", "type": "object"},
                     {"description": "The precision for this specific pub", "type": "number"}
                 ]
