@@ -16,6 +16,8 @@ import unittest
 import ddt
 import jsonschema
 
+from qiskit.circuit.library import RealAmplitudes
+from qiskit.primitives import StatevectorEstimator
 from qiskit_ibm_runtime import EstimatorOptions, SamplerOptions
 from tests import combine
 
@@ -69,7 +71,8 @@ class TestEstimatorV2Schema(unittest.TestCase):
         else:
             self.assertFalse(
                 options_valid,
-                msg=f"Options passed the JSON schema validation, but it should fail since for EstimatorOptions it fails with the message:\n{error_message}",
+                msg=f"Options passed the JSON schema validation, but it should fail since for "
+                    f"EstimatorOptions it fails with the message:\n{error_message}",
             )
 
     @ddt.data(0, 1, 2, 3, -1, 17, 3.5)
@@ -222,6 +225,7 @@ class TestEstimatorV2Schema(unittest.TestCase):
                 "pec_mitigation": enable_pec_mitigation,
             }
         }
+        print(options)
         self.assert_valid_options(options)
 
     @combine(
@@ -319,7 +323,8 @@ class TestSamplerV2Schema(unittest.TestCase):
         else:
             self.assertFalse(
                 options_valid,
-                msg=f"Options passed the JSON schema validation, but it should fail since for SamplerOptions it fails with the message:\n{error_message}",
+                msg=f"Options passed the JSON schema validation, but it should fail since for "
+                    f"SamplerOptions it fails with the message:\n{error_message}",
             )
 
     @ddt.data(0, 1, 3.5, -2)
@@ -361,3 +366,28 @@ class TestSamplerV2Schema(unittest.TestCase):
             }
         }
         self.assert_valid_options(options)
+
+
+@ddt.ddt
+class TestEstimatorResultV2Schema(unittest.TestCase):
+    """Tests the estimator result schema"""
+
+    def setUp(self) -> None:
+        with open(
+            os.path.join(SCHEMAS_PATH, "estimator_result_v2_schema.json"), "r"
+        ) as fd:
+            self.estimator_result_schema = json.load(fd)
+        self.validator = jsonschema.Draft202012Validator(
+            schema=self.estimator_result_schema
+        )
+        self.generate_backend_run_result()
+
+    def generate_backend_run_result(self):
+        self.backend = StatevectorEstimator()
+        circuit = RealAmplitudes(2)
+        self.run_result = self.backend.run(
+            [(circuit, "XX", [[1, 2, 3, 4, 5, 6, 7, 8]])]
+        ).result()
+
+    def test_run_result(self):
+        print(self.run_result)
