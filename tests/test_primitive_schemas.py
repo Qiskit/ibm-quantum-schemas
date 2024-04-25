@@ -16,8 +16,6 @@ import unittest
 import ddt
 import jsonschema
 
-from qiskit.circuit.library import RealAmplitudes
-from qiskit.primitives import StatevectorEstimator
 from qiskit_ibm_runtime import EstimatorOptions, SamplerOptions
 from tests import combine
 
