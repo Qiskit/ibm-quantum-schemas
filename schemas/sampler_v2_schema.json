@@ -75,7 +75,7 @@
                 },
         "support_qiskit": {
             "description": "If True, returns a qiskit-style output, meant to be parsed using the runtime result decoder, or resort to returning pure JSON results (resulting in larger objects)",
-            "type": "bool"
+            "type": "boolean"
         },
         "version": {
             "description": "For SamplerV2, version should always be 2",
