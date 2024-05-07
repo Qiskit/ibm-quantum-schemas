@@ -38,7 +38,7 @@ class TestSamplerV2ResultSchema(unittest.TestCase):
     """Tests the sampler result schema"""
 
     def setUp(self) -> None:
-        with open(os.path.join(SCHEMAS_PATH, "sampler_v2_result_schema.json"), "r") as fd:
+        with open(os.path.join(SCHEMAS_PATH, "sampler_result_v2_schema.json"), "r") as fd:
             self.sampler_schema = json.load(fd)
         self.validator = jsonschema.Draft202012Validator(schema=self.sampler_schema)
 
