@@ -69,7 +69,7 @@
                 }
             }
         },
-        "shots": {
+        "default_shots": {
                     "description": "Default number of shots which applies to all pubs without shots",
                     "type": "integer"
                 },
