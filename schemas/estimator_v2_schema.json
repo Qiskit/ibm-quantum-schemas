@@ -1,0 +1,606 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "http://www.qiskit.org/schemas/estimator_v2_schema.json",
+    "title": "EstimatorV2 input",
+    "description": "The input for an EstimatorV2 API call",
+    "version": "1.0.0",
+    "type": "object",
+    "required": ["pubs"],
+    "properties": {
+        "pubs": {
+            "type": "array",
+            "description": "Primitive Unit Blocs of data. Each PUB is of the form (Circuit, Observables, Parameters, Precision) where the circuit and observables are required, parameters should be passed only for parametrized circuits, and precision is optional",
+            "items": {
+                "type": "array",
+                "minItems": 2,
+                "prefixItems": [
+                    {"description": "The quantum circuit in QASM string or base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.", "type": ["object", "string"]},
+                    {"description": "One or more observables, which can be given as strings.", "type": "array"},
+                    {"description": "The parameter values. The keys are the names of the parameters, and the values are the actual parameter values.", "type": "object"},
+                    {"description": "The precision for this specific pub", "type": "number"}
+                ]
+            }
+        },
+        "options": {
+            "type": "object",
+            "description": "Options for V2 Estimator",
+            "properties": {
+                "seed_estimator": {
+                    "description": "Seed used to control sampling",
+                    "type": "integer"
+                },
+                "default_precision": {
+                    "description": "The default precision to use for any PUB that does not specify one",
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                },
+                "default_shots": {
+                    "description": "The total number of shots to use per circuit per configuration. If set, this value overrides default_precision.",
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "dynamical_decoupling": {
+                    "description": "Suboptions for dynamical decoupling",
+                    "type": "object",
+                    "properties": {
+                        "enable": {
+                            "description": "Whether to enable dynamical decoupling.",
+                            "type": "boolean"
+                        },
+                        "sequence_type": {
+                            "description": "Which dynamical decoupling sequence to use",
+                            "type": "string",
+                            "enum": ["XX", "XpXm", "XY4"]
+                        },
+                        "extra_slack_distribution": {
+                            "description": "Where to put extra timing delays due to rounding issues",
+                            "type": "string",
+                            "enum": ["middle", "edges"]
+                        },
+                        "scheduling_method": {
+                            "description": "Whether to schedule gates as soon as ('asap') or as late as ('alap') possible",
+                            "type": "string",
+                            "enum": ["alap", "asap"]
+                        }
+                    }
+                },
+                "transpilation": {
+                    "description": "Transpilation settings",
+                    "type": "object",
+                    "properties": {
+                        "optimization_level": {
+                            "description": "How much optimization to perform on the circuits",
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ]
+                        }
+                    }
+                },
+                "resilience": {
+                    "description": "Advanced resilience options to fine tune the resilience strategy",
+                    "type": "object",
+                    "properties": {
+                        "measure_mitigation": {
+                            "description": "Whether to enable measurement error mitigation method",
+                            "type": "boolean"
+                        },
+                        "measure_noise_learning": {
+                            "description": "Additional measurement noise learning options",
+                            "type": "object",
+                            "properties": {
+                                "num_randomizations": {
+                                    "description": "The number of random circuits to draw for the measurement learning experiment",
+                                    "type": "integer",
+                                    "minimum": 1
+                                },
+                                "shots_per_randomization": {
+                                    "description": "The number of shots to use for the learning experiment per random circuit.",
+                                    "oneOf": [
+                                        {
+                                            "type": "integer",
+                                            "minimum": 1
+                                        },
+                                        {
+                                            "enum": ["auto"]
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "zne_mitigation": {
+                            "description": "Whether to turn on Zero Noise Extrapolation error mitigation method",
+                            "type": "boolean"
+                        },
+                        "zne": {
+                            "description": "Additional zero noise extrapolation mitigation options",
+                            "type": "object",
+                            "properties": {
+                                "noise_factors": {
+                                    "description": "Noise factors to use for noise amplification",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    }
+                                },
+                                "extrapolator": {
+                                    "description": "Extrapolator(s) to try (in order) for extrapolating to zero noise",
+                                    "oneOf": [
+                                        {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "linear",
+                                                    "exponential",
+                                                    "double_exponential",
+                                                    "polynomial_degree_1",
+                                                    "polynomial_degree_2",
+                                                    "polynomial_degree_3",
+                                                    "polynomial_degree_4",
+                                                    "polynomial_degree_5",
+                                                    "polynomial_degree_6",
+                                                    "polynomial_degree_7"
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "linear",
+                                                "exponential",
+                                                "double_exponential",
+                                                "polynomial_degree_1",
+                                                "polynomial_degree_2",
+                                                "polynomial_degree_3",
+                                                "polynomial_degree_4",
+                                                "polynomial_degree_5",
+                                                "polynomial_degree_6",
+                                                "polynomial_degree_7"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "allOf": [
+                                {
+                                    "if": {
+                                        "$comment": "linear, exponential and polynomial_degree_1 require at least 2 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "anyOf": [
+                                                            {"const": "linear"},
+                                                            {"const": "exponential"},
+                                                            {"const": "polynomial_degree_1"}
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "anyOf": [
+                                                                {"const": "linear"},
+                                                                {"const": "exponential"},
+                                                                {"const": "polynomial_degree_1"}
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 2
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "if": {
+                                        "$comment": "polynomial_degree_2 requires at least 3 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "const": "polynomial_degree_2"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "const": "polynomial_degree_2"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 3
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "if": {
+                                        "$comment": "double_exponential and polynomial_degree_3 require at least 4 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "anyOf": [
+                                                            {"const": "double_exponential"},
+                                                            {"const": "polynomial_degree_3"}
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "anyOf": [
+                                                                {"const": "double_exponential"},
+                                                                {"const": "polynomial_degree_3"}
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 4
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "if": {
+                                        "$comment": "polynomial_degree_4 requires at least 5 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "const": "polynomial_degree_4"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "const": "polynomial_degree_4"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 5
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "if": {
+                                        "$comment": "polynomial_degree_5 requires at least 6 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "const": "polynomial_degree_5"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "const": "polynomial_degree_5"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 6
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "if": {
+                                        "$comment": "polynomial_degree_6 requires at least 7 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "const": "polynomial_degree_6"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "const": "polynomial_degree_6"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 7
+                                            }
+                                        }
+                                    }
+                                },
+                                 {
+                                    "if": {
+                                        "$comment": "polynomial_degree_7 requires at least 8 noise factors",
+                                        "anyOf": [
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "const": "polynomial_degree_7"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "properties": {
+                                                    "extrapolator": {
+                                                        "type": "array",
+                                                        "contains": {
+                                                            "const": "polynomial_degree_7"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "then": {
+                                        "properties": {
+                                            "noise_factors": {
+                                                "minItems": 8
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "pec_mitigation": {
+                            "description": "Whether to turn on Probabilistic Error Cancellation error mitigation method",
+                            "type": "boolean"
+                        },
+                        "pec": {
+                            "description": "Additional probabilistic error cancellation mitigation options",
+                            "type": "object",
+                            "properties": {
+                                "max_overhead": {
+                                    "description": "The maximum circuit sampling overhead allowed",
+                                    "oneOf": [
+                                        {
+                                            "type": "number",
+                                            "exclusiveMinimum": 0
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
+                                },
+                                "noise_gain": {
+                                    "description": "The amount by which to scale the noise",
+                                    "oneOf": [
+                                        {
+                                            "type": "number",
+                                            "minimum": 0
+                                        },
+                                        {
+                                            "enum": [
+                                                "auto"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "layer_noise_learning": {
+                            "description": "Layer noise learning options",
+                            "type": "object",
+                            "properties": {
+                                "max_layers_to_learn": {
+                                    "description": "The max number of unique layers to learn",
+                                    "type": "integer",
+                                    "minimum": 0
+                                },
+                                "shots_per_randomization": {
+                                    "description": "The total number of shots to use per random learning circuit",
+                                    "type": "integer",
+                                    "minimum": 1
+                                },
+                                "num_randomizations": {
+                                    "description": "The number of random circuits to use per learning circuit configuration",
+                                    "type": "integer",
+                                    "minimum": 1
+                                },
+                                "layer_pair_depths": {
+                                    "description": "The circuit depths (measured in number of pairs) to use in learning experiments",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer",
+                                        "minimum": 0
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "allOf": [
+                        {
+                            "not": {
+                                "required": [
+                                    "zne_mitigation",
+                                    "pec_mitigation"
+                                ],
+                                "properties": {
+                                    "zne_mitigation": {
+                                        "const": true
+                                    },
+                                    "pec_mitigation": {
+                                        "const": true
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "if": {
+                                "$comment": "measure noise learning options requires measure_mitigation=True",
+                                "properties": {
+                                    "measure_noise_learning": {
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "measure_mitigation": {
+                                        "const": true
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "if": {
+                                "$comment": "zne options requires zne_mitigation=True",
+                                "properties": {
+                                    "zne": {
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "zne_mitigation": {
+                                        "const": true
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "if": {
+                                "$comment": "pec options requires pec_mitigation=True",
+                                "properties": {
+                                    "pec": {
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "pec_mitigation": {
+                                        "const": true
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                "execution": {
+                    "description": "Execution options",
+                    "type": "object",
+                    "properties": {
+                        "init_qubits": {
+                            "description": "Whether to reset the qubits to the ground state for each shot",
+                            "type": "boolean"
+                        },
+                        "rep_delay": {
+                            "description": "The delay between a measurement and the subsequent quantum circuit",
+                            "type": "number"
+                        }
+                    }
+                },
+                "twirling": {
+                    "description": "Twirling options",
+                    "type": "object",
+                    "properties": {
+                        "enable_gates": {
+                            "description": "Whether to apply 2-qubit gate twirling",
+                            "type": "boolean"
+                        },
+                        "enable_measure": {
+                            "description": "Whether to apply measurement twirling",
+                            "type": "boolean"
+                        },
+                        "num_randomizations": {
+                            "description": "The number of random samples to use when twirling or performing sampled mitigation",
+                            "oneOf": [{"type": "integer", "minimum": 1}, {"enum": ["auto"]}]
+                        },
+                        "shots_per_randomization": {
+                            "description": "The number of shots to run for each random sample",
+                            "oneOf": [{"type": "integer", "minimum": 1}, {"enum": ["auto"]}]
+                        },
+                        "strategy": {
+                            "description": "The strategy of twirling qubits in identified layers of 2-qubit twirled gates",
+                            "type": "string",
+                            "enum": [
+                                "active",
+                                "active-circuit",
+                                "active-accum",
+                                "all"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "resilience_level": {
+                    "description": "How much resilience to build against errors",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2
+                    ]
+                },
+        "precision": {
+                    "description": "Default precision level which applies to all pubs without precision",
+                    "type": "number"
+                },
+        "support_qiskit": {
+            "description": "If True, returns a qiskit-style output, meant to be parsed using the runtime result decoder, or resort to returning pure JSON results (resulting in larger objects)",
+            "type": "boolean"
+        },
+        "version": {
+            "description": "For EstimatorV2, version should always be 2",
+            "enum": [2]
+        }
+    }
+}
