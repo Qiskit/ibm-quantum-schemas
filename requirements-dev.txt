@@ -2,4 +2,4 @@ fastjsonschema
 jsonschema
 jsonschema-rs
 ddt
-qiskit-ibm-runtime>=0.23
+qiskit-ibm-runtime@git+https://git@github.com/Qiskit/qiskit-ibm-runtime.git

@@ -14,7 +14,7 @@
                 "type": "array",
                 "minItems": 1,
                 "prefixItems": [
-                    {"description": "The quantum circuit in QASM string or base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.", "type": "object"},
+                    {"description": "The quantum circuit in QASM string or base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.", "type": ["object", "string"]},
                     {"description": "A dictionary of the parameter values. The keys are the names of the parameters, and the values are the actual parameter values.", "type": "object"},
                     {"description": "The number of shots to use in this pub", "type": "integer"}
                 ]
