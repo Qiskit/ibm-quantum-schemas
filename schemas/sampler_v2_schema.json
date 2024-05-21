@@ -64,6 +64,10 @@
                         "rep_delay": {
                             "description": "The delay between a measurement and the subsequent quantum circuit",
                             "type": "number"
+                        },
+                        "meas_type": {
+                            "description": "How to process and return measurement results",
+                            "enum": ["classified", "kerneled", "avg_kerneled"]
                         }
                     }
                 }

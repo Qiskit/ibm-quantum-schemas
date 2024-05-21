@@ -353,13 +353,15 @@ class TestSamplerV2Schema(unittest.TestCase):
     @combine(
         init_qubits=[True, False, 13],
         rep_delay=[0, 13, 0.3, -5, "error"],
+        meas_type=["classified", "kerneled", "avg_kerneled", "unclassified", 42],
     )
-    def test_execution_options(self, init_qubits, rep_delay):
+    def test_execution_options(self, init_qubits, rep_delay, meas_type):
         """Testing various values of execution options"""
         options = {
             "execution": {
                 "init_qubits": init_qubits,
                 "rep_delay": rep_delay,
+                "meas_type": meas_type,
             }
         }
         self.assert_valid_options(options)
