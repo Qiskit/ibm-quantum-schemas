@@ -1,0 +1,89 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "http://www.qiskit.org/schemas/sampler_v2_schema.json",
+    "title": "SamplerV2 input",
+    "description": "The input for an SamplerV2 API call",
+    "version": "1.0.0",
+    "type": "object",
+    "required": ["pubs"],
+    "properties": {
+        "pubs": {
+            "type": "array",
+            "description": "Primitive Unit Blocs of data. Each PUB is of the form (Circuit, Parameters, Shots) where the circuit is required, parameters should be passed only for parametrized circuits, and shots is optional",
+            "items": {
+                "type": "array",
+                "minItems": 1,
+                "prefixItems": [
+                    {"description": "The quantum circuit in QASM string or base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.", "type": ["object", "string"]},
+                    {"description": "A dictionary of the parameter values. The keys are the names of the parameters, and the values are the actual parameter values.", "type": "object"},
+                    {"description": "The number of shots to use in this pub", "type": "integer"}
+                ]
+            }
+        },
+        "options": {
+            "type": "object",
+            "description": "Options for V2 Sampler",
+            "properties": {
+                "default_shots": {
+                    "description": "The default number of shots to use if none are specified in the PUBs",
+                    "type": "integer"
+                },
+                "dynamical_decoupling": {
+                    "description": "Suboptions for dynamical decoupling",
+                    "type": "object",
+                    "properties": {
+                        "enable": {
+                            "description": "Whether to enable DD as specified by the other options in this class",
+                            "type": "boolean"
+                        },
+                        "sequence_type": {
+                            "description": "Which dynamical decoupling sequence to use",
+                            "type": "string",
+                            "enum": ["XX", "XpXm", "XY4"]
+                        },
+                        "extra_slack_distribution": {
+                            "description": "Where to put extra timing delays due to rounding issues",
+                            "type": "string",
+                            "enum": ["middle", "edges"]
+                        },
+                        "scheduling_method": {
+                            "description": "Whether to schedule gates as soon as ('asap') or as late as ('alap') possible",
+                            "type": "string",
+                            "enum": ["alap", "asap"]
+                        }
+                    }
+                },
+                "execution": {
+                    "description": "Execution options",
+                    "type": "object",
+                    "properties": {
+                        "init_qubits": {
+                            "description": "Whether to reset the qubits to the ground state for each shot",
+                            "type": "boolean"
+                        },
+                        "rep_delay": {
+                            "description": "The delay between a measurement and the subsequent quantum circuit",
+                            "type": "number"
+                        },
+                        "meas_type": {
+                            "description": "How to process and return measurement results",
+                            "enum": ["classified", "kerneled", "avg_kerneled"]
+                        }
+                    }
+                }
+            }
+        },
+        "shots": {
+                    "description": "Default number of shots which applies to all pubs without shots",
+                    "type": "integer"
+                },
+        "support_qiskit": {
+            "description": "If True, returns a qiskit-style output, meant to be parsed using the runtime result decoder, or resort to returning pure JSON results (resulting in larger objects)",
+            "type": "boolean"
+        },
+        "version": {
+            "description": "For SamplerV2, version should always be 2",
+            "enum": [2]
+        }
+    }
+}
