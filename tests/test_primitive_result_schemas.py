@@ -60,5 +60,4 @@ class TestSamplerV2ResultSchema(unittest.TestCase):
         result_str = '{"results": [{"data": {"meas": {"samples": ["0x3", "0x3", "0x3", "0x3", "0x3"],' \
                      ' "num_bits": 2}}, "metadata": {"circuit_metadata": {}}}], "metadata": {"version": 2}}'
         result = json.loads(result_str)
-        print(result)
         self.validator.validate(result)
