@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "http://www.qiskit.org/schemas/backend_config_schema.json",
+    "id": "https://raw.githubusercontent.com/Qiskit/ibm-quantum-schemas/refs/heads/main/schemas/backend_configuration_schema.json",
     "description": "Qiskit device backend configuration",
     "version": "1.6.0",
     "definitions": {

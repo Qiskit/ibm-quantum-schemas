@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "http://www.qiskit.org/schemas/sampler_result_v2_schema.json",
+    "id": "https://raw.githubusercontent.com/Qiskit/ibm-quantum-schemas/refs/heads/main/schemas/sampler_result_v2_schema.json",
     "title": "EstimatorV2 result",
     "description": "The result for an SamplerV2 API call",
     "version": "1.0.0",
