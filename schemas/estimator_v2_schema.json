@@ -32,7 +32,8 @@
                 "default_precision": {
                     "description": "The default precision to use for any PUB that does not specify one",
                     "type": "number",
-                    "exclusiveMinimum": 0
+                    "minimum": 0,
+                    "exclusiveMinimum": true
                 },
                 "default_shots": {
                     "description": "The total number of shots to use per circuit per configuration. If set, this value overrides default_precision.",
@@ -410,7 +411,8 @@
                                     "oneOf": [
                                         {
                                             "type": "number",
-                                            "exclusiveMinimum": 0
+                                            "minimum": 0,
+                                            "exclusiveMinimum": true
                                         },
                                         {
                                             "type": "null"
