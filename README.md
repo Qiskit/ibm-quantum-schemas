@@ -10,7 +10,7 @@ The models live in the `models/` directory in this repository.
 ## Note
 
 The purpose of this repository has recently changed. Prior to this change, the
-repository hosted JSONSchema files that dictated the request and
-response payloads for the primary IBM Quantum API payloads for interacting with
+repository hosted JSONSchema files that dictated the request and response payloads
+for the primary IBM Quantum API payloads that allowed interacting with
 devices. Primarily, the Qobj, backend configuration, backend properties,
 pulse defaults, and result schemas.
