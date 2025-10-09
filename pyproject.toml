@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["ibm-quantum-schemas"]
+
+[tool.setuptools.packages.find]
+include = ["ibm-quantum-schemas", "ibm-quantum-schemas.*"]
+
+[project]
+name = "ibm-quantum-schemas"
+dynamic = ["version"]
+description = "IBM Quantum Pydantic models."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "Apache-2.0"
+license-files = ["LICENSE.txt"]
+authors = [
+    {name = "Qiskit Development Team", email="qiskit@us.ibm.com"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "qiskit==2.2.0",
+    "pydantic>=2.1,<3.0.0"
+]
+
+[tool.setuptools_scm]
+version_file = "ibm_quantum_schemas/_version.py"
+version_scheme = "guess-next-dev"
+local_scheme = "dirty-tag"
+
+[project.urls]
+Homepage = "https://github.com/Qiskit/ibm-quantum-schemas"
+BugTracker = "https://github.com/Qiskit/ibm-quantum-schemas"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",                     # For running tests
+    "ruff",                       # Formatter and linter
+    "pre-commit",                 # Pre-commit hooks
+]
+
+[tool.ruff]
+lint.select = [
+    "D100", "D401",     # pydocstyle
+    "D2", "D3",         # pydocstyle
+    "E",      # pycodestyle
+    "F",      # pyflake
+    "I",      # isort
+    "SLF",    # private member access rules
+    "UP",     # pyupgrade
+]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [
+    "E402",   # module-import-not-at-top-of-file
+    "F401",   # unused-import
+]
+"test/unit/**/*.py" = [
+    "D100",   #
+]
