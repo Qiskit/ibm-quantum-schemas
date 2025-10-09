@@ -1,5 +1,0 @@
-fastjsonschema
-jsonschema
-jsonschema-rs
-ddt
-qiskit-ibm-runtime@git+https://git@github.com/Qiskit/qiskit-ibm-runtime.git

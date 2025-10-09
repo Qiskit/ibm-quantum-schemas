@@ -48,7 +48,7 @@ def discover_files(
         if path.is_dir():
             # Recursively search for files with the specified extensions
             for file in path.rglob("*"):
-                if file.suffix in extensions and not file.match(omit):
+                if file.suffix in extensions and (omit == "" or not file.match(omit)):
                     yield str(file)
 
 
