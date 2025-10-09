@@ -10,7 +10,7 @@ repos:
     hooks:
       - id: run-python-script
         name: Verify headers
-        entry: python assets/verify_headers.py models tests
+        entry: python assets/verify_headers.py models test
         language: system
         types: [python]
         exclude: ^docs
