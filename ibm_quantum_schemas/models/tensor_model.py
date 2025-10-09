@@ -13,11 +13,14 @@
 """TensorModel"""
 
 import math
-from typing import Literal
+from typing import Literal, get_args
 
 import numpy as np
 import pybase64
 from pydantic import BaseModel, model_validator
+
+SUPPORTED_DTYPES = Literal["f64", "bool", "u8"]
+"""The data types supported by :class:`~TensorModel`."""
 
 
 class TensorModel(BaseModel):
@@ -35,7 +38,7 @@ class TensorModel(BaseModel):
     shape: list[int]
     """The shape of the tensor."""
 
-    dtype: Literal["f64", "bool", "u8"]
+    dtype: SUPPORTED_DTYPES
     """The data type of the tensor."""
 
     @classmethod
@@ -53,7 +56,8 @@ class TensorModel(BaseModel):
             data = pybase64.b64encode(array.astype("<u1").tobytes())
         else:
             raise ValueError(
-                f"Unexpected NumPy dtype {array.dtype}, one of {cls.dtype.__annotation__} expected."
+                f"Unexpected NumPy dtype '{array.dtype}', one of {get_args(SUPPORTED_DTYPES)} "
+                "expected."
             )
 
         return cls(data=data, shape=array.shape, dtype=dtype)
