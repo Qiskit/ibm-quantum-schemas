@@ -84,7 +84,7 @@ class AnnotationSerializer(QPYSerializer):
         if (name := buff.read(annotation.name_size).decode()) == "BasisTransform":
             basis_transform = BASIS_TRANSFORM_ANNOTATION._make(
                 struct.unpack(
-                    BASIS_TRANSFORM_ANNOTATION,
+                    BASIS_TRANSFORM_ANNOTATION_PACK,
                     buff.read(BASIS_TRANSFORM_ANNOTATION_SIZE),
                 )
             )

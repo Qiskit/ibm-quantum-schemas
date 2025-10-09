@@ -25,17 +25,17 @@ class TestTensorModel:
     @pytest.mark.parametrize("dtype", [np.uint8, np.float64, np.bool_])
     def test_roundtrip(self, dtype):
         """Test that round trips work correctly."""
-        array_in = np.array(range(16), dtype=dtype).reshape(4, 1, 2, 2)
-        array_out = TensorModel.from_numpy(array_in).to_numpy()
+        array = np.array(range(16), dtype=dtype).reshape(4, 1, 2, 2)
+        array_out = TensorModel.from_numpy(array).to_numpy()
 
-        assert np.all(array_in == array_out)
+        assert np.all(array == array_out)
 
     def test_raises(self):
         """Test that it raises."""
-        array_in = np.array(range(16), dtype=int)
+        array = np.array(range(16), dtype=int)
 
         with pytest.raises(ValueError, match="Unexpected NumPy dtype 'int64'"):
-            TensorModel.from_numpy(array_in)
+            TensorModel.from_numpy(array)
 
 
 class TestF64TensorModel:
@@ -43,15 +43,15 @@ class TestF64TensorModel:
 
     def test_roundtrip(self):
         """Test that round trips work correctly."""
-        array_in = np.array(range(16), dtype=np.float64).reshape(4, 1, 2, 2)
-        array_out = F64TensorModel.from_numpy(array_in).to_numpy()
+        array = np.array(range(16), dtype=np.float64).reshape(4, 1, 2, 2)
+        array_out = F64TensorModel.from_numpy(array).to_numpy()
 
-        assert np.all(array_in == array_out)
+        assert np.all(array == array_out)
 
     @pytest.mark.parametrize("dtype", [np.uint8, np.bool_])
     def test_raises(self, dtype):
         """Test that it raises."""
-        array_in = np.array(range(16), dtype=dtype)
+        array = np.array(range(16), dtype=dtype)
 
         with pytest.raises(ValidationError):
-            F64TensorModel.from_numpy(array_in)
+            F64TensorModel.from_numpy(array)
