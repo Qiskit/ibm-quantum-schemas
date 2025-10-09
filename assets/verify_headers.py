@@ -113,9 +113,7 @@ def main():
         with ProcessPoolExecutor() as executor:
             results = executor.map(validate_header, python_files)
 
-        failed_files = [
-            (file_path, err) for file_path, success, err in results if not success
-        ]
+        failed_files = [(file_path, err) for file_path, success, err in results if not success]
         if failed_files:
             for file_path, error_message in failed_files:
                 sys.stderr.write(f"{file_path} failed header check because:\n")
