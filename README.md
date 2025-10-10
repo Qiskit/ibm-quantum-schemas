@@ -3,10 +3,6 @@
 This repository contains the Pydantic models that describe the inputs and outputs
 of IBM Quantum primitives and programs.
 
-## Models
-
-The models live in the `models/` directory in this repository.
-
 ## Note
 
 The purpose of this repository has changed. Prior to October 2025, the
