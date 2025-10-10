@@ -88,8 +88,8 @@ def validate_header(file_path: str) -> tuple[str, bool, str]:
 
 
 def main():
+    """Run verification."""
     try:
-        """Run verification."""
         default_path = Path(__file__).resolve().parent.parent / "samplomatic"
 
         parser = argparse.ArgumentParser(description="Check file headers.")
