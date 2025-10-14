@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 py-modules = ["ibm_quantum_schemas"]
 
 [tool.setuptools.packages.find]
-where = ["."]
+include = ["ibm_quantum_schemas", "ibm_quantum_schemas.*"]
 
 [project]
 name = "ibm-quantum-schemas"
