@@ -49,6 +49,7 @@ class AnnotationSerializer(QPYSerializer):
     """Serializer for annotations in the 'samplomatic' namespace."""
 
     def dump_annotation(self, namespace: str, annotation: Any) -> bytes:
+        """Dump annotation."""
         annotation_name = type(annotation).__name__.encode()
         samplomatic_annotation = (
             struct.pack(SAMPLOMATIC_ANNOTATION_PACK, len(annotation_name)) + annotation_name
@@ -77,6 +78,7 @@ class AnnotationSerializer(QPYSerializer):
         return NotImplemented
 
     def load_annotation(self, payload: bytes) -> Annotation:
+        """Load annotation."""
         buff = io.BytesIO(payload)
         annotation = SAMPLOMATIC_ANNOTATION._make(
             struct.unpack(SAMPLOMATIC_ANNOTATION_PACK, buff.read(SAMPLOMATIC_ANNOTATION_SIZE))

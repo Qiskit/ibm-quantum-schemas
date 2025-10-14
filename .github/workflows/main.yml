@@ -39,3 +39,4 @@ jobs:
       - name: Pre-commit checks (linting)
         run: |
             pre-commit run --all-files
+            pytest test/
