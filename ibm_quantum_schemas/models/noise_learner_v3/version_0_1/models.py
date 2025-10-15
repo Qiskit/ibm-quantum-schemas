@@ -42,7 +42,7 @@ class PostSelectionOptionsModel(BaseModel):
     enable: bool = False
     """Whether to enable Post Selection when performing learning experiments.
 
-    If ``False``, all the other Post Selection options will be ignored.
+    If ``False``, all the other Post Selection options are ignored.
     """
 
     x_pulse_type: Literal["xslow", "rx"] = "xslow"
