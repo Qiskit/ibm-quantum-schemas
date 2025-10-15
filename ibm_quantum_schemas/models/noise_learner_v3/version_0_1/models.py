@@ -24,7 +24,7 @@ from ...tensor_model import F64TensorModel
 class ParamsModel(BaseParamsModel):
     """Schema version 1 of the inner parameters."""
 
-    schema_version: Literal["v0.1.0"] = "v0.1.0"
+    schema_version: Literal["v0.1"] = "v0.1"
 
     instructions: QpyModelV13ToV16
     """The instructions targeted by the noise learner.
@@ -126,7 +126,7 @@ class NoiseLearnerV3ResultModel(BaseModel):
 class NoiseLearnerV3ResultsModel(BaseModel):
     """Result from executing a noise learner v3 job."""
 
-    schema_version: Literal["v0.1.0"] = "v0.1.0"
+    schema_version: Literal["v0.1"] = "v0.1"
     """Schema version of the result type."""
 
     data: list[NoiseLearnerV3ResultModel]

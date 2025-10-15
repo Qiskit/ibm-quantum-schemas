@@ -26,7 +26,7 @@ from ...tensor_model import F64TensorModel, TensorModel
 class ParamsModel(BaseParamsModel):
     """Schema version 1 of the inner parameters."""
 
-    schema_version: Literal["v0.1.0"] = "v0.1.0"
+    schema_version: Literal["v0.1"] = "v0.1"
 
     quantum_program: "QuantumProgramModel"
     """The quantum program to execution."""
@@ -152,7 +152,7 @@ class QuantumProgramResultItemModel(BaseModel):
 class QuantumProgramResultModel(BaseModel):
     """Result from executing a quantum program."""
 
-    schema_version: Literal["v0.1.0"] = "v0.1.0"
+    schema_version: Literal["v0.1"] = "v0.1"
     """Schema version of the result type."""
 
     data: list[QuantumProgramResultItemModel]

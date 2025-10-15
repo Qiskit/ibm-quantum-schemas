@@ -10,4 +10,4 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""NoiseLearnerV3 V0.1.0 Models and Validation"""
+"""Executor V0.1 Models and Validation"""
