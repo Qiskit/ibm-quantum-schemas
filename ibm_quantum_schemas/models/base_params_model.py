@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field
 
 
 class BaseParamsModel(BaseModel):
-    """Model of the program's inner parameters."""
+    """Model of a runtime program's inner parameters."""
 
     schema_version: str = Field(pattern=r"v\d+.\d+.\d+")
     """Version of the params schema being used."""
