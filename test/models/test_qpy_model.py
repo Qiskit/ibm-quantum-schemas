@@ -49,3 +49,14 @@ class TestQpyModelV13ToV16:
         circuit_out = encoded.to_quantum_circuit()
 
         assert circuit == circuit_out
+
+    @pytest.mark.parametrize("qpy_version", [12, 17])
+    def test_unsupported_versions_raise(self, qpy_version):
+        """Test that unsupported versions raise."""
+        circuit = QuantumCircuit(3)
+        circuit.h(0)
+        circuit.cx(0, 1)
+        circuit.measure_all()
+
+        with pytest.raises(ValueError, match="QPY version"):
+            QpyModelV13ToV16.from_quantum_circuit(circuit, qpy_version)
