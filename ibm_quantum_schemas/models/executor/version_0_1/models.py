@@ -63,7 +63,7 @@ class CircuitItemModel(BaseModel):
     circuit_arguments: F64TensorModel
     """Arguments to the parameters of the circuit.
 
-    The last axis is over ``circuit.parameters``. Execution will be broadcasting over the
+    The last axis is over ``circuit.parameters``. Execution broadcasts over the
     preceding axes; expect one result per element of the leading shape.
     """
 
