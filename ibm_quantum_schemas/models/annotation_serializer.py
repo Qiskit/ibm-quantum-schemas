@@ -36,9 +36,7 @@ CHANGE_BASIS_ANNOTATION = namedtuple(
 
 INJECT_NOISE_ANNOTATION_PACK = "!QQ"
 INJECT_NOISE_ANNOTATION_SIZE = struct.calcsize(INJECT_NOISE_ANNOTATION_PACK)
-INJECT_NOISE_ANNOTATION = namedtuple(
-    "INJECT_NOISE_ANNOTATION", ["ref_size", "modifier_ref_size"]
-)
+INJECT_NOISE_ANNOTATION = namedtuple("INJECT_NOISE_ANNOTATION", ["ref_size", "modifier_ref_size"])
 
 TWIRL_ANNOTATION_PACK = "!QQQ"
 TWIRL_ANNOTATION_SIZE = struct.calcsize(TWIRL_ANNOTATION_PACK)
@@ -54,8 +52,7 @@ class AnnotationSerializer(QPYSerializer):
         """Dump annotation."""
         annotation_name = type(annotation).__name__.encode()
         samplomatic_annotation = (
-            struct.pack(SAMPLOMATIC_ANNOTATION_PACK, len(annotation_name))
-            + annotation_name
+            struct.pack(SAMPLOMATIC_ANNOTATION_PACK, len(annotation_name)) + annotation_name
         )
         if isinstance(annotation, ChangeBasis):
             decomposition = annotation.decomposition.encode()
@@ -68,9 +65,7 @@ class AnnotationSerializer(QPYSerializer):
         if isinstance(annotation, InjectNoise):
             ref = annotation.ref.encode()
             modifier_ref = annotation.modifier_ref.encode()
-            annotation_raw = struct.pack(
-                INJECT_NOISE_ANNOTATION_PACK, len(ref), len(modifier_ref)
-            )
+            annotation_raw = struct.pack(INJECT_NOISE_ANNOTATION_PACK, len(ref), len(modifier_ref))
             return samplomatic_annotation + annotation_raw + ref + modifier_ref
         if isinstance(annotation, Twirl):
             group = annotation.group.encode()
@@ -79,22 +74,14 @@ class AnnotationSerializer(QPYSerializer):
             annotation_raw = struct.pack(
                 TWIRL_ANNOTATION_PACK, len(group), len(dressing), len(decomposition)
             )
-            return (
-                samplomatic_annotation
-                + annotation_raw
-                + group
-                + dressing
-                + decomposition
-            )
+            return samplomatic_annotation + annotation_raw + group + dressing + decomposition
         return NotImplemented
 
     def load_annotation(self, payload: bytes) -> Annotation:
         """Load annotation."""
         buff = io.BytesIO(payload)
         annotation = SAMPLOMATIC_ANNOTATION._make(
-            struct.unpack(
-                SAMPLOMATIC_ANNOTATION_PACK, buff.read(SAMPLOMATIC_ANNOTATION_SIZE)
-            )
+            struct.unpack(SAMPLOMATIC_ANNOTATION_PACK, buff.read(SAMPLOMATIC_ANNOTATION_SIZE))
         )
         if (name := buff.read(annotation.name_size).decode()) == "ChangeBasis":
             change_basis = CHANGE_BASIS_ANNOTATION._make(
@@ -129,7 +116,5 @@ class AnnotationSerializer(QPYSerializer):
             )
             group = cast(GroupLiteral, buff.read(twirl.group_size).decode())
             dressing = cast(DressingLiteral, buff.read(twirl.dressing_size).decode())
-            decomposition = cast(
-                DecompositionLiteral, buff.read(twirl.decomposition_size).decode()
-            )
+            decomposition = cast(DecompositionLiteral, buff.read(twirl.decomposition_size).decode())
             return Twirl(group, dressing, decomposition)
