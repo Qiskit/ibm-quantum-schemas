@@ -18,8 +18,8 @@ from collections import namedtuple
 from typing import Any, cast
 
 from qiskit.circuit.annotation import Annotation, QPYSerializer
-from samplomatic.annotations import BasisTransform, InjectNoise, Twirl
-from samplomatic.annotations.basis_transform_mode import BasisTransformLiteral
+from samplomatic.annotations import ChangeBasis, InjectNoise, Twirl
+from samplomatic.annotations.change_basis_mode import ChangeBasisLiteral
 from samplomatic.annotations.decomposition_mode import DecompositionLiteral
 from samplomatic.annotations.dressing_mode import DressingLiteral
 from samplomatic.annotations.twirl import GroupLiteral
@@ -28,15 +28,17 @@ SAMPLOMATIC_ANNOTATION_PACK = "!H"
 SAMPLOMATIC_ANNOTATION_SIZE = struct.calcsize(SAMPLOMATIC_ANNOTATION_PACK)
 SAMPLOMATIC_ANNOTATION = namedtuple("SAMPLOMATIC_ANNOTATION", ["name_size"])
 
-BASIS_TRANSFORM_ANNOTATION_PACK = "!QQQ"
-BASIS_TRANSFORM_ANNOTATION_SIZE = struct.calcsize(BASIS_TRANSFORM_ANNOTATION_PACK)
-BASIS_TRANSFORM_ANNOTATION = namedtuple(
-    "BASIS_TRANSFORM_ANNOTATION", ["decomposition_size", "mode_size", "ref_size"]
+CHANGE_BASIS_ANNOTATION_PACK = "!QQQ"
+CHANGE_BASIS_ANNOTATION_SIZE = struct.calcsize(CHANGE_BASIS_ANNOTATION_PACK)
+CHANGE_BASIS_ANNOTATION = namedtuple(
+    "CHANGE_BASIS_ANNOTATION", ["decomposition_size", "mode_size", "ref_size"]
 )
 
 INJECT_NOISE_ANNOTATION_PACK = "!QQ"
 INJECT_NOISE_ANNOTATION_SIZE = struct.calcsize(INJECT_NOISE_ANNOTATION_PACK)
-INJECT_NOISE_ANNOTATION = namedtuple("INJECT_NOISE_ANNOTATION", ["ref_size", "modifier_ref_size"])
+INJECT_NOISE_ANNOTATION = namedtuple(
+    "INJECT_NOISE_ANNOTATION", ["ref_size", "modifier_ref_size"]
+)
 
 TWIRL_ANNOTATION_PACK = "!QQQ"
 TWIRL_ANNOTATION_SIZE = struct.calcsize(TWIRL_ANNOTATION_PACK)
@@ -52,20 +54,23 @@ class AnnotationSerializer(QPYSerializer):
         """Dump annotation."""
         annotation_name = type(annotation).__name__.encode()
         samplomatic_annotation = (
-            struct.pack(SAMPLOMATIC_ANNOTATION_PACK, len(annotation_name)) + annotation_name
+            struct.pack(SAMPLOMATIC_ANNOTATION_PACK, len(annotation_name))
+            + annotation_name
         )
-        if isinstance(annotation, BasisTransform):
+        if isinstance(annotation, ChangeBasis):
             decomposition = annotation.decomposition.encode()
             mode = annotation.mode.encode()
             ref = annotation.ref.encode()
             annotation_raw = struct.pack(
-                BASIS_TRANSFORM_ANNOTATION_PACK, len(decomposition), len(mode), len(ref)
+                CHANGE_BASIS_ANNOTATION_PACK, len(decomposition), len(mode), len(ref)
             )
             return samplomatic_annotation + annotation_raw + decomposition + mode + ref
         if isinstance(annotation, InjectNoise):
             ref = annotation.ref.encode()
             modifier_ref = annotation.modifier_ref.encode()
-            annotation_raw = struct.pack(INJECT_NOISE_ANNOTATION_PACK, len(ref), len(modifier_ref))
+            annotation_raw = struct.pack(
+                INJECT_NOISE_ANNOTATION_PACK, len(ref), len(modifier_ref)
+            )
             return samplomatic_annotation + annotation_raw + ref + modifier_ref
         if isinstance(annotation, Twirl):
             group = annotation.group.encode()
@@ -74,32 +79,40 @@ class AnnotationSerializer(QPYSerializer):
             annotation_raw = struct.pack(
                 TWIRL_ANNOTATION_PACK, len(group), len(dressing), len(decomposition)
             )
-            return samplomatic_annotation + annotation_raw + group + dressing + decomposition
+            return (
+                samplomatic_annotation
+                + annotation_raw
+                + group
+                + dressing
+                + decomposition
+            )
         return NotImplemented
 
     def load_annotation(self, payload: bytes) -> Annotation:
         """Load annotation."""
         buff = io.BytesIO(payload)
         annotation = SAMPLOMATIC_ANNOTATION._make(
-            struct.unpack(SAMPLOMATIC_ANNOTATION_PACK, buff.read(SAMPLOMATIC_ANNOTATION_SIZE))
+            struct.unpack(
+                SAMPLOMATIC_ANNOTATION_PACK, buff.read(SAMPLOMATIC_ANNOTATION_SIZE)
+            )
         )
-        if (name := buff.read(annotation.name_size).decode()) == "BasisTransform":
-            basis_transform = BASIS_TRANSFORM_ANNOTATION._make(
+        if (name := buff.read(annotation.name_size).decode()) == "ChangeBasis":
+            change_basis = CHANGE_BASIS_ANNOTATION._make(
                 struct.unpack(
-                    BASIS_TRANSFORM_ANNOTATION_PACK,
-                    buff.read(BASIS_TRANSFORM_ANNOTATION_SIZE),
+                    CHANGE_BASIS_ANNOTATION_PACK,
+                    buff.read(CHANGE_BASIS_ANNOTATION_SIZE),
                 )
             )
             decomposition = cast(
                 DecompositionLiteral,
-                buff.read(basis_transform.decomposition_size).decode(),
+                buff.read(change_basis.decomposition_size).decode(),
             )
             mode = cast(
-                BasisTransformLiteral,
-                buff.read(basis_transform.mode_size).decode(),
+                ChangeBasisLiteral,
+                buff.read(change_basis.mode_size).decode(),
             )
-            ref = buff.read(basis_transform.ref_size).decode()
-            return BasisTransform(decomposition, mode, ref)
+            ref = buff.read(change_basis.ref_size).decode()
+            return ChangeBasis(decomposition, mode, ref)
         if name == "InjectNoise":
             inject_noise = INJECT_NOISE_ANNOTATION._make(
                 struct.unpack(
@@ -116,5 +129,7 @@ class AnnotationSerializer(QPYSerializer):
             )
             group = cast(GroupLiteral, buff.read(twirl.group_size).decode())
             dressing = cast(DressingLiteral, buff.read(twirl.dressing_size).decode())
-            decomposition = cast(DecompositionLiteral, buff.read(twirl.decomposition_size).decode())
+            decomposition = cast(
+                DecompositionLiteral, buff.read(twirl.decomposition_size).decode()
+            )
             return Twirl(group, dressing, decomposition)
