@@ -18,7 +18,7 @@ from pydantic import BaseModel, Field, model_validator
 
 from ...base_params_model import BaseParamsModel
 from ...qpy_model import QpyModelV13ToV16
-from ...qubit_sparse_pauli_list_model import QubitSparsePauliListModel
+from ...pauli_lindblad_map_model import PauliLindbladMapModel
 from ...samplex_model import SamplexModel
 from ...tensor_model import F64TensorModel, TensorModel
 
@@ -75,7 +75,9 @@ class CircuitItemModel(BaseModel):
         """Check for mutual compatibility of types and shapes of attributes."""
         circuit = self.circuit.to_quantum_circuit(use_cached=True)
 
-        num_parameters = self.circuit_arguments.shape[-1] if self.circuit_arguments.shape else 0
+        num_parameters = (
+            self.circuit_arguments.shape[-1] if self.circuit_arguments.shape else 0
+        )
         if num_parameters != circuit.num_parameters:
             raise ValueError(
                 f"The size of the last axis of circuit arguments, {num_parameters}, does not "
@@ -97,7 +99,7 @@ class SamplexItemModel(BaseModel):
     samplex: SamplexModel
     """A JSON-encoded samplex."""
 
-    samplex_arguments: dict[str, Union[bool, int, QubitSparsePauliListModel, TensorModel]]
+    samplex_arguments: dict[str, Union[bool, int, PauliLindbladMapModel, TensorModel]]
     """Arguments to the samplex."""
 
     shape: list[int]
@@ -116,8 +118,10 @@ class SamplexItemModel(BaseModel):
         circuit = self.circuit.to_quantum_circuit(use_cached=True)
         samplex = self.samplex.to_samplex(use_cached=True)
 
-        outputs = samplex.outputs(1)
-        out_params = next(iter(spec for spec in outputs.specs if spec.name == "parameter_values"))
+        outputs = samplex.outputs()
+        out_params = next(
+            iter(spec for spec in outputs.specs if spec.name == "parameter_values")
+        )
         if (num_samplex_out := out_params.shape[-1]) != circuit.num_parameters:
             raise ValueError(
                 f"The number of samplex output parameters, {num_samplex_out}, does not match the "
@@ -134,7 +138,9 @@ class QuantumProgramModel(BaseModel):
     """The number of shots for each individually bound circuit."""
 
     items: list[
-        Annotated[Union[CircuitItemModel | SamplexItemModel], Field(discriminator="item_type")]
+        Annotated[
+            Union[CircuitItemModel | SamplexItemModel], Field(discriminator="item_type")
+        ]
     ]
     """Items of the program."""
 
