@@ -116,7 +116,7 @@ class SamplexItemModel(BaseModel):
         circuit = self.circuit.to_quantum_circuit(use_cached=True)
         samplex = self.samplex.to_samplex(use_cached=True)
 
-        outputs = samplex.outputs(1)
+        outputs = samplex.outputs()
         out_params = next(iter(spec for spec in outputs.specs if spec.name == "parameter_values"))
         if (num_samplex_out := out_params.shape[-1]) != circuit.num_parameters:
             raise ValueError(
