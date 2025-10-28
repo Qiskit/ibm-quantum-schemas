@@ -23,7 +23,7 @@ class TestChangeBasis:
     def test_roundtrip(self):
         """Test that round trips work correctly."""
         annotation = ChangeBasis()
-        namespace = "samplomatic.basis_transform"
+        namespace = "samplomatic.change_basis"
 
         serializer = AnnotationSerializer()
         payload = serializer.dump_annotation(namespace, annotation)

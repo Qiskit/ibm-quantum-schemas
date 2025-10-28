@@ -17,8 +17,8 @@ from typing import Annotated, Literal, Self, Union
 from pydantic import BaseModel, Field, model_validator
 
 from ...base_params_model import BaseParamsModel
+from ...pauli_lindblad_map_model import PauliLindbladMapModel
 from ...qpy_model import QpyModelV13ToV16
-from ...qubit_sparse_pauli_list_model import QubitSparsePauliListModel
 from ...samplex_model import SamplexModel
 from ...tensor_model import F64TensorModel, TensorModel
 
@@ -97,7 +97,7 @@ class SamplexItemModel(BaseModel):
     samplex: SamplexModel
     """A JSON-encoded samplex."""
 
-    samplex_arguments: dict[str, Union[bool, int, QubitSparsePauliListModel, TensorModel]]
+    samplex_arguments: dict[str, Union[bool, int, PauliLindbladMapModel, TensorModel]]
     """Arguments to the samplex."""
 
     shape: list[int]

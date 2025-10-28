@@ -12,16 +12,16 @@
 
 """Tests for samplex models."""
 
-from qiskit.quantum_info import QubitSparsePauliList
+from qiskit.quantum_info import PauliLindbladMap
 
-from ibm_quantum_schemas.models.qubit_sparse_pauli_list_model import QubitSparsePauliListModel
+from ibm_quantum_schemas.models.pauli_lindblad_map_model import PauliLindbladMapModel
 
 
 def test_roundtrip():
     """Test that round trips work correctly."""
-    paulis = QubitSparsePauliList.from_list(["IIIXX", "IZIYI"])
+    channel = PauliLindbladMap.from_list([("IIIXX", 0.1), ("IZIYI", -0.2)])
 
-    encoded = QubitSparsePauliListModel.from_qubit_sparse_pauli_list(paulis)
-    paulis_out = encoded.to_qubit_sparse_pauli_list()
+    encoded = PauliLindbladMapModel.from_pauli_lindblad_map(channel)
+    channel_out = encoded.to_pauli_lindblad_map()
 
-    assert paulis == paulis_out
+    assert channel == channel_out
