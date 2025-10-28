@@ -18,8 +18,8 @@ from collections import namedtuple
 from typing import Any, cast
 
 from qiskit.circuit.annotation import Annotation, QPYSerializer
-from samplomatic.annotations import BasisTransform, InjectNoise, Twirl
-from samplomatic.annotations.basis_transform_mode import BasisTransformLiteral
+from samplomatic.annotations import ChangeBasis, InjectNoise, Twirl
+from samplomatic.annotations.change_basis_mode import ChangeBasisLiteral
 from samplomatic.annotations.decomposition_mode import DecompositionLiteral
 from samplomatic.annotations.dressing_mode import DressingLiteral
 from samplomatic.annotations.twirl import GroupLiteral
@@ -54,7 +54,7 @@ class AnnotationSerializer(QPYSerializer):
         samplomatic_annotation = (
             struct.pack(SAMPLOMATIC_ANNOTATION_PACK, len(annotation_name)) + annotation_name
         )
-        if isinstance(annotation, BasisTransform):
+        if isinstance(annotation, ChangeBasis):
             decomposition = annotation.decomposition.encode()
             mode = annotation.mode.encode()
             ref = annotation.ref.encode()
@@ -83,7 +83,7 @@ class AnnotationSerializer(QPYSerializer):
         annotation = SAMPLOMATIC_ANNOTATION._make(
             struct.unpack(SAMPLOMATIC_ANNOTATION_PACK, buff.read(SAMPLOMATIC_ANNOTATION_SIZE))
         )
-        if (name := buff.read(annotation.name_size).decode()) == "BasisTransform":
+        if (name := buff.read(annotation.name_size).decode()) == "ChangeBasis":
             basis_transform = BASIS_TRANSFORM_ANNOTATION._make(
                 struct.unpack(
                     BASIS_TRANSFORM_ANNOTATION_PACK,
@@ -95,11 +95,11 @@ class AnnotationSerializer(QPYSerializer):
                 buff.read(basis_transform.decomposition_size).decode(),
             )
             mode = cast(
-                BasisTransformLiteral,
+                ChangeBasisLiteral,
                 buff.read(basis_transform.mode_size).decode(),
             )
             ref = buff.read(basis_transform.ref_size).decode()
-            return BasisTransform(decomposition, mode, ref)
+            return ChangeBasis(decomposition, mode, ref)
         if name == "InjectNoise":
             inject_noise = INJECT_NOISE_ANNOTATION._make(
                 struct.unpack(

@@ -14,7 +14,7 @@
 
 import pytest
 from qiskit.circuit import QuantumCircuit
-from samplomatic import BasisTransform, InjectNoise, Twirl
+from samplomatic import ChangeBasis, InjectNoise, Twirl
 
 from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV16
 
@@ -41,7 +41,7 @@ class TestQpyModelV13ToV16:
         circuit = QuantumCircuit(3)
         circuit.h(0)
         circuit.cx(0, 1)
-        with circuit.box([Twirl(), InjectNoise("ref"), BasisTransform()]):
+        with circuit.box([Twirl(), InjectNoise("ref"), ChangeBasis()]):
             circuit.cx(1, 2)
         circuit.measure_all()
 

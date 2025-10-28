@@ -12,19 +12,17 @@
 
 """Tests for annotation serializers."""
 
-from samplomatic import BasisTransform, InjectNoise, Twirl
+from samplomatic import ChangeBasis, InjectNoise, Twirl
 
 from ibm_quantum_schemas.models.annotation_serializer import AnnotationSerializer
 
-BasisTransform, InjectNoise, Twirl, AnnotationSerializer
 
-
-class TestBasisTransform:
-    """Tests for ``BasisTransform``."""
+class TestChangeBasis:
+    """Tests for ``ChangeBasis``."""
 
     def test_roundtrip(self):
         """Test that round trips work correctly."""
-        annotation = BasisTransform()
+        annotation = ChangeBasis()
         namespace = "samplomatic.basis_transform"
 
         serializer = AnnotationSerializer()
