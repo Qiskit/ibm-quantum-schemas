@@ -12,7 +12,9 @@
 
 """Models"""
 
-from typing import Annotated, Literal, Union
+from __future__ import annotations
+
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -29,10 +31,10 @@ class ParamsModel(BaseParamsModel):
 
     schema_version: Literal["v0.1"] = "v0.1"
 
-    quantum_program: "QuantumProgramModel"
+    quantum_program: QuantumProgramModel
     """The quantum program to execution."""
 
-    options: "OptionsModel"
+    options: OptionsModel
     """Options for runtime."""
 
 
@@ -98,7 +100,7 @@ class SamplexItemModel(BaseModel):
     samplex: SamplexModel
     """A JSON-encoded samplex."""
 
-    samplex_arguments: dict[str, Union[bool, int, PauliLindbladMapModel, TensorModel]]
+    samplex_arguments: dict[str, bool | int | PauliLindbladMapModel | TensorModel]
     """Arguments to the samplex."""
 
     shape: list[int]
@@ -134,9 +136,7 @@ class QuantumProgramModel(BaseModel):
     shots: int = Field(ge=1)
     """The number of shots for each individually bound circuit."""
 
-    items: list[
-        Annotated[Union[CircuitItemModel | SamplexItemModel], Field(discriminator="item_type")]
-    ]
+    items: list[Annotated[CircuitItemModel | SamplexItemModel, Field(discriminator="item_type")]]
     """Items of the program."""
 
 
