@@ -12,10 +12,11 @@
 
 """Models"""
 
-from typing import Annotated, Literal, Self, Union
+from typing import Annotated, Literal, Union
 
 from pydantic import BaseModel, Field, model_validator
 
+from ....aliases import Self
 from ...base_params_model import BaseParamsModel
 from ...pauli_lindblad_map_model import PauliLindbladMapModel
 from ...qpy_model import QpyModelV13ToV16
