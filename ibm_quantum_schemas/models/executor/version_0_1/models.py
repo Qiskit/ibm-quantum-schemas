@@ -17,6 +17,7 @@ from typing import Annotated, Literal, Self, Union
 from pydantic import BaseModel, Field, model_validator
 
 from ...base_params_model import BaseParamsModel
+from ...execution_spans import BasicExecutionSpan
 from ...pauli_lindblad_map_model import PauliLindbladMapModel
 from ...qpy_model import QpyModelV13ToV16
 from ...samplex_model import SamplexModel
@@ -149,6 +150,13 @@ class QuantumProgramResultItemModel(BaseModel):
     """Metadata pertaining to the execution of this particular quantum program item."""
 
 
+class MetadataModel(BaseModel):
+    """Execution metadata."""
+
+    execution_spans: list[BasicExecutionSpan]
+    """Information describing the timing of each sub-execution."""
+
+
 class QuantumProgramResultModel(BaseModel):
     """Result from executing a quantum program."""
 
@@ -158,5 +166,5 @@ class QuantumProgramResultModel(BaseModel):
     data: list[QuantumProgramResultItemModel]
     """Resulting data for each quantum program item."""
 
-    metadata: None
+    metadata: MetadataModel
     """Execution metadata pertaining to the job as a whole."""
