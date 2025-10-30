@@ -59,8 +59,6 @@ class CircuitItemModel(BaseModel):
 
     item_type: Literal["circuit"] = "circuit"
     """The type of quantum program item."""
-    # from ibm_quantum_schemas.models.executor.version_0_1.models import OptionsModel
-    # from ibm_quantum_schemas.models.executor.version_0_1.models import SamplexItemModel
 
     circuit: QpyModelV13ToV16
     """A QPY-encoded circuit."""
