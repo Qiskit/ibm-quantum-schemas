@@ -12,10 +12,13 @@
 
 """Models"""
 
-from typing import Annotated, Literal, Self, Union
+from __future__ import annotations
+
+from typing import Annotated, Literal, Optional, Union
 
 from pydantic import BaseModel, Field, model_validator
 
+from ....aliases import Self
 from ...base_params_model import BaseParamsModel
 from ...pauli_lindblad_map_model import PauliLindbladMapModel
 from ...qpy_model import QpyModelV13ToV16
@@ -28,10 +31,10 @@ class ParamsModel(BaseParamsModel):
 
     schema_version: Literal["v0.1"] = "v0.1"
 
-    quantum_program: "QuantumProgramModel"
+    quantum_program: QuantumProgramModel
     """The quantum program to execution."""
 
-    options: "OptionsModel"
+    options: OptionsModel
     """Options for runtime."""
 
 
@@ -42,7 +45,7 @@ class OptionsModel(BaseModel):
     r"""Whether to reset the qubits to the ground state for each shot.
     """
 
-    rep_delay: float | None = None
+    rep_delay: Optional[float] = None  # noqa: UP045,UP007
     r"""The repetition delay. This is the delay between a measurement and
     the subsequent quantum circuit. This is only supported on backends that have
     ``backend.dynamic_reprate_enabled=True``. It must be from the
@@ -97,7 +100,7 @@ class SamplexItemModel(BaseModel):
     samplex: SamplexModel
     """A JSON-encoded samplex."""
 
-    samplex_arguments: dict[str, Union[bool, int, PauliLindbladMapModel, TensorModel]]
+    samplex_arguments: dict[str, Union[bool, int, PauliLindbladMapModel, TensorModel]]  # noqa: UP007
     """Arguments to the samplex."""
 
     shape: list[int]
@@ -134,7 +137,7 @@ class QuantumProgramModel(BaseModel):
     """The number of shots for each individually bound circuit."""
 
     items: list[
-        Annotated[Union[CircuitItemModel | SamplexItemModel], Field(discriminator="item_type")]
+        Annotated[Union[CircuitItemModel, SamplexItemModel], Field(discriminator="item_type")]  # noqa: UP007
     ]
     """Items of the program."""
 
