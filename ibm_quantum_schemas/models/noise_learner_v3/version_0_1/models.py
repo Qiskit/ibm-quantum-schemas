@@ -12,6 +12,8 @@
 
 """Models"""
 
+from __future__ import annotations
+
 from typing import Literal, Union
 
 from pydantic import BaseModel, Field, confloat
@@ -32,7 +34,7 @@ class ParamsModel(BaseParamsModel):
     These are embedded to a circuit prior to encoding with QPY.
     """
 
-    options: "OptionsModel"
+    options: OptionsModel
     """Options for runtime."""
 
 

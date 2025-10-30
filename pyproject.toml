@@ -65,6 +65,9 @@ target-version = "py39"
     "E402",   # module-import-not-at-top-of-file
     "F401",   # unused-import
 ]
+"ibm_quantum_schemas/models/**/*.py" = [
+    "UP007",  # because we use Pydantic quite a bit, we ignore upgrade requirements for X | Y notation while we support 3.9
+]
 "test/unit/**/*.py" = [
     "D100",   #
 ]
