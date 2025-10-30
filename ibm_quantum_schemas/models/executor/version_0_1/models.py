@@ -45,7 +45,7 @@ class OptionsModel(BaseModel):
     r"""Whether to reset the qubits to the ground state for each shot.
     """
 
-    rep_delay: Optional[float] = None  # noqa: UP045,UP007
+    rep_delay: Optional[float] = None
     r"""The repetition delay. This is the delay between a measurement and
     the subsequent quantum circuit. This is only supported on backends that have
     ``backend.dynamic_reprate_enabled=True``. It must be from the
@@ -100,7 +100,7 @@ class SamplexItemModel(BaseModel):
     samplex: SamplexModel
     """A JSON-encoded samplex."""
 
-    samplex_arguments: dict[str, Union[bool, int, PauliLindbladMapModel, TensorModel]]  # noqa: UP007
+    samplex_arguments: dict[str, Union[bool, int, PauliLindbladMapModel, TensorModel]]
     """Arguments to the samplex."""
 
     shape: list[int]
@@ -137,7 +137,7 @@ class QuantumProgramModel(BaseModel):
     """The number of shots for each individually bound circuit."""
 
     items: list[
-        Annotated[Union[CircuitItemModel, SamplexItemModel], Field(discriminator="item_type")]  # noqa: UP007
+        Annotated[Union[CircuitItemModel, SamplexItemModel], Field(discriminator="item_type")]
     ]
     """Items of the program."""
 
