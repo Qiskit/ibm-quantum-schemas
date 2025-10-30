@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-from typing import Annotated, Literal, Optional, Union
+from typing import Annotated, Literal, Union
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -45,7 +45,7 @@ class OptionsModel(BaseModel):
     r"""Whether to reset the qubits to the ground state for each shot.
     """
 
-    rep_delay: Optional[float] = None  # noqa: UP045,UP007
+    rep_delay: float | None = None
     r"""The repetition delay. This is the delay between a measurement and
     the subsequent quantum circuit. This is only supported on backends that have
     ``backend.dynamic_reprate_enabled=True``. It must be from the
