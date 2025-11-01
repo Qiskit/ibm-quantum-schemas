@@ -14,13 +14,13 @@
 
 import datetime
 
-from ibm_quantum_schemas.models.execution_spans import BasicExecutionSpan
+from ibm_quantum_schemas.models.execution_span_model import BasicExecutionSpan
 
 
 def test_roundtrip():
     """Test that round trips work correctly."""
     now = datetime.datetime.now()
-    span = BasicExecutionSpan(start=now, end=now + datetime.timedelta(seconds=5.1))
+    span = BasicExecutionSpan(start=now, stop=now + datetime.timedelta(seconds=5.1))
 
     encoded = span.model_dump_json()
     span_out = BasicExecutionSpan.model_validate_json(encoded)

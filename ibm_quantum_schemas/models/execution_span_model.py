@@ -26,7 +26,7 @@ class BasicExecutionSpan(BaseModel):
     """
 
     start: datetime.datetime
-    """The start of the execution window."""
+    """The start time of the execution window."""
 
-    end: datetime.datetime
-    """The end of the execution window."""
+    stop: datetime.datetime
+    """The stop time of the execution window."""

@@ -17,8 +17,10 @@ import pytest
 from qiskit.circuit import Parameter, QuantumCircuit
 from samplomatic import Twirl, build
 
+from ibm_quantum_schemas.models.execution_span_model import BasicExecutionSpan
 from ibm_quantum_schemas.models.executor.version_0_1.models import (
     CircuitItemModel,
+    MetadataModel,
     OptionsModel,
     ParamsModel,
     QuantumProgramModel,
@@ -84,8 +86,9 @@ def test_initialization_results_model():
         },
         metadata=None,
     )
-    results = QuantumProgramResultModel(data=[result_item], metadata=None)
+    metadata = MetadataModel(execution_spans=[BasicExecutionSpan(start=1, stop=2)])
+    results = QuantumProgramResultModel(data=[result_item], metadata=metadata)
 
     assert results.schema_version == "v0.1"
     assert results.data == [result_item]
-    assert results.metadata is None
+    assert results.metadata == metadata
