@@ -14,13 +14,13 @@
 
 from __future__ import annotations
 
+import datetime
 from typing import Annotated, Literal, Optional, Union
 
 from pydantic import BaseModel, Field, model_validator
 
 from ....aliases import Self
 from ...base_params_model import BaseParamsModel
-from ...execution_span_model import BasicExecutionSpan
 from ...pauli_lindblad_map_model import PauliLindbladMapModel
 from ...qpy_model import QpyModelV13ToV16
 from ...samplex_model import SamplexModel
@@ -153,11 +153,43 @@ class QuantumProgramResultItemModel(BaseModel):
     """Metadata pertaining to the execution of this particular quantum program item."""
 
 
+class ChunkPart(BaseModel):
+    """A description of the contents of a single part of an execution chunk."""
+
+    idx_item: int
+    """The index of an item in a quantum program."""
+
+    size: int
+    """The number of elements from the quantum program item that were executed.
+
+    For example, if a quantum program item has shape ``(10, 5)``, then it has a total of ``50``
+    elements, so that if this ``size`` is ``10``, it constitutes 20% of the total work for the item.
+    """
+
+
+class ChunkSpan(BaseModel):
+    """Timing information about a single chunk of execution.
+
+    .. note::
+
+        This span may include some amount of non-circuit time.
+    """
+
+    start: datetime.datetime
+    """The start time of the execution chunk in UTC."""
+
+    stop: datetime.datetime
+    """The stop time of the execution chunk in UTC."""
+
+    parts: list[ChunkPart]
+    """A description of which parts of a quantum program are contained in this chunk."""
+
+
 class MetadataModel(BaseModel):
     """Execution metadata."""
 
-    execution_spans: list[BasicExecutionSpan]
-    """Information describing the timing of each sub-execution."""
+    chunk_timing: list[ChunkSpan]
+    """Timing information about all executed chunks of a quantum program."""
 
 
 class QuantumProgramResultModel(BaseModel):

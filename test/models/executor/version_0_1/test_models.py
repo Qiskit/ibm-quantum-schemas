@@ -12,13 +12,16 @@
 
 """Tests for 0.1 models."""
 
+import datetime
+
 import numpy as np
 import pytest
 from qiskit.circuit import Parameter, QuantumCircuit
 from samplomatic import Twirl, build
 
-from ibm_quantum_schemas.models.execution_span_model import BasicExecutionSpan
 from ibm_quantum_schemas.models.executor.version_0_1.models import (
+    ChunkPart,
+    ChunkSpan,
     CircuitItemModel,
     MetadataModel,
     OptionsModel,
@@ -86,7 +89,15 @@ def test_initialization_results_model():
         },
         metadata=None,
     )
-    metadata = MetadataModel(execution_spans=[BasicExecutionSpan(start=1, stop=2)])
+    now = datetime.datetime.now()
+    spans = [
+        ChunkSpan(
+            start=now,
+            stop=now + datetime.timedelta(seconds=5.1),
+            parts=[ChunkPart(idx_item=0, size=5)],
+        )
+    ]
+    metadata = MetadataModel(chunk_timing=spans)
     results = QuantumProgramResultModel(data=[result_item], metadata=metadata)
 
     assert results.schema_version == "v0.1"
