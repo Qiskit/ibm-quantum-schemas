@@ -12,31 +12,40 @@
 
 """SamplexModel"""
 
-from pydantic import BaseModel, PrivateAttr, field_validator
-from samplomatic._version import version as _samplomatic_version
+import re
+
+from pydantic import BaseModel, Field, PrivateAttr, model_validator
 from samplomatic.samplex import Samplex
-from samplomatic.samplex.samplex_serialization import samplex_from_json, samplex_to_json
+from samplomatic.serialization.ssv import SSV, samplex_from_json, samplex_to_json
 
 
 class SamplexModel(BaseModel):
     """A QPY-encoded quantum circuit."""
 
+    ssv: int = Field(ge=10)
+    """The samplex serialization version."""
+
     samplex_json: str
     """A JSON string representing the samplex."""
 
-    samplomatic_version: str
-    """The samplomatic version that generated the JSON."""
+    @model_validator(mode="after")
+    def cross_validate_ssv_version(self):
+        """Check that the reported version matches the encoded version."""
+        encoded_ssv_match = re.search(r'"ssv\\*"\:\\*"(\d+)', self.samplex_json)
+        if not encoded_ssv_match:
+            raise ValueError("Could not locate the ssv of the encoded 'samplex_json'.")
 
-    @field_validator("samplomatic_version")
-    @classmethod
-    def strict_version_equality(cls, value):
-        """Validate model version matches samplomatic version of local environment."""
-        if value != _samplomatic_version:
+        try:
+            encoded_ssv = int(encoded_ssv_match.group(1))
+        except Exception as exc:
+            raise ValueError("Could not determine the SSV of the encoded 'samplex_json") from exc
+
+        if self.ssv != encoded_ssv:
             raise ValueError(
-                "The samplomatic version that created the encoded samplex must be exactly equal to "
-                f"{_samplomatic_version}, but {value} found instead."
+                f"The 'ssv' is set to {self.ssv} but the encoded SSV " f"version is {encoded_ssv}."
             )
-        return value
+
+        return self
 
     _samplex: Samplex = PrivateAttr()
 
@@ -59,7 +68,7 @@ class SamplexModel(BaseModel):
         return self._samplex
 
     @classmethod
-    def from_samplex(cls, samplex: Samplex):
+    def from_samplex(cls, samplex: Samplex, ssv: int | None = None):
         """Create a model instance from a samplex.
 
         The returned instance owns a reference to the provided samplex. This instance may be
@@ -73,6 +82,14 @@ class SamplexModel(BaseModel):
         Returns:
             A new model instance.
         """
-        obj = cls(samplex_json=samplex_to_json(samplex), samplomatic_version=_samplomatic_version)
+        if ssv is None:
+            ssv = SSV
+        obj = cls(samplex_json=samplex_to_json(samplex, ssv=ssv), ssv=ssv)
         obj._samplex = samplex  # noqa: SLF001
         return obj
+
+
+class SamplexModelSSV1(SamplexModel):
+    """A samplex model constrained to use samplex serialization version (SSV) 1."""
+
+    ssv: int = Field(ge=1, le=1)
