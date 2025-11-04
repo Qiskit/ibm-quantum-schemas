@@ -15,7 +15,7 @@
 from pydantic import BaseModel, PrivateAttr, field_validator
 from samplomatic._version import version as _samplomatic_version
 from samplomatic.samplex import Samplex
-from samplomatic.samplex.samplex_serialization import samplex_from_json, samplex_to_json
+from samplomatic.serialization import samplex_from_json, samplex_to_json
 
 
 class SamplexModel(BaseModel):
