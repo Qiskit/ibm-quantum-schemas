@@ -23,7 +23,7 @@ from ....aliases import Self
 from ...base_params_model import BaseParamsModel
 from ...pauli_lindblad_map_model import PauliLindbladMapModel
 from ...qpy_model import QpyModelV13ToV16
-from ...samplex_model import SamplexModel
+from ...samplex_model import SamplexModelSSV1 as SamplexModel
 from ...tensor_model import F64TensorModel, TensorModel
 
 

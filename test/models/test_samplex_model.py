@@ -14,7 +14,7 @@
 
 from samplomatic.samplex import Samplex
 
-from ibm_quantum_schemas.models.samplex_model import SamplexModel
+from ibm_quantum_schemas.models.samplex_model import SamplexModelSSV1 as SamplexModel
 
 
 def test_roundtrip():

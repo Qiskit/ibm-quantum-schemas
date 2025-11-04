@@ -16,13 +16,14 @@ import re
 
 from pydantic import BaseModel, Field, PrivateAttr, model_validator
 from samplomatic.samplex import Samplex
-from samplomatic.serialization.ssv import SSV, samplex_from_json, samplex_to_json
+from samplomatic.serialization import samplex_from_json, samplex_to_json
+from samplomatic.ssv import SSV
 
 
 class SamplexModel(BaseModel):
     """A QPY-encoded quantum circuit."""
 
-    ssv: int = Field(ge=10)
+    ssv: int = Field(ge=1)
     """The samplex serialization version."""
 
     samplex_json: str
