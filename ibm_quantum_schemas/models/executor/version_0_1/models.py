@@ -71,8 +71,14 @@ class CircuitItemModel(BaseModel):
     preceding axes; expect one result per element of the leading shape.
     """
 
-    chunk_size: int = Field(ge=1)
-    """The maximum number circuit arguments to bind to the circuit per shot loop."""
+    chunk_size: Union[Annotated[int, Field(ge=1)], Literal["auto"]]
+    """The maximum number circuit arguments to bind to the circuit per shot loop.
+
+    When ``"auto"``, the number will be chosen server-side with heuristics designed to optimize
+    execution speed. A quantum program must have items where either all chunk sizes are
+    integer-valued, or all chunk sizes are ``"auto"``. Integer values are only allowed inside of
+    session exection mode.
+    """
 
     @model_validator(mode="after")
     def cross_validate(self) -> Self:
@@ -111,8 +117,13 @@ class SamplexItemModel(BaseModel):
     The non-trivial axes it introduces enumerate randomizations.
     """
 
-    chunk_size: int = Field(ge=1)
-    """The maximum number circuit arguments to bind to the circuit per shot loop."""
+    chunk_size: Union[Annotated[int, Field(ge=1)], Literal["auto"]]
+    """The maximum number circuit arguments to bind to the circuit per shot loop.
+
+    When ``"auto"``, the number will be chosen server-side with heuristics designed to optimize
+    execution speed. A quantum program must have items where either all chunk sizes are
+    integer-valued, or all chunk sizes are ``"auto"``.
+    """
 
     @model_validator(mode="after")
     def cross_validate(self) -> Self:
@@ -120,9 +131,11 @@ class SamplexItemModel(BaseModel):
         circuit = self.circuit.to_quantum_circuit(use_cached=True)
         samplex = self.samplex.to_samplex(use_cached=True)
 
-        outputs = samplex.outputs()
-        out_params = next(iter(spec for spec in outputs.specs if spec.name == "parameter_values"))
-        if (num_samplex_out := out_params.shape[-1]) != circuit.num_parameters:
+        if specs := samplex.outputs().get_specs("parameter_values"):
+            num_output_params = specs[0].shape[-1]
+        else:
+            num_output_params = 0
+        if (num_samplex_out := num_output_params) != circuit.num_parameters:
             raise ValueError(
                 f"The number of samplex output parameters, {num_samplex_out}, does not match the "
                 f"number of parameters of the circuit, {circuit.num_parameters}."
@@ -141,6 +154,18 @@ class QuantumProgramModel(BaseModel):
         Annotated[Union[CircuitItemModel, SamplexItemModel], Field(discriminator="item_type")]
     ]
     """Items of the program."""
+
+    @model_validator(mode="after")
+    def check_chunk_sizes_are_consistent(self):
+        """Check that all program items set chunk sizes consistently."""
+        chunk_sizes = {item.chunk_size for item in self.items}
+        if "auto" in chunk_sizes and len(chunk_sizes) > 1:
+            raise ValueError(
+                "Some quantum program items specified an integer-valued 'chunk_size' while others "
+                "specified 'auto', but all items must specify one or the other."
+            )
+
+        return self
 
 
 class QuantumProgramResultItemModel(BaseModel):

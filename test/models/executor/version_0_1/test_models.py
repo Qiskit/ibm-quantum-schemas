@@ -36,8 +36,10 @@ from ibm_quantum_schemas.models.samplex_model import SamplexModelSSV1 as Samplex
 from ibm_quantum_schemas.models.tensor_model import F64TensorModel, TensorModel
 
 
-@pytest.mark.parametrize("qpy_version", [13, 14, 15, 16])
-def test_initialization_params_model(qpy_version):
+@pytest.mark.parametrize(
+    "qpy_version,chunk_size", [(13, 2), (14, 2), (15, 2), (16, 2), (16, "auto")]
+)
+def test_initialization_params_model(qpy_version, chunk_size):
     """Test initialization for ``ParamsModel`` and related models."""
     options = OptionsModel()
 
@@ -50,7 +52,7 @@ def test_initialization_params_model(qpy_version):
     circuit_item = CircuitItemModel(
         circuit=QpyModelV13ToV16.from_quantum_circuit(circuit, qpy_version),
         circuit_arguments=F64TensorModel.from_numpy(np.array([0.1, 0.2, 0.3], dtype=np.float64)),
-        chunk_size=2,
+        chunk_size=chunk_size,
     )
 
     circuit = QuantumCircuit(3)
@@ -69,7 +71,7 @@ def test_initialization_params_model(qpy_version):
             "parameter_values": TensorModel.from_numpy(np.array([0.1, 0.2, 0.3], dtype=np.float64))
         },
         shape=(200, 300),
-        chunk_size=2,
+        chunk_size=chunk_size,
     )
 
     quantum_program = QuantumProgramModel(shots=1000, items=[circuit_item, samplex_item])
@@ -103,3 +105,27 @@ def test_initialization_results_model():
     assert results.schema_version == "v0.1"
     assert results.data == [result_item]
     assert results.metadata == metadata
+
+
+def test_chunk_size_validation():
+    """Test initialization for ``ParamsModel`` and related models."""
+    circuit = QuantumCircuit(3)
+    circuit_item = CircuitItemModel(
+        circuit=QpyModelV13ToV16.from_quantum_circuit(circuit, 16),
+        circuit_arguments=F64TensorModel.from_numpy(np.array([], dtype=np.float64)),
+        chunk_size=2,
+    )
+
+    template, samplex = build(circuit)
+    samplex_item = SamplexItemModel(
+        circuit=QpyModelV13ToV16.from_quantum_circuit(template, 16),
+        samplex=SamplexModel.from_samplex(samplex),
+        samplex_arguments={
+            "parameter_values": TensorModel.from_numpy(np.array([], dtype=np.float64))
+        },
+        shape=(),
+        chunk_size="auto",
+    )
+
+    with pytest.raises(match="all items must specify one or the other"):
+        QuantumProgramModel(shots=1000, items=[circuit_item, samplex_item])
