@@ -201,7 +201,7 @@ class QuantumProgramResultModel(BaseModel):
     data: list[QuantumProgramResultItemModel]
     """Resulting data for each quantum program item."""
 
-    metadata: Union[MetadataModel, None]
+    metadata: MetadataModel
     """Execution metadata pertaining to the job as a whole."""
 
     @field_validator("metadata", mode="before")
