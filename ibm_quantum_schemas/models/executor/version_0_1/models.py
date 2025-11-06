@@ -17,7 +17,7 @@ from __future__ import annotations
 import datetime
 from typing import Annotated, Literal, Optional, Union
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from ....aliases import Self
 from ...base_params_model import BaseParamsModel
@@ -201,5 +201,15 @@ class QuantumProgramResultModel(BaseModel):
     data: list[QuantumProgramResultItemModel]
     """Resulting data for each quantum program item."""
 
-    metadata: MetadataModel
+    metadata: Union[MetadataModel, None]
     """Execution metadata pertaining to the job as a whole."""
+
+    @field_validator("metadata")
+    @classmethod
+    def upgrade_none_to_metadata(cls, value):
+        """Upgrade none values to empty metadata."""
+        # this is to account for an older version of v0.1, before its release, where metadata was
+        # temporarily set to None
+        if value is None:
+            value = MetadataModel(chunk_timing=[])
+        return value
