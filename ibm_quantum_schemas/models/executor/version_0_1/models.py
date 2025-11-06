@@ -74,7 +74,7 @@ class CircuitItemModel(BaseModel):
     chunk_size: Union[Annotated[int, Field(ge=1)], Literal["auto"]] = "auto"
     """The maximum number circuit arguments to bind to the circuit per shot loop.
 
-    When ``"auto"``, the number will be chosen server-side with heuristics designed to optimize
+    When ``"auto"``, the number is chosen server-side with heuristics designed to optimize
     execution speed. A quantum program must have items where either all chunk sizes are
     integer-valued, or all chunk sizes are ``"auto"``. Integer values are only allowed inside of
     session exection mode.
@@ -120,7 +120,7 @@ class SamplexItemModel(BaseModel):
     chunk_size: Union[Annotated[int, Field(ge=1)], Literal["auto"]] = "auto"
     """The maximum number circuit arguments to bind to the circuit per shot loop.
 
-    When ``"auto"``, the number will be chosen server-side with heuristics designed to optimize
+    When ``"auto"``, the number is chosen server-side with heuristics designed to optimize
     execution speed. A quantum program must have items where either all chunk sizes are
     integer-valued, or all chunk sizes are ``"auto"``. Integer values are only allowed inside of
     session exection mode.
