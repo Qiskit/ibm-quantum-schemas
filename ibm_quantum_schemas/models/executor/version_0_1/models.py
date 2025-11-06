@@ -117,7 +117,7 @@ class SamplexItemModel(BaseModel):
     The non-trivial axes it introduces enumerate randomizations.
     """
 
-    chunk_size: Union[Annotated[int, Field(ge=1)], Literal["auto"]]
+    chunk_size: Union[Annotated[int, Field(ge=1)], Literal["auto"]] = "auto"
     """The maximum number circuit arguments to bind to the circuit per shot loop.
 
     When ``"auto"``, the number will be chosen server-side with heuristics designed to optimize
