@@ -29,7 +29,7 @@ classifiers = [
 dependencies = [
     "pydantic>=2.1,<3.0.0",
     "qiskit>=2.2.0,<3.0.0",
-    "samplomatic==0.12.0",
+    "samplomatic>=0.12.0",
 ]
 
 [tool.setuptools_scm]
