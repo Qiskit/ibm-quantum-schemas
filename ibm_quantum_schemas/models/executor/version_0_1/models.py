@@ -204,7 +204,7 @@ class QuantumProgramResultModel(BaseModel):
     metadata: Union[MetadataModel, None]
     """Execution metadata pertaining to the job as a whole."""
 
-    @field_validator("metadata")
+    @field_validator("metadata", mode="before")
     @classmethod
     def upgrade_none_to_metadata(cls, value):
         """Upgrade none values to empty metadata."""
