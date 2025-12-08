@@ -18,13 +18,12 @@ from qiskit.circuit import QuantumCircuit
 
 from ibm_quantum_schemas.models.noise_learner_v3.version_0_2.models import (
     LinbdbladResultMetadataModel,
-    LinbdbladResultPostSelectionMetadataModel,
     NoiseLearnerV3ResultModel,
     NoiseLearnerV3ResultsModel,
     OptionsModel,
     ParamsModel,
+    PostSelectionMetadataModel,
     TREXResultMetadataModel,
-    TREXResultPostSelectionMetadataModel,
 )
 from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV16
 from ibm_quantum_schemas.models.tensor_model import F64TensorModel
@@ -56,10 +55,14 @@ def test_initialization_results_model():
         rates=F64TensorModel.from_numpy(np.array(range(2), dtype=np.float64)),
         rates_std=F64TensorModel.from_numpy(np.zeros((2,), dtype=np.float64)),
         metadata=LinbdbladResultMetadataModel(
-            post_selection=LinbdbladResultPostSelectionMetadataModel(
-                fraction_kept={0: 0.8, 2: 0.7},
-                success_rates={0: {0: 0.99, 1: 0.98, 2: 0.8}, 1: {0: 0.99, 1: 0.98, 2: 0.8}},
-            )
+            post_selection={
+                0: PostSelectionMetadataModel(
+                    fraction_kept=0.8, success_rates={0: 0.99, 1: 0.98, 2: 0.97}
+                ),
+                2: PostSelectionMetadataModel(
+                    fraction_kept=0.8, success_rates={0: 0.89, 1: 0.88, 2: 0.87}
+                ),
+            }
         ),
     )
 
@@ -69,7 +72,7 @@ def test_initialization_results_model():
         rates=F64TensorModel.from_numpy(np.array(range(2), dtype=np.float64)),
         rates_std=F64TensorModel.from_numpy(np.zeros((2,), dtype=np.float64)),
         metadata=TREXResultMetadataModel(
-            post_selection=TREXResultPostSelectionMetadataModel(
+            post_selection=PostSelectionMetadataModel(
                 fraction_kept=0.9, success_rates={0: 0.99, 1: 0.98, 2: 0.8}
             )
         ),

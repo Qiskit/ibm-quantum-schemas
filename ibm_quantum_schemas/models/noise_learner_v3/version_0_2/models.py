@@ -70,8 +70,8 @@ class OptionsModel(BaseModel):
     """Options for post selecting the results of noise learning circuits."""
 
 
-class TREXResultPostSelectionMetadataModel(BaseModel):
-    """The post selection metadata of a single TREX result of a noise learner v3 job."""
+class PostSelectionMetadataModel(BaseModel):
+    """The post selection metadata used for the results of a noise learner v3 job."""
 
     fraction_kept: float = Field(ge=0, le=1)
     """The fraction of shots kept."""
@@ -86,19 +86,8 @@ class TREXResultMetadataModel(BaseModel):
     learning_protocol: Literal["trex"] = "trex"
     """The learning protocol used to obtain this result."""
 
-    post_selection: TREXResultPostSelectionMetadataModel
-    """The metadata relative to post selection."""
-
-
-class LinbdbladResultPostSelectionMetadataModel(BaseModel):
-    """The post selection metadata of a single Linbdblad result of a noise learner v3 job."""
-
-    fraction_kept: dict[int, confloat(ge=0, le=1)]  # type: ignore
-    """The fraction of shots kept for each layer pair depth."""
-
-    success_rates: dict[int, dict[int, confloat(ge=0, le=1)]]  # type: ignore
-    """The fraction of shots in which post selection successfully flipped each qubit for each depth.
-    """
+    post_selection: PostSelectionMetadataModel
+    """The post selection metadata."""
 
 
 class LinbdbladResultMetadataModel(BaseModel):
@@ -107,8 +96,8 @@ class LinbdbladResultMetadataModel(BaseModel):
     learning_protocol: Literal["lindblad"] = "lindblad"
     """The learning protocol used to obtain this result."""
 
-    post_selection: LinbdbladResultPostSelectionMetadataModel
-    """The metadata relative to post selection."""
+    post_selection: dict[int, PostSelectionMetadataModel]
+    """The post selection metadata obtained for each layer pair depth."""
 
 
 class NoiseLearnerV3ResultModel(BaseModel):
