@@ -106,7 +106,7 @@ class QpyModel(BaseModel):
         return obj
 
 
-class QpyModelV13ToV16(QpyModel):
+class QpyModelV13ToV17(QpyModel):
     """QPY encoded circuits with restricted version range."""
 
-    qpy_version: int = Field(ge=13, le=16)
+    qpy_version: int = Field(ge=13, le=17)

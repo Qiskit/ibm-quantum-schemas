@@ -22,7 +22,7 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 from ....aliases import Self
 from ...base_params_model import BaseParamsModel
 from ...pauli_lindblad_map_model import PauliLindbladMapModel
-from ...qpy_model import QpyModelV13ToV16
+from ...qpy_model import QpyModelV13ToV17
 from ...samplex_model import SamplexModelSSV1 as SamplexModel
 from ...tensor_model import F64TensorModel, TensorModel
 
@@ -61,7 +61,7 @@ class CircuitItemModel(BaseModel):
     item_type: Literal["circuit"] = "circuit"
     """The type of quantum program item."""
 
-    circuit: QpyModelV13ToV16
+    circuit: QpyModelV13ToV17
     """A QPY-encoded circuit."""
 
     circuit_arguments: F64TensorModel
@@ -101,7 +101,7 @@ class SamplexItemModel(BaseModel):
     item_type: Literal["samplex"] = "samplex"
     """The type of quantum program item."""
 
-    circuit: QpyModelV13ToV16
+    circuit: QpyModelV13ToV17
     """A QPY-encoded circuit."""
 
     samplex: SamplexModel

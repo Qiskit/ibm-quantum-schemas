@@ -26,7 +26,7 @@ from ibm_quantum_schemas.models.noise_learner_v3.version_0_1.models import (
     TREXResultMetadataModel,
     TREXResultPostSelectionMetadataModel,
 )
-from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV16
+from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV17
 from ibm_quantum_schemas.models.tensor_model import F64TensorModel
 
 
@@ -39,7 +39,7 @@ def test_initialization_params_model(qpy_version):
     circuit.h(0)
     circuit.cx(0, 1)
     circuit.measure_all()
-    instructions = QpyModelV13ToV16.from_quantum_circuit(circuit, qpy_version)
+    instructions = QpyModelV13ToV17.from_quantum_circuit(circuit, qpy_version)
 
     params_model = ParamsModel(instructions=instructions, options=options)
 

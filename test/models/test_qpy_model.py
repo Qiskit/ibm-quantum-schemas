@@ -16,7 +16,7 @@ import pytest
 from qiskit.circuit import QuantumCircuit
 from samplomatic import ChangeBasis, InjectNoise, Twirl
 
-from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV16
+from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV17
 
 
 class TestQpyModelV13ToV16:
@@ -30,7 +30,7 @@ class TestQpyModelV13ToV16:
         circuit.cx(0, 1)
         circuit.measure_all()
 
-        encoded = QpyModelV13ToV16.from_quantum_circuit(circuit, qpy_version)
+        encoded = QpyModelV13ToV17.from_quantum_circuit(circuit, qpy_version)
         circuit_out = encoded.to_quantum_circuit()
 
         assert circuit == circuit_out
@@ -45,7 +45,7 @@ class TestQpyModelV13ToV16:
             circuit.cx(1, 2)
         circuit.measure_all()
 
-        encoded = QpyModelV13ToV16.from_quantum_circuit(circuit, qpy_version)
+        encoded = QpyModelV13ToV17.from_quantum_circuit(circuit, qpy_version)
         circuit_out = encoded.to_quantum_circuit()
 
         assert circuit == circuit_out
@@ -59,4 +59,4 @@ class TestQpyModelV13ToV16:
         circuit.measure_all()
 
         with pytest.raises(ValueError, match="QPY version"):
-            QpyModelV13ToV16.from_quantum_circuit(circuit, qpy_version)
+            QpyModelV13ToV17.from_quantum_circuit(circuit, qpy_version)
