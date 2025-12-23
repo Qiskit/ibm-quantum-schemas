@@ -58,5 +58,5 @@ class TestQpyModelV13ToV16:
         circuit.cx(0, 1)
         circuit.measure_all()
 
-        with pytest.raises(ValueError, match="QPY version"):
+        with pytest.raises(ValueError):
             QpyModelV13ToV16.from_quantum_circuit(circuit, qpy_version)

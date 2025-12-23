@@ -127,5 +127,5 @@ def test_chunk_size_validation():
         chunk_size="auto",
     )
 
-    with pytest.raises(match="all items must specify one or the other"):
+    with pytest.raises(ValueError, match="all items must specify one or the other"):
         QuantumProgramModel(shots=1000, items=[circuit_item, samplex_item])
