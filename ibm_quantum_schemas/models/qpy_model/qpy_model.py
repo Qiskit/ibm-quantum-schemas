@@ -25,7 +25,7 @@ from qiskit.qpy.formats import (
     FILE_HEADER_V10_SIZE,
 )
 
-from .annotation_serializer import AnnotationSerializer
+from ..annotation_serializer import AnnotationSerializer
 
 ANNOTATION_FACTORIES = {"samplomatic": AnnotationSerializer}
 
@@ -104,15 +104,3 @@ class QpyModel(BaseModel):
         obj = cls(circuit_b64=circuit_b64, qpy_version=qpy_version)
         obj._circuit = circuit  # noqa: SLF001
         return obj
-
-
-class QpyModelV13ToV16(QpyModel):
-    """QPY encoded circuits with restricted version range (13 to 16)."""
-
-    qpy_version: int = Field(ge=13, le=16)
-
-
-class QpyModelV13ToV17(QpyModel):
-    """QPY encoded circuits with restricted version range (13 to 17)."""
-
-    qpy_version: int = Field(ge=13, le=17)
