@@ -107,6 +107,12 @@ class QpyModel(BaseModel):
 
 
 class QpyModelV13ToV16(QpyModel):
-    """QPY encoded circuits with restricted version range."""
+    """QPY encoded circuits with restricted version range (13 to 16)."""
 
     qpy_version: int = Field(ge=13, le=16)
+
+
+class QpyModelV13ToV17(QpyModel):
+    """QPY encoded circuits with restricted version range (13 to 17)."""
+
+    qpy_version: int = Field(ge=13, le=17)
