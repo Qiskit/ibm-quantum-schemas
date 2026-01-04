@@ -18,14 +18,11 @@ from samplomatic import ChangeBasis, InjectNoise, Twirl
 
 from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV17
 
-V17 = pytest.param(17, marks=[pytest.mark.skip])
-"""Version 17. Stop skipping after qiskit 2.3.0 is released."""
-
 
 class TestQpyModelV13ToV17:
     """Tests for ``QpyModelV13ToV17``."""
 
-    @pytest.mark.parametrize("qpy_version", [13, 14, 15, 16, V17])
+    @pytest.mark.parametrize("qpy_version", [13, 14, 15, 16, 17])
     def test_roundtrip(self, qpy_version):
         """Test that round trips work correctly."""
         circuit = QuantumCircuit(3)
@@ -38,7 +35,7 @@ class TestQpyModelV13ToV17:
 
         assert circuit == circuit_out
 
-    @pytest.mark.parametrize("qpy_version", [15, 16, V17])
+    @pytest.mark.parametrize("qpy_version", [15, 16, 17])
     def test_roundtrip_with_annotations(self, qpy_version):
         """Test that round trips work correctly for circuits with annotated boxes."""
         circuit = QuantumCircuit(3)
