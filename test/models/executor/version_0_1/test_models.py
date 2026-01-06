@@ -66,7 +66,7 @@ def test_initialization_params_model(qpy_version, chunk_size):
     template, samplex = build(circuit)
     samplex_item = SamplexItemModel(
         circuit=QpyModelV13ToV16.from_quantum_circuit(template, qpy_version),
-        samplex=SamplexModel.from_samplex(samplex),
+        samplex=SamplexModel.from_samplex(samplex, ssv=1),
         samplex_arguments={
             "parameter_values": TensorModel.from_numpy(np.array([0.1, 0.2, 0.3], dtype=np.float64))
         },
@@ -119,7 +119,7 @@ def test_chunk_size_validation():
     template, samplex = build(circuit)
     samplex_item = SamplexItemModel(
         circuit=QpyModelV13ToV16.from_quantum_circuit(template, 16),
-        samplex=SamplexModel.from_samplex(samplex),
+        samplex=SamplexModel.from_samplex(samplex, ssv=1),
         samplex_arguments={
             "parameter_values": TensorModel.from_numpy(np.array([], dtype=np.float64))
         },
@@ -127,5 +127,5 @@ def test_chunk_size_validation():
         chunk_size="auto",
     )
 
-    with pytest.raises(match="all items must specify one or the other"):
+    with pytest.raises(ValueError, match="all items must specify one or the other"):
         QuantumProgramModel(shots=1000, items=[circuit_item, samplex_item])
