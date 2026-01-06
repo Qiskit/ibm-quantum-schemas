@@ -20,4 +20,4 @@ from ibm_quantum_schemas.models.samplex_model import SamplexModelSSV1 as Samplex
 def test_roundtrip():
     """Test that round trips work correctly."""
     samplex = Samplex()
-    SamplexModel.from_samplex(samplex).to_samplex()
+    SamplexModel.from_samplex(samplex, ssv=1).to_samplex()
