@@ -43,5 +43,6 @@ class TestSamplexModelSSV1ToSSV2:
         """Test that round trips work correctly."""
         if ssv >= 2 and samplomatic_version.split(".") < (0, 14, 0):
             pytest.skip(reason=f"samplomatic=={samplomatic_version} does not support SSV={ssv}.")
+
         samplex = Samplex()
         SamplexModelSSV1ToSSV2.from_samplex(samplex, ssv=ssv).to_samplex()
