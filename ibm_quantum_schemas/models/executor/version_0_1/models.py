@@ -12,8 +12,6 @@
 
 """Models"""
 
-from __future__ import annotations
-
 import datetime
 from typing import Annotated, Literal
 
@@ -32,10 +30,10 @@ class ParamsModel(BaseParamsModel):
 
     schema_version: Literal["v0.1"] = "v0.1"
 
-    quantum_program: QuantumProgramModel
+    quantum_program: "QuantumProgramModel"
     """The quantum program to execution."""
 
-    options: OptionsModel
+    options: "OptionsModel"
     """Options for runtime."""
 
 
