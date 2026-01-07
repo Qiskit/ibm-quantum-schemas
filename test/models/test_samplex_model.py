@@ -13,6 +13,7 @@
 """Tests for samplex models."""
 
 import pytest
+from samplomatic import __version__ as samplomatic_version
 from samplomatic.samplex import Samplex
 
 from ibm_quantum_schemas.models.samplex_model import SamplexModelSSV1, SamplexModelSSV1ToSSV2
@@ -40,5 +41,7 @@ class TestSamplexModelSSV1ToSSV2:
     @pytest.mark.parametrize("ssv", [1, 2])
     def test_roundtrip(self, ssv):
         """Test that round trips work correctly."""
+        if ssv >= 2 and samplomatic_version.split(".") < (0, 14, 0):
+            pytest.skip(reason=f"samplomatic=={samplomatic_version} does not support SSV={ssv}.")
         samplex = Samplex()
         SamplexModelSSV1ToSSV2.from_samplex(samplex, ssv=ssv).to_samplex()
