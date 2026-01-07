@@ -12,12 +12,33 @@
 
 """Tests for samplex models."""
 
+import pytest
 from samplomatic.samplex import Samplex
 
-from ibm_quantum_schemas.models.samplex_model import SamplexModelSSV1 as SamplexModel
+from ibm_quantum_schemas.models.samplex_model import SamplexModelSSV1, SamplexModelSSV1ToSSV2
 
 
-def test_roundtrip():
-    """Test that round trips work correctly."""
-    samplex = Samplex()
-    SamplexModel.from_samplex(samplex, ssv=1).to_samplex()
+class TestSamplexModelSSV1:
+    """Test the SamplexModelSSV1 model"""
+
+    def test_roundtrip(self):
+        """Test that round trips work correctly."""
+        samplex = Samplex()
+        SamplexModelSSV1.from_samplex(samplex, ssv=1).to_samplex()
+
+    def test_unsupported_versions_raise(self):
+        """Test that unsupported versions raise."""
+        samplex = Samplex()
+
+        with pytest.raises(ValueError):
+            SamplexModelSSV1.from_samplex(samplex, ssv=2)
+
+
+class TestSamplexModelSSV1ToSSV2:
+    """Test the SamplexModelSSV1ToSSV2 model"""
+
+    @pytest.mark.parametrize("ssv", [1, 2])
+    def test_roundtrip(self, ssv):
+        """Test that round trips work correctly."""
+        samplex = Samplex()
+        SamplexModelSSV1ToSSV2.from_samplex(samplex, ssv=ssv).to_samplex()
