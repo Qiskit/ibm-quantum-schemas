@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-from typing import Literal, Union
+from typing import Literal
 
 from pydantic import BaseModel, Field, confloat
 
@@ -119,7 +119,7 @@ class NoiseLearnerV3ResultModel(BaseModel):
     rates_std: F64TensorModel
     """The standard deviation associated to the rates of the generators."""
 
-    metadata: Union[TREXResultMetadataModel, LinbdbladResultMetadataModel] = Field(
+    metadata: TREXResultMetadataModel | LinbdbladResultMetadataModel = Field(
         discriminator="learning_protocol"
     )
     """Execution metadata pertaining to a single result."""
