@@ -13,6 +13,7 @@
 """Tests for QPY models."""
 
 import pytest
+import qiskit.__version__ as qiskit_version
 from qiskit.circuit import QuantumCircuit
 from samplomatic import ChangeBasis, InjectNoise, Twirl
 
@@ -81,6 +82,9 @@ class TestQpyModelV13ToV17:
     @pytest.mark.parametrize("qpy_version", [15, 16, 17])
     def test_roundtrip_with_annotations(self, qpy_version):
         """Test that round trips work correctly for circuits with annotated boxes."""
+        if qpy_version >= 17 and qiskit_version.split(".") < (2, 3, 0):
+            pytest.skip(reason=f"qiskit=={qiskit_version} does not support SSV={qpy_version}.")
+
         circuit = QuantumCircuit(3)
         circuit.h(0)
         circuit.cx(0, 1)
