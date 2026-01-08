@@ -19,11 +19,7 @@ import pybase64
 from pydantic import BaseModel, Field, PrivateAttr, model_validator
 from qiskit import QuantumCircuit
 from qiskit.qpy import QPY_VERSION, dump, load
-from qiskit.qpy.formats import (
-    FILE_HEADER_V10,
-    FILE_HEADER_V10_PACK,
-    FILE_HEADER_V10_SIZE,
-)
+from qiskit.qpy.formats import FILE_HEADER_V10, FILE_HEADER_V10_PACK, FILE_HEADER_V10_SIZE
 
 from .annotation_serializer import AnnotationSerializer
 
@@ -110,3 +106,9 @@ class QpyModelV13ToV16(QpyModel):
     """QPY encoded circuits with restricted version range."""
 
     qpy_version: int = Field(ge=13, le=16)
+
+
+class QpyModelV13ToV17(QpyModel):
+    """QPY encoded circuits with restricted version range."""
+
+    qpy_version: int = Field(ge=13, le=17)
