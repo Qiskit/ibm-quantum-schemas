@@ -13,7 +13,6 @@
 """SamplexModel"""
 
 import re
-from typing import Optional
 
 from pydantic import BaseModel, Field, PrivateAttr, model_validator
 from samplomatic.samplex import Samplex
@@ -70,7 +69,7 @@ class SamplexModel(BaseModel):
         return self._samplex
 
     @classmethod
-    def from_samplex(cls, samplex: Samplex, ssv: Optional[int] = None):
+    def from_samplex(cls, samplex: Samplex, ssv: int | None = None):
         """Create a model instance from a samplex.
 
         The returned instance owns a reference to the provided samplex. This instance may be
