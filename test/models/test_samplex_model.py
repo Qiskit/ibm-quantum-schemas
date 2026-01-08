@@ -13,6 +13,7 @@
 """Tests for samplex models."""
 
 import pytest
+from packaging.version import Version
 from samplomatic import __version__ as samplomatic_version
 from samplomatic.samplex import Samplex
 
@@ -41,7 +42,7 @@ class TestSamplexModelSSV1ToSSV2:
     @pytest.mark.parametrize("ssv", [1, 2])
     def test_roundtrip(self, ssv):
         """Test that round trips work correctly."""
-        if ssv >= 2 and samplomatic_version.split(".") < (0, 14, 0):
+        if ssv >= 2 and Version(samplomatic_version) < Version("0.14.0"):
             pytest.skip(reason=f"samplomatic=={samplomatic_version} does not support SSV={ssv}.")
 
         samplex = Samplex()
