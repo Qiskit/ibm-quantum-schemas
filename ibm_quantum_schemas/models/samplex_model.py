@@ -94,3 +94,9 @@ class SamplexModelSSV1(SamplexModel):
     """A samplex model constrained to use samplex serialization version (SSV) 1."""
 
     ssv: int = Field(ge=1, le=1)
+
+
+class SamplexModelSSV1ToSSV2(SamplexModel):
+    """A samplex model constrained to use samplex serialization versions (SSV) 1 or 2."""
+
+    ssv: int = Field(ge=1, le=2)
