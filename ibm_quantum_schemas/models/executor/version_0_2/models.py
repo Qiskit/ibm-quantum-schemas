@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import Annotated, Literal, Optional, Union
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
@@ -46,7 +46,7 @@ class OptionsModel(BaseModel):
     r"""Whether to reset the qubits to the ground state for each shot.
     """
 
-    rep_delay: Optional[float] = None
+    rep_delay: float | None = None
     r"""The repetition delay. This is the delay between a measurement and
     the subsequent quantum circuit. This is only supported on backends that have
     ``backend.dynamic_reprate_enabled=True``. It must be from the
@@ -71,7 +71,7 @@ class CircuitItemModel(BaseModel):
     preceding axes; expect one result per element of the leading shape.
     """
 
-    chunk_size: Union[Annotated[int, Field(ge=1)], Literal["auto"]] = "auto"
+    chunk_size: Annotated[int, Field(ge=1)] | Literal["auto"] = "auto"
     """The maximum number circuit arguments to bind to the circuit per shot loop.
 
     When ``"auto"``, the number is chosen server-side with heuristics designed to optimize
@@ -107,7 +107,7 @@ class SamplexItemModel(BaseModel):
     samplex: SamplexModel
     """A JSON-encoded samplex."""
 
-    samplex_arguments: dict[str, Union[bool, int, PauliLindbladMapModel, TensorModel]]
+    samplex_arguments: dict[str, bool | int | PauliLindbladMapModel | TensorModel]
     """Arguments to the samplex."""
 
     shape: list[int]
@@ -117,7 +117,7 @@ class SamplexItemModel(BaseModel):
     The non-trivial axes it introduces enumerate randomizations.
     """
 
-    chunk_size: Union[Annotated[int, Field(ge=1)], Literal["auto"]] = "auto"
+    chunk_size: Annotated[int, Field(ge=1)] | Literal["auto"] = "auto"
     """The maximum number circuit arguments to bind to the circuit per shot loop.
 
     When ``"auto"``, the number is chosen server-side with heuristics designed to optimize
@@ -151,9 +151,7 @@ class QuantumProgramModel(BaseModel):
     shots: int = Field(ge=1)
     """The number of shots for each individually bound circuit."""
 
-    items: list[
-        Annotated[Union[CircuitItemModel, SamplexItemModel], Field(discriminator="item_type")]
-    ]
+    items: list[Annotated[CircuitItemModel | SamplexItemModel, Field(discriminator="item_type")]]
     """Items of the program."""
 
     @model_validator(mode="after")
