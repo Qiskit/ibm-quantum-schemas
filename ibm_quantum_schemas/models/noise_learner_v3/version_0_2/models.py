@@ -19,7 +19,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, confloat
 
 from ...base_params_model import BaseParamsModel
-from ...qpy_model import QpyModelV13ToV16
+from ...qpy_model import QpyModelV13ToV17
 from ...tensor_model import F64TensorModel
 
 
@@ -28,7 +28,7 @@ class ParamsModel(BaseParamsModel):
 
     schema_version: Literal["v0.2"] = "v0.2"
 
-    instructions: QpyModelV13ToV16
+    instructions: QpyModelV13ToV17
     """The instructions targeted by the noise learner.
 
     These are embedded to a circuit prior to encoding with QPY.
