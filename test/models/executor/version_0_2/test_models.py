@@ -36,10 +36,13 @@ from ibm_quantum_schemas.models.samplex_model import SamplexModelSSV1ToSSV2 as S
 from ibm_quantum_schemas.models.tensor_model import F64TensorModel, TensorModel
 
 
+@pytest.mark.skip_if_qiskit_too_old_for_qpy
+@pytest.mark.skip_if_samplomatic_too_old_for_ssv
 @pytest.mark.parametrize(
-    "qpy_version,chunk_size", [(13, 2), (14, 2), (15, 2), (16, 2), (16, "auto")]
+    "qpy_version,ssv,chunk_size",
+    [(13, 21, 2), (14, 1, 2), (15, 2, 2), (16, 1, 2), (17, 2, 2), (16, 1, "auto"), (16, 2, "auto")],
 )
-def test_initialization_params_model(qpy_version, chunk_size):
+def test_initialization_params_model(qpy_version, ssv, chunk_size):
     """Test initialization for ``ParamsModel`` and related models."""
     options = OptionsModel()
 
@@ -66,7 +69,7 @@ def test_initialization_params_model(qpy_version, chunk_size):
     template, samplex = build(circuit)
     samplex_item = SamplexItemModel(
         circuit=QpyModelV13ToV17.from_quantum_circuit(template, qpy_version),
-        samplex=SamplexModel.from_samplex(samplex, ssv=1),
+        samplex=SamplexModel.from_samplex(samplex, ssv=ssv),
         samplex_arguments={
             "parameter_values": TensorModel.from_numpy(np.array([0.1, 0.2, 0.3], dtype=np.float64))
         },
