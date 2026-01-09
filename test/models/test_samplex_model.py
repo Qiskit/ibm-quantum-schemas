@@ -14,7 +14,6 @@
 
 import pytest
 from samplomatic.samplex import Samplex
-from samplomatic.serialization.samplex_serializer import SSV
 
 from ibm_quantum_schemas.models.samplex_model import SamplexModelSSV1, SamplexModelSSV1ToSSV2
 
@@ -38,7 +37,8 @@ class TestSamplexModelSSV1:
 class TestSamplexModelSSV1ToSSV2:
     """Test the SamplexModelSSV1ToSSV2 model"""
 
-    @pytest.mark.parametrize("ssv", range(1, min(2, SSV) + 1))
+    @pytest.mark.skip_if_samplomatic_too_old_for_ssv
+    @pytest.mark.parametrize("ssv", [1, 2])
     def test_roundtrip(self, ssv):
         """Test that round trips work correctly."""
         samplex = Samplex()

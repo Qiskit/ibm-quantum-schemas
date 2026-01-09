@@ -14,7 +14,6 @@
 
 import pytest
 from qiskit.circuit import QuantumCircuit
-from qiskit.qpy import QPY_VERSION
 from samplomatic import ChangeBasis, InjectNoise, Twirl
 
 from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV16, QpyModelV13ToV17
@@ -23,7 +22,8 @@ from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV16, QpyModelV13To
 class TestQpyModelV13ToV16:
     """Tests for ``QpyModelV13ToV16``."""
 
-    @pytest.mark.parametrize("qpy_version", range(13, min(16, QPY_VERSION) + 1))
+    @pytest.mark.skip_if_qiskit_too_old_for_qpy
+    @pytest.mark.parametrize("qpy_version", [13, 14, 15, 16])
     def test_roundtrip(self, qpy_version):
         """Test that round trips work correctly."""
         circuit = QuantumCircuit(3)
@@ -36,6 +36,7 @@ class TestQpyModelV13ToV16:
 
         assert circuit == circuit_out
 
+    @pytest.mark.skip_if_qiskit_too_old_for_qpy
     @pytest.mark.parametrize("qpy_version", [15, 16])
     def test_roundtrip_with_annotations(self, qpy_version):
         """Test that round trips work correctly for circuits with annotated boxes."""
@@ -66,7 +67,8 @@ class TestQpyModelV13ToV16:
 class TestQpyModelV13ToV17:
     """Tests for ``QpyModelV13ToV17``."""
 
-    @pytest.mark.parametrize("qpy_version", range(13, min(17, QPY_VERSION) + 1))
+    @pytest.mark.skip_if_qiskit_too_old_for_qpy
+    @pytest.mark.parametrize("qpy_version", [13, 14, 15, 16, 17])
     def test_roundtrip(self, qpy_version):
         """Test that round trips work correctly."""
         circuit = QuantumCircuit(3)
@@ -79,7 +81,8 @@ class TestQpyModelV13ToV17:
 
         assert circuit == circuit_out
 
-    @pytest.mark.parametrize("qpy_version", range(15, min(16, QPY_VERSION) + 1))
+    @pytest.mark.skip_if_qiskit_too_old_for_qpy
+    @pytest.mark.parametrize("qpy_version", [15, 16, 17])
     def test_roundtrip_with_annotations(self, qpy_version):
         """Test that round trips work correctly for circuits with annotated boxes."""
         circuit = QuantumCircuit(3)
