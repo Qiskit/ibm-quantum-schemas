@@ -31,8 +31,8 @@ from ibm_quantum_schemas.models.executor.version_0_2.models import (
     QuantumProgramResultModel,
     SamplexItemModel,
 )
-from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV16
-from ibm_quantum_schemas.models.samplex_model import SamplexModelSSV1 as SamplexModel
+from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV17
+from ibm_quantum_schemas.models.samplex_model import SamplexModelSSV1ToSSV2 as SamplexModel
 from ibm_quantum_schemas.models.tensor_model import F64TensorModel, TensorModel
 
 
@@ -50,7 +50,7 @@ def test_initialization_params_model(qpy_version, chunk_size):
     circuit.cx(0, 1)
     circuit.measure_all()
     circuit_item = CircuitItemModel(
-        circuit=QpyModelV13ToV16.from_quantum_circuit(circuit, qpy_version),
+        circuit=QpyModelV13ToV17.from_quantum_circuit(circuit, qpy_version),
         circuit_arguments=F64TensorModel.from_numpy(np.array([0.1, 0.2, 0.3], dtype=np.float64)),
         chunk_size=chunk_size,
     )
@@ -65,7 +65,7 @@ def test_initialization_params_model(qpy_version, chunk_size):
         circuit.measure_all()
     template, samplex = build(circuit)
     samplex_item = SamplexItemModel(
-        circuit=QpyModelV13ToV16.from_quantum_circuit(template, qpy_version),
+        circuit=QpyModelV13ToV17.from_quantum_circuit(template, qpy_version),
         samplex=SamplexModel.from_samplex(samplex, ssv=1),
         samplex_arguments={
             "parameter_values": TensorModel.from_numpy(np.array([0.1, 0.2, 0.3], dtype=np.float64))
@@ -111,14 +111,14 @@ def test_chunk_size_validation():
     """Test initialization for ``ParamsModel`` and related models."""
     circuit = QuantumCircuit(3)
     circuit_item = CircuitItemModel(
-        circuit=QpyModelV13ToV16.from_quantum_circuit(circuit, 16),
+        circuit=QpyModelV13ToV17.from_quantum_circuit(circuit, 16),
         circuit_arguments=F64TensorModel.from_numpy(np.array([], dtype=np.float64)),
         chunk_size=2,
     )
 
     template, samplex = build(circuit)
     samplex_item = SamplexItemModel(
-        circuit=QpyModelV13ToV16.from_quantum_circuit(template, 16),
+        circuit=QpyModelV13ToV17.from_quantum_circuit(template, 16),
         samplex=SamplexModel.from_samplex(samplex, ssv=1),
         samplex_arguments={
             "parameter_values": TensorModel.from_numpy(np.array([], dtype=np.float64))
