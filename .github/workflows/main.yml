@@ -21,7 +21,7 @@ jobs:
             python -m pip install --upgrade pip
             python -m pip install ".[dev]"
       - name: Run Tests
-        run: pytest test/
+        run: pytest test/ --error-for-skips
 
   lint:
     runs-on: "ubuntu-latest"

@@ -45,6 +45,7 @@ BugTracker = "https://github.com/Qiskit/ibm-quantum-schemas"
 dev = [
     "pre-commit",                 # Pre-commit hooks
     "pytest",                     # For running tests
+    "pytest-error-for-skips",     # Plugin to turn skips into errors
     "ruff",                       # Formatter and linter
 ]
 
