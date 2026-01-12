@@ -53,6 +53,20 @@ class OptionsModel(BaseModel):
     ``backend.default_rep_delay`` is used.
     """
 
+    scheduler_timing: bool = False
+    """Whether to return circuit schedule timing of each provided quantum circuit.
+
+    Setting this value to true will cause corresponding metadata of every program item to be
+    populated in the returned data.
+    """
+
+    stretch_values: bool = False
+    """Whether to return numeric resolutions of stretches for each provided quantum circuit.
+
+    Setting this value to true will cause corresponding metadata of every program item to be
+    populated in the returned data.
+    """
+
 
 class CircuitItemModel(BaseModel):
     """Execution specifications for a single quantum circuit."""
@@ -166,13 +180,53 @@ class QuantumProgramModel(BaseModel):
         return self
 
 
+class SchedulerTimingModel(BaseModel):
+    """Describes the timing of a scheduled circuit."""
+
+    timing: str
+    """A description of circuit timing in a comma-separated text format."""
+
+    circuit_duration: int
+    """The duration of the circuit in ``dt`` steps."""
+
+
+class StretchValueModel(BaseModel):
+    """Describes circuit stretch value resolutions."""
+
+    name: str
+    """The name of the stretch."""
+
+    value: int
+    """The resolved stretch value, up to the remainder, in units of ``dt``."""
+
+    remainder: int
+    """The time left over if ``value`` were to be used each stretch, in units of ``dt``."""
+
+    expanded_values: list[tuple[int, int]]
+    """A sequence of pairs ``(time, duration)`` indicating the time and duration of each delay.
+
+    All units are ``dt``, where the ``time`` denotes the absolute time of a delay in the circuit
+    schedule, and the ``duration`` denotes the total duration of the delay.
+    """
+
+
+class QuantumProgramResultMetadataModel(BaseModel):
+    """Per-item metadata for quantum program results."""
+
+    scheduler_timing: SchedulerTimingModel | None = None
+    """Scheduled circuit timing information, if it is available."""
+
+    stretch_values: list[StretchValueModel] | None = None
+    """Stretch value resolution, if it is available."""
+
+
 class QuantumProgramResultItemModel(BaseModel):
     """Results for a single quantum program item."""
 
     results: dict[str, TensorModel]
     """A map from results to their tensor values."""
 
-    metadata: None
+    metadata: QuantumProgramResultMetadataModel
     """Metadata pertaining to the execution of this particular quantum program item."""
 
 
