@@ -17,13 +17,13 @@ from __future__ import annotations
 import datetime
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, Field, model_validator
 
 from ....aliases import Self
 from ...base_params_model import BaseParamsModel
 from ...pauli_lindblad_map_model import PauliLindbladMapModel
-from ...qpy_model import QpyModelV13ToV16
-from ...samplex_model import SamplexModelSSV1 as SamplexModel
+from ...qpy_model import QpyModelV13ToV17
+from ...samplex_model import SamplexModelSSV1ToSSV2 as SamplexModel
 from ...tensor_model import F64TensorModel, TensorModel
 
 
@@ -60,7 +60,7 @@ class CircuitItemModel(BaseModel):
     item_type: Literal["circuit"] = "circuit"
     """The type of quantum program item."""
 
-    circuit: QpyModelV13ToV16
+    circuit: QpyModelV13ToV17
     """A QPY-encoded circuit."""
 
     circuit_arguments: F64TensorModel
@@ -100,7 +100,7 @@ class SamplexItemModel(BaseModel):
     item_type: Literal["samplex"] = "samplex"
     """The type of quantum program item."""
 
-    circuit: QpyModelV13ToV16
+    circuit: QpyModelV13ToV17
     """A QPY-encoded circuit."""
 
     samplex: SamplexModel
@@ -226,14 +226,3 @@ class QuantumProgramResultModel(BaseModel):
 
     metadata: MetadataModel
     """Execution metadata pertaining to the job as a whole."""
-
-    @field_validator("metadata", mode="before")
-    @classmethod
-    def upgrade_none_to_metadata(cls, value):
-        """Upgrade none values to empty metadata."""
-        # TODO: get rid of this in 0.2. it's only here because i want minimal changes in this PR.
-        # this is to account for an older version of v0.1, before its release, where metadata was
-        # temporarily set to None
-        if value is None:
-            value = MetadataModel(chunk_timing=[])
-        return value
