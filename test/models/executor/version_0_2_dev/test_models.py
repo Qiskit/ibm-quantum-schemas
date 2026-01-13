@@ -174,6 +174,23 @@ def test_options_model_scheduler_timing_and_stretch_values():
     assert options.stretch_values
 
 
+def test_options_model_experimental():
+    """Test OptionsModel experimental field with nested JSON values."""
+    options = OptionsModel()
+    assert options.experimental == {}
+
+    nested_data = {
+        "feature_flag": True,
+        "threshold": 0.5,
+        "config": {
+            "nested_list": [1, 2, {"deep": "value"}],
+            "nested_bool": False,
+        },
+    }
+    options = OptionsModel(experimental=nested_data)
+    assert options.experimental == nested_data
+
+
 def test_scheduler_timing_model():
     """Test SchedulerTimingModel initialization and fields."""
     timing = SchedulerTimingModel(timing="0,100,200,300", circuit_duration=400)

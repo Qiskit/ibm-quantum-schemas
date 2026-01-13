@@ -17,7 +17,7 @@ from __future__ import annotations
 import datetime
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, JsonValue, model_validator
 from typing_extensions import TypeAliasType
 
 from ....aliases import Self
@@ -77,6 +77,12 @@ class OptionsModel(BaseModel):
 
     Setting this value to true will cause corresponding metadata of every program item to be
     populated in the returned data.
+    """
+
+    experimental: dict[str, JsonValue] = Field(default_factory=dict)
+    """Experimental options.
+
+    These options are not guaranteed to be stable and may change or be removed without notice.
     """
 
 
