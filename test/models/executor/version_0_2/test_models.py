@@ -23,6 +23,7 @@ from ibm_quantum_schemas.models.executor.version_0_2.models import (
     ChunkPart,
     ChunkSpan,
     CircuitItemModel,
+    ItemMetadataModel,
     MetadataModel,
     OptionsModel,
     ParamsModel,
@@ -30,6 +31,8 @@ from ibm_quantum_schemas.models.executor.version_0_2.models import (
     QuantumProgramResultItemModel,
     QuantumProgramResultModel,
     SamplexItemModel,
+    SchedulerTimingModel,
+    StretchValueModel,
 )
 from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV16
 from ibm_quantum_schemas.models.samplex_model import SamplexModelSSV1 as SamplexModel
@@ -89,7 +92,7 @@ def test_initialization_results_model():
             "alpha": TensorModel.from_numpy(np.array([0.1, 0.2], dtype=np.float64)),
             "beta": TensorModel.from_numpy(np.array([0.3, 0.4, 0.5], dtype=np.float64)),
         },
-        metadata=None,
+        metadata=ItemMetadataModel(),
     )
     now = datetime.datetime.now()
     spans = [
@@ -129,3 +132,60 @@ def test_chunk_size_validation():
 
     with pytest.raises(ValueError, match="all items must specify one or the other"):
         QuantumProgramModel(shots=1000, items=[circuit_item, samplex_item])
+
+
+def test_options_model_scheduler_timing_and_stretch_values():
+    """Test OptionsModel with scheduler_timing and stretch_values fields."""
+    options = OptionsModel()
+    assert not options.scheduler_timing
+    assert not options.stretch_values
+
+    options = OptionsModel(scheduler_timing=True)
+    assert options.scheduler_timing
+    assert not options.stretch_values
+
+    options = OptionsModel(stretch_values=True)
+    assert not options.scheduler_timing
+    assert options.stretch_values
+
+    options = OptionsModel(scheduler_timing=True, stretch_values=True)
+    assert options.scheduler_timing
+    assert options.stretch_values
+
+
+def test_scheduler_timing_model():
+    """Test SchedulerTimingModel initialization and fields."""
+    timing = SchedulerTimingModel(timing="0,100,200,300", circuit_duration=400)
+    assert timing.timing == "0,100,200,300"
+    assert timing.circuit_duration == 400
+
+
+def test_stretch_value_model():
+    """Test StretchValueModel initialization and fields."""
+    stretch = StretchValueModel(
+        name="delay_stretch",
+        value=100,
+        remainder=4,
+        expanded_values=[(0, 100), (200, 104), (500, 100)],
+    )
+    assert stretch.name == "delay_stretch"
+    assert stretch.value == 100
+    assert stretch.remainder == 4
+    assert stretch.expanded_values == [(0, 100), (200, 104), (500, 100)]
+
+
+def test_result_item_with_metadata():
+    """Test QuantumProgramResultItemModel with populated metadata."""
+    scheduler_timing = SchedulerTimingModel(timing="0,100,200", circuit_duration=300)
+    stretch = StretchValueModel(name="stretch_1", value=80, remainder=0, expanded_values=[(50, 80)])
+    item_metadata = ItemMetadataModel(scheduler_timing=scheduler_timing, stretch_values=[stretch])
+
+    result_item = QuantumProgramResultItemModel(
+        results={
+            "counts": TensorModel.from_numpy(np.array([100, 200], dtype=np.float64)),
+        },
+        metadata=item_metadata,
+    )
+
+    assert result_item.metadata.scheduler_timing == scheduler_timing
+    assert result_item.metadata.stretch_values == [stretch]
