@@ -43,7 +43,7 @@ from ibm_quantum_schemas.models.tensor_model import F64TensorModel, TensorModel
 @pytest.mark.skip_if_samplomatic_too_old_for_ssv
 @pytest.mark.parametrize(
     "qpy_version,ssv,chunk_size",
-    [(13, 21, 2), (14, 1, 2), (15, 2, 2), (16, 1, 2), (17, 2, 2), (16, 1, "auto"), (16, 2, "auto")],
+    [(13, 2, 2), (14, 1, 2), (15, 2, 2), (16, 1, 2), (17, 2, 2), (16, 1, "auto"), (16, 2, "auto")],
 )
 def test_initialization_params_model(qpy_version, ssv, chunk_size):
     """Test initialization for ``ParamsModel`` and related models."""
