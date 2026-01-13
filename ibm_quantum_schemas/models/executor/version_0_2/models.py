@@ -46,11 +46,26 @@ class OptionsModel(BaseModel):
     r"""Whether to reset the qubits to the ground state for each shot."""
 
     rep_delay: float | None = None
-    r"""The repetition delay. This is the delay between the end of one circuit and the start of the
-    next within a shot loop. This is only supported on backends that have
-    ``backend.dynamic_reprate_enabled=True``. It must be from the range supplied by
-    ``backend.rep_delay_range``. When this value is ``None``, the default value
-    ``backend.default_rep_delay`` is used.
+    r"""The repetition delay.
+
+    This is the delay between the end of one circuit and the start of the next within a shot loop.
+    This is only supported on backends that have ``backend.dynamic_reprate_enabled=True``. It must
+    be from the range supplied by ``backend.rep_delay_range``. When this value is ``None``, the
+    default value ``backend.default_rep_delay`` is used.
+    """
+
+    scheduler_timing: bool = False
+    """Whether to return circuit schedule timing of each provided quantum circuit.
+
+    Setting this value to true will cause corresponding metadata of every program item to be
+    populated in the returned data.
+    """
+
+    stretch_values: bool = False
+    """Whether to return numeric resolutions of stretches for each provided quantum circuit.
+
+    Setting this value to true will cause corresponding metadata of every program item to be
+    populated in the returned data.
     """
 
 
@@ -166,13 +181,61 @@ class QuantumProgramModel(BaseModel):
         return self
 
 
+class SchedulerTimingModel(BaseModel):
+    """Describes the timing of a scheduled circuit.
+
+    All timing information is expressed in terms of multiples of the quantity ``dt``, time step
+    duration of the control electronics, which can be queried in backend and target properties.
+    """
+
+    timing: str
+    """A description of circuit timing in a comma-separated text format."""
+
+    circuit_duration: int
+    """The duration of the circuit in ``dt`` steps."""
+
+
+class StretchValueModel(BaseModel):
+    """Describes circuit stretch value resolutions.
+
+    All timing information is expressed in terms of multiples of the quantity ``dt``, time step
+    duration of the control electronics, which can be queried in backend and target properties.
+    """
+
+    name: str
+    """The name of the stretch."""
+
+    value: int
+    """The resolved stretch value, up to the remainder, in units of ``dt``."""
+
+    remainder: int
+    """The time left over if ``value`` were to be used each stretch, in units of ``dt``."""
+
+    expanded_values: list[tuple[int, int]]
+    """A sequence of pairs ``(time, duration)`` indicating the time and duration of each delay.
+
+    All units are ``dt``, where the ``time`` denotes the absolute time of a delay in the circuit
+    schedule, and the ``duration`` denotes the total duration of the delay.
+    """
+
+
+class ItemMetadataModel(BaseModel):
+    """Per-item metadata for quantum program results."""
+
+    scheduler_timing: SchedulerTimingModel | None = None
+    """Scheduled circuit timing information, if it is available."""
+
+    stretch_values: list[StretchValueModel] | None = None
+    """Stretch value resolution, if it is available."""
+
+
 class QuantumProgramResultItemModel(BaseModel):
     """Results for a single quantum program item."""
 
     results: dict[str, TensorModel]
     """A map from results to their tensor values."""
 
-    metadata: None
+    metadata: ItemMetadataModel
     """Metadata pertaining to the execution of this particular quantum program item."""
 
 
