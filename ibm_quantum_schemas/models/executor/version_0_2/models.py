@@ -182,7 +182,11 @@ class QuantumProgramModel(BaseModel):
 
 
 class SchedulerTimingModel(BaseModel):
-    """Describes the timing of a scheduled circuit."""
+    """Describes the timing of a scheduled circuit.
+
+    All timing information is expressed in terms of multiples of the quantity ``dt``, time step
+    duration of the control electronics, which can be queried in backend and target properties.
+    """
 
     timing: str
     """A description of circuit timing in a comma-separated text format."""
@@ -192,7 +196,11 @@ class SchedulerTimingModel(BaseModel):
 
 
 class StretchValueModel(BaseModel):
-    """Describes circuit stretch value resolutions."""
+    """Describes circuit stretch value resolutions.
+
+    All timing information is expressed in terms of multiples of the quantity ``dt``, time step
+    duration of the control electronics, which can be queried in backend and target properties.
+    """
 
     name: str
     """The name of the stretch."""
