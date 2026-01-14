@@ -13,20 +13,20 @@
 """TensorModel"""
 
 import math
-from typing import Literal, get_args
+from typing import Literal, TypeAlias, get_args
 
 import numpy as np
 import pybase64
 from pydantic import BaseModel, model_validator
 
-SUPPORTED_DTYPES = Literal["f64", "bool", "u8"]
+SupportedDtypes: TypeAlias = Literal["f64", "bool", "u8", "c128"]
 """The data types supported by :class:`~TensorModel`."""
 
 
 class TensorModel(BaseModel):
     """Model of tensor data."""
 
-    _ELEM_SIZE_LOOKUP = {"f64": 8, "u8": 1, "bool": 0.125}
+    _ELEM_SIZE_LOOKUP = {"f64": 8, "u8": 1, "bool": 0.125, "c128": 16}
 
     data: str
     """Base-64-encoded data in litte endian format.
@@ -38,7 +38,7 @@ class TensorModel(BaseModel):
     shape: list[int]
     """The shape of the tensor."""
 
-    dtype: SUPPORTED_DTYPES
+    dtype: SupportedDtypes
     """The data type of the tensor."""
 
     @classmethod
@@ -54,9 +54,12 @@ class TensorModel(BaseModel):
         elif array.dtype == np.dtype(np.uint8):
             dtype = "u8"
             data = pybase64.b64encode(array.astype("<u1").tobytes())
+        elif array.dtype == np.dtype(np.complex128):
+            dtype = "c128"
+            data = pybase64.b64encode(array.astype("<c16").tobytes())
         else:
             raise ValueError(
-                f"Unexpected NumPy dtype '{array.dtype}', one of {get_args(SUPPORTED_DTYPES)} "
+                f"Unexpected NumPy dtype '{array.dtype}', one of {get_args(SupportedDtypes)} "
                 "expected."
             )
 
@@ -76,6 +79,8 @@ class TensorModel(BaseModel):
             return unpacked.astype(bool).reshape(shape)
         elif self.dtype == "u8":
             return np.frombuffer(raw, dtype="<u1").reshape(shape)
+        elif self.dtype == "c128":
+            return np.frombuffer(raw, dtype="<c16").reshape(shape)
 
         raise ValueError(f"dtype {self.dtype} not understood.")
 

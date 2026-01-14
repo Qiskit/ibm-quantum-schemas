@@ -22,13 +22,14 @@ from ibm_quantum_schemas.models.tensor_model import F64TensorModel, TensorModel
 class TestTensorModel:
     """Tests for ``TensorModel``."""
 
-    @pytest.mark.parametrize("dtype", [np.uint8, np.float64, np.bool_])
+    @pytest.mark.parametrize("dtype", [np.uint8, np.float64, np.bool_, np.complex128])
     def test_roundtrip(self, dtype):
         """Test that round trips work correctly."""
-        array = np.array(range(16), dtype=dtype).reshape(4, 1, 2, 2)
+        array = np.array(range(16), dtype=dtype).reshape((4, 1, 2, 2))
         array_out = TensorModel.from_numpy(array).to_numpy()
 
         assert np.all(array == array_out)
+        assert array.dtype == array_out.dtype
 
     def test_raises(self):
         """Test that it raises."""
@@ -43,7 +44,7 @@ class TestF64TensorModel:
 
     def test_roundtrip(self):
         """Test that round trips work correctly."""
-        array = np.array(range(16), dtype=np.float64).reshape(4, 1, 2, 2)
+        array = np.array(range(16), dtype=np.float64).reshape((4, 1, 2, 2))
         array_out = F64TensorModel.from_numpy(array).to_numpy()
 
         assert np.all(array == array_out)
