@@ -86,6 +86,7 @@ def test_initialization_params_model(qpy_version, ssv, chunk_size):
     assert params_model.schema_version == "v0.2"
     assert params_model.quantum_program == quantum_program
     assert params_model.options == options
+    assert quantum_program.meas_level == "classified"
 
 
 def test_initialization_results_model():
@@ -135,6 +136,21 @@ def test_chunk_size_validation():
 
     with pytest.raises(ValueError, match="all items must specify one or the other"):
         QuantumProgramModel(shots=1000, items=[circuit_item, samplex_item])
+
+
+@pytest.mark.parametrize("meas_level", ["classified", "kerneled", "avg_kerneled"])
+def test_meas_level(meas_level):
+    """Test that meas_level can be set to all valid values."""
+    circuit = QuantumCircuit(3)
+    circuit.measure_all()
+    circuit_item = CircuitItemModel(
+        circuit=QpyModelV13ToV17.from_quantum_circuit(circuit, 16),
+        circuit_arguments=F64TensorModel.from_numpy(np.array([], dtype=np.float64)),
+    )
+
+    quantum_program = QuantumProgramModel(shots=100, items=[circuit_item], meas_level=meas_level)
+
+    assert quantum_program.meas_level == meas_level
 
 
 def test_options_model_scheduler_timing_and_stretch_values():
