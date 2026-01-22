@@ -70,7 +70,7 @@ conventions when developing in the repo:
 
 1. Each version of the models for a program must reside in its own module, following
    **semantic versioning** for the name of the module. For example:
-   
+
    ```
    from qiskit_ibmq_quantum_schemas.models.executor import version_0_1
    ````
@@ -98,13 +98,13 @@ This sections refers to the versioning of the published packages:
    * the major number is always `0`.
    *  `incremental` is the next version number.
    * `YYYYMMDD` is the date of the release.
-   
+
    For example, `0.1.20260122`.
 
 2. Release candidate versions must be published when a new version of the model for a program is
    considered in the final stages of being supported, by appending the suffic `rc1` to the version
    identifier. For example, `0.1.20260122rc1`.
-   
+
    This signals the version is a [pre-release], allowing consumers to prepare for its usage.
 
 ### Releasing a new version
