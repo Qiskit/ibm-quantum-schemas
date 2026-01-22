@@ -101,7 +101,7 @@ This sections refers to the versioning of the published packages:
    For example, `0.1.20260122`.
 
 2. Release candidate versions must be published when a new version of the model for a program is
-   considered in the final stages of being supported, by appending the suffic `rc1` to the version
+   considered in the final stages of being stable, by appending the suffic `rc1` to the version
    identifier. For example, `0.1.20260122rc1`.
 
    This signals the version is a [pre-release], allowing consumers to prepare for its usage.
