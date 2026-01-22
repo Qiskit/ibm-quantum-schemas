@@ -4,7 +4,6 @@ This repository contains the Pydantic models that describe the inputs and output
 of IBM Quantum primitives and programs.
 
 > [!WARNING]
-
 > The purpose of this repository has changed. Prior to October 2025, the
 > repository hosted JSONSchema files that dictated the request and response payloads
 > for the primary IBM Quantum API payloads that allowed interacting with
