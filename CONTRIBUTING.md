@@ -1,32 +1,61 @@
 # Contributing
 
-First read the overall project contributing guidelines. These are all
-included in the qiskit documentation:
+First read the overall project contributing guidelines. These are all included in the qiskit
+documentation:
 
-https://qiskit.org/documentation/contributing_to_qiskit.html
+https://github.com/Qiskit/qiskit/blob/main/CONTRIBUTING.md
 
-## Contributing to ibmq-schemas
+## Contributing to `ibm-quantum-schemas`
 
-In addition to the general guidelines there are specific details for
-contributing to ibmq-schemas, these are documented below.
+In addition to the general guidelines there are specific details for contributing to
+`ibm-quantum-schemas`, these are documented below.
 
-### Tests
+### Installation
 
-Once you've made a change, it is important to verify that your change
-does not break any existing tests and that any new tests that you've added
-also run successfully. Before you open a new pull request for your change,
-you'll want to run the test suite locally.
+Developers should install in editable mode with the development requirements:
 
-To run tests first make sure all the dev requirements are installed in
-your Python environment with:
-```
-pip install -r requirements-dev.txt
+```bash
+pip install -e ".[dev]"
 ```
 
-Then you can run the tests with
+### Testing
 
-```
-python -m unittest -s ./tests -t ./tests -v
+Testing is done with `pytest` and tests are located in the `test` folder:
+
+```bash
+pytest
 ```
 
-from the repo root.
+### Linting and Formatting
+
+`ruff` is used for linting and formatting. Run the following to manually apply checks:
+
+```bash
+ruff check .
+```
+
+More conveniently, set up ruff in your IDE to run-on-save.
+
+### Pre-commit Hooks
+
+It is recommended that contributers install and use `pre-commit` to ensure code quality and
+consistency in this library. It automatically runs linters and formatters on staged files
+during `git commit`.
+
+1. Install the hooks defined in the .pre-commit-config.yaml file:
+
+```bash
+pre-commit install
+```
+
+2. Test the hooks on all files (optional):
+
+```bash
+pre-commit run --all-files
+```
+
+3. To update the pre-commit hooks to their latest versions, run:
+
+```bash
+pre-commit autoupdate
+```
