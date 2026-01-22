@@ -23,4 +23,4 @@ Please note:
 * this package contains all supported versions by the IBM Quantum platform, using semantic
   versioning in the last component of the module name (`.version_<x_y>`).
 * when a new version is in development, it will contain a `_dev` suffix for signalling it
-  (`.version_<x_y>_dev`). Such version are not considered supported yet.
+  (`.version_<x_y>_dev`). Such version are not considered stable yet.

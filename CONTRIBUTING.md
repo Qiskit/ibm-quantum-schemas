@@ -7,8 +7,8 @@ https://github.com/Qiskit/qiskit/blob/main/CONTRIBUTING.md
 
 ## Contributing to `ibm-quantum-schemas`
 
-In addition to the general guidelines there are specific details for contributing to
-`ibm-quantum-schemas`, these are documented below.
+In addition to the general guidelines, there are specific details for contributing to
+`ibm-quantum-schemas` which are documented below.
 
 ### Installation
 
@@ -76,9 +76,8 @@ conventions when developing in the repo:
    ````
 
 2. When a new version of the model for a program is started, the module name must contain the
-   suffix `_dev`. This signals that the version is not yet supported and subject to changes, even
-   if included in a release. The suffix must only be dropped when the model is fully supported (by
-   the service and by the client).
+   suffix `_dev`. This signals that the version is not yet stable and subject to changes, even
+   if included in a release. The suffix must only be dropped when the model is fully stable.
 
 3. Once a version of the model for a program is marked as completed (by removing the `_dev` suffix
    and it being included as part of a release), no changes can be made to its contents, except for
