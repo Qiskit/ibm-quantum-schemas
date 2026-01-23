@@ -64,7 +64,7 @@ pre-commit autoupdate
 
 ### Modules structure and conventions
 
-This package contains the models that describes the inputs and outputs of IBM Quantum Primitives
+This package contains the models that describe the inputs and outputs of IBM Quantum Primitives
 and Programs. As multiple versions of each Program are supported, it is important to follow these
 conventions when developing in the repo:
 
@@ -86,7 +86,8 @@ conventions when developing in the repo:
 
 ### Package releases policy
 
-This sections refers to the versioning of the published packages:
+This section describes the versioning strategy of the published Python package. There is no
+numerical connection between Python package versions and the schema versions they contain.
 
 1. Releases of the package must use the following version scheme:
 
