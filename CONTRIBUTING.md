@@ -20,7 +20,7 @@ pip install -e ".[dev]"
 
 ### Testing
 
-Testing is done with `pytest` and tests are located in the `test` folder:
+Testing is done with `pytest` and tests are located in the `test` folder. To run them, execute
 
 ```bash
 pytest
@@ -34,7 +34,7 @@ pytest
 ruff check .
 ```
 
-More conveniently, set up ruff in your IDE to run-on-save.
+More conveniently, set up ruff in your IDE to run-on-save and/or set up the [Pre-commit Hooks](#pre-commit-hooks).
 
 ### Pre-commit Hooks
 
