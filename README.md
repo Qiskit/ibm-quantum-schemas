@@ -16,8 +16,11 @@ Please note:
 * when a new version is in development, it will contain a `_dev` suffix for signalling it
   (`.version_<x_y>_dev`). Such version are not considered stable yet.
 * other (non `_dev`) versions included in releases of this package are considered stable, albeit
-  not all of them might be supported by the IBM Quantum platform at a given time. Please refer to
-  the [Qiskit Runtime REST API] for the specific versions supported.
+  not all of them might be supported by the IBM Quantum platform at a given time. In particular,
+  the programs included in the initial release of this library (`executor` and `noise_learner_v3`)
+  are considered beta and not yet supported.
+* please refer to the [Qiskit Runtime REST API] for the programs and their versions supported by
+  the IBM Quantum platform.
 
 ## History
 
