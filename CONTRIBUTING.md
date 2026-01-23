@@ -79,9 +79,10 @@ conventions when developing in the repo:
    suffix `_dev`. This signals that the version is not yet stable and subject to changes, even
    if included in a release. The suffix must only be dropped when the model is fully stable.
 
-3. Once a version of the model for a program is marked as completed (by removing the `_dev` suffix
-   and it being included as part of a release), no changes can be made to its contents, except for
-   documentation updates.
+3. Once development of a new version of the model for a program ends, the `_dev` suffix is removed
+   and the model is part of a new package release. From this moment, the model is considered to be
+   "stable": no changes can be made to its contents, except for documentation updates, and it can
+   be safely consumed by other repositories.
 
 ### Package releases policy
 

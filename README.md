@@ -1,7 +1,25 @@
 # IBM Quantum Schemas
 
-This repository contains the Pydantic models that describe the inputs and outputs
-of IBM Quantum primitives and programs.
+This repository contains the Pydantic models that describe the inputs and outputs of IBM Quantum
+primitives and programs, to allow easier programmatic interfacing from Python.
+
+The resulting `ibm-quantum-schemas` Python package contains the versioned definition of such
+inputs and outputs, using the following structure:
+
+```
+ibm_quantum_schemas.models.<program>.version_<x_y>
+```
+
+Please note:
+* this package contains multiple version of the models, using semantic versioning in the last
+  component of the module name (`.version_<x_y>`).
+* when a new version is in development, it will contain a `_dev` suffix for signalling it
+  (`.version_<x_y>_dev`). Such version are not considered stable yet.
+* other (non `_dev`) versions included in releases of this package are considered stable, albeit
+  not all of them might be supported by the IBM Quantum platform at a given time. Please refer to
+  the [Qiskit Runtime REST API] for the specific versions supported.
+
+## History
 
 > [!WARNING]
 > The purpose of this repository has changed. Prior to October 2025, the
@@ -10,17 +28,4 @@ of IBM Quantum primitives and programs.
 > devices. Primarily, the Qobj, backend configuration, backend properties,
 > pulse defaults, and result schemas.
 
-## Package contents
-
-This package contains the versioned definition (via Pydantic models) of the inputs and outputs
-of IBM Quantum Primitives and Programs, using the following structure:
-
-```
-ibm_quantum_schemas.models.<program>.version_<x_y>
-```
-
-Please note:
-* this package contains all supported versions by the IBM Quantum platform, using semantic
-  versioning in the last component of the module name (`.version_<x_y>`).
-* when a new version is in development, it will contain a `_dev` suffix for signalling it
-  (`.version_<x_y>_dev`). Such version are not considered stable yet.
+[Qiskit Runtime REST API]: https://quantum.cloud.ibm.com/docs/en/api/qiskit-runtime-rest
