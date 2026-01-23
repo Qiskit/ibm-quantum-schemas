@@ -110,5 +110,16 @@ numerical connection between Python package versions and the schema versions the
 
 ### Releasing a new version
 
-To release a new version, use the GitHub UI to create a new release, using the versioning schema
-specified in the above section. This will trigger a job to publish the package to PyPI.
+To release a new version `0.1.20260122`:
+
+```bash
+./assets/release.sh 0.1.20260122  # use the new version as an argument. this:
+                                  #  - checks out a new branch release-0.1.20260122
+                                  #  - calls towncrier to prepend to CHANGELOG
+                                  #  - commits this change in a new commit
+
+git push origin release-0.1.20260122
+```
+
+Merge the PR into `main` and then use the GitHub UI to create a new release, copying the new
+changelog section into the body. This will trigger a job to publish to `PyPI`.
