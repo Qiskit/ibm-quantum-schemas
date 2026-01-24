@@ -26,7 +26,7 @@ from ...qpy_model import QpyModelV13ToV17
 from ...samplex_model import SamplexModelSSV1ToSSV2 as SamplexModel
 from ...tensor_model import F64TensorModel, TensorModel
 
-DataTreeLeaf = TensorModel | str | float | int
+DataTreeLeaf = TensorModel | str | float | int | None
 """Leaf types for a data tree structure."""
 
 DataTree = DataTreeLeaf | list["DataTree"] | dict[str, "DataTree"]
@@ -203,7 +203,7 @@ class QuantumProgramModel(BaseModel):
          over shots.
     """
 
-    data_tree: DataTree | None = None
+    data_tree: DataTree = None
     """Arbitrary nested data passed through execution without modification."""
 
 
@@ -316,5 +316,5 @@ class QuantumProgramResultModel(BaseModel):
     metadata: MetadataModel
     """Execution metadata pertaining to the job as a whole."""
 
-    data_tree: DataTree | None = None
+    data_tree: DataTree = None
     """Arbitrary nested data passed through execution without modification."""
