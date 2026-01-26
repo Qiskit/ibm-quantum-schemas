@@ -76,6 +76,8 @@ class TREXResultPostSelectionMetadataModel(BaseModel):
     fraction_kept: float = Field(ge=0, le=1)
     """The fraction of shots kept."""
 
+    success_rates: dict[int, confloat(ge=0, le=1)]
+    """The fraction of shots in which post selection successfully flipped each qubit."""
 
 class TREXResultMetadataModel(BaseModel):
     """The metadata of a single TREX result of a noise learner v3 job."""
@@ -92,6 +94,10 @@ class LinbdbladResultPostSelectionMetadataModel(BaseModel):
 
     fraction_kept: dict[int, confloat(ge=0, le=1)]  # type: ignore
     """The fraction of shots kept for each layer pair depth."""
+
+    success_rates: dict[int, dict[int, confloat(ge=0, le=1)]]
+    """The fraction of shots in which post selection successfully flipped each qubit, for
+    each layer pair depth."""
 
 
 class LinbdbladResultMetadataModel(BaseModel):
