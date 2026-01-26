@@ -87,6 +87,7 @@ def test_initialization_params_model(qpy_version, ssv, chunk_size):
     assert params_model.quantum_program == quantum_program
     assert params_model.options == options
     assert quantum_program.meas_level == "classified"
+    assert quantum_program.passthrough_data is None
 
 
 def test_initialization_results_model():
@@ -112,6 +113,7 @@ def test_initialization_results_model():
     assert results.schema_version == "v0.2"
     assert results.data == [result_item]
     assert results.metadata == metadata
+    assert results.passthrough_data is None
 
 
 def test_chunk_size_validation():
@@ -208,3 +210,63 @@ def test_result_item_with_metadata():
 
     assert result_item.metadata.scheduler_timing == scheduler_timing
     assert result_item.metadata.stretch_values == [stretch]
+
+
+def test_passthrough_data_leaf_types():
+    """Test that all leaf types are accepted."""
+    tensor = TensorModel.from_numpy(np.array([1.0, 2.0], dtype=np.float64))
+
+    # Test each leaf type individually
+    for passthrough_data in [tensor, "hello", 3.14, 42, True, False, None]:
+        program = QuantumProgramModel(shots=100, items=[], passthrough_data=passthrough_data)
+        assert program.passthrough_data == passthrough_data
+
+
+def test_passthrough_data_nested_list():
+    """Test nested lists in DataTree."""
+    passthrough_data = [1, 2.0, "three", [4, [5, 6]]]
+    program = QuantumProgramModel(shots=100, items=[], passthrough_data=passthrough_data)
+    assert program.passthrough_data == passthrough_data
+
+
+def test_passthrough_data_nested_dict():
+    """Test nested dicts in DataTree."""
+    passthrough_data = {"a": 1, "b": {"c": 2.0, "d": {"e": "nested"}}}
+    program = QuantumProgramModel(shots=100, items=[], passthrough_data=passthrough_data)
+    assert program.passthrough_data == passthrough_data
+
+
+def test_passthrough_data_mixed_nesting():
+    """Test mixed lists and dicts with TensorModel leaves."""
+    tensor = TensorModel.from_numpy(np.array([1.0, 2.0, 3.0], dtype=np.float64))
+    passthrough_data = {
+        "tensors": [tensor, tensor],
+        "metadata": {"name": "test", "count": 42},
+        "values": [1, 2.0, [3, {"nested": tensor}]],
+    }
+    program = QuantumProgramModel(shots=100, items=[], passthrough_data=passthrough_data)
+    assert program.passthrough_data == passthrough_data
+
+
+def test_passthrough_data_on_result_model():
+    """Test passthrough_data on QuantumProgramResultModel."""
+    tensor = TensorModel.from_numpy(np.array([1.0, 2.0], dtype=np.float64))
+    passthrough_data = {"result_tensor": tensor, "info": ["a", "b", 3]}
+
+    result = QuantumProgramResultModel(
+        data=[], metadata=MetadataModel(chunk_timing=[]), passthrough_data=passthrough_data
+    )
+    assert result.passthrough_data == passthrough_data
+
+
+def test_passthrough_data_serialization_roundtrip():
+    """Test that DataTree survives JSON serialization roundtrip."""
+    tensor = TensorModel.from_numpy(np.array([1.0, 2.0], dtype=np.float64))
+    passthrough_data = {"tensor": tensor, "nested": [1, {"inner": "value"}]}
+    program = QuantumProgramModel(shots=100, items=[], passthrough_data=passthrough_data)
+
+    json_str = program.model_dump_json()
+    restored = QuantumProgramModel.model_validate_json(json_str)
+
+    assert restored.passthrough_data["nested"] == passthrough_data["nested"]
+    assert np.array_equal(restored.passthrough_data["tensor"].to_numpy(), tensor.to_numpy())
