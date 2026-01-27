@@ -66,7 +66,9 @@ class OptionsModel(BaseModel):
     layer_pair_depths: list[int] = [0, 1, 2, 4, 16, 32]
     """The circuit depths (measured in number of pairs) to use in Pauli Lindblad experiments."""
 
-    post_selection: PostSelectionOptionsModel = Field(default_factory=PostSelectionOptionsModel)
+    post_selection: PostSelectionOptionsModel = Field(
+        default_factory=PostSelectionOptionsModel
+    )
     """Options for post selecting the results of noise learning circuits."""
 
 
@@ -78,6 +80,7 @@ class TREXResultPostSelectionMetadataModel(BaseModel):
 
     success_rates: dict[int, confloat(ge=0, le=1)]
     """The fraction of shots in which post selection successfully flipped each qubit."""
+
 
 class TREXResultMetadataModel(BaseModel):
     """The metadata of a single TREX result of a noise learner v3 job."""

@@ -57,7 +57,10 @@ def test_initialization_results_model():
         rates=F64TensorModel.from_numpy(np.array(range(2), dtype=np.float64)),
         rates_std=F64TensorModel.from_numpy(np.zeros((2,), dtype=np.float64)),
         metadata=LinbdbladResultMetadataModel(
-            post_selection=LinbdbladResultPostSelectionMetadataModel(fraction_kept={0: 0.8, 2: 0.7}, success_rates={0: {0: 0.99, 1: 0.98}}, {2: {0: 0.97, 1: 0.96}})
+            post_selection=LinbdbladResultPostSelectionMetadataModel(
+                fraction_kept={0: 0.8, 2: 0.7},
+                success_rates={0: {0: 0.99, 1: 0.98}, 2: {0: 0.97, 1: 0.96}},
+            )
         ),
     )
 
@@ -67,7 +70,9 @@ def test_initialization_results_model():
         rates=F64TensorModel.from_numpy(np.array(range(2), dtype=np.float64)),
         rates_std=F64TensorModel.from_numpy(np.zeros((2,), dtype=np.float64)),
         metadata=TREXResultMetadataModel(
-            post_selection=TREXResultPostSelectionMetadataModel(fraction_kept=0.9, success_rates={0: 0.99, 1: 0.98, 2: 0.97})
+            post_selection=TREXResultPostSelectionMetadataModel(
+                fraction_kept=0.9, success_rates={0: 0.99, 1: 0.98, 2: 0.97}
+            )
         ),
     )
 
