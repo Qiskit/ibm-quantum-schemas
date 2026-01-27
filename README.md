@@ -11,10 +11,10 @@ ibm_quantum_schemas.models.<program>.version_<x_y>
 ```
 
 Please note:
-* this package contains multiple version of the models, using semantic versioning in the last
+* this package contains multiple versions of the models, using semantic versioning in the last
   component of the module name (`.version_<x_y>`).
 * when a new version is in development, it will contain a `_dev` suffix for signalling it
-  (`.version_<x_y>_dev`). Such version are not considered stable yet.
+  (`.version_<x_y>_dev`). Such versions are not considered stable yet.
 * other (non `_dev`) versions included in releases of this package are considered stable, albeit
   not all of them might be supported by the IBM Quantum platform at a given time. In particular,
   the programs included in the initial release of this library (`executor` and `noise_learner_v3`)
