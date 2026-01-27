@@ -66,9 +66,7 @@ class OptionsModel(BaseModel):
     layer_pair_depths: list[int] = [0, 1, 2, 4, 16, 32]
     """The circuit depths (measured in number of pairs) to use in Pauli Lindblad experiments."""
 
-    post_selection: PostSelectionOptionsModel = Field(
-        default_factory=PostSelectionOptionsModel
-    )
+    post_selection: PostSelectionOptionsModel = Field(default_factory=PostSelectionOptionsModel)
     """Options for post selecting the results of noise learning circuits."""
 
 
