@@ -29,11 +29,7 @@ from ...tensor_model import F64TensorModel, TensorModel
 DataTree: TypeAlias = (
     list["DataTree"] | dict[str, "DataTree"] | TensorModel | str | float | int | bool | None
 )
-"""Arbitrary nesting of lists and dicts with typed leaves.
-
-Leaf values can be a standard JSON Python types (``str``, ``float``, ``int``, ``bool``, ``None``),
-or a :class:`~.TensorModel`.
-"""
+"""Arbitrary nesting of lists and dicts with typed leaves."""
 
 
 class ParamsModel(BaseParamsModel):
