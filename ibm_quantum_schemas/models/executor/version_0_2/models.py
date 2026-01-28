@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import Annotated, Literal, TypeAlias, Union
+from typing import Annotated, Literal, Union
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -26,9 +26,9 @@ from ...qpy_model import QpyModelV13ToV17
 from ...samplex_model import SamplexModelSSV1ToSSV2 as SamplexModel
 from ...tensor_model import F64TensorModel, TensorModel
 
-# Ignoring UP007 (auto upgrade Union to |) is required here some versions of Pydantic can't handle
-# this recursive forward reference.
-DataTree: TypeAlias = Union[  # noqa: UP007
+# Ignoring UP007 (auto upgrade Union to |) is required here some versions of Python+Pydantic can't
+# handle this recursive forward reference.
+DataTree = Union[  # noqa: UP007
     list["DataTree"], dict[str, "DataTree"], TensorModel, str, float, int, bool, None
 ]
 """Arbitrary nesting of lists and dicts with typed leaves."""
