@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import Annotated, Literal
+from typing import Annotated, Literal, TypeAlias
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -26,11 +26,14 @@ from ...qpy_model import QpyModelV13ToV17
 from ...samplex_model import SamplexModelSSV1ToSSV2 as SamplexModel
 from ...tensor_model import F64TensorModel, TensorModel
 
-DataTreeLeaf = TensorModel | str | float | int | bool | None
-"""Leaf types for a data tree structure."""
+DataTree: TypeAlias = (
+    list["DataTree"] | dict[str, "DataTree"] | TensorModel | str | float | int | bool | None
+)
+"""Arbitrary nesting of lists and dicts with typed leaves.
 
-DataTree = DataTreeLeaf | list["DataTree"] | dict[str, "DataTree"]
-"""Arbitrary nesting of lists and dicts with typed leaves."""
+Leaf values can be a standard JSON Python types (``str``, ``float``, ``int``, ``bool``, ``None``),
+or a :class:`~.TensorModel`.
+"""
 
 
 class ParamsModel(BaseParamsModel):
@@ -318,8 +321,3 @@ class QuantumProgramResultModel(BaseModel):
 
     passthrough_data: DataTree = None
     """Arbitrary nested data passed through execution without modification."""
-
-
-# Rebuild models to resolve recursive DataTree type
-QuantumProgramModel.model_rebuild()
-QuantumProgramResultModel.model_rebuild()
