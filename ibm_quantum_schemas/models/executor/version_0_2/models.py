@@ -28,6 +28,8 @@ from ...samplex_model import SamplexModelSSV1ToSSV2 as SamplexModel
 from ...tensor_model import F64TensorModel, TensorModel
 
 # TypeAliasType is required for Pydantic to handle this recursive type correctly.
+# Note that TypeAliasType is a backport for Python<3.12, so that when drop Python 3.11 support and
+# lower, this can be updated to `type DataTree = ...`.
 # TensorModel must come before dict so Pydantic tries it first during deserialization.
 DataTree = TypeAliasType(
     "DataTree",
