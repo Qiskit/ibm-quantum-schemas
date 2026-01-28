@@ -15,9 +15,10 @@
 from __future__ import annotations
 
 import datetime
-from typing import Annotated, Literal, Union
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, model_validator
+from typing_extensions import TypeAliasType
 
 from ....aliases import Self
 from ...base_params_model import BaseParamsModel
@@ -26,11 +27,11 @@ from ...qpy_model import QpyModelV13ToV17
 from ...samplex_model import SamplexModelSSV1ToSSV2 as SamplexModel
 from ...tensor_model import F64TensorModel, TensorModel
 
-# Ignoring UP007 (auto upgrade Union to |) is required here some versions of Python+Pydantic can't
-# handle this recursive forward reference.
-DataTree = Union[  # noqa: UP007
-    list["DataTree"], dict[str, "DataTree"], TensorModel, str, float, int, bool, None
-]
+# TypeAliasType is required for Pydantic to handle this recursive type correctly.
+DataTree = TypeAliasType(
+    "DataTree",
+    list["DataTree"] | dict[str, "DataTree"] | TensorModel | str | float | int | bool | None,
+)
 """Arbitrary nesting of lists and dicts with typed leaves."""
 
 
@@ -204,7 +205,7 @@ class QuantumProgramModel(BaseModel):
          over shots.
     """
 
-    passthrough_data: Annotated[DataTree, Field(default=None)]
+    passthrough_data: DataTree = None
     """Arbitrary nested data passed through execution without modification."""
 
 
@@ -317,9 +318,5 @@ class QuantumProgramResultModel(BaseModel):
     metadata: MetadataModel
     """Execution metadata pertaining to the job as a whole."""
 
-    passthrough_data: Annotated[DataTree, Field(default=None)]
+    passthrough_data: DataTree = None
     """Arbitrary nested data passed through execution without modification."""
-
-
-QuantumProgramModel.model_rebuild()
-QuantumProgramResultModel.model_rebuild()
