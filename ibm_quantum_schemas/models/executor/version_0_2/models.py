@@ -204,7 +204,7 @@ class QuantumProgramModel(BaseModel):
          over shots.
     """
 
-    passthrough_data: DataTree = None
+    passthrough_data: Annotated[DataTree, Field(default=None)]
     """Arbitrary nested data passed through execution without modification."""
 
 
@@ -317,7 +317,7 @@ class QuantumProgramResultModel(BaseModel):
     metadata: MetadataModel
     """Execution metadata pertaining to the job as a whole."""
 
-    passthrough_data: DataTree = None
+    passthrough_data: Annotated[DataTree, Field(default=None)]
     """Arbitrary nested data passed through execution without modification."""
 
 
