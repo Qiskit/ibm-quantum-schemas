@@ -28,9 +28,10 @@ from ...samplex_model import SamplexModelSSV1ToSSV2 as SamplexModel
 from ...tensor_model import F64TensorModel, TensorModel
 
 # TypeAliasType is required for Pydantic to handle this recursive type correctly.
+# TensorModel must come before dict so Pydantic tries it first during deserialization.
 DataTree = TypeAliasType(
     "DataTree",
-    list["DataTree"] | dict[str, "DataTree"] | TensorModel | str | float | int | bool | None,
+    list["DataTree"] | TensorModel | dict[str, "DataTree"] | str | float | int | bool | None,
 )
 """Arbitrary nesting of lists and dicts with typed leaves."""
 
