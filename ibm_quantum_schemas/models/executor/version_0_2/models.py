@@ -18,6 +18,7 @@ import datetime
 from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, model_validator
+from typing_extensions import TypeAliasType
 
 from ....aliases import Self
 from ...base_params_model import BaseParamsModel
@@ -26,10 +27,14 @@ from ...qpy_model import QpyModelV13ToV17
 from ...samplex_model import SamplexModelSSV1ToSSV2 as SamplexModel
 from ...tensor_model import F64TensorModel, TensorModel
 
-DataTreeLeaf = TensorModel | str | float | int | bool | None
-"""Leaf types for a data tree structure."""
-
-DataTree = DataTreeLeaf | list["DataTree"] | dict[str, "DataTree"]
+# TypeAliasType is required for Pydantic to handle this recursive type correctly.
+# Note that TypeAliasType is a backport for Python<3.12, so that when drop Python 3.11 support and
+# lower, this can be updated to `type DataTree = ...`.
+# TensorModel must come before dict so Pydantic tries it first during deserialization.
+DataTree = TypeAliasType(
+    "DataTree",
+    list["DataTree"] | TensorModel | dict[str, "DataTree"] | str | float | int | bool | None,
+)
 """Arbitrary nesting of lists and dicts with typed leaves."""
 
 
