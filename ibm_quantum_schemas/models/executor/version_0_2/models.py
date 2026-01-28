@@ -319,3 +319,7 @@ class QuantumProgramResultModel(BaseModel):
 
     passthrough_data: DataTree = None
     """Arbitrary nested data passed through execution without modification."""
+
+
+QuantumProgramModel.model_rebuild()
+QuantumProgramResultModel.model_rebuild()
