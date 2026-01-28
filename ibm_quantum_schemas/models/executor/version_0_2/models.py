@@ -318,3 +318,8 @@ class QuantumProgramResultModel(BaseModel):
 
     passthrough_data: DataTree = None
     """Arbitrary nested data passed through execution without modification."""
+
+
+# Rebuild models to resolve recursive DataTree type
+QuantumProgramModel.model_rebuild()
+QuantumProgramResultModel.model_rebuild()
