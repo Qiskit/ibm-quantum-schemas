@@ -23,6 +23,7 @@ from ibm_quantum_schemas.models.noise_learner_v3.version_0_1.models import (
     NoiseLearnerV3ResultsModel,
     OptionsModel,
     ParamsModel,
+    PostSelectionOptionsModel,
     TREXResultMetadataModel,
     TREXResultPostSelectionMetadataModel,
 )
@@ -34,6 +35,30 @@ from ibm_quantum_schemas.models.tensor_model import F64TensorModel
 def test_initialization_params_model(qpy_version):
     """Test initialization for ``ParamsModel`` and related models."""
     options = OptionsModel()
+
+    circuit = QuantumCircuit(3)
+    circuit.h(0)
+    circuit.cx(0, 1)
+    circuit.measure_all()
+    instructions = QpyModelV13ToV16.from_quantum_circuit(circuit, qpy_version)
+
+    params_model = ParamsModel(instructions=instructions, options=options)
+
+    assert params_model.schema_version == "v0.1"
+    assert params_model.instructions == instructions
+    assert params_model.options == options
+
+
+@pytest.mark.skip_if_qiskit_too_old_for_qpy
+@pytest.mark.parametrize("qpy_version", [13, 14, 15, 16])
+def test_initialization_params_model_with_non_default_options(qpy_version):
+    """Test initialization for ``ParamsModel`` with non-default option fields."""
+    options = OptionsModel(
+        shots_per_randomization=10,
+        num_randomizations=2,
+        layer_pair_depths=[2, 6],
+        post_selection=PostSelectionOptionsModel(enable=True, x_pulse_type="rx", strategy="edge"),
+    )
 
     circuit = QuantumCircuit(3)
     circuit.h(0)
