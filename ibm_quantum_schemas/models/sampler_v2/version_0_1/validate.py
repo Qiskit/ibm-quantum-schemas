@@ -13,4 +13,3 @@
 # pylint: disable=too-many-return-statements
 
 """Validate SamplerV2 v0.1"""
-

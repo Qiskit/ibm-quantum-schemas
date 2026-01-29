@@ -18,28 +18,27 @@ import base64
 import datetime
 import io
 import zlib
-from typing import Annotated, Literal, Optional, Union, Any
+from typing import Annotated, Any, Literal
 
 import numpy as np
-from pydantic import BaseModel, Field, field_validator, model_validator
-from ....aliases import Self
+from pydantic import BaseModel, Field, model_validator
 
+from ....aliases import Self
 from ...base_params_model import BaseParamsModel
 from ...qpy_model import QpyModelV13ToV16
-from ...tensor_model import F64TensorModel, TensorModel
-
+from ...tensor_model import F64TensorModel
 
 # Type alias for PUB tuple format
 # RuntimeEncoder encodes SamplerPub as: (circuit, parameter_values, shots)
 PubModel = Annotated[
-    tuple[QpyModelV13ToV16, F64TensorModel, Optional[int]],
+    tuple[QpyModelV13ToV16, F64TensorModel, int | None],
     Field(
         description=(
             "A Primitive Unified Bloc (PUB) as a tuple: (circuit, parameter_values, shots). "
             "The circuit is QPY-encoded, parameter_values is a tensor of parameter bindings, "
             "and shots is optional (None means use default_shots)."
         )
-    )
+    ),
 ]
 
 
@@ -54,6 +53,7 @@ class ParamsModel(BaseParamsModel):
     options: OptionsModel
     """Options for runtime."""
 
+
 class DynamicalDecouplingOptionsModel(BaseModel):
     """Options for dynamical decoupling (DD)."""
 
@@ -64,7 +64,7 @@ class DynamicalDecouplingOptionsModel(BaseModel):
     """
     sequence_type: Literal["XX", "XpXm", "XY4"] = "XX"
     r"""Which dynamical decoupling sequence to use.
-    
+
         Default: ``"XX"``.
 
         * ``"XX"``: use the sequence ``tau/2 - (+X) - tau - (+X) - tau/2``
@@ -121,9 +121,10 @@ class TwirlingOptionsModel(BaseModel):
 
     .. note::
       The ``shots`` value specified in a PUB or in the ``run()`` method is considered part of the
-      primitive execution interface and therefore is always obeyed. ``default_shots``, on the other hand,
-      is considered a Qiskit Runtime specific option. Therefore, the product of
-      ``num_randomizations`` and ``shots_per_randomization`` takes precedence over ``default_shots``.
+      primitive execution interface and therefore is always obeyed. ``default_shots``, on the other
+      hand, is considered a Qiskit Runtime specific option. Therefore, the product of
+      ``num_randomizations`` and ``shots_per_randomization`` takes precedence over
+      ``default_shots``.
     """
 
     shots_per_randomization: int | Literal["auto"] = "auto"
@@ -140,9 +141,10 @@ class TwirlingOptionsModel(BaseModel):
 
     .. note::
       The ``shots`` value specified in a PUB or in the ``run()`` method is considered part of the
-      primitive execution interface and therefore is always obeyed. ``default_shots``, on the other hand,
-      is considered a Qiskit Runtime specific option. Therefore, the product of
-      ``num_randomizations`` and ``shots_per_randomization`` takes precedence over ``default_shots``.
+      primitive execution interface and therefore is always obeyed. ``default_shots``, on the other
+      hand, is considered a Qiskit Runtime specific option. Therefore, the product of
+      ``num_randomizations`` and ``shots_per_randomization`` takes precedence over
+      ``default_shots``.
     """
 
     strategy: Literal["active", "active-circuit", "active-accum", "all"] = "active-accum"
@@ -165,7 +167,7 @@ class ExecutionOptionsModel(BaseModel):
     init_qubits: bool = True
     """Whether to reset the qubits to the ground state for each shot."""
 
-    rep_delay: Union[Optional[float], None] = None
+    rep_delay: float | None | None = None
     r"""The repetition delay in seconds. This is the delay between the last measurement and
     the subsequent quantum circuit. This is only supported on backends that have
     ``backend.dynamic_reprate_enabled=True``. It must be from the
@@ -199,7 +201,7 @@ class ExecutionOptionsModel(BaseModel):
 
 class OptionsModel(BaseModel):
     """Runtime options.
-    
+
     This matches the wire format used by qiskit-ibm-runtime and validated by
     qiskit-ibm-primitives YAML schema.
     """
@@ -211,7 +213,9 @@ class OptionsModel(BaseModel):
     execution: ExecutionOptionsModel = Field(default_factory=ExecutionOptionsModel)
     """Execution time options (init_qubits, rep_delay, meas_type)."""
 
-    dynamical_decoupling: DynamicalDecouplingOptionsModel = Field(default_factory=DynamicalDecouplingOptionsModel)
+    dynamical_decoupling: DynamicalDecouplingOptionsModel = Field(
+        default_factory=DynamicalDecouplingOptionsModel
+    )
     """Dynamical decoupling options."""
 
     twirling: TwirlingOptionsModel = Field(default_factory=TwirlingOptionsModel)
@@ -219,7 +223,7 @@ class OptionsModel(BaseModel):
 
     experimental: dict[str, Any] = Field(default_factory=dict)
     """Experimental options.
-    
+
     Values must be JSON-serializable."""
 
     @model_validator(mode="after")
@@ -232,109 +236,104 @@ class OptionsModel(BaseModel):
             )
         return self
 
+
 # ============================================================================
 # Result Models
 # ============================================================================
 
+
 class BitArrayModel(BaseModel):
     """Model for BitArray data.
-    
+
     BitArray stores measurement outcomes as a uint8 numpy array.
     """
-    
+
     array: str
     """Base64-encoded, zlib-compressed NumPy binary data."""
-    
+
     num_bits: int
     """Number of bits per shot (classical register size)."""
 
     @classmethod
-    def from_numpy(cls, array: np.ndarray, num_bits: int) -> "BitArrayModel":
+    def from_numpy(cls, array: np.ndarray, num_bits: int) -> BitArrayModel:
         """Instantiate from a NumPy array.
-        
+
         Args:
             array: A uint8 numpy array containing bit-packed measurement data.
             num_bits: Number of bits per shot (classical register size).
-        
+
         Returns:
             BitArrayModel instance with encoded data.
-            
+
         Raises:
             ValueError: If array is not uint8 dtype.
         """
         if array.dtype != np.uint8:
-            raise ValueError(
-                f"BitArray must be created from uint8 array, got {array.dtype}"
-            )
-        
+            raise ValueError(f"BitArray must be created from uint8 array, got {array.dtype}")
+
         with io.BytesIO() as buff:
             np.save(buff, array, allow_pickle=False)
             buff.seek(0)
             serialized_data = buff.read()
-        
+
         # Compress with zlib
         compressed_data = zlib.compress(serialized_data)
-        
+
         # Encode to base64 string
         encoded_string = base64.standard_b64encode(compressed_data).decode("utf-8")
-        
+
         return cls(array=encoded_string, num_bits=num_bits)
 
     def to_numpy(self) -> np.ndarray:
         """Convert to a NumPy array.
-        
+
         Returns:
             The decoded uint8 numpy array containing bit-packed measurement data.
-            
+
         Raises:
             ValueError: If the data cannot be decoded or is not uint8.
         """
         try:
             # Decode from base64
             decoded = base64.standard_b64decode(self.array)
-            
+
             # Decompress with zlib
             decompressed = zlib.decompress(decoded)
-            
+
             # Deserialize using np.load
             with io.BytesIO(decompressed) as buff:
                 array = np.load(buff, allow_pickle=False)
-            
+
             # Verify it's uint8
             if array.dtype != np.uint8:
-                raise ValueError(
-                    f"BitArray must contain uint8 data, got {array.dtype}"
-                )
-            
-            return array
-            
-        except Exception as e:
-            raise ValueError(
-                f"Failed to decode BitArray data: {e}"
-            ) from e
+                raise ValueError(f"BitArray must contain uint8 data, got {array.dtype}")
 
+            return array
+
+        except Exception as e:
+            raise ValueError(f"Failed to decode BitArray data: {e}") from e
 
 
 class DataBinModel(BaseModel):
     """Model for DataBin data.
-    
+
     DataBin is a container for measurement results, organized by classical register names.
     Each field contains a BitArray with the measurement outcomes for that register.
     """
-    
+
     shape: list[int]
     """The shape of the pub (e.g., [2, 3] for a 2x3 parameter sweep)."""
-    
+
     field_names: list[str]
     """List of field names in the DataBin (e.g., ["meas", "alpha"]).
-    
+
     Note: This field is redundant (same as fields.keys()) but included to match
     the qiskit-ibm-runtime convention.
     """
-    
+
     fields: dict[str, BitArrayModel]
     """Dictionary of measurement results.
-    
+
     Keys are classical register names, values are BitArray objects containing
     the measurement outcomes for that register.
     """
@@ -342,78 +341,78 @@ class DataBinModel(BaseModel):
 
 class SamplerPubResultModel(BaseModel):
     """Model for SamplerPubResult data.
-    
+
     Contains the measurement results (DataBin) and metadata for a single pub.
     """
-    
+
     data: DataBinModel
     """The measurement results for this pub, organized by classical register."""
-    
+
     metadata: dict[str, Any]
     """Circuit-specific metadata for this pub."""
 
 
 class ChunkPart(BaseModel):
     """A description of the contents of a single part of an execution chunk."""
-    
+
     idx_item: int
     """The index of a pub in the sampler job."""
-    
+
     size: int
     """The number of elements from the pub that were executed.
-    
+
     For example, if a pub has shape (10, 5), then it has a total of 50
-    elements, so if this size is 10, it constitutes 20% of the total work 
+    elements, so if this size is 10, it constitutes 20% of the total work
     for the pub.
     """
 
 
 class ChunkSpan(BaseModel):
     """Timing information about a single chunk of execution.
-    
+
     Note: This span may include some amount of non-circuit time.
     """
-    
+
     start: datetime.datetime
     """The start time of the execution chunk in UTC."""
-    
+
     stop: datetime.datetime
     """The stop time of the execution chunk in UTC."""
-    
+
     parts: list[ChunkPart]
     """A description of which parts of the sampler job are contained in this chunk."""
 
 
 class MetadataModel(BaseModel):
     """Execution metadata for the sampler job."""
-    
+
     chunk_timing: list[ChunkSpan]
     """Timing information about all executed chunks of the sampler job."""
 
 
 class SamplerResultModel(BaseModel):
     """Model for PrimitiveResult data.
-    
+
     This is the top-level result object returned by the Sampler primitive.
     It contains a list of results (one per pub) and job-level metadata.
-    
+
     Note: The field name is 'pub_results', not 'data'. This matches Qiskit's
     PrimitiveResult API convention.
     """
-    
+
     pub_results: list[SamplerPubResultModel]
     """Resulting data for each pub in the sampler job.
-    
+
     Each element corresponds to one pub submitted to the sampler, containing
     the measurement results (DataBin) and pub-specific metadata.
     """
-    
+
     metadata: dict[str, Any]
     """Execution metadata pertaining to the job as a whole.
-    
+
     May include timing information, backend details, and other job-level data.
     """
-    
+
     @property
     def schema_version(self) -> str:
         """Schema version is implicitly v0.1 for this module."""
