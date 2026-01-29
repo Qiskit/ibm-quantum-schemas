@@ -2,4 +2,7 @@
 
 ### Added
 
-- Initial release
+- `executor` model version `0.1`
+- `noise-learner-v3` model version `0.1`
+- `executor` model version `0.2_dev`
+- `noise-learner-v3` model version `0.2_dev`
