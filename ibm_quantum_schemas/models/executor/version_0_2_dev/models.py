@@ -1,6 +1,6 @@
 # This code is a Qiskit project.
 #
-# (C) Copyright IBM 2025.
+# (C) Copyright IBM 2026.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -12,28 +12,41 @@
 
 """Models"""
 
+from __future__ import annotations
+
 import datetime
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, Field, model_validator
+from typing_extensions import TypeAliasType
 
 from ....aliases import Self
 from ...base_params_model import BaseParamsModel
 from ...pauli_lindblad_map_model import PauliLindbladMapModel
-from ...qpy_model import QpyModelV13ToV16
-from ...samplex_model import SamplexModelSSV1 as SamplexModel
+from ...qpy_model import QpyModelV13ToV17
+from ...samplex_model import SamplexModelSSV1ToSSV2 as SamplexModel
 from ...tensor_model import F64TensorModel, TensorModel
+
+# TypeAliasType is required for Pydantic to handle this recursive type correctly.
+# Note that TypeAliasType is a backport for Python<3.12, so that when drop Python 3.11 support and
+# lower, this can be updated to `type DataTree = ...`.
+# TensorModel must come before dict so Pydantic tries it first during deserialization.
+DataTree = TypeAliasType(
+    "DataTree",
+    list["DataTree"] | TensorModel | dict[str, "DataTree"] | str | float | int | bool | None,
+)
+"""Arbitrary nesting of lists and dicts with typed leaves."""
 
 
 class ParamsModel(BaseParamsModel):
     """Schema version 1 of the inner parameters."""
 
-    schema_version: Literal["v0.1"] = "v0.1"
+    schema_version: Literal["v0.2"] = "v0.2"
 
-    quantum_program: "QuantumProgramModel"
+    quantum_program: QuantumProgramModel
     """The quantum program to execution."""
 
-    options: "OptionsModel"
+    options: OptionsModel
     """Options for runtime."""
 
 
@@ -52,6 +65,20 @@ class OptionsModel(BaseModel):
     default value ``backend.default_rep_delay`` is used.
     """
 
+    scheduler_timing: bool = False
+    """Whether to return circuit schedule timing of each provided quantum circuit.
+
+    Setting this value to true will cause corresponding metadata of every program item to be
+    populated in the returned data.
+    """
+
+    stretch_values: bool = False
+    """Whether to return numeric resolutions of stretches for each provided quantum circuit.
+
+    Setting this value to true will cause corresponding metadata of every program item to be
+    populated in the returned data.
+    """
+
 
 class CircuitItemModel(BaseModel):
     """Execution specifications for a single quantum circuit."""
@@ -59,7 +86,7 @@ class CircuitItemModel(BaseModel):
     item_type: Literal["circuit"] = "circuit"
     """The type of quantum program item."""
 
-    circuit: QpyModelV13ToV16
+    circuit: QpyModelV13ToV17
     """A QPY-encoded circuit."""
 
     circuit_arguments: F64TensorModel
@@ -99,7 +126,7 @@ class SamplexItemModel(BaseModel):
     item_type: Literal["samplex"] = "samplex"
     """The type of quantum program item."""
 
-    circuit: QpyModelV13ToV16
+    circuit: QpyModelV13ToV17
     """A QPY-encoded circuit."""
 
     samplex: SamplexModel
@@ -164,6 +191,74 @@ class QuantumProgramModel(BaseModel):
 
         return self
 
+    meas_level: Literal["classified", "kerneled", "avg_kerneled"] = "classified"
+    """The level at which to return all classical register measurement results.
+
+    This option sets the return type of all classical registers in all quantum program items and
+    determines whether the raw complex data from low-level measurement devices is discriminated
+    into bits or not.
+
+     - "classified": Classical register data is returned as boolean arrays with the intrinsic shape
+         ``(num_shots, creg_size)``.
+     - "kerneled": Classical register data is returned as a complex array with the intrinsic shape
+         ``(num_shots, creg_size)``, where each entry represents an IQ data point (resulting from
+         kerneling the measurement trace) in arbitrary units.
+     - "avg_kerneled": Classical register data is returned as a complex array with the intrinsic
+         shape ``(creg_size,)``, where data is equivalent to "kerneled" except additionally averaged
+         over shots.
+    """
+
+    passthrough_data: DataTree = None
+    """Arbitrary nested data passed through execution without modification."""
+
+
+class SchedulerTimingModel(BaseModel):
+    """Describes the timing of a scheduled circuit.
+
+    All timing information is expressed in terms of multiples of the quantity ``dt``, time step
+    duration of the control electronics, which can be queried in backend and target properties.
+    """
+
+    timing: str
+    """A description of circuit timing in a comma-separated text format."""
+
+    circuit_duration: int
+    """The duration of the circuit in ``dt`` steps."""
+
+
+class StretchValueModel(BaseModel):
+    """Describes circuit stretch value resolutions.
+
+    All timing information is expressed in terms of multiples of the quantity ``dt``, time step
+    duration of the control electronics, which can be queried in backend and target properties.
+    """
+
+    name: str
+    """The name of the stretch."""
+
+    value: int
+    """The resolved stretch value, up to the remainder, in units of ``dt``."""
+
+    remainder: int
+    """The time left over if ``value`` were to be used each stretch, in units of ``dt``."""
+
+    expanded_values: list[tuple[int, int]]
+    """A sequence of pairs ``(time, duration)`` indicating the time and duration of each delay.
+
+    All units are ``dt``, where the ``time`` denotes the absolute time of a delay in the circuit
+    schedule, and the ``duration`` denotes the total duration of the delay.
+    """
+
+
+class ItemMetadataModel(BaseModel):
+    """Per-item metadata for quantum program results."""
+
+    scheduler_timing: SchedulerTimingModel | None = None
+    """Scheduled circuit timing information, if it is available."""
+
+    stretch_values: list[StretchValueModel] | None = None
+    """Stretch value resolution, if it is available."""
+
 
 class QuantumProgramResultItemModel(BaseModel):
     """Results for a single quantum program item."""
@@ -171,7 +266,7 @@ class QuantumProgramResultItemModel(BaseModel):
     results: dict[str, TensorModel]
     """A map from results to their tensor values."""
 
-    metadata: None
+    metadata: ItemMetadataModel
     """Metadata pertaining to the execution of this particular quantum program item."""
 
 
@@ -217,7 +312,7 @@ class MetadataModel(BaseModel):
 class QuantumProgramResultModel(BaseModel):
     """Result from executing a quantum program."""
 
-    schema_version: Literal["v0.1"] = "v0.1"
+    schema_version: Literal["v0.2"] = "v0.2"
     """Schema version of the result type."""
 
     data: list[QuantumProgramResultItemModel]
@@ -226,12 +321,5 @@ class QuantumProgramResultModel(BaseModel):
     metadata: MetadataModel
     """Execution metadata pertaining to the job as a whole."""
 
-    @field_validator("metadata", mode="before")
-    @classmethod
-    def upgrade_none_to_metadata(cls, value):
-        """Upgrade none values to empty metadata."""
-        # this is to account for an older version of v0.1, before its release, where metadata was
-        # temporarily set to None
-        if value is None:
-            value = MetadataModel(chunk_timing=[])
-        return value
+    passthrough_data: DataTree = None
+    """Arbitrary nested data passed through execution without modification."""
