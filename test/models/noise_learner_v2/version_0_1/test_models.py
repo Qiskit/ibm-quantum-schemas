@@ -32,8 +32,8 @@ FIXTURES_DIR = Path(__file__).parent / "fixtures"
     "fixture_name,expected_num_circuits,expected_options",
     [
         (
-            "basic_single_circuit",
-            1,
+            "minimum_input",
+            0,
             {
                 "max_layers_to_learn": 4,
                 "shots_per_randomization": 128,

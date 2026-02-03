@@ -2,22 +2,10 @@
   "circuits": [
     {
       "__type__": "QuantumCircuit",
-      "__value__": "eJwL9Az29gzhY2JmgALGgkIGrjQGDgYGBiYGBACxGZHYDMmZRcmlmSW6JuYwJdW1hYxgWUbGQgZUwAhnsWKIoAIP98SSVIh2NmTrMM1jdI6Aqy2Eiv1HAjDFAO7FGfI="
+      "__value__": "eJwL9Az29gzhY2JmgALGgkIGrjQGDgYGBiYGBACxGZHYDMmZRcmlmSW6JmYwJdW1hYxgWUbGQgZUwAhnsWKIoAIP98SSVIh2NmTrMM1jdI6Aqy2Eiv1HAjDFAO4lGfE="
     }
   ],
   "options": {
-    "max_layers_to_learn": 4,
-    "shots_per_randomization": 128,
-    "num_randomizations": 32,
-    "layer_pair_depths": [
-      0,
-      1,
-      2,
-      4,
-      16,
-      32
-    ],
-    "twirling_strategy": "active-accum",
     "experimental": {
       "some_flag": true,
       "test_value": 42

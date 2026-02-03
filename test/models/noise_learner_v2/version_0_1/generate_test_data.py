@@ -50,21 +50,10 @@ def create_inputs_dict(circuits, options_dict):
     return inputs
 
 
-def generate_basic_single_circuit():
+def generate_minimum_input():
     """Generate a basic test case with a single circuit and default options."""
-    circuit = QuantumCircuit(2)
-    circuit.h(0)
-    circuit.cx(0, 1)
     
-    options = {
-        "max_layers_to_learn": 4,
-        "shots_per_randomization": 128,
-        "num_randomizations": 32,
-        "layer_pair_depths": [0, 1, 2, 4, 16, 32],
-        "twirling_strategy": "active-accum",
-    }
-    
-    return create_inputs_dict([circuit], options)
+    return create_inputs_dict([], {})
 
 
 def generate_multiple_circuits():
@@ -83,11 +72,6 @@ def generate_multiple_circuits():
     circuit3.cx(0, 1)
     
     options = {
-        "max_layers_to_learn": 4,
-        "shots_per_randomization": 128,
-        "num_randomizations": 32,
-        "layer_pair_depths": [0, 1, 2, 4, 16, 32],
-        "twirling_strategy": "active-accum",
     }
     
     return create_inputs_dict([circuit1, circuit2, circuit3], options)
@@ -121,10 +105,6 @@ def generate_all_strategies():
     
     for strategy in ["active", "active-circuit", "active-accum", "all"]:
         options = {
-            "max_layers_to_learn": 4,
-            "shots_per_randomization": 128,
-            "num_randomizations": 32,
-            "layer_pair_depths": [0, 1, 2, 4, 16, 32],
             "twirling_strategy": strategy,
         }
         results[strategy] = create_inputs_dict([circuit], options)
@@ -140,10 +120,6 @@ def generate_none_max_layers():
     
     options = {
         "max_layers_to_learn": None,
-        "shots_per_randomization": 128,
-        "num_randomizations": 32,
-        "layer_pair_depths": [0, 1, 2, 4, 16, 32],
-        "twirling_strategy": "active-accum",
     }
     
     return create_inputs_dict([circuit], options)
@@ -156,11 +132,6 @@ def generate_experimental_options():
     circuit.cx(0, 1)
     
     options = {
-        "max_layers_to_learn": 4,
-        "shots_per_randomization": 128,
-        "num_randomizations": 32,
-        "layer_pair_depths": [0, 1, 2, 4, 16, 32],
-        "twirling_strategy": "active-accum",
         "experimental": {"some_flag": True, "test_value": 42},
     }
     
@@ -174,7 +145,7 @@ def main():
     
     # Generate test cases
     test_cases = {
-        "basic_single_circuit": generate_basic_single_circuit(),
+        "minimum_input": generate_minimum_input(),
         "multiple_circuits": generate_multiple_circuits(),
         "custom_options": generate_custom_options(),
         "none_max_layers": generate_none_max_layers(),
