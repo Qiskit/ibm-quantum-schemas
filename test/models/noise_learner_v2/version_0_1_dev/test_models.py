@@ -40,6 +40,7 @@ FIXTURES_DIR = Path(__file__).parent / "fixtures"
                 "twirling_strategy": "active-accum",
                 "support_qiskit": True,
                 "experimental": None,
+                "simulator": None,
             },
         ),
         (
@@ -53,6 +54,7 @@ FIXTURES_DIR = Path(__file__).parent / "fixtures"
                 "twirling_strategy": "active-accum",
                 "support_qiskit": True,
                 "experimental": None,
+                "simulator": None,
             },
         ),
         (
@@ -66,6 +68,7 @@ FIXTURES_DIR = Path(__file__).parent / "fixtures"
                 "twirling_strategy": "active-circuit",
                 "support_qiskit": True,
                 "experimental": None,
+                "simulator": None,
             },
         ),
         (
@@ -79,6 +82,7 @@ FIXTURES_DIR = Path(__file__).parent / "fixtures"
                 "twirling_strategy": "active-accum",
                 "support_qiskit": True,
                 "experimental": None,
+                "simulator": None,
             },
         ),
         (
@@ -92,6 +96,26 @@ FIXTURES_DIR = Path(__file__).parent / "fixtures"
                 "twirling_strategy": "active-accum",
                 "support_qiskit": True,
                 "experimental": {"some_flag": True, "test_value": 42},
+                "simulator": None,
+            },
+        ),
+        (
+            "simulator_options",
+            1,
+            {
+                "max_layers_to_learn": 4,
+                "shots_per_randomization": 128,
+                "num_randomizations": 32,
+                "layer_pair_depths": [0, 1, 2, 4, 16, 32],
+                "twirling_strategy": "active-accum",
+                "support_qiskit": True,
+                "experimental": None,
+                "simulator": {
+                    "seed_simulator": 42,
+                    "coupling_map": [[0, 1], [1, 2]],
+                    "basis_gates": ["u1", "u2", "u3", "cx"],
+                    "noise_model": None,
+                },
             },
         ),
     ],
@@ -122,9 +146,17 @@ def test_params_model_from_runtime_json(fixture_name, expected_num_circuits, exp
     
     # Verify options
     assert isinstance(params.options, OptionsModel)
+    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import SimulatorOptionsModel
     for key, expected_value in expected_options.items():
         actual_value = getattr(params.options, key)
-        assert actual_value == expected_value, f"Option {key}: expected {expected_value}, got {actual_value}"
+        # Special handling for simulator field which is a SimulatorOptionsModel
+        if key == "simulator" and expected_value is not None:
+            assert isinstance(actual_value, SimulatorOptionsModel)
+            for sim_key, sim_expected in expected_value.items():
+                sim_actual = getattr(actual_value, sim_key)
+                assert sim_actual == sim_expected, f"Simulator option {sim_key}: expected {sim_expected}, got {sim_actual}"
+        else:
+            assert actual_value == expected_value, f"Option {key}: expected {expected_value}, got {actual_value}"
 
 
 @pytest.mark.parametrize(

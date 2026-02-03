@@ -26,12 +26,19 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent.parent 
 from qiskit.circuit import QuantumCircuit
 from qiskit_ibm_runtime.utils import RuntimeEncoder
 
+from dataclasses import asdict, fields, replace
+from qiskit_ibm_runtime.options.noise_learner_options import NoiseLearnerOptions
 
 def create_inputs_dict(circuits, options_dict):
     """Simulate the inputs dict creation from noise_learner.py.
     
     This mimics the logic in NoiseLearner.run() method.
     """
+    print("---")
+    for field in fields(NoiseLearnerOptions):
+        print(field.name)
+    print("---")
+
     # Simulate _get_inputs_options logic
     learner_options = {}
     ignored_names = ["_VERSION", "max_execution_time", "environment"]
@@ -137,6 +144,23 @@ def generate_experimental_options():
     
     return create_inputs_dict([circuit], options)
 
+def generate_simulator_options():
+    """Generate test case with simulator options."""
+    circuit = QuantumCircuit(2)
+    circuit.h(0)
+    circuit.cx(0, 1)
+    
+    options = {
+        "simulator": {
+            "seed_simulator": 42,
+            "coupling_map": [[0, 1], [1, 2]],
+            "basis_gates": ["u1", "u2", "u3", "cx"],
+        },
+    }
+    
+    return create_inputs_dict([circuit], options)
+
+
 
 def main():
     """Generate all test fixtures."""
@@ -150,6 +174,7 @@ def main():
         "custom_options": generate_custom_options(),
         "none_max_layers": generate_none_max_layers(),
         "experimental_options": generate_experimental_options(),
+        "simulator_options": generate_simulator_options(),
     }
     
     # Add strategy-specific test cases

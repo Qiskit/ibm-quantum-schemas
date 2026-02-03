@@ -15,10 +15,10 @@
 import struct
 import zlib
 from io import BytesIO
-from typing import Literal
+from typing import Annotated, Literal
 
 import pybase64
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, model_validator, conlist
 from qiskit.qpy.formats import FILE_HEADER_V10, FILE_HEADER_V10_PACK, FILE_HEADER_V10_SIZE
 
 from ...base_params_model import BaseParamsModel
@@ -81,6 +81,41 @@ class ParamsModel(BaseParamsModel):
     """Options for the noise learner runtime."""
 
 
+class SimulatorOptionsModel(BaseModel):
+    """Simulator options for the noise learner."""
+
+    noise_model: dict | None = None
+    """Noise model for the simulator.
+    
+    This option is only supported in local testing mode.
+    Default: ``None``.
+    """
+
+    seed_simulator: int | None = None
+    """Random seed to control sampling.
+    
+    Default: ``None``.
+    """
+
+    coupling_map: list[Annotated[list[int], conlist(int, min_length=2, max_length=2)]] | None = None
+    """Directed coupling map to target in mapping.
+    
+    If the coupling map is symmetric, both directions need to be specified.
+    Each entry in the list specifies a directed two-qubit interaction,
+    e.g: ``[[0, 1], [0, 3], [1, 2], [1, 5], [2, 5], [4, 1], [5, 3]]``.
+    
+    Default: ``None``, which implies no connectivity constraints.
+    """
+
+    basis_gates: list[str] | None = None
+    """List of basis gate names to unroll to.
+    
+    For example, ``['u1', 'u2', 'u3', 'cx']``. Unrolling is not done if not set.
+    
+    Default: all basis gates supported by the simulator.
+    """
+
+
 class OptionsModel(BaseModel):
     """Runtime options for the noise learner."""
 
@@ -135,3 +170,6 @@ class OptionsModel(BaseModel):
     These options are subject to change without notification, and stability is not guaranteed.
     """
 
+
+    simulator: SimulatorOptionsModel | dict | None = None
+    """Simulator options."""
