@@ -1,0 +1,6 @@
+{
+  "circuits": [],
+  "options": {
+    "support_qiskit": true
+  }
+}

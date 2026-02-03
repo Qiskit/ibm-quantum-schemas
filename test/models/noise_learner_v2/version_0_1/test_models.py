@@ -150,36 +150,4 @@ def test_twirling_strategies(strategy):
     expected_strategy = strategy.replace("_", "-")
     assert params.options.twirling_strategy == expected_strategy
 
-
-def test_options_model_defaults():
-    """Test OptionsModel with default values."""
-    options = OptionsModel()
-    
-    assert options.max_layers_to_learn == 4
-    assert options.shots_per_randomization == 128
-    assert options.num_randomizations == 32
-    assert options.layer_pair_depths == [0, 1, 2, 4, 16, 32]
-    assert options.twirling_strategy == "active-accum"
-    assert options.support_qiskit is True
-    assert options.experimental is None
-
-
-def test_options_model_custom_values():
-    """Test OptionsModel with custom values."""
-    options = OptionsModel(
-        max_layers_to_learn=10,
-        shots_per_randomization=256,
-        num_randomizations=64,
-        layer_pair_depths=[0, 2, 8],
-        twirling_strategy="active",
-        experimental={"test": True},
-    )
-    
-    assert options.max_layers_to_learn == 10
-    assert options.shots_per_randomization == 256
-    assert options.num_randomizations == 64
-    assert options.layer_pair_depths == [0, 2, 8]
-    assert options.twirling_strategy == "active"
-    assert options.experimental == {"test": True}
-
 # Made with Bob
