@@ -16,13 +16,11 @@ import json
 from pathlib import Path
 
 import pytest
-from qiskit.circuit import QuantumCircuit
 
-from ibm_quantum_schemas.models.noise_learner_v2.version_0_1.models import (
+from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
     OptionsModel,
     ParamsModel,
 )
-from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV16
 
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
@@ -115,7 +113,7 @@ def test_params_model_from_runtime_json(fixture_name, expected_num_circuits, exp
     assert len(params.circuits) == expected_num_circuits
     
     # Verify all circuits are LegacyQpyModelV13to14
-    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1.models import CircuitQpyModelV13to14
+    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import CircuitQpyModelV13to14
     for circuit_model in params.circuits:
         assert isinstance(circuit_model, CircuitQpyModelV13to14)
         assert circuit_model.type_ == "QuantumCircuit"
