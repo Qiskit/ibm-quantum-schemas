@@ -170,6 +170,5 @@ class OptionsModel(BaseModel):
     These options are subject to change without notification, and stability is not guaranteed.
     """
 
-
-    simulator: SimulatorOptionsModel | dict | None = None
+    simulator: SimulatorOptionsModel | None = None
     """Simulator options."""
