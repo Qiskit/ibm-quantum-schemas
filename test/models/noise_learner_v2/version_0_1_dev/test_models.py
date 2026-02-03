@@ -22,11 +22,11 @@ from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
     ParamsModel,
 )
 
-FIXTURES_DIR = Path(__file__).parent / "fixtures"
+TEST_DATA_DIR = Path(__file__).parent / "test_data"
 
 
 @pytest.mark.parametrize(
-    "fixture_name,expected_num_circuits,expected_options",
+    "test_data_name,expected_num_circuits,expected_options",
     [
         (
             "minimum_input",
@@ -119,11 +119,11 @@ FIXTURES_DIR = Path(__file__).parent / "fixtures"
         ),
     ],
 )
-def test_params_model_from_runtime_json(fixture_name, expected_num_circuits, expected_options):
+def test_params_model_from_runtime_json(test_data_name, expected_num_circuits, expected_options):
     """Test that ParamsModel can deserialize RuntimeEncoder output."""
-    # Load fixture
-    fixture_path = FIXTURES_DIR / f"{fixture_name}.json"
-    with open(fixture_path) as f:
+    # Load test data
+    test_data_path = TEST_DATA_DIR / f"{test_data_name}.json"
+    with open(test_data_path) as f:
         json_data = json.load(f)
 
     # Parse with ParamsModel
@@ -174,10 +174,10 @@ def test_params_model_from_runtime_json(fixture_name, expected_num_circuits, exp
 )
 def test_twirling_strategies(strategy):
     """Test all twirling strategy variations."""
-    fixture_name = f"strategy_{strategy}"
-    fixture_path = FIXTURES_DIR / f"{fixture_name}.json"
+    test_data_name = f"strategy_{strategy}"
+    test_data_path = TEST_DATA_DIR / f"{test_data_name}.json"
 
-    with open(fixture_path) as f:
+    with open(test_data_path) as f:
         json_data = json.load(f)
 
     params = ParamsModel.model_validate(json_data)

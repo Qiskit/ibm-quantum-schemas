@@ -154,9 +154,9 @@ def generate_simulator_options():
 
 
 def main():
-    """Generate all test fixtures."""
-    fixtures_dir = Path(__file__).parent / "fixtures"
-    fixtures_dir.mkdir(exist_ok=True)
+    """Generate all test data files."""
+    test_data_dir = Path(__file__).parent / "test_data"
+    test_data_dir.mkdir(exist_ok=True)
 
     # Generate test cases
     test_cases = {
@@ -180,7 +180,7 @@ def main():
             json_data = json.dumps(inputs, cls=RuntimeEncoder, indent=2)
 
             # Save to file
-            output_file = fixtures_dir / f"{name}.json"
+            output_file = test_data_dir / f"{name}.json"
             output_file.write_text(json_data)
             print(f"✓ Generated {output_file}")
 
@@ -191,7 +191,7 @@ def main():
             traceback.print_exc()
             return 1
 
-    print(f"\nSuccessfully generated {len(test_cases)} test fixtures in {fixtures_dir}")
+    print(f"\nSuccessfully generated {len(test_cases)} test data files in {test_data_dir}")
     return 0
 
 
