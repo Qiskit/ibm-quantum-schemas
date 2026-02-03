@@ -25,10 +25,8 @@ sys.path.insert(
     0, str(Path(__file__).parent.parent.parent.parent.parent.parent / "qiskit-ibm-runtime")
 )
 
-from dataclasses import fields
 
 from qiskit.circuit import QuantumCircuit
-from qiskit_ibm_runtime.options.noise_learner_options import NoiseLearnerOptions
 from qiskit_ibm_runtime.utils import RuntimeEncoder
 
 
@@ -37,11 +35,6 @@ def create_inputs_dict(circuits, options_dict):
 
     This mimics the logic in NoiseLearner.run() method.
     """
-    print("---")
-    for field in fields(NoiseLearnerOptions):
-        print(field.name)
-    print("---")
-
     # Simulate _get_inputs_options logic
     learner_options = {}
     ignored_names = ["_VERSION", "max_execution_time", "environment"]
@@ -58,7 +51,7 @@ def create_inputs_dict(circuits, options_dict):
 
 
 def generate_minimum_input():
-    """Generate a basic test case with a single circuit and default options."""
+    """Generate test case with the simplest input possible."""
     return create_inputs_dict([], {})
 
 
