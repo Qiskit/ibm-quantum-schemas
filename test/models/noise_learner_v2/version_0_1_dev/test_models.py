@@ -22,7 +22,6 @@ from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
     ParamsModel,
 )
 
-
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
 
 
@@ -126,27 +125,33 @@ def test_params_model_from_runtime_json(fixture_name, expected_num_circuits, exp
     fixture_path = FIXTURES_DIR / f"{fixture_name}.json"
     with open(fixture_path) as f:
         json_data = json.load(f)
-    
+
     # Parse with ParamsModel
     params = ParamsModel.model_validate(json_data)
-    
+
     # Verify schema version
     assert params.schema_version == "v0.1"
-    
+
     # Verify number of circuits
     assert len(params.circuits) == expected_num_circuits
-    
+
     # Verify all circuits are LegacyQpyModelV13to14
-    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import CircuitQpyModelV13to14
+    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
+        CircuitQpyModelV13to14,
+    )
+
     for circuit_model in params.circuits:
         assert isinstance(circuit_model, CircuitQpyModelV13to14)
         assert circuit_model.type_ == "QuantumCircuit"
         assert isinstance(circuit_model.value, str)
         assert len(circuit_model.value) > 0
-    
+
     # Verify options
     assert isinstance(params.options, OptionsModel)
-    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import SimulatorOptionsModel
+    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
+        SimulatorOptionsModel,
+    )
+
     for key, expected_value in expected_options.items():
         actual_value = getattr(params.options, key)
         # Special handling for simulator field which is a SimulatorOptionsModel
@@ -154,9 +159,13 @@ def test_params_model_from_runtime_json(fixture_name, expected_num_circuits, exp
             assert isinstance(actual_value, SimulatorOptionsModel)
             for sim_key, sim_expected in expected_value.items():
                 sim_actual = getattr(actual_value, sim_key)
-                assert sim_actual == sim_expected, f"Simulator option {sim_key}: expected {sim_expected}, got {sim_actual}"
+                assert (
+                    sim_actual == sim_expected
+                ), f"Simulator option {sim_key}: expected {sim_expected}, got {sim_actual}"
         else:
-            assert actual_value == expected_value, f"Option {key}: expected {expected_value}, got {actual_value}"
+            assert (
+                actual_value == expected_value
+            ), f"Option {key}: expected {expected_value}, got {actual_value}"
 
 
 @pytest.mark.parametrize(
@@ -167,17 +176,18 @@ def test_twirling_strategies(strategy):
     """Test all twirling strategy variations."""
     fixture_name = f"strategy_{strategy}"
     fixture_path = FIXTURES_DIR / f"{fixture_name}.json"
-    
+
     with open(fixture_path) as f:
         json_data = json.load(f)
-    
+
     params = ParamsModel.model_validate(json_data)
-    
+
     # Verify schema version
     assert params.schema_version == "v0.1"
-    
+
     # Verify strategy is set correctly (convert underscore back to hyphen)
     expected_strategy = strategy.replace("_", "-")
     assert params.options.twirling_strategy == expected_strategy
+
 
 # Made with Bob
