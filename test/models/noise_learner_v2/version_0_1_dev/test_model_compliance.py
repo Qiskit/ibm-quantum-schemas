@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Tests for noise_learner_v2 version 0.1 models."""
+"""Tests to check compliance of the models with the data, qiskit-ibm-runtime is actually sending."""
 
 import json
 from pathlib import Path

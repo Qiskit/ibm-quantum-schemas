@@ -15,7 +15,7 @@
 import struct
 import zlib
 from io import BytesIO
-from typing import Annotated, Literal
+from typing import Literal
 
 import pybase64
 from pydantic import BaseModel, Field, conlist, model_validator
@@ -97,7 +97,7 @@ class SimulatorOptionsModel(BaseModel):
     Default: ``None``.
     """
 
-    coupling_map: list[Annotated[list[int], conlist(int, min_length=2, max_length=2)]] | None = None
+    coupling_map: conlist(conlist(int, min_length=2, max_length=2)) | None = None  # type: ignore[valid-type]
     """Directed coupling map to target in mapping.
 
     If the coupling map is symmetric, both directions need to be specified.
