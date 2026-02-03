@@ -12,24 +12,56 @@
 
 """Models"""
 
+import struct
+import zlib
+from io import BytesIO
 from typing import Literal
 
-from pydantic import BaseModel, Field
+import pybase64
+from pydantic import BaseModel, Field, model_validator
+from qiskit.qpy.formats import FILE_HEADER_V10, FILE_HEADER_V10_PACK, FILE_HEADER_V10_SIZE
 
 from ...base_params_model import BaseParamsModel
 
 
-class RuntimeEncodedCircuitModel(BaseModel):
-    """A circuit encoded by RuntimeEncoder.
-    
-    RuntimeEncoder wraps QPY-encoded circuits in a dict with __type__ and __value__ fields.
+class CircuitQpyModelV13to14(BaseModel):
+    """A circuit representation used in some primitives.
     """
 
     type_: Literal["QuantumCircuit"] = Field(alias="__type__")
     """The type marker used by RuntimeEncoder."""
 
     value: str = Field(alias="__value__")
-    """Base64-encoded QPY serialization of the quantum circuit."""
+    """
+    Base64-encoded string containing zlib-compressed QPY serialization of the quantum circuit.
+
+    The qpy version should be 13 or 14.
+    """
+    
+    @model_validator(mode="after")
+    def validate_qpy_version(self):
+        """Constrain the allowed QPY encodings to versions 13-14."""
+        # Decode base64 and decompress
+        compressed_data = pybase64.b64decode(self.value)
+        qpy_data = zlib.decompress(compressed_data)
+        
+        # Read QPY header
+        with BytesIO(qpy_data) as bytes_obj:
+            header = FILE_HEADER_V10._make(
+                struct.unpack(
+                    FILE_HEADER_V10_PACK,
+                    bytes_obj.read(FILE_HEADER_V10_SIZE),
+                )
+            )
+            if header.qpy_version < 13 or header.qpy_version > 14:
+                raise ValueError(
+                    f"The qpy_version is {header.qpy_version} but this model expects the version to be between 13 and 14."
+                )
+            if header.num_programs != 1:
+                raise ValueError(
+                    f"Expected exactly one encoded quantum circuit, received {header.num_programs}"
+                )
+        return self
 
 
 class ParamsModel(BaseParamsModel):
@@ -37,7 +69,7 @@ class ParamsModel(BaseParamsModel):
 
     schema_version: str = "v0.1"
 
-    circuits: list[RuntimeEncodedCircuitModel]
+    circuits: list[CircuitQpyModelV13to14]
     """The circuits to run the noise learner program for.
     
     Each circuit is QPY-encoded and wrapped in RuntimeEncoder format. Note that while

@@ -114,10 +114,10 @@ def test_params_model_from_runtime_json(fixture_name, expected_num_circuits, exp
     # Verify number of circuits
     assert len(params.circuits) == expected_num_circuits
     
-    # Verify all circuits are RuntimeEncodedCircuitModel
-    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1.models import RuntimeEncodedCircuitModel
+    # Verify all circuits are LegacyQpyModelV13to14
+    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1.models import CircuitQpyModelV13to14
     for circuit_model in params.circuits:
-        assert isinstance(circuit_model, RuntimeEncodedCircuitModel)
+        assert isinstance(circuit_model, CircuitQpyModelV13to14)
         assert circuit_model.type_ == "QuantumCircuit"
         assert isinstance(circuit_model.value, str)
         assert len(circuit_model.value) > 0
