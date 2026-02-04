@@ -188,6 +188,3 @@ def test_twirling_strategies(strategy):
     # Verify strategy is set correctly (convert underscore back to hyphen)
     expected_strategy = strategy.replace("_", "-")
     assert params.options.twirling_strategy == expected_strategy
-
-
-# Made with Bob

@@ -11,5 +11,3 @@
 # that they have been altered from the originals.
 
 """NoiseLearnerV2 V0.1 Models and Validation"""
-
-# Made with Bob

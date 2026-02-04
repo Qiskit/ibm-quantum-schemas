@@ -260,6 +260,3 @@ class TestParamsModelValidation:
         }
         model = ParamsModel.model_validate(params)
         assert len(model.circuits) == 3
-
-
-# Made with Bob
