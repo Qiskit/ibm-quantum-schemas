@@ -10,7 +10,12 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Tests to check compliance of the models with the data, qiskit-ibm-runtime is actually sending."""
+"""Tests to check compliance of the models with the data, qiskit-ibm-runtime is actually sending.
+
+This is a temporary test while qiskit-ibm-runtime is still using its own conversion code.
+Once qiskit-ibm-runtime uses ibm-quantum-schemas as a source of truth, compliance is implicitly
+ensured and we can remove the tests in this file.
+"""
 
 import json
 from pathlib import Path

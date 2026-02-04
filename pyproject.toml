@@ -49,9 +49,6 @@ dev = [
     "ruff",                       # Formatter and linter
     "towncrier",                  # Changelog management
 ]
-test-data-gen = [
-    "qiskit-ibm-runtime",         # For generating test fixtures from RuntimeEncoder
-]
 
 [tool.ruff]
 lint.select = [
