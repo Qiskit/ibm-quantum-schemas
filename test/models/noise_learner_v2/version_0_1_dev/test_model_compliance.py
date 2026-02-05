@@ -140,20 +140,20 @@ def test_params_model_from_runtime_json(test_data_name, expected_num_circuits, e
     # Verify number of circuits
     assert len(params.circuits) == expected_num_circuits
 
-    # Verify all circuits are LegacyQpyModelV13to14
-    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
-        CircuitQpyModelV13to14,
+    # Verify all circuits are CircuitQpyModelV13to17
+    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev import (
+        circuit_qpy_model_v13_to_v17 as qpy_model,
     )
 
     for circuit_model in params.circuits:
-        assert isinstance(circuit_model, CircuitQpyModelV13to14)
+        assert isinstance(circuit_model, qpy_model.CircuitQpyModelV13to17)
         assert circuit_model.type_ == "QuantumCircuit"
-        assert isinstance(circuit_model.value, str)
-        assert len(circuit_model.value) > 0
+        assert isinstance(circuit_model.value_, str)
+        assert len(circuit_model.value_) > 0
 
     # Verify options
     assert isinstance(params.options, OptionsModel)
-    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
+    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.options_model import (
         SimulatorOptionsModel,
     )
 

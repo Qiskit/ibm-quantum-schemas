@@ -25,10 +25,10 @@ from qiskit.qpy.formats import FILE_HEADER_V10, FILE_HEADER_V10_PACK, FILE_HEADE
 class CircuitQpyModelV13to17(BaseModel):
     """A circuit representation used in some primitives."""
 
-    type_: Literal["QuantumCircuit"] = Field(alias="__type__")
+    type_: Literal["QuantumCircuit"] = Field(default="QuantumCircuit", alias="__type__")
     """The type marker used by RuntimeEncoder."""
 
-    value: str = Field(alias="__value__")
+    value_: str = Field(alias="__value__")
     """
     Base64-encoded string containing zlib-compressed QPY serialization of the quantum circuit.
 
@@ -39,7 +39,7 @@ class CircuitQpyModelV13to17(BaseModel):
     def validate_qpy_version(self):
         """Constrain the allowed QPY encodings to versions 13-17."""
         # Decode base64 and decompress
-        compressed_data = pybase64.b64decode(self.value)
+        compressed_data = pybase64.b64decode(self.value_)
         qpy_data = zlib.decompress(compressed_data)
 
         # Read QPY header
