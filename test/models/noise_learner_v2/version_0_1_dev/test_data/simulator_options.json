@@ -1,0 +1,30 @@
+{
+  "circuits": [
+    {
+      "__type__": "QuantumCircuit",
+      "__value__": "eJwL9Az29gzhY2JmgALGgkIGrjQGDgYGBiYGBACxGZHYDMmZRcmlmSW6JuYwJdW1hYxgWUbGQgZUwAhnsWKIoAIP98SSVIh2NmTrMM1jdI6Aqy2Eiv1HAjDFAO7FGfI="
+    }
+  ],
+  "options": {
+    "simulator": {
+      "seed_simulator": 42,
+      "coupling_map": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "basis_gates": [
+        "u1",
+        "u2",
+        "u3",
+        "cx"
+      ]
+    },
+    "support_qiskit": true
+  }
+}
