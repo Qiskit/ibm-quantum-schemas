@@ -172,3 +172,26 @@ class OptionsModel(BaseModel):
 
     simulator: SimulatorOptionsModel | None = None
     """Simulator options."""
+
+
+class LayerNoiseModel:
+    """Results for a single noise learner v2 layer."""
+
+    pass
+
+
+class ResultsMetadataModel:
+    """Metadata attached to noise learner v2 results."""
+
+    pass
+
+
+class ResultsModel(BaseModel):
+    """Result from executing a noise learner v2 job."""
+
+    schema_version: Literal["v0.1"] = "v0.1"
+    """Schema version of the result type."""
+
+    data: list[LayerNoiseModel]
+
+    metadata: ResultsMetadataModel
