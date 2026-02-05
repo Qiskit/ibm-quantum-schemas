@@ -25,10 +25,14 @@ from pydantic import ValidationError
 from qiskit.circuit import QuantumCircuit
 from qiskit.qpy import dump as qpy_dump
 
+from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev import (
+    circuit_qpy_model_v13_to_v17 as qpy_model,
+)
 from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
-    CircuitQpyModelV13to14,
     OptionsModel,
     ParamsModel,
+)
+from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.options_model import (
     SimulatorOptionsModel,
 )
 
@@ -106,43 +110,44 @@ class TestCircuitQpyValidation:
         """Test that QPY version 13 is accepted."""
         encoded = self._create_qpy_circuit(13)
         circuit_dict = {"__type__": "QuantumCircuit", "__value__": encoded}
-        model = CircuitQpyModelV13to14.model_validate(circuit_dict)
+        model = qpy_model.CircuitQpyModelV13to17.model_validate(circuit_dict)
         assert model.type_ == "QuantumCircuit"
-        assert model.value == encoded
+        assert model.value_ == encoded
 
     def test_valid_qpy_v14(self):
         """Test that QPY version 14 is accepted."""
         encoded = self._create_qpy_circuit(14)
         circuit_dict = {"__type__": "QuantumCircuit", "__value__": encoded}
-        model = CircuitQpyModelV13to14.model_validate(circuit_dict)
+        model = qpy_model.CircuitQpyModelV13to17.model_validate(circuit_dict)
         assert model.type_ == "QuantumCircuit"
-        assert model.value == encoded
+        assert model.value_ == encoded
 
-    def test_invalid_qpy_v17_rejected(self):
-        """Test that QPY version 17 (too new) is rejected."""
+    def test_valid_qpy_v17(self):
+        """Test that QPY version 17 is accepted."""
         encoded = self._create_qpy_circuit(17)
         circuit_dict = {"__type__": "QuantumCircuit", "__value__": encoded}
-        with pytest.raises(ValidationError, match="qpy_version is 17"):
-            CircuitQpyModelV13to14.model_validate(circuit_dict)
+        model = qpy_model.CircuitQpyModelV13to17.model_validate(circuit_dict)
+        assert model.type_ == "QuantumCircuit"
+        assert model.value_ == encoded
 
     def test_invalid_type_field(self):
         """Test that wrong __type__ value is rejected."""
         encoded = self._create_qpy_circuit(13)
         circuit_dict = {"__type__": "WrongType", "__value__": encoded}
         with pytest.raises(ValidationError, match="Input should be 'QuantumCircuit'"):
-            CircuitQpyModelV13to14.model_validate(circuit_dict)
+            qpy_model.CircuitQpyModelV13to17.model_validate(circuit_dict)
 
     def test_missing_value_field(self):
         """Test that missing __value__ field is rejected."""
         circuit_dict = {"__type__": "QuantumCircuit"}
         with pytest.raises(ValidationError, match="Field required"):
-            CircuitQpyModelV13to14.model_validate(circuit_dict)
+            qpy_model.CircuitQpyModelV13to17.model_validate(circuit_dict)
 
     def test_invalid_base64(self):
         """Test that invalid base64 encoding is rejected."""
         circuit_dict = {"__type__": "QuantumCircuit", "__value__": "not-valid-base64!!!"}
         with pytest.raises(ValidationError):
-            CircuitQpyModelV13to14.model_validate(circuit_dict)
+            qpy_model.CircuitQpyModelV13to17.model_validate(circuit_dict)
 
 
 class TestOptionsModelValidation:
