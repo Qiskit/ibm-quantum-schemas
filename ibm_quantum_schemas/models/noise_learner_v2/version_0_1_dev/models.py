@@ -27,6 +27,7 @@ class ParamsModel(BaseParamsModel):
     """A model describing the NoiseLearnerV2 program inputs also known as "params"."""
 
     schema_version: str = "v0.1"
+    """Schema version of the program input."""
 
     circuits: list[CircuitQpyModelV13to17]
     """The circuits to run the noise learner program for.
@@ -44,7 +45,7 @@ class ResultsModel(BaseModel):
     """A model describing the result from executing a noise learner v2 job."""
 
     schema_version: Literal["v0.1"] = "v0.1"
-    """Schema version of the result type."""
+    """Schema version of the results."""
 
     data: list[LayerNoiseModel]
 

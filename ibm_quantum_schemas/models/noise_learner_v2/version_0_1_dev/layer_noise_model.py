@@ -16,6 +16,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from .circuit_qpy_model_v13_to_v17 import CircuitQpyModelV13to17
+
 
 class PauliLindbladErrorModel(BaseModel):
     """A Pauli Lindblad error channel for a layer.
@@ -119,7 +121,7 @@ class LayerNoiseModel(BaseModel):
 class LayerNoiseValueModel(BaseModel):
     """The value content of a LayerError from its _json method."""
 
-    circuit: CircuitQpyModelV13to14
+    circuit: CircuitQpyModelV13to17
     """The circuit representing this layer.
 
     This is the quantum circuit whose noise has been learned, encoded in QPY format.
