@@ -22,6 +22,8 @@ from pydantic import BaseModel, Field, conlist, model_validator
 from qiskit.qpy.formats import FILE_HEADER_V10, FILE_HEADER_V10_PACK, FILE_HEADER_V10_SIZE
 
 from ...base_params_model import BaseParamsModel
+from .layer_noise_model import LayerNoiseModel
+from .results_metadata_model import ResultsMetadataModel
 
 
 class CircuitQpyModelV13to14(BaseModel):
@@ -172,96 +174,6 @@ class OptionsModel(BaseModel):
 
     simulator: SimulatorOptionsModel | None = None
     """Simulator options."""
-
-
-class PauliLindbladErrorModel(BaseModel):
-    """A Pauli Lindblad error channel for a layer.
-
-    This represents the error channel affecting a specific layer, encoded as
-    Pauli Lindblad generators and their associated rates.
-    """
-
-    generators: list[str]
-    """List of Pauli strings representing the Lindblad generators.
-
-    Each string is a Pauli operator (e.g., "IXYZ") acting on the qubits in the layer.
-    """
-
-    rates: list[float]
-    """The rates associated with each Pauli Lindblad generator.
-
-    Must have the same length as generators. Each rate corresponds to the strength
-    of the corresponding generator in the error channel.
-    """
-
-    @model_validator(mode="after")
-    def validate_lengths(self):
-        """Validate that generators and rates have the same length."""
-        if len(self.generators) != len(self.rates):
-            raise ValueError(
-                f"generators has length {len(self.generators)} "
-                f"but rates has length {len(self.rates)}."
-            )
-        return self
-
-
-class LayerNoiseModel(BaseModel):
-    """Results for a single noise learner v2 layer.
-
-    Represents the learned noise characteristics of a specific circuit layer,
-    including the circuit structure, qubit mapping, and error channel.
-    """
-
-    circuit: CircuitQpyModelV13to14
-    """The circuit representing this layer.
-
-    This is the quantum circuit whose noise has been learned, encoded in QPY format.
-    """
-
-    qubits: list[int]
-    """The physical qubit labels for this layer.
-
-    Maps the circuit qubits to physical backend qubits.
-    """
-
-    error: PauliLindbladErrorModel | None = None
-    """The learned Pauli Lindblad error channel for this layer.
-
-    If None, the error channel is either unknown or explicitly disabled for this layer.
-    """
-
-
-class InputOptionsModel(BaseModel):
-    """The input options used for the noise learning experiment."""
-
-    max_layers_to_learn: int | None
-    """The max number of unique layers to learn."""
-
-    shots_per_randomization: int
-    """The total number of shots to use per random learning circuit."""
-
-    num_randomizations: int
-    """The number of random circuits to use per learning circuit configuration."""
-
-    layer_pair_depths: list[int]
-    """The circuit depths (measured in number of pairs) to use in learning experiments."""
-
-    twirling_strategy: Literal["active", "active-circuit", "active-accum", "all"]
-    """The twirling strategy in the identified layers of two-qubit twirled gates."""
-
-
-class ResultsMetadataModel(BaseModel):
-    """Metadata attached to noise learner v2 results.
-
-    Contains information about the execution context and options used during
-    the noise learning experiment.
-    """
-
-    backend: str
-    """The name of the backend on which the noise learning was performed."""
-
-    input_options: InputOptionsModel
-    """The input options used for the noise learning experiment."""
 
 
 class ResultsModel(BaseModel):
