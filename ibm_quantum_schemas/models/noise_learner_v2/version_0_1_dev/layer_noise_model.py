@@ -77,6 +77,20 @@ class PauliListSettingsValueModel(BaseModel):
     """
 
 
+class NdarrayModel(BaseModel):
+    """A NumPy ndarray encoded via RuntimeEncoder.
+
+    RuntimeEncoder serializes ndarrays with __type__='ndarray' and __value__
+    containing the base64-encoded array data.
+    """
+
+    type_: Literal["ndarray"] = Field(default="ndarray", alias="__type__")
+    """The type marker used by RuntimeEncoder for ndarray objects."""
+
+    value_: str = Field(alias="__value__")
+    """Base64-encoded, zlib compressed numpy binary format of a ndarray with floats."""
+
+
 class PauliLindbladErrorValueModel(BaseModel):
     """The value content of a PauliLindbladError from its _json method."""
 
@@ -88,10 +102,11 @@ class PauliLindbladErrorValueModel(BaseModel):
     Pauli operators that generate the error channel.
     """
 
-    rates: list[float]
+    rates: NdarrayModel
     """The rates associated with each Pauli Lindblad generator.
 
-    Must have the same length as the generators list. Each rate corresponds to
+    Encoded as a NumPy ndarray via RuntimeEncoder. The array contains float values
+    with the same length as the generators list. Each rate corresponds to
     the strength of the corresponding generator in the error channel.
     """
 
