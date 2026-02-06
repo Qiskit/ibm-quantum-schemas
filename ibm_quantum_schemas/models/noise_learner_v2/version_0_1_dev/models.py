@@ -12,15 +12,22 @@
 
 """Models for NoiseLearnerV2 inputs and outputs"""
 
+from typing import Literal
+
+from pydantic import BaseModel
+
 from ...base_params_model import BaseParamsModel
 from .circuit_qpy_model_v13_to_v17 import CircuitQpyModelV13to17
+from .layer_noise_model import LayerNoiseWrapperModel
 from .options_model import OptionsModel
+from .results_metadata_model import ResultsMetadataModel
 
 
 class ParamsModel(BaseParamsModel):
     """A model describing the NoiseLearnerV2 program inputs also known as "params"."""
 
     schema_version: str = "v0.1"
+    """Schema version of the program input."""
 
     circuits: list[CircuitQpyModelV13to17]
     """The circuits to run the noise learner program for.
@@ -30,5 +37,18 @@ class ParamsModel(BaseParamsModel):
     before serialization, so only circuits appear in the serialized params.
     """
 
-    options: "OptionsModel"
+    options: OptionsModel
     """Options for the noise learner runtime."""
+
+
+class ResultsModel(BaseModel):
+    """A model describing the result from executing a noise learner v2 job."""
+
+    schema_version: Literal["v0.1"] = "v0.1"
+    """Schema version of the results."""
+
+    data: list[LayerNoiseWrapperModel]
+    """Result data from the noise learner v2 job."""
+
+    metadata: ResultsMetadataModel
+    """Metadata for the noise learner v2 job."""
