@@ -88,7 +88,7 @@ class NdarrayModel(BaseModel):
     """The type marker used by RuntimeEncoder for ndarray objects."""
 
     value_: str = Field(alias="__value__")
-    """Base64-encoded, zlib compressed numpy binary format of a ndarray with floats."""
+    """Base64-encoded, zlib compressed numpy binary format of an ndarray."""
 
 
 class PauliLindbladErrorValueModel(BaseModel):
