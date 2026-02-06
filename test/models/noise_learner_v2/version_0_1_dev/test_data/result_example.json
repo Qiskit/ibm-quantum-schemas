@@ -1,0 +1,247 @@
+{
+  "data": [
+    {
+      "__type__": "_json",
+      "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
+      "__class__": "LayerError",
+      "__value__": {
+        "circuit": {
+          "__type__": "QuantumCircuit",
+          "__value__": "eJwL9Az29gzhZWJmgALGgkIG4TQGDiCTiQEBQGxGmBIQkZxZlFyaWaJrZGipa2hpYWRsYgBTW11byAjWwshYyIAKGOEsNiSDsShidI5wTyxJBemHG/IfCcDUAgDfbRmC"
+        },
+        "qubits": [
+          0,
+          1
+        ],
+        "error": {
+          "__type__": "_json",
+          "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
+          "__class__": "PauliLindbladError",
+          "__value__": {
+            "generators": {
+              "__type__": "settings",
+              "__module__": "qiskit.quantum_info.operators.symplectic.pauli_list",
+              "__class__": "PauliList",
+              "__value__": {
+                "data": [
+                  "IX",
+                  "IY",
+                  "IZ",
+                  "XI",
+                  "XX",
+                  "XY",
+                  "XZ",
+                  "YI",
+                  "YX",
+                  "YY",
+                  "YZ",
+                  "ZI",
+                  "ZX",
+                  "ZY",
+                  "ZZ"
+                ]
+              }
+            },
+            "rates": {
+              "__type__": "ndarray",
+              "__value__": "eJyb7BfqGxDJyFDGUK2eklqcXKRupaBuk2ahrqOgnpZfVFKUmBefX5SSChJ3S8wpTgWKF2ckFqQC+RqGpjqaOgq1CuQDrnk8fZPCn2fYr+f4t32SbLa9cOLhy9qpmfbRNVwNH3my4PSnGY2nfnzPtH+qftVOtj8Tzickftfxjc/Cz1kY5gMAd1RZ0Q=="
+            }
+          }
+        }
+      }
+    },
+    {
+      "__type__": "_json",
+      "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
+      "__class__": "LayerError",
+      "__value__": {
+        "circuit": {
+          "__type__": "QuantumCircuit",
+          "__value__": "eJwL9Az29gzhZWJmgALGgkIG4TQGDiATLgYETCApmBIQkZxZlFyaWaJrZGSha2hpYWRsbAlTW11byAjWzshYyIAKYEYwwUXYMERQFDM6R7gnlqSCzSmEiv1HAjC1ADlCGY4="
+        },
+        "qubits": [
+          0,
+          1,
+          2
+        ],
+        "error": {
+          "__type__": "_json",
+          "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
+          "__class__": "PauliLindbladError",
+          "__value__": {
+            "generators": {
+              "__type__": "settings",
+              "__module__": "qiskit.quantum_info.operators.symplectic.pauli_list",
+              "__class__": "PauliList",
+              "__value__": {
+                "data": [
+                  "IIX",
+                  "IIY",
+                  "IIZ",
+                  "IXI",
+                  "IXX",
+                  "IXY",
+                  "IXZ",
+                  "IYI",
+                  "IYX",
+                  "IYY",
+                  "IYZ",
+                  "IZI",
+                  "IZX",
+                  "IZY",
+                  "IZZ",
+                  "XII",
+                  "XXI",
+                  "XYI",
+                  "XZI",
+                  "YII",
+                  "YXI",
+                  "YYI",
+                  "YZI",
+                  "ZII",
+                  "ZXI",
+                  "ZYI",
+                  "ZZI"
+                ]
+              }
+            },
+            "rates": {
+              "__type__": "ndarray",
+              "__value__": "eJyb7BfqGxDJyFDGUK2eklqcXKRupaBuk2ahrqOgnpZfVFKUmBefX5SSChJ3S8wpTgWKF2ckFqQC+RpG5jqaOgq1CuQDrpK45Okr7mXZ33V847Pwc5Z9PPs5ycBb2fbie15oexin2aPLX7hgf/BoV5b9W959BjO1MuwXTQ/U2b4lyz66hqvhI0+WvcaOiMDmzAz7Fi3T6gWiGXBxmDqY/o8Zjzu2/lCxZ0ADiUahBlorjTHEM2VDfQVK/9uhi/9Z+fGSb5IBhnoA5GdhUw=="
+            }
+          }
+        }
+      }
+    },
+    {
+      "__type__": "_json",
+      "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
+      "__class__": "LayerError",
+      "__value__": {
+        "circuit": {
+          "__type__": "QuantumCircuit",
+          "__value__": "eJwL9Az29gzhZWJmgALGgkIG4TQGDiATLgYETCApmBIQkZxZlFyaWaJrZGSua2hpYWRsbAlTW11byAjWzshYyIAKYEYwwUXYMERQFDM6R7gnlqSCzAEbBlL2HwnA1AIAOPIZjw=="
+        },
+        "qubits": [
+          0,
+          1,
+          2
+        ],
+        "error": {
+          "__type__": "_json",
+          "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
+          "__class__": "PauliLindbladError",
+          "__value__": {
+            "generators": {
+              "__type__": "settings",
+              "__module__": "qiskit.quantum_info.operators.symplectic.pauli_list",
+              "__class__": "PauliList",
+              "__value__": {
+                "data": [
+                  "IIX",
+                  "IIY",
+                  "IIZ",
+                  "IXI",
+                  "IXX",
+                  "IXY",
+                  "IXZ",
+                  "IYI",
+                  "IYX",
+                  "IYY",
+                  "IYZ",
+                  "IZI",
+                  "IZX",
+                  "IZY",
+                  "IZZ",
+                  "XII",
+                  "XXI",
+                  "XYI",
+                  "XZI",
+                  "YII",
+                  "YXI",
+                  "YYI",
+                  "YZI",
+                  "ZII",
+                  "ZXI",
+                  "ZYI",
+                  "ZZI"
+                ]
+              }
+            },
+            "rates": {
+              "__type__": "ndarray",
+              "__value__": "eJyb7BfqGxDJyFDGUK2eklqcXKRupaBuk2ahrqOgnpZfVFKUmBefX5SSChJ3S8wpTgWKF2ckFqQC+RpG5jqaOgq1CuQDLgY08DHjccfWHyr2bqqlTLM4su3R5WFgZuOpH98l0+Hy3hss5vy8KgPnL/tU1nK5Kd0eZh66/ruOb3wWfs6C2yPtvubocoYM++Skz4W5KzLsTTVZ78ZdyrCPruFq+MiTZb9cSfSYWFMOXFzhUn48+7lMuDhMHUwcALUmWqw="
+            }
+          }
+        }
+      }
+    },
+    {
+      "__type__": "_json",
+      "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
+      "__class__": "LayerError",
+      "__value__": {
+        "circuit": {
+          "__type__": "QuantumCircuit",
+          "__value__": "eJwL9Az29gzhZWJmgALGgkIG4TQGDiCTiQEBQGxGmBIQkZxZlFyaWaJrZGSma2hpYWRsbAlTW11byAjWwshYyIAKGOEsNiSDsShidI5wTyxJBesvhIr9RwIwtQDiFhmI"
+        },
+        "qubits": [
+          0,
+          1
+        ],
+        "error": {
+          "__type__": "_json",
+          "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
+          "__class__": "PauliLindbladError",
+          "__value__": {
+            "generators": {
+              "__type__": "settings",
+              "__module__": "qiskit.quantum_info.operators.symplectic.pauli_list",
+              "__class__": "PauliList",
+              "__value__": {
+                "data": [
+                  "IX",
+                  "IY",
+                  "IZ",
+                  "XI",
+                  "XX",
+                  "XY",
+                  "XZ",
+                  "YI",
+                  "YX",
+                  "YY",
+                  "YZ",
+                  "ZI",
+                  "ZX",
+                  "ZY",
+                  "ZZ"
+                ]
+              }
+            },
+            "rates": {
+              "__type__": "ndarray",
+              "__value__": "eJyb7BfqGxDJyFDGUK2eklqcXKRupaBuk2ahrqOgnpZfVFKUmBefX5SSChJ3S8wpTgWKF2ckFqQC+RqGpjqaOgq1CuQDrgsX7A8e7cqyXzQ9UGf7liz7TcnKAutfp9szT/343lgvxx5dfk/lKue8tmz7b8quKRFHs+2fql+1k+3PtM+/PP+vh2AmXBzGh9Ho6gAHGlR1"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "backend": "aer_simulator",
+    "input_options": {
+      "max_layers_to_learn": 4,
+      "shots_per_randomization": 128,
+      "num_randomizations": 32,
+      "layer_pair_depths": [
+        0,
+        1,
+        2,
+        4,
+        16,
+        32
+      ],
+      "twirling_strategy": "active-accum"
+    }
+  }
+}
