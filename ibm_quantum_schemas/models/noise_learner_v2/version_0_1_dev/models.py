@@ -18,7 +18,7 @@ from pydantic import BaseModel
 
 from ...base_params_model import BaseParamsModel
 from .circuit_qpy_model_v13_to_v17 import CircuitQpyModelV13to17
-from .layer_noise_model import LayerNoiseModel
+from .layer_noise_model import LayerNoiseWrapperModel
 from .options_model import OptionsModel
 from .results_metadata_model import ResultsMetadataModel
 
@@ -47,6 +47,6 @@ class ResultsModel(BaseModel):
     schema_version: Literal["v0.1"] = "v0.1"
     """Schema version of the results."""
 
-    data: list[LayerNoiseModel]
+    data: list[LayerNoiseWrapperModel]
 
     metadata: ResultsMetadataModel

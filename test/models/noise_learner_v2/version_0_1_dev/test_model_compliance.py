@@ -209,15 +209,15 @@ def test_result_model_from_runtime_json():
     # Verify schema version
     assert result.schema_version == "v0.1"
 
-    # Verify data contains LayerNoiseModel instances
+    # Verify data contains LayerNoiseWrapperModel instances
     from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.layer_noise_model import (
-        LayerNoiseModel,
+        LayerNoiseWrapperModel,
     )
 
     assert len(result.data) == 4
     for layer_noise in result.data:
-        assert isinstance(layer_noise, LayerNoiseModel)
-        # Verify each LayerNoiseModel has the wrapper structure
+        assert isinstance(layer_noise, LayerNoiseWrapperModel)
+        # Verify each LayerNoiseWrapperModel has the wrapper structure
         assert layer_noise.type_ == "_json"
         assert layer_noise.module_ == "qiskit_ibm_runtime.utils.noise_learner_result"
         assert layer_noise.class_ == "LayerError"
