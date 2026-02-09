@@ -19,7 +19,7 @@ import pytest
 from qiskit.circuit import Parameter, QuantumCircuit
 from samplomatic import Twirl, build
 
-from ibm_quantum_schemas.models.executor.version_0_2_dev.models import (
+from ibm_quantum_schemas.models.executor.version_0_2.models import (
     ChunkPart,
     ChunkSpan,
     CircuitItemModel,
