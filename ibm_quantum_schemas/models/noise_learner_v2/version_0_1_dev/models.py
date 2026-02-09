@@ -18,7 +18,7 @@ from .options_model import OptionsModel
 
 
 class ParamsModel(BaseParamsModel):
-    """A model describing the NoiseLearnerV2 program inputs also known as "params"."""
+    """A model describing the NoiseLearnerV2 program inputs, also known as "params"."""
 
     schema_version: str = "v0.1"
 
