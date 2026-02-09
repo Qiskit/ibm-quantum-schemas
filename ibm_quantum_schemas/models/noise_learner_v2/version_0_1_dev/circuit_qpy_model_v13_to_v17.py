@@ -26,7 +26,7 @@ class CircuitQpyModelV13to17(BaseModel):
     """A circuit representation used in some primitives."""
 
     type_: Literal["QuantumCircuit"] = Field(default="QuantumCircuit", alias="__type__")
-    """The type marker used by RuntimeEncoder."""
+    """Redundant type information."""
 
     value_: str = Field(alias="__value__")
     """

@@ -25,10 +25,9 @@ class ParamsModel(BaseParamsModel):
     circuits: list[CircuitQpyModelV13to17]
     """The circuits to run the noise learner program for.
 
-    Each circuit is QPY-encoded and wrapped in RuntimeEncoder format. Note that while
-    the noise learner accepts EstimatorPubLike objects, they are converted to circuits
-    before serialization, so only circuits appear in the serialized params.
+    Note that while the noise learner accepts EstimatorPubLike objects, they are converted to
+    circuits before serialization, so only circuits appear in the model.
     """
 
     options: OptionsModel
-    """Options for the noise learner runtime."""
+    """Options for the noise learner program."""

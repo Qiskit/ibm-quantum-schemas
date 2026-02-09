@@ -14,6 +14,8 @@
 
 This script simulates the data encoding that happens in qiskit-ibm-runtime
 when submitting a noise learner job, without actually calling the REST API.
+
+It is not needed to run the tests, but it is useful to re-generate test data.
 """
 
 import json

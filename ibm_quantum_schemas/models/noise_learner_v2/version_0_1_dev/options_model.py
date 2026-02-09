@@ -48,12 +48,12 @@ class SimulatorOptionsModel(BaseModel):
 
     For example, ``['u1', 'u2', 'u3', 'cx']``. Unrolling is not done if not set.
 
-    Default: all basis gates supported by the simulator.
+    Default: ``None``, implying all basis gates supported by the simulator.
     """
 
 
 class OptionsModel(BaseModel):
-    """Runtime options for the noise learner."""
+    """Options for the noise learner program."""
 
     max_layers_to_learn: int | None = 4
     """The max number of unique layers to learn.
