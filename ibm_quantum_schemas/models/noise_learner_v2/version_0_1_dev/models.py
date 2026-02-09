@@ -30,5 +30,5 @@ class ParamsModel(BaseParamsModel):
     before serialization, so only circuits appear in the serialized params.
     """
 
-    options: "OptionsModel"
+    options: OptionsModel
     """Options for the noise learner runtime."""
