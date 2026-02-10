@@ -14,7 +14,7 @@
 
 from ...base_params_model import BaseParamsModel
 from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
-from .options_model import OptionsModel
+from .options_model import OptionsModel, SimulatorOptionsModel
 
 
 class ParamsModel(BaseParamsModel):
@@ -31,3 +31,6 @@ class ParamsModel(BaseParamsModel):
 
     options: OptionsModel
     """Options for the noise learner program."""
+
+
+__all__ = ["ParamsModel", "OptionsModel", "SimulatorOptionsModel"]
