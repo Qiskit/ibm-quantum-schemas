@@ -35,6 +35,3 @@ def valid_circuit_dict() -> dict:
     encoded = pybase64.b64encode(compressed).decode("utf-8")
 
     return {"__type__": "QuantumCircuit", "__value__": encoded}
-
-
-# Made with Bob
