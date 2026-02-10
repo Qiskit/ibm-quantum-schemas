@@ -35,8 +35,6 @@ class TypedQpyCircuitModel(BaseModel):
     value_: str = Field(alias="__value__")
     """
     Base64-encoded string containing zlib-compressed QPY serialization of the quantum circuit.
-
-    The qpy version should be 13 or 17.
     """
 
 
