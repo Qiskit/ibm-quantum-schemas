@@ -52,6 +52,3 @@ def valid_typed_qpy_circuit_dict(compressed_qpy_circuit) -> dict:
         Dictionary with __type__ and __value__ fields for TypedQpyCircuitModel.
     """
     return {"__type__": "QuantumCircuit", "__value__": compressed_qpy_circuit}
-
-
-# Made with Bob
