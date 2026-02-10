@@ -15,15 +15,11 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.layer_noise_model import (
-    LayerNoiseWrapperModel,
-)
 from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
+    LayerNoiseWrapperModel,
     ParamsModel,
-    ResultsModel,
-)
-from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.results_metadata_model import (
     ResultsMetadataModel,
+    ResultsModel,
 )
 
 

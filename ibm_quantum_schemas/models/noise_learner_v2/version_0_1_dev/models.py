@@ -18,9 +18,17 @@ from pydantic import BaseModel
 
 from ...base_params_model import BaseParamsModel
 from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
-from .layer_noise_model import LayerNoiseWrapperModel
+from .layer_noise_model import (
+    LayerNoiseModel,
+    LayerNoiseWrapperModel,
+    NdarrayWrapperModel,
+    PauliLindbladErrorModel,
+    PauliLindbladErrorWrapperModel,
+    PauliListModel,
+    PauliListWrapperModel,
+)
 from .options_model import OptionsModel, SimulatorOptionsModel
-from .results_metadata_model import ResultsMetadataModel
+from .results_metadata_model import InputOptionsModel, ResultsMetadataModel
 
 
 class ParamsModel(BaseParamsModel):
@@ -53,4 +61,18 @@ class ResultsModel(BaseModel):
     """Metadata for the noise learner v2 job."""
 
 
-__all__ = ["ParamsModel", "OptionsModel", "SimulatorOptionsModel"]
+__all__ = [
+    "ParamsModel",
+    "ResultsModel",
+    "OptionsModel",
+    "SimulatorOptionsModel",
+    "LayerNoiseModel",
+    "LayerNoiseWrapperModel",
+    "NdarrayWrapperModel",
+    "PauliLindbladErrorModel",
+    "PauliLindbladErrorWrapperModel",
+    "PauliListModel",
+    "PauliListWrapperModel",
+    "InputOptionsModel",
+    "ResultsMetadataModel",
+]
