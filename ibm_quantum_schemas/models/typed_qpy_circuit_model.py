@@ -9,8 +9,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-
-"""Models"""
+"""Typed QPY circuit model stored in zlib compressed form."""
 
 import struct
 import zlib
@@ -22,8 +21,13 @@ from pydantic import BaseModel, Field, model_validator
 from qiskit.qpy.formats import FILE_HEADER_V10, FILE_HEADER_V10_PACK, FILE_HEADER_V10_SIZE
 
 
-class CircuitQpyModelV13to17(BaseModel):
-    """A circuit representation used in some primitives."""
+class TypedQpyCircuitModel(BaseModel):
+    """A circuit representation used in some primitives.
+
+    This differs from QpyModel in that it contains redundant type information,
+    stores the QPY data in zlib compressed form, is only intended to store Circuits
+    and does not include the QPY version as a field.
+    """
 
     type_: Literal["QuantumCircuit"] = Field(default="QuantumCircuit", alias="__type__")
     """Redundant type information."""
@@ -34,6 +38,10 @@ class CircuitQpyModelV13to17(BaseModel):
 
     The qpy version should be 13 or 17.
     """
+
+
+class TypedQpyCircuitModelV13to17(TypedQpyCircuitModel):
+    """A circuit representation used in some primitives with restricted QPY version range."""
 
     @model_validator(mode="after")
     def validate_qpy_version(self):

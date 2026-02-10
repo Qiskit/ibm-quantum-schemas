@@ -13,7 +13,7 @@
 """Models for NoiseLearnerV2 inputs and outputs"""
 
 from ...base_params_model import BaseParamsModel
-from .circuit_qpy_model_v13_to_v17 import CircuitQpyModelV13to17
+from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
 from .options_model import OptionsModel
 
 
@@ -22,7 +22,7 @@ class ParamsModel(BaseParamsModel):
 
     schema_version: str = "v0.1"
 
-    circuits: list[CircuitQpyModelV13to17]
+    circuits: list[TypedQpyCircuitModelV13to17]
     """The circuits to run the noise learner program for.
 
     Note that while the noise learner accepts EstimatorPubLike objects, they are converted to

@@ -22,6 +22,7 @@ from pathlib import Path
 
 import pytest
 
+from ibm_quantum_schemas.models import typed_qpy_circuit_model as qpy_model
 from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
     OptionsModel,
     ParamsModel,
@@ -141,12 +142,8 @@ def test_params_model_from_runtime_json(test_data_name, expected_num_circuits, e
     assert len(params.circuits) == expected_num_circuits
 
     # Verify all circuits are CircuitQpyModelV13to17
-    from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev import (
-        circuit_qpy_model_v13_to_v17 as qpy_model,
-    )
-
     for circuit_model in params.circuits:
-        assert isinstance(circuit_model, qpy_model.CircuitQpyModelV13to17)
+        assert isinstance(circuit_model, qpy_model.TypedQpyCircuitModelV13to17)
         assert circuit_model.type_ == "QuantumCircuit"
         assert isinstance(circuit_model.value_, str)
         assert len(circuit_model.value_) > 0
