@@ -26,12 +26,22 @@ from qiskit.circuit import QuantumCircuit
 from qiskit.qpy import dump as qpy_dump
 
 from ibm_quantum_schemas.models import typed_qpy_circuit_model as qpy_model
+from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.layer_noise_model import (
+    LayerNoiseModel,
+    LayerNoiseWrapperModel,
+    PauliLindbladErrorWrapperModel,
+)
 from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
     OptionsModel,
     ParamsModel,
+    ResultsModel,
 )
 from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.options_model import (
     SimulatorOptionsModel,
+)
+from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.results_metadata_model import (
+    InputOptionsModel,
+    ResultsMetadataModel,
 )
 
 
@@ -263,3 +273,293 @@ class TestParamsModelValidation:
         }
         model = ParamsModel.model_validate(params)
         assert len(model.circuits) == 3
+
+
+class TestInputOptionsModelValidation:
+    """Test InputOptionsModel validation."""
+
+    def test_valid_input_options(self):
+        """Test that valid input options are accepted."""
+        options = {
+            "max_layers_to_learn": 4,
+            "shots_per_randomization": 128,
+            "num_randomizations": 32,
+            "layer_pair_depths": [0, 1, 2, 4, 16, 32],
+            "twirling_strategy": "active-accum",
+        }
+        model = InputOptionsModel.model_validate(options)
+        assert model.max_layers_to_learn == 4
+        assert model.shots_per_randomization == 128
+        assert model.num_randomizations == 32
+        assert model.layer_pair_depths == [0, 1, 2, 4, 16, 32]
+        assert model.twirling_strategy == "active-accum"
+
+    def test_optional_max_layers_to_learn(self):
+        """Test that max_layers_to_learn can be None."""
+        options = {
+            "max_layers_to_learn": None,
+            "shots_per_randomization": 128,
+            "num_randomizations": 32,
+            "layer_pair_depths": [0, 1],
+            "twirling_strategy": "active",
+        }
+        model = InputOptionsModel.model_validate(options)
+        assert model.max_layers_to_learn is None
+
+    def test_invalid_twirling_strategy_in_input_options(self):
+        """Test that invalid twirling strategy is rejected."""
+        options = {
+            "max_layers_to_learn": 4,
+            "shots_per_randomization": 128,
+            "num_randomizations": 32,
+            "layer_pair_depths": [0, 1],
+            "twirling_strategy": "invalid",
+        }
+        with pytest.raises(ValidationError, match="Input should be 'active'"):
+            InputOptionsModel.model_validate(options)
+
+
+class TestResultsMetadataModelValidation:
+    """Test ResultsMetadataModel validation."""
+
+    def test_valid_results_metadata(self):
+        """Test that valid results metadata is accepted."""
+        metadata = {
+            "backend": "some_backend",
+            "input_options": {
+                "max_layers_to_learn": 4,
+                "shots_per_randomization": 128,
+                "num_randomizations": 32,
+                "layer_pair_depths": [0, 1, 2],
+                "twirling_strategy": "active-accum",
+            },
+        }
+        model = ResultsMetadataModel.model_validate(metadata)
+        assert model.backend == "some_backend"
+        assert isinstance(model.input_options, InputOptionsModel)
+        assert model.input_options.max_layers_to_learn == 4
+
+    def test_missing_backend_field(self):
+        """Test that missing backend field is rejected."""
+        metadata = {
+            "input_options": {
+                "max_layers_to_learn": 4,
+                "shots_per_randomization": 128,
+                "num_randomizations": 32,
+                "layer_pair_depths": [0, 1],
+                "twirling_strategy": "active",
+            },
+        }
+        with pytest.raises(ValidationError, match="Field required"):
+            ResultsMetadataModel.model_validate(metadata)
+
+    def test_missing_input_options_field(self):
+        """Test that missing input_options field is rejected."""
+        metadata = {"backend": "ibm_brisbane"}
+        with pytest.raises(ValidationError, match="Field required"):
+            ResultsMetadataModel.model_validate(metadata)
+
+
+class TestLayerNoiseModelValidation:
+    """Test LayerNoiseModel validation."""
+
+    def _create_valid_circuit_dict(self) -> dict:
+        """Helper to create a valid circuit dict."""
+        circuit = QuantumCircuit(2)
+        circuit.h(0)
+        circuit.cx(0, 1)
+
+        buffer = BytesIO()
+        qpy_dump(circuit, buffer, version=13)
+        qpy_data = buffer.getvalue()
+        compressed = zlib.compress(qpy_data)
+        encoded = pybase64.b64encode(compressed).decode("utf-8")
+
+        return {"__type__": "QuantumCircuit", "__value__": encoded}
+
+    def _create_valid_pauli_lindblad_error(self) -> dict:
+        """Helper to create a valid PauliLindbladError dict."""
+        import numpy as np
+
+        # Create a simple ndarray and encode it
+        rates = np.array([0.1, 0.2, 0.3])
+        buffer = BytesIO()
+        np.save(buffer, rates)
+        rates_data = buffer.getvalue()
+        compressed = zlib.compress(rates_data)
+        encoded = pybase64.b64encode(compressed).decode("utf-8")
+
+        return {
+            "__type__": "_json",
+            "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
+            "__class__": "PauliLindbladError",
+            "__value__": {
+                "generators": {
+                    "__type__": "settings",
+                    "__module__": "qiskit.quantum_info.operators.symplectic.pauli_list",
+                    "__class__": "PauliList",
+                    "__value__": {"data": ["IX", "IY", "IZ"]},
+                },
+                "rates": {"__type__": "ndarray", "__value__": encoded},
+            },
+        }
+
+    def test_valid_layer_noise_with_error(self):
+        """Test that valid LayerNoiseModel with error is accepted."""
+        circuit_dict = self._create_valid_circuit_dict()
+        error_dict = self._create_valid_pauli_lindblad_error()
+
+        layer_noise = {
+            "circuit": circuit_dict,
+            "qubits": [0, 1],
+            "error": error_dict,
+        }
+        model = LayerNoiseModel.model_validate(layer_noise)
+        assert model.qubits == [0, 1]
+        assert model.error is not None
+        assert isinstance(model.error, PauliLindbladErrorWrapperModel)
+
+    def test_optional_error_field_none(self):
+        """Test that error field can be None (optional)."""
+        circuit_dict = self._create_valid_circuit_dict()
+
+        layer_noise = {
+            "circuit": circuit_dict,
+            "qubits": [0, 1],
+            "error": None,
+        }
+        model = LayerNoiseModel.model_validate(layer_noise)
+        assert model.qubits == [0, 1]
+        assert model.error is None
+
+    def test_optional_error_field_omitted(self):
+        """Test that error field can be omitted (defaults to None)."""
+        circuit_dict = self._create_valid_circuit_dict()
+
+        layer_noise = {
+            "circuit": circuit_dict,
+            "qubits": [0, 1],
+        }
+        model = LayerNoiseModel.model_validate(layer_noise)
+        assert model.qubits == [0, 1]
+        assert model.error is None
+
+    def test_missing_required_circuit_field(self):
+        """Test that missing circuit field is rejected."""
+        layer_noise = {"qubits": [0, 1]}
+        with pytest.raises(ValidationError, match="Field required"):
+            LayerNoiseModel.model_validate(layer_noise)
+
+    def test_missing_required_qubits_field(self):
+        """Test that missing qubits field is rejected."""
+        circuit_dict = self._create_valid_circuit_dict()
+        layer_noise = {"circuit": circuit_dict}
+        with pytest.raises(ValidationError, match="Field required"):
+            LayerNoiseModel.model_validate(layer_noise)
+
+
+class TestResultsModelValidation:
+    """Test ResultsModel validation."""
+
+    def _create_valid_circuit_dict(self) -> dict:
+        """Helper to create a valid circuit dict."""
+        circuit = QuantumCircuit(2)
+        circuit.h(0)
+        circuit.cx(0, 1)
+
+        buffer = BytesIO()
+        qpy_dump(circuit, buffer, version=13)
+        qpy_data = buffer.getvalue()
+        compressed = zlib.compress(qpy_data)
+        encoded = pybase64.b64encode(compressed).decode("utf-8")
+
+        return {"__type__": "QuantumCircuit", "__value__": encoded}
+
+    def _create_valid_layer_noise_wrapper(self) -> dict:
+        """Helper to create a valid LayerNoiseWrapperModel dict."""
+        circuit_dict = self._create_valid_circuit_dict()
+
+        return {
+            "__type__": "_json",
+            "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
+            "__class__": "LayerError",
+            "__value__": {
+                "circuit": circuit_dict,
+                "qubits": [0, 1],
+                "error": None,
+            },
+        }
+
+    def _create_valid_metadata(self) -> dict:
+        """Helper to create valid metadata dict."""
+        return {
+            "backend": "ibm_brisbane",
+            "input_options": {
+                "max_layers_to_learn": 4,
+                "shots_per_randomization": 128,
+                "num_randomizations": 32,
+                "layer_pair_depths": [0, 1, 2],
+                "twirling_strategy": "active-accum",
+            },
+        }
+
+    def test_valid_results_model(self):
+        """Test that valid ResultsModel is accepted."""
+        layer_noise = self._create_valid_layer_noise_wrapper()
+        metadata = self._create_valid_metadata()
+
+        results = {
+            "schema_version": "v0.1",
+            "data": [layer_noise],
+            "metadata": metadata,
+        }
+        model = ResultsModel.model_validate(results)
+        assert model.schema_version == "v0.1"
+        assert len(model.data) == 1
+        assert isinstance(model.data[0], LayerNoiseWrapperModel)
+        assert isinstance(model.metadata, ResultsMetadataModel)
+
+    def test_schema_version_default(self):
+        """Test that schema_version has default value of 'v0.1'."""
+        layer_noise = self._create_valid_layer_noise_wrapper()
+        metadata = self._create_valid_metadata()
+
+        results = {
+            "data": [layer_noise],
+            "metadata": metadata,
+        }
+        model = ResultsModel.model_validate(results)
+        assert model.schema_version == "v0.1"
+
+    def test_invalid_schema_version(self):
+        """Test that invalid schema_version is rejected."""
+        layer_noise = self._create_valid_layer_noise_wrapper()
+        metadata = self._create_valid_metadata()
+
+        results = {
+            "schema_version": "v0.2",
+            "data": [layer_noise],
+            "metadata": metadata,
+        }
+        with pytest.raises(ValidationError, match="Input should be 'v0.1'"):
+            ResultsModel.model_validate(results)
+
+    def test_missing_data_field(self):
+        """Test that missing data field is rejected."""
+        metadata = self._create_valid_metadata()
+
+        results = {
+            "metadata": metadata,
+        }
+        with pytest.raises(ValidationError, match="Field required"):
+            ResultsModel.model_validate(results)
+
+    def test_missing_metadata_field(self):
+        """Test that missing metadata field is rejected."""
+        layer_noise = self._create_valid_layer_noise_wrapper()
+
+        results = {
+            "data": [layer_noise],
+        }
+        with pytest.raises(ValidationError, match="Field required"):
+            ResultsModel.model_validate(results)
