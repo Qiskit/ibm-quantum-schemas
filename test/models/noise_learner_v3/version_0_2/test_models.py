@@ -16,7 +16,7 @@ import numpy as np
 import pytest
 from qiskit.circuit import QuantumCircuit
 
-from ibm_quantum_schemas.models.noise_learner_v3.version_0_2_dev.models import (
+from ibm_quantum_schemas.models.noise_learner_v3.version_0_2.models import (
     LinbdbladResultMetadataModel,
     LinbdbladResultPostSelectionMetadataModel,
     NoiseLearnerV3ResultModel,

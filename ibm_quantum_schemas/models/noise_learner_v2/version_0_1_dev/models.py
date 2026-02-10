@@ -17,28 +17,27 @@ from typing import Literal
 from pydantic import BaseModel
 
 from ...base_params_model import BaseParamsModel
-from .circuit_qpy_model_v13_to_v17 import CircuitQpyModelV13to17
+from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
 from .layer_noise_model import LayerNoiseWrapperModel
-from .options_model import OptionsModel
+from .options_model import OptionsModel, SimulatorOptionsModel
 from .results_metadata_model import ResultsMetadataModel
 
 
 class ParamsModel(BaseParamsModel):
-    """A model describing the NoiseLearnerV2 program inputs also known as "params"."""
+    """A model describing the NoiseLearnerV2 program inputs, also known as "params"."""
 
     schema_version: str = "v0.1"
     """Schema version of the program input."""
 
-    circuits: list[CircuitQpyModelV13to17]
+    circuits: list[TypedQpyCircuitModelV13to17]
     """The circuits to run the noise learner program for.
 
-    Each circuit is QPY-encoded and wrapped in RuntimeEncoder format. Note that while
-    the noise learner accepts EstimatorPubLike objects, they are converted to circuits
-    before serialization, so only circuits appear in the serialized params.
+    Note that while the noise learner accepts EstimatorPubLike objects, they are converted to
+    circuits before serialization, so only circuits appear in the model.
     """
 
     options: OptionsModel
-    """Options for the noise learner runtime."""
+    """Options for the noise learner program."""
 
 
 class ResultsModel(BaseModel):
@@ -52,3 +51,6 @@ class ResultsModel(BaseModel):
 
     metadata: ResultsMetadataModel
     """Metadata for the noise learner v2 job."""
+
+
+__all__ = ["ParamsModel", "OptionsModel", "SimulatorOptionsModel"]
