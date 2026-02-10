@@ -21,6 +21,7 @@ import json
 from pathlib import Path
 
 from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import ResultsModel
+from ibm_quantum_schemas.models.typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
 
 TEST_DATA_DIR = Path(__file__).parent / "test_data"
 
@@ -59,11 +60,7 @@ def test_result_model_from_runtime_json():
         assert all(isinstance(q, int) for q in layer_noise.value_.qubits)
 
         # Verify circuit is properly encoded
-        from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev import (
-            circuit_qpy_model_v13_to_v17 as qpy_model,
-        )
-
-        assert isinstance(layer_noise.value_.circuit, qpy_model.CircuitQpyModelV13to17)
+        assert isinstance(layer_noise.value_.circuit, TypedQpyCircuitModelV13to17)
         assert layer_noise.value_.circuit.type_ == "QuantumCircuit"
 
     # Verify metadata
