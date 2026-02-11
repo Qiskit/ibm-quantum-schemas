@@ -24,9 +24,31 @@ from ...base_params_model import BaseParamsModel
 from ...qpy_model import QpyModelV13ToV17
 
 
-class ParamsModel(BaseParamsModel):
-    """A model describing the Estimator program inputs, also known as "params"."""
+class TypeTaggedModel(BaseModel):
+    """Base class for type-tagged models."""
+    
+    @model_serializer(mode='wrap')
+    def _serialize_with_type_tag(self, serializer, info):
+        """Wrap serialization with __type__ and __value__."""
+        value = serializer(self)
+        type_name = self.__class__.__name__.replace('Model', '')
+        return {
+            "__type__": type_name,
+            "__value__": value
+        }
 
-    schema_version: Literal["v0.1"] = "v0.1"
+
+#class BitArrayValue(TypeTaggedModel):
+#    """The value portion of a BitArray type tag."""
+#    array: Union[list, str]  # Can be tagged ndarray or direct string
+#    num_bits: int
+
+
+class ParamsModel(BaseParamsModel):
+    """A model describing the Estimator program inputs."""
+
+    schema_version: str = "v0.1"
+
+    
 
     # To be continued
