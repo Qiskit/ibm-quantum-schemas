@@ -1,6 +1,6 @@
 # This code is a Qiskit project.
 #
-# (C) Copyright IBM 2025.
+# (C) Copyright IBM 2026.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -16,7 +16,10 @@ import pytest
 from pydantic import ValidationError
 
 from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
+    LayerNoiseWrapperModel,
     ParamsModel,
+    ResultsMetadataModel,
+    ResultsModel,
 )
 
 
@@ -64,3 +67,55 @@ class TestParamsModelValidation:
         }
         model = ParamsModel.model_validate(params)
         assert len(model.circuits) == 3
+
+
+class TestResultsModelValidation:
+    """Test ResultsModel validation."""
+
+    def test_valid_results_model(self, valid_layer_noise_wrapper, valid_metadata):
+        """Test that valid ResultsModel is accepted."""
+        results = {
+            "schema_version": "v0.1",
+            "data": [valid_layer_noise_wrapper],
+            "metadata": valid_metadata,
+        }
+        model = ResultsModel.model_validate(results)
+        assert model.schema_version == "v0.1"
+        assert len(model.data) == 1
+        assert isinstance(model.data[0], LayerNoiseWrapperModel)
+        assert isinstance(model.metadata, ResultsMetadataModel)
+
+    def test_schema_version_default(self, valid_layer_noise_wrapper, valid_metadata):
+        """Test that schema_version has default value of 'v0.1'."""
+        results = {
+            "data": [valid_layer_noise_wrapper],
+            "metadata": valid_metadata,
+        }
+        model = ResultsModel.model_validate(results)
+        assert model.schema_version == "v0.1"
+
+    def test_invalid_schema_version(self, valid_layer_noise_wrapper, valid_metadata):
+        """Test that invalid schema_version is rejected."""
+        results = {
+            "schema_version": "v0.2",
+            "data": [valid_layer_noise_wrapper],
+            "metadata": valid_metadata,
+        }
+        with pytest.raises(ValidationError, match="Input should be 'v0.1'"):
+            ResultsModel.model_validate(results)
+
+    def test_missing_data_field(self, valid_metadata):
+        """Test that missing data field is rejected."""
+        results = {
+            "metadata": valid_metadata,
+        }
+        with pytest.raises(ValidationError, match="Field required"):
+            ResultsModel.model_validate(results)
+
+    def test_missing_metadata_field(self, valid_layer_noise_wrapper):
+        """Test that missing metadata field is rejected."""
+        results = {
+            "data": [valid_layer_noise_wrapper],
+        }
+        with pytest.raises(ValidationError, match="Field required"):
+            ResultsModel.model_validate(results)
