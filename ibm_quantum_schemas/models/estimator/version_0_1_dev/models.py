@@ -38,7 +38,7 @@ class ParamsModel(BaseParamsModel):
 class OptionsModel(BaseModel):
     """Options for the Estimator."""
 
-    default_precision: float = 0.015625
+    default_precision: Annotated[float, Field(ge=0)] = 0.015625
     """The default precision to use for any PUB or ``run()``
     call that does not specify one.
     Each Estimator PUB can specify its own precision. If the ``run()`` method
@@ -46,7 +46,7 @@ class OptionsModel(BaseModel):
     call that do not specify their own.
     """
 
-    default_shots: int | None = None
+    default_shots: Annotated[int, Field(ge=0)] | None = None
     """The total number of shots to use per circuit per configuration.
 
     .. note::
@@ -79,7 +79,7 @@ class OptionsModel(BaseModel):
     for more information about the error mitigation methods used at each level.
     """
 
-    seed_estimator: int | None = None
+    seed_estimator: Annotated[int, Field(ge=0)] | None = None
     """Seed used to control sampling."""
 
     dynamical_decoupling: DynamicalDecouplingOptionsModel
