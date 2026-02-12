@@ -46,7 +46,7 @@ class OptionsModel(BaseModel):
     call that do not specify their own.
     """
 
-    default_shots: Annotated[int, Field(ge=0)] | None = None
+    default_shots: Annotated[int, Field(ge=1)] | None = None
     """The total number of shots to use per circuit per configuration.
 
     .. note::
@@ -122,4 +122,22 @@ class DynamicalDecouplingOptionsModel(BaseModel):
 
     Since qubits in the ground state are less susceptible to decoherence, it can be beneficial
     to let them be while they are known to be in this state.
+    """
+
+
+class MeasureNoiseLearningOptions(BaseModel):
+    """Options for measurement noise learning. This is only used by V2 Estimator.
+
+    .. note::
+        These options are only used when the resilience level or options specify a
+        technique that requires measurement noise learning.
+    """
+
+    num_randomizations: Annotated[int, Field(ge=1)] = 32
+    """The number of random circuits to draw for the measurement learning experiment."""
+
+    shots_per_randomization: Annotated[int, Field(ge=1)] | Literal["auto"] = "auto"
+    """The number of shots to use for the learning experiment per random circuit.
+    
+    If "auto", the value will be chosen automatically based on the input PUBs.
     """
