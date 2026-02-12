@@ -34,8 +34,56 @@ class ParamsModel(BaseParamsModel):
     options: OptionsModel
     """Options for the Estimator."""
 
-class OptionsModel:
+
+class OptionsModel(BaseModel):
+    """Options for the Estimator."""
+
+    default_precision: float = 0.015625
+    """The default precision to use for any PUB or ``run()``
+    call that does not specify one.
+    Each Estimator PUB can specify its own precision. If the ``run()`` method
+    is given a precision, then that value is used for all PUBs in the ``run()``
+    call that do not specify their own.
+    """
+
+    default_shots: int | None = None
+    """The total number of shots to use per circuit per configuration.
+
+    .. note::
+        If set, this value overrides :attr:`~default_precision`.
+
+    A configuration is a combination of a specific parameter value binding set and a
+    physical measurement basis. A physical measurement basis groups together some
+    collection of qubit-wise commuting observables for some specific circuit/parameter
+    value set to create a single measurement with basis rotations that is inserted into
+    hardware executions.
+
+    If twirling is enabled, the value of this option will be divided over circuit
+    randomizations, with a smaller number of shots per randomization. See the
+    :attr:`~twirling` options.
+    """
+
+    resilience_level: int = 1
+    """How much resilience to build against errors.
+    Higher levels generate more accurate results,
+    at the expense of longer processing times.
+
+    * 0: No mitigation.
+    * 1: Minimal mitigation costs. Mitigate error associated with readout errors.
+    * 2: Medium mitigation costs. Typically reduces bias in estimators but
+      is not guaranteed to be zero bias.
+
+    Refer to the
+    `Configure error mitigation for Qiskit Runtime
+    <https://quantum.cloud.ibm.com/docs/guides/configure-error-mitigation>`_ guide
+    for more information about the error mitigation methods used at each level.
+    """
+
+    seed_estimator: int | None = None
+    """Seed used to control sampling."""
+
     dynamical_decoupling: DynamicalDecouplingOptionsModel
+    """Options for dynamical decoupling."""
 
 
 class DynamicalDecouplingOptionsModel(BaseModel):
