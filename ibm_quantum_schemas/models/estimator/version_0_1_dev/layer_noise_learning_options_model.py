@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, conlist
 
 
 class LayerNoiseLearningOptionsModel(BaseModel):
@@ -79,18 +79,10 @@ class LayerNoiseLearningOptionsModel(BaseModel):
     each.
     """
 
-    layer_pair_depths: list[int] = [0, 1, 2, 4, 16, 32]
+    layer_pair_depths: conlist(Annotated[int, Field(ge=0)]) = [0, 1, 2, 4, 16, 32]  # type: ignore[valid-type]
     """The circuit depths (measured in number of pairs) to use in learning
     experiments. Pairs are used as the unit because we exploit the order-2 nature of
     our entangling gates in the noise learning implementation. A value of ``3``
     would correspond to 6 layers of the layer of interest, for example.
     """
-
-    @field_validator("layer_pair_depths")
-    @classmethod
-    def _validate_layer_pair_depths(cls, value: list[int]) -> list[int]:
-        """Validate layer_pair_depths."""
-        if any(i < 0 for i in value):
-            raise ValueError("layer_pair_depths option value must all be >= 0")
-        return value
 
