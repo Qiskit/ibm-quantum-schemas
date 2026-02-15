@@ -14,9 +14,13 @@
 
 from __future__ import annotations
 
+from typing import Sequence
+
 from pydantic import BaseModel, Field, model_validator
 
 from ....aliases import Self
+from ...noise_learner_v2.version_0_1_dev.layer_noise_model import LayerNoiseWrapperModel
+from ...noise_learner_v2.version_0_1_dev.models import ResultsModel as NoiseLearnerResultsModel
 from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
 from .pec_options_model import PecOptionsModel
@@ -76,8 +80,8 @@ class ResilienceOptionsModel(BaseModel):
     See :class:`LayerNoiseLearningOptionsModel` for all options.
     """
 
-    layer_noise_model: None = None
-    """A NoiseLearnerResult or a sequence of LayerError objects.
+    layer_noise_model: NoiseLearnerResultsModel | Sequence[LayerNoiseWrapperModel] | None = None
+    """A noise learner result or a sequence of LayerError objects.
     
     If ``None``, all the mitigation strategies that require noise data (e.g., PEC
     and PEA) perform a noise-learning stage. Otherwise, this noise-learning stage is skipped,
