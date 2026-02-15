@@ -17,7 +17,7 @@ from __future__ import annotations
 from pydantic import BaseModel
 
 
-class ExecutionOptionsModel(BaseModel):
+class ExecutionOptionsV2Model(BaseModel):
     """Execution options for V2 primitives."""
 
     init_qubits: bool = True

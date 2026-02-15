@@ -22,7 +22,7 @@ from pydantic import BaseModel, Field, JsonValue
 from ...base_params_model import BaseParamsModel
 from ...qpy_model import QpyModelV13ToV17
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
-from .execution_options_model import ExecutionOptionsModel
+from .execution_options_model import ExecutionOptionsV2Model
 from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
 from .pec_options_model import PecOptionsModel
@@ -98,10 +98,10 @@ class OptionsModel(BaseModel):
     See :class:`ResilienceOptionsModel` for all available options.
     """
 
-    execution: ExecutionOptionsModel = Field(default_factory=ExecutionOptionsModel)
+    execution: ExecutionOptionsV2Model = Field(default_factory=ExecutionOptionsV2Model)
     """Execution time options.
     
-    See :class:`ExecutionOptionsModel` for all available options.
+    See :class:`ExecutionOptionsV2Model` for all available options.
     """
 
     twirling: TwirlingOptionsModel = Field(default_factory=TwirlingOptionsModel)

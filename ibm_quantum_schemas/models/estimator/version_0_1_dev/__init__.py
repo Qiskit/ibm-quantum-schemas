@@ -13,7 +13,7 @@
 """Estimator V0.1 Models and Validation"""
 
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
-from .execution_options_model import ExecutionOptionsModel
+from .execution_options_model import ExecutionOptionsV2Model
 from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
 from .models import OptionsModel, ParamsModel
@@ -24,7 +24,7 @@ from .zne_options_model import ExtrapolatorType, ZneOptionsModel
 
 __all__ = [
     "DynamicalDecouplingOptionsModel",
-    "ExecutionOptionsModel",
+    "ExecutionOptionsV2Model",
     "ExtrapolatorType",
     "LayerNoiseLearningOptionsModel",
     "MeasureNoiseLearningOptionsModel",
