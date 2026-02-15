@@ -94,4 +94,3 @@ class LayerNoiseLearningOptionsModel(BaseModel):
             raise ValueError("layer_pair_depths option value must all be >= 0")
         return value
 
-# Made with Bob

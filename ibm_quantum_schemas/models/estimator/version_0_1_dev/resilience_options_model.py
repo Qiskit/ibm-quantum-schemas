@@ -98,4 +98,3 @@ class ResilienceOptionsModel(BaseModel):
 
         return self
 
-# Made with Bob

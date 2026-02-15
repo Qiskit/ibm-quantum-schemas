@@ -46,4 +46,3 @@ class PecOptionsModel(BaseModel):
             raise ValueError("noise_gain must be >= 0")
         return value
 
-# Made with Bob

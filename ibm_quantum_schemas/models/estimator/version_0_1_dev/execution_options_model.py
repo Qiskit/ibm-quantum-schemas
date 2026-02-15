@@ -31,4 +31,3 @@ class ExecutionOptionsV2Model(BaseModel):
     Default is given by ``backend.default_rep_delay``.
     """
 
-# Made with Bob
