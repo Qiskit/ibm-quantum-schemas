@@ -90,7 +90,10 @@ class OptionsModel(BaseModel):
     """Seed used to control sampling."""
 
     dynamical_decoupling: DynamicalDecouplingOptionsModel | None = None
-    """Options for dynamical decoupling."""
+    """Dynamical decoupling options.
+    
+    See :class:`DynamicalDecouplingOptionsModel` for all available options.
+    """
 
     resilience: ResilienceOptionsModel = Field(default_factory=ResilienceOptionsModel)
     """Advanced resilience options to fine-tune the resilience strategy.
