@@ -20,7 +20,7 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class PecOptionsModel(BaseModel):
-    """Probabalistic error cancellation mitigation options. This is only used by V2 Estimator."""
+    """Probabilistic error cancellation mitigation options. This is only used by V2 Estimator."""
 
     max_overhead: Annotated[float, Field(gt=0)] | None = 100.0
     """The maximum circuit sampling overhead allowed, or ``None`` for no maximum."""

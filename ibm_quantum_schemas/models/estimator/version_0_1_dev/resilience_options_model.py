@@ -63,7 +63,7 @@ class ResilienceOptionsModel(BaseModel):
     """
 
     pec: PecOptionsModel = Field(default_factory=PecOptionsModel)
-    """Additional probabalistic error cancellation mitigation options.
+    """Additional probabilistic error cancellation mitigation options.
     
     See :class:`PecOptionsModel` for all options.
     """
