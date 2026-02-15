@@ -22,7 +22,12 @@ from pydantic import BaseModel, Field, JsonValue
 from ...base_params_model import BaseParamsModel
 from ...qpy_model import QpyModelV13ToV17
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
+from .execution_options_model import ExecutionOptionsModel
+from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
+from .pec_options_model import PecOptionsModel
+from .resilience_options_model import ResilienceOptionsModel
+from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
 from .zne_options_model import ExtrapolatorType, ZneOptionsModel
 
 
@@ -86,3 +91,26 @@ class OptionsModel(BaseModel):
 
     dynamical_decoupling: DynamicalDecouplingOptionsModel | None = None
     """Options for dynamical decoupling."""
+
+    resilience: ResilienceOptionsModel = Field(default_factory=ResilienceOptionsModel)
+    """Advanced resilience options to fine-tune the resilience strategy.
+    
+    See :class:`ResilienceOptionsModel` for all available options.
+    """
+
+    execution: ExecutionOptionsModel = Field(default_factory=ExecutionOptionsModel)
+    """Execution time options.
+    
+    See :class:`ExecutionOptionsModel` for all available options.
+    """
+
+    twirling: TwirlingOptionsModel = Field(default_factory=TwirlingOptionsModel)
+    """Pauli twirling options.
+    
+    See :class:`TwirlingOptionsModel` for all available options.
+    """
+
+    experimental: dict | None = None
+    """Experimental options. These options are subject to change without notification, and
+    stability is not guaranteed.
+    """

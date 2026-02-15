@@ -13,15 +13,26 @@
 """Estimator V0.1 Models and Validation"""
 
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
+from .execution_options_model import ExecutionOptionsModel
+from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
 from .models import OptionsModel, ParamsModel
+from .pec_options_model import PecOptionsModel
+from .resilience_options_model import ResilienceOptionsModel
+from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
 from .zne_options_model import ExtrapolatorType, ZneOptionsModel
 
 __all__ = [
     "DynamicalDecouplingOptionsModel",
+    "ExecutionOptionsModel",
     "ExtrapolatorType",
+    "LayerNoiseLearningOptionsModel",
     "MeasureNoiseLearningOptionsModel",
     "OptionsModel",
     "ParamsModel",
+    "PecOptionsModel",
+    "ResilienceOptionsModel",
+    "TwirlingOptionsModel",
+    "TwirlingStrategyType",
     "ZneOptionsModel",
 ]
