@@ -202,12 +202,12 @@ class ZneOptionsModel(BaseModel):
            `npj Quantum Inf 7, 80 (2021) <https://www.nature.com/articles/s41534-021-00404-3>`_
     """
 
-    amplifier: Literal["gate_folding", "gate_folding_front", "gate_folding_back", "pea"] | None = None
+    amplifier: Literal["gate_folding", "gate_folding_front", "gate_folding_back", "pea"] = "gate_folding"
     """Which technique to use for amplifying noise.
 
     One of:
 
-        * `"gate_folding"` (default) uses 2-qubit gate folding to amplify noise. If the noise
+        * `"gate_folding"` uses 2-qubit gate folding to amplify noise. If the noise
             factor requires amplifying only a subset of the gates, then these gates are chosen
             randomly.
         * `"gate_folding_front"` uses 2-qubit gate folding to amplify noise. If the noise
@@ -229,11 +229,11 @@ class ZneOptionsModel(BaseModel):
 
     noise_factors: Sequence[float] | None = None
     """Noise factors to use for noise amplification.
-
-    Default: ``(1, 1.5, 2)`` for PEA, and ``(1, 3, 5)`` otherwise.
+    
+    Defaults to ``(1, 1.5, 2, 2.5, 3)`` for PEA, and ``(1, 3, 5)`` otherwise.
     """
 
-    extrapolator: ExtrapolatorType | Sequence[ExtrapolatorType] | None = None
+    extrapolator: ExtrapolatorType | Sequence[ExtrapolatorType] = ("exponential", "linear")
     """Extrapolator(s) to try (in order) for extrapolating to zero noise.
 
     The available options are:
@@ -252,8 +252,6 @@ class ZneOptionsModel(BaseModel):
     the order of the provided extrapolators. If more than one extrapolator is specified, the ``evs``
     and ``stds`` reported in the result's data refer to the first successful extrapolator, where an
     extrapolator success is determined heuristically.
-
-    Default: ``("exponential", "linear")``.
     """
 
     extrapolated_noise_factors: Sequence[float] | None = None
@@ -265,15 +263,6 @@ class ZneOptionsModel(BaseModel):
     fields called ``evs_extrapolated`` and ``stds_extrapolated``.
     """
 
-    def _default_noise_factors(self) -> Sequence[float]:
-        """Get default noise factors based on amplifier."""
-        return (1, 1.5, 2, 2.5, 3) if self.amplifier == "pea" else (1, 3, 5)
-
-    @classmethod
-    def _default_extrapolator(cls) -> Sequence[ExtrapolatorType]:
-        """Get default extrapolator."""
-        return ("exponential", "linear")
-
     @field_validator("noise_factors")
     @classmethod
     def _validate_zne_noise_factors(cls, factors: Sequence[float] | None) -> Sequence[float] | None:
@@ -284,14 +273,12 @@ class ZneOptionsModel(BaseModel):
 
     @model_validator(mode="after")
     def _validate_options(self) -> Self:
-        """Check that there are enough noise factors for all extrapolators."""
-        noise_factors = (
-            self.noise_factors if self.noise_factors is not None else self._default_noise_factors()
-        )
-        extrapolator = (
-            self.extrapolator if self.extrapolator is not None else self._default_extrapolator()
-        )
-
+        """Set defaults and validate options."""
+        # Set default noise_factors based on amplifier if not provided
+        if self.noise_factors is None:
+            self.noise_factors = (1, 1.5, 2, 2.5, 3) if self.amplifier == "pea" else (1, 3, 5)
+        
+        # Check that there are enough noise factors for all extrapolators
         required_factors = {
             "linear": 2,
             "exponential": 2,
@@ -302,12 +289,12 @@ class ZneOptionsModel(BaseModel):
             required_factors[f"polynomial_degree_{idx}"] = idx + 1
 
         extrapolators: Sequence = (
-            [extrapolator]  # type: ignore[assignment]
-            if isinstance(extrapolator, str)
-            else extrapolator
+            [self.extrapolator]  # type: ignore[assignment]
+            if isinstance(self.extrapolator, str)
+            else self.extrapolator
         )
         for extrap in extrapolators:  # pylint: disable=not-an-iterable
-            if len(noise_factors) < required_factors[extrap]:  # type: ignore[arg-type]
+            if len(self.noise_factors) < required_factors[extrap]:  # type: ignore[arg-type]
                 raise ValueError(
                     f"{extrap} requires at least {required_factors[extrap]} noise_factors"
                 )
