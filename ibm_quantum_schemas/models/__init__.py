@@ -10,4 +10,12 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Models"""
+"""
+==============================================================
+IBM Quantum Schemas Models (:mod:`ibm_quantum_schemas.models`)
+==============================================================
+
+.. currentmodule:: ibm_quantum_schemas.models
+
+Models.
+"""

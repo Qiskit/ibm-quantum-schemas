@@ -1,6 +1,6 @@
 # This code is a Qiskit project.
 #
-# (C) Copyright IBM 2022.
+# (C) Copyright IBM 2026.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -20,15 +20,15 @@ import typing
 sys.path.insert(0, os.path.abspath("."))
 
 # -- Project information -----------------------------------------------------
-project = "Qiskit Runtime IBM Client"
-project_copyright = "2022, Qiskit Development Team"
+project = "IBM Quantum Schemas"
+project_copyright = "2026, Qiskit Development Team"
 author = "Qiskit Development Team"
 language = "en"
 
 # The short X.Y version
 version = ""
 # The full version, including alpha/beta/rc tags
-release = '0.45.0'
+release = "0.2.20260209"
 
 # -- General configuration ---------------------------------------------------
 
@@ -62,7 +62,7 @@ nbsphinx_prolog = """
         __"""
 
 vers = release.split(".")
-link_str = f" https://github.com/Qiskit/qiskit-ibm-runtime/blob/stable/{vers[0]}.{vers[1]}/docs/"
+link_str = f" https://github.com/Qiskit/ibm-quantum-schemas/blob/{vers}/docs/"
 nbsphinx_prolog += link_str + "{{ docname }}"
 
 
@@ -188,7 +188,7 @@ def linkcode_resolve(domain, info):
 
     module_name = info["module"]
     module = sys.modules.get(module_name)
-    if module is None or "qiskit_ibm_runtime" not in module_name:
+    if module is None or "ibm_quantum_schemas" not in module_name:
         return None
 
     def is_valid_code_object(obj):
@@ -213,9 +213,9 @@ def linkcode_resolve(domain, info):
         full_file_name = inspect.getsourcefile(obj)
     except TypeError:
         return None
-    if full_file_name is None or "/qiskit_ibm_runtime/" not in full_file_name:
+    if full_file_name is None or "/ibm_quantum_schemas/" not in full_file_name:
         return None
-    file_name = full_file_name.split("/qiskit_ibm_runtime/")[-1]
+    file_name = full_file_name.split("/ibm_quantum_schemas/")[-1]
 
     try:
         source, lineno = inspect.getsourcelines(obj)
@@ -224,4 +224,4 @@ def linkcode_resolve(domain, info):
     else:
         ending_lineno = lineno + len(source) - 1
         linespec = f"#L{lineno}-L{ending_lineno}"
-    return f"https://github.com/Qiskit/qiskit-ibm-runtime/tree/{GITHUB_BRANCH}/qiskit_ibm_runtime/{file_name}{linespec}"
+    return f"https://github.com/Qiskit/ibm-quantum-schemas/tree/{GITHUB_BRANCH}/ibm_quantum_schemas{file_name}{linespec}"
