@@ -50,6 +50,13 @@ dev = [
     "towncrier",                  # Changelog management
 ]
 
+documentation = [
+    "Sphinx>=6",
+    "sphinx-automodapi",
+    "sphinx-autodoc-typehints<=1.19.2",
+    "sphinxcontrib-katex==0.9.9",
+]
+
 [tool.ruff]
 lint.select = [
     "D1", "D2", "D3",         # pydocstyle
