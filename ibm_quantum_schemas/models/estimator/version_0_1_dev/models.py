@@ -38,10 +38,26 @@ class ParamsModel(BaseParamsModel):
 
     schema_version: str = "v0.1"
 
-    # pub: TBD
+    # TODO: pubs, support_qiskit, version
 
     options: OptionsModel
     """Options for the Estimator."""
+
+    resilience_level: Annotated[int, Field(ge=0, le=MAX_RESILIENCE_LEVEL)] = 1
+    """How much resilience to build against errors.
+    Higher levels generate more accurate results,
+    at the expense of longer processing times.
+
+    * 0: No mitigation.
+    * 1: Minimal mitigation costs. Mitigate error associated with readout errors.
+    * 2: Medium mitigation costs. Typically reduces bias in estimators but
+      is not guaranteed to be zero bias.
+
+    Refer to the
+    `Configure error mitigation for Qiskit Runtime
+    <https://quantum.cloud.ibm.com/docs/guides/configure-error-mitigation>`_ guide
+    for more information about the error mitigation methods used at each level.
+    """
 
 
 class OptionsModel(BaseModel):
@@ -70,22 +86,6 @@ class OptionsModel(BaseModel):
     If twirling is enabled, the value of this option will be divided over circuit
     randomizations, with a smaller number of shots per randomization. See the
     :attr:`~twirling` options.
-    """
-
-    resilience_level: Annotated[int, Field(ge=0, le=MAX_RESILIENCE_LEVEL)] = 1
-    """How much resilience to build against errors.
-    Higher levels generate more accurate results,
-    at the expense of longer processing times.
-
-    * 0: No mitigation.
-    * 1: Minimal mitigation costs. Mitigate error associated with readout errors.
-    * 2: Medium mitigation costs. Typically reduces bias in estimators but
-      is not guaranteed to be zero bias.
-
-    Refer to the
-    `Configure error mitigation for Qiskit Runtime
-    <https://quantum.cloud.ibm.com/docs/guides/configure-error-mitigation>`_ guide
-    for more information about the error mitigation methods used at each level.
     """
 
     seed_estimator: Annotated[int, Field(ge=0)] | None = None
