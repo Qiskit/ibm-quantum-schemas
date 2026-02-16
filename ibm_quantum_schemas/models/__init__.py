@@ -18,5 +18,4 @@ IBM Quantum Schemas Models (:mod:`ibm_quantum_schemas.models`)
 .. currentmodule:: ibm_quantum_schemas.models
 
 Models.
-
 """
