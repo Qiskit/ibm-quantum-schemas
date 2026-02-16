@@ -10,6 +10,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+"""Sphinx configuration."""
+
 # -- Path setup --------------------------------------------------------------
 import inspect
 import os
@@ -72,9 +74,12 @@ if not hasattr(typing, "Self"):
     try:
         from typing_extensions import Self
     except ImportError:
+
         class Self:
             """Dummy fallback for 'Self' for older python versions."""
+
             pass
+
     typing.Self = Self
 
 # ----------------------------------------------------------------------------------
@@ -181,6 +186,10 @@ GITHUB_BRANCH = determine_github_branch()
 
 
 def linkcode_resolve(domain, info):
+    """Return the URL to source code corresponding to the an object.
+
+    See https://www.sphinx-doc.org/en/master/usage/extensions/linkcode.html.
+    """
     if domain != "py":
         return None
 
