@@ -118,6 +118,7 @@ To release a new version `0.1.20260122`:
                                   #  - checks out a new branch release-0.1.20260122
                                   #  - calls towncrier to prepend to CHANGELOG
                                   #  - commits this change in a new commit
+                                  #  - updates the version number in `doc/conf.py`
 
 git push origin release-0.1.20260122
 ```
