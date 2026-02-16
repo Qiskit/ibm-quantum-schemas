@@ -117,7 +117,7 @@ class OptionsModel(BaseModel):
     See :class:`TwirlingOptionsModel` for all available options.
     """
 
-    experimental: dict | None = None
+    experimental: dict = {}
     """Experimental options. These options are subject to change without notification, and
     stability is not guaranteed.
     """
