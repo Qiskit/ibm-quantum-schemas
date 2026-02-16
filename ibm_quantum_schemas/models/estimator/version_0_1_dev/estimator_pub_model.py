@@ -14,36 +14,28 @@
 
 from typing import Annotated
 
-from pydantic import BaseModel, Field
+from pydantic import Field, RootModel
 
 from ...noise_learner_v2.version_0_1_dev.layer_noise_model import NdarrayWrapperModel
 from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
 from .observables_array_model import ObservablesArrayModel
 
 
-class EstimatorPubModel(BaseModel):
-    """A model representing an Estimator Primitive Unified Bloc (PUB).
+class EstimatorPubModel(RootModel[tuple[
+    TypedQpyCircuitModelV13to17,
+    ObservablesArrayModel,
+    NdarrayWrapperModel,
+    Annotated[float, Field(gt=0)] | None
+]]):
+    """A model representing an Estimator Primitive Unified Bloc (PUB) as a tuple of length 4.
     
     A PUB encapsulates a single quantum circuit along with the observables to measure,
     parameter values, and optional precision requirements.
-    """
-
-    circuit: TypedQpyCircuitModelV13to17
-    """The quantum circuit to execute, encoded in QPY format."""
-
-    observables: ObservablesArrayModel
-    """The observables to measure. Can be a single observable or a list of observables."""
-
-    parameter_values: NdarrayWrapperModel
-    """Parameter values for the circuit's parameters.
     
-    A NumPy ndarray containing the parameter values to bind to the circuit's parameters.
-    """
-
-    precision: Annotated[float, Field(gt=0)] | None = None
-    """Target precision for the expectation value estimates.
-    
-    If specified, this precision overrides the default precision set in the options.
-    Must be a positive float value.
+    Tuple elements:
+    [0] circuit: The quantum circuit to execute, encoded in QPY format.
+    [1] observables: The observables to measure. Can be a single observable or a list of observables.
+    [2] parameter_values: Parameter values for the circuit's parameters (NumPy ndarray).
+    [3] precision: Target precision for the expectation value estimates (positive float or None).
     """
 
