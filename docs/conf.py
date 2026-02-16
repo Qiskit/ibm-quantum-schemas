@@ -40,7 +40,6 @@ extensions = [
     # This is used by qiskit/documentation to generate links to github.com.
     "sphinx.ext.linkcode",
     "sphinxcontrib.katex",
-    "matplotlib.sphinxext.plot_directive",
 ]
 templates_path = ["_templates"]
 
