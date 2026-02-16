@@ -6,7 +6,6 @@ on:
     branches: [ main ]
 jobs:
   tests:
-    name: Run unit tests
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
@@ -25,7 +24,6 @@ jobs:
         run: pytest test/ --error-for-skips
 
   lint:
-    name: Run code quality checks
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
@@ -55,6 +53,6 @@ jobs:
       - name: Install Deps
         run: |
             python -m pip install --upgrade pip
-            python -m pip install ".[dev]"
+            python -m pip install ".[dev,documentation]"
       - name: Build documentation
         run: cd docs && make html
