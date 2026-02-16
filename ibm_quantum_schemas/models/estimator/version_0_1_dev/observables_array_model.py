@@ -70,3 +70,14 @@ class ObservableModel(RootModel[dict[PauliString, float]]):
             )
         
         return self
+
+
+class ObservablesArrayModel(RootModel[ObservableModel | list[ObservableModel]]):
+    """Either a single observable or a list of observables.
+
+    Examples:
+        - Single observable: {"XX": 0.5, "YY": 0.5}
+        - List of observables: [{"XX": 1.0}, {"YY": 1.0, "ZZ": 1.0}]
+    """
+    
+    root: ObservableModel | list[ObservableModel]
