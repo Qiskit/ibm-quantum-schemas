@@ -91,7 +91,9 @@ class OptionsModel(BaseModel):
     seed_estimator: Annotated[int, Field(ge=0)] | None = None
     """Seed used to control sampling."""
 
-    dynamical_decoupling: DynamicalDecouplingOptionsModel | None = None
+    dynamical_decoupling: DynamicalDecouplingOptionsModel = Field(
+        default_factory=DynamicalDecouplingOptionsModel
+    )
     """Dynamical decoupling options.
     
     See :class:`DynamicalDecouplingOptionsModel` for all available options.
