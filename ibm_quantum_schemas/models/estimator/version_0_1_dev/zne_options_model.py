@@ -132,10 +132,10 @@ class ZneOptionsModel(BaseModel):
     extrapolator success is determined heuristically.
     """
 
-    extrapolated_noise_factors: Sequence[float] | None = None
+    extrapolated_noise_factors: Sequence[float] = ()
     """Noise factors to evaluate the fit extrapolation models at.
 
-    If unset, this will default to ``[0, *noise_factors]``. This
+    Defaults to ``[0, *noise_factors]``. This
     option does not affect execution or model fitting in any way, it only determines the
     points at which the ``extrapolator``\\s are evaluated to be returned in the data
     fields called ``evs_extrapolated`` and ``stds_extrapolated``.
@@ -155,6 +155,10 @@ class ZneOptionsModel(BaseModel):
         # Set default noise_factors based on amplifier if not provided
         if self.noise_factors is None:
             self.noise_factors = (1, 1.5, 2, 2.5, 3) if self.amplifier == "pea" else (1, 3, 5)
+        
+        # Set default extrapolated_noise_factors if not provided
+        if not self.extrapolated_noise_factors:
+            self.extrapolated_noise_factors = (0, *self.noise_factors)
         
         # Check that there are enough noise factors for all extrapolators
         required_factors = {
