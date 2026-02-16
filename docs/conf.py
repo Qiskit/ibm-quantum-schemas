@@ -39,7 +39,6 @@ extensions = [
     "sphinx.ext.intersphinx",
     # This is used by qiskit/documentation to generate links to github.com.
     "sphinx.ext.linkcode",
-    "nbsphinx",
     "sphinxcontrib.katex",
     "matplotlib.sphinxext.plot_directive",
 ]
