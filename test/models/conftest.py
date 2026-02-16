@@ -23,14 +23,13 @@ from qiskit.qpy import dump as qpy_dump
 
 @pytest.fixture
 def compressed_qpy_circuit() -> str:
-    """Fixture to create a base64-encoded, zlib-compressed QPY circuit (version 13).
+    """Fixture to create a base64-encoded, zlib-compressed QPY circuit (version 14).
 
     Returns:
         Base64-encoded string of the compressed QPY circuit data.
     """
     circuit = QuantumCircuit(2)
-    circuit.h(0)
-    circuit.cx(0, 1)
+    circuit.cz(0, 1)
 
     buffer = BytesIO()
     qpy_dump(circuit, buffer, version=14)
