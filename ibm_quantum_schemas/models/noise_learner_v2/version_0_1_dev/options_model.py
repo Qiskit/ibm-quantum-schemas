@@ -18,7 +18,7 @@ from pydantic import BaseModel, Field, conlist
 
 
 class NoiseModel(BaseModel):
-    """A wrapper aroind Noise model data for the simulator."""
+    """A wrapper around Noise model data for the simulator."""
 
     type_: Literal["NoiseModel"] = Field(default="NoiseModel", alias="__type__")
     """Redundant type information."""
