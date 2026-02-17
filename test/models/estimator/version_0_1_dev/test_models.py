@@ -153,5 +153,14 @@ class TestParamsModel:
         del dict1["pubs"][1][0]["__value__"]
         del dict2["pubs"][0][0]["__value__"]
         del dict2["pubs"][1][0]["__value__"]
+
+        assert dict2.pop("schema_version") == "v0.1"
+        #assert dict2.pop("version") == 2
+        #assert dict2.pop("support_qiskit") == True
+
+        print("resilience_level" in dict1, "resilience_level" in dict2)
      
+        print(dict1)
+        print(dict2)
+
         assert dict1 == dict2
