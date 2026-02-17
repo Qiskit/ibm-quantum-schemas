@@ -25,14 +25,20 @@ from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
 from .observables_array_model import ObservablesArrayModel
 
 
-def _default_empty_ndarray_wrapper() -> NdarrayWrapperModel:
-    """Create a default empty ndarray wrapper."""
+def _serialize_and_encode(array: np.ndarray) -> str:
+    """Serialize and encode a numpy array to base64 string.
+    
+    Args:
+        array: NumPy array to serialize
+        
+    Returns:
+        Base64-encoded string of the compressed numpy array
+    """
     buffer = BytesIO()
-    np.save(buffer, np.array([]))
+    np.save(buffer, array)
     array_data = buffer.getvalue()
     compressed = zlib.compress(array_data)
-    encoded = pybase64.b64encode(compressed).decode("utf-8")
-    return NdarrayWrapperModel(type_="ndarray", value_=encoded)
+    return pybase64.b64encode(compressed).decode("utf-8")
 
 
 class EstimatorPubModel(RootModel[tuple[
@@ -61,7 +67,7 @@ class EstimatorPubModel(RootModel[tuple[
             data = list(data)
             # If only 2 elements provided, add defaults for parameter_values and precision
             if len(data) == 2:
-                data.append(_default_empty_ndarray_wrapper().model_dump(by_alias=True))
+                data.append({"__type__": "ndarray", "__value__": _serialize_and_encode(np.array([]))})
                 data.append(None)
             # If only 3 elements provided, add default for precision
             elif len(data) == 3:
