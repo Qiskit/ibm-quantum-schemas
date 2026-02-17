@@ -37,3 +37,9 @@ echo "=================================================================="
 git add CHANGELOG.md
 #git rm -r changelog.d
 git commit -m "Add changelog for release $1"
+
+echo "=================================================================="
+echo "Replacing version number in documentation ..."
+echo "=================================================================="
+sed -i '' "s/^release = \".*\"/release = \"$VERSION\"/" docs/conf.py
+git add docs/conf.py

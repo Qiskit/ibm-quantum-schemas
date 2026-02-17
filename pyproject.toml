@@ -50,6 +50,13 @@ dev = [
     "towncrier",                  # Changelog management
 ]
 
+documentation = [
+    "Sphinx>=6",
+    "sphinx-automodapi",
+    "sphinx-autodoc-typehints<=1.19.2",
+    "sphinxcontrib-katex==0.9.9",
+]
+
 [tool.ruff]
 lint.select = [
     "D1", "D2", "D3",         # pydocstyle
@@ -66,6 +73,8 @@ target-version = "py310"
 "__init__.py" = [
     "E402",   # module-import-not-at-top-of-file
     "F401",   # unused-import
+    "D212",   # multi-line-summary-first-line
+    "D205",   # missing-blank-line-after-summary
 ]
 "test/unit/**/*.py" = [
     "D100",   #
