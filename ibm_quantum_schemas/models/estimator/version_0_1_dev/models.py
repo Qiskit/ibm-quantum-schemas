@@ -51,7 +51,7 @@ class ParamsModel(BaseParamsModel):
     version: Annotated[int, Literal[2]] = 2
     """Version number. Must be 2."""
 
-    options: OptionsModel
+    options: OptionsModel = Field(default_factory=OptionsModel)
     """Options for the Estimator."""
 
     resilience_level: Annotated[int, Field(ge=0, le=MAX_RESILIENCE_LEVEL)] = 1

@@ -140,8 +140,7 @@ class TestParamsModel:
         pub2 = (encoded_circ2, [{"Z": 1.0}], {"__type__": "ndarray", "__value__": _serialize_and_encode(np.array([3]))})
         
         params_model = ParamsModel(
-            pubs=[pub1, pub2],
-            options=OptionsModel()
+            pubs=[pub1, pub2]
         )
         str2 = params_model.model_dump_json(by_alias=True)
 
