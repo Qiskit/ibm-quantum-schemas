@@ -74,6 +74,9 @@ class ObservableModel(RootModel[dict[PauliString, float]]):
 
 class ObservablesArrayModel(RootModel[ObservableModel | list[ObservableModel]]):
     """Either a single observable or a list of observables.
+    
+    When a list of observables is provided, all observables must have the same length
+    (i.e., all Pauli strings across all observables must have the same length).
 
     Examples:
         - Single observable: {"XX": 0.5, "YY": 0.5}
@@ -81,3 +84,31 @@ class ObservablesArrayModel(RootModel[ObservableModel | list[ObservableModel]]):
     """
     
     root: ObservableModel | list[ObservableModel]
+    
+    @model_validator(mode="after")
+    def validate_all_observables_same_length(self) -> Self:
+        """Validate that all observables in the array have the same length."""
+        # If it's a single observable, no cross-observable validation needed
+        if not isinstance(self.root, list):
+            return self
+        
+        # If the list is empty or has only one observable, no validation needed
+        if len(self.root) <= 1:
+            return self
+        
+        # Collect all lengths from all observables
+        all_lengths = set()
+        for observable in self.root:
+            if observable.root:  # Skip empty observables
+                # Get the length of Pauli strings in this observable
+                lengths = {len(pauli_str) for pauli_str in observable.root.keys()}
+                all_lengths.update(lengths)
+        
+        # Check if all lengths are the same
+        if len(all_lengths) > 1:
+            raise ValueError(
+                f"All observables in the array must have the same length. "
+                f"Found Pauli string lengths: {sorted(all_lengths)}"
+            )
+        
+        return self
