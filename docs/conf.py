@@ -15,7 +15,6 @@
 # -- Path setup --------------------------------------------------------------
 import inspect
 import os
-import re
 import sys
 import typing
 
