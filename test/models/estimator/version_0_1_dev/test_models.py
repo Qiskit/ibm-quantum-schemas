@@ -13,34 +13,11 @@
 """Validation tests for estimator models.py classes."""
 
 import json
-import zlib
-from io import BytesIO
-
-import numpy as np
-import pybase64
-from qiskit.circuit import QuantumCircuit
 
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.estimator_pub_model import (
     EstimatorPubModel,
 )
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.models import OptionsModel
-
-
-def _serialize_and_encode(array: np.ndarray) -> str:
-    """Serialize and encode a numpy array to base64 string.
-    
-    Args:
-        array: NumPy array to serialize
-        
-    Returns:
-        Base64-encoded string of the compressed numpy array
-    """
-    buffer = BytesIO()
-    np.save(buffer, array)
-    array_data = buffer.getvalue()
-    compressed = zlib.compress(array_data)
-    encoded = pybase64.b64encode(compressed).decode("utf-8")
-    return encoded
 
 
 class TestOptionsModelDefaults:
@@ -116,17 +93,17 @@ class TestEstimatorPubModelSerialization:
     """Test EstimatorPubModel serialization."""
 
     def test_estimator_pub_model_serialization(self, valid_typed_qpy_circuit_dict):
-        """Test EstimatorPubModel serialization."""
-        str1 = '[{"__type__": "QuantumCircuit", "__value__": "eJwL9Az29gzhY2JmgALGgkIGrjQGDiCTiQEBQGxGmBIQkZxZlFyaWaJrYghTUl1byAhWychYyIAKGOEsNiTzsChidI5yTyxJBesvhIr9RwIwtQDCQRet"}, [{"YZ": 2.0, "XI": 1.0}, {"ZZ": 3.0, "XY": 4.0}], {"__type__": "ndarray", "__value__": "eJyb7BfqGxDJyFDGUK2eklqcXKRupaBuk2ahrqOgnpZfVFKUmBefX5SSChJ3S8wpTgWKF2ckFqQC+RoGOpo6CrUKFAAuAFOzG1s="}, 0.4]'
+        """Test EstimatorPubModel serialization with default values."""
+        str1 = '[{"__type__": "QuantumCircuit", "__value__": "eJwL9Az29gzhY2JmgALGgkIGrjQGDiCTiQEBQGxGmBIQkZxZlFyaWaJrYghTUl1byAhWychYyIAKGOEsNiTzsChidI5yTyxJBesvhIr9RwIwtQDCQRet"}, [{"YZ": 2.0, "XI": 1.0}, {"ZZ": 3.0, "XY": 4.0}], {"__type__": "ndarray", "__value__": "eJyb7BfqGxDJyFDGUK2eklqcXKRupaBuk2ahrqOgnpZfVFKUmBefX5SSChJ3S8wpTgWKF2ckFqQC+RoGOpo6CrUKFAAuAFOzG1s="}, null]'
 
         obs1 = {"XI": 1, "YZ": 2}
         obs2 = {"ZZ": 3, "XY": 4}
         obs_array = [obs1, obs2]
 
         encoded_circ = valid_typed_qpy_circuit_dict
-        encoded_args = {"__type__": "ndarray", "__value__": _serialize_and_encode(np.array([]))}
         
-        pub_model = EstimatorPubModel.model_validate((encoded_circ, obs_array, encoded_args, 0.4))
+        # Use defaults for parameter_values (empty array) and precision (None)
+        pub_model = EstimatorPubModel.model_validate((encoded_circ, obs_array))
         str2 = pub_model.model_dump_json(by_alias=True)
 
         dict1 = json.loads(str1)
