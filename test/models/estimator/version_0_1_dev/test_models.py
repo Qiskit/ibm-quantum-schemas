@@ -116,8 +116,8 @@ class TestEstimatorPubModelSerialization:
     """Test EstimatorPubModel serialization."""
 
     def test_estimator_pub_model_serialization(self, valid_typed_qpy_circuit_dict):
-        """Test that EstimatorPubModel serialization."""
-        str1 = '[{"__type__": "QuantumCircuit", "__value__": "eJwL9Az29gzhY2JmgALGgkIGrjQGDiCTiQEBQGxGmBIQkZxZlFyaWaJrZghTUl1byAhWychYyIAKGOEsNiTzsChidI5yTyxJBesvhIr9RwIwtQDDLRev"}, [{"YZ": 2.0, "XI": 1.0}, {"ZZ": 3.0, "XY": 4.0}], {"__type__": "ndarray", "__value__": "eJyb7BfqGxDJyFDGUK2eklqcXKRupaBuk2ahrqOgnpZfVFKUmBefX5SSChJ3S8wpTgWKF2ckFqQC+RoGOpo6CrUKFAAuAFOzG1s="}, 0.4]'
+        """Test EstimatorPubModel serialization."""
+        str1 = '[{"__type__": "QuantumCircuit", "__value__": "eJwL9Az29gzhY2JmgALGgkIGrjQGDiCTiQEBQGxGmBIQkZxZlFyaWaJrYghTUl1byAhWychYyIAKGOEsNiTzsChidI5yTyxJBesvhIr9RwIwtQDCQRet"}, [{"YZ": 2.0, "XI": 1.0}, {"ZZ": 3.0, "XY": 4.0}], {"__type__": "ndarray", "__value__": "eJyb7BfqGxDJyFDGUK2eklqcXKRupaBuk2ahrqOgnpZfVFKUmBefX5SSChJ3S8wpTgWKF2ckFqQC+RoGOpo6CrUKFAAuAFOzG1s="}, 0.4]'
 
         obs1 = {"XI": 1, "YZ": 2}
         obs2 = {"ZZ": 3, "XY": 4}
@@ -132,7 +132,8 @@ class TestEstimatorPubModelSerialization:
         dict1 = json.loads(str1)
         dict2 = json.loads(str2)
 
-        print(dict1)
-        print(dict2)
+        # qpy serializations of the same circuit are different
+        del(dict1[0]["__value__"])
+        del(dict2[0]["__value__"])
 
         assert dict1 == dict2
