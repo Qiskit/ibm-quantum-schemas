@@ -62,7 +62,7 @@ nbsphinx_prolog = """
         __"""
 
 vers = release.split(".")
-link_str = f" https://github.com/Qiskit/ibm-quantum-schemas/blob/{vers}/docs/"
+link_str = f" https://github.com/Qiskit/ibm-quantum-schemas/blob/{release}/docs/"
 nbsphinx_prolog += link_str + "{{ docname }}"
 
 
@@ -162,7 +162,7 @@ html_sourcelink_suffix = ""
 def determine_github_branch() -> str:
     """Determine the GitHub branch name to use for source code links.
 
-    We need to decide whether to use `stable/<version>` vs. `main` for dev builds.
+    We need to decide whether to use tag, PR base or `main` for dev builds.
     Refer to https://docs.github.com/en/actions/learn-github-actions/variables
     for how we determine this with GitHub Actions.
     """
@@ -174,12 +174,7 @@ def determine_github_branch() -> str:
     if base_ref := os.environ.get("GITHUB_BASE_REF"):
         return base_ref
 
-    ref_name = os.environ["GITHUB_REF_NAME"]
-
-    # Check if the ref_name is a tag like `1.0.0` or `1.0.0rc1`. If so, we need
-    # to transform it to a Git branch like `stable/1.0`.
-    version_without_patch = re.match(r"(\d+\.\d+)", ref_name)
-    return f"stable/{version_without_patch.group()}" if version_without_patch else ref_name
+    return os.environ["GITHUB_REF_NAME"]
 
 
 GITHUB_BRANCH = determine_github_branch()
