@@ -19,6 +19,7 @@ from qiskit.circuit import Parameter, QuantumCircuit
 
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.estimator_pub_model import (
     EstimatorPubModel,
+    _serialize_and_encode,
 )
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.models import (
     OptionsModel,
@@ -136,7 +137,7 @@ class TestParamsModel:
         encoded_circ2 = valid_typed_qpy_circuit_dict(pcirc)
         
         pub1 = (encoded_circ1, {"ZZ": 1.0})
-        pub2 = (encoded_circ2, [{"Z": 1.0}], np.array([3]))
+        pub2 = (encoded_circ2, [{"Z": 1.0}], {"__type__": "ndarray", "__value__": _serialize_and_encode(np.array([3]))})
         
         params_model = ParamsModel(
             pubs=[pub1, pub2],
