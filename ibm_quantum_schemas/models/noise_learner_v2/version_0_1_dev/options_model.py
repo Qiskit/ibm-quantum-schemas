@@ -14,7 +14,7 @@
 
 from typing import Literal
 
-from pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, ConfigDict, Field, conlist
 
 
 class NoiseModel(BaseModel):
@@ -29,6 +29,8 @@ class NoiseModel(BaseModel):
 
 class SimulatorOptionsModel(BaseModel):
     """Simulator options for the noise learner."""
+
+    model_config = ConfigDict(extra="forbid")
 
     noise_model: NoiseModel | None = None
     """Noise model for the simulator.
@@ -64,6 +66,8 @@ class SimulatorOptionsModel(BaseModel):
 
 class OptionsModel(BaseModel):
     """Options for the noise learner program."""
+
+    model_config = ConfigDict(extra="forbid")
 
     max_layers_to_learn: int | None = 4
     """The max number of unique layers to learn.

@@ -119,3 +119,91 @@ class TestResultsModelValidation:
         }
         with pytest.raises(ValidationError, match="Field required"):
             ResultsModel.model_validate(results)
+
+
+class TestParamsModelSchemaValidation:
+    """Test schema validation for ParamsModel (migrated from qiskit-ibm-primitives).
+
+    These tests verify that the Pydantic model validation matches the behavior
+    of the old validate_noise_learner_schema function.
+    """
+
+    def test_required_params_only(self):
+        """Test when only required parameters are specified (circuits only, no options)."""
+        params = {"circuits": []}
+        # This should work if options is optional, or fail if it's required
+        try:
+            model = ParamsModel.model_validate(params)
+            assert model.circuits == []
+        except ValidationError:
+            # If this fails, it means options is required (which may be a bug)
+            pytest.fail("options field should be optional but validation failed")
+
+    def test_optional_params(self, valid_typed_qpy_circuit_dict):
+        """Test passing both required and optional parameters."""
+        params = {
+            "circuits": [valid_typed_qpy_circuit_dict],
+            "schema_version": "v0.1",
+            "options": {},
+        }
+        model = ParamsModel.model_validate(params)
+        assert len(model.circuits) == 1
+        assert model.schema_version == "v0.1"
+
+    def test_extra_params(self):
+        """Test passing extra parameters."""
+        params = {"circuits": [], "options": {}, "foo": "bar"}
+        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
+            ParamsModel.model_validate(params)
+
+    def test_extra_options(self):
+        """Test passing extra options."""
+        params = {"circuits": [], "options": {"foo": "bar"}}
+        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
+            ParamsModel.model_validate(params)
+
+    @pytest.mark.parametrize(
+        "bad_params",
+        [
+            {"circuits": "foo"},
+            {"options": -1},
+        ],
+    )
+    def test_invalid_param_type(self, bad_params):
+        """Test invalid parameter types."""
+        params = {"circuits": [], "options": {}}
+        params.update(bad_params)
+        bad_key = list(bad_params.keys())[0]
+        with pytest.raises(ValidationError, match=bad_key):
+            ParamsModel.model_validate(params)
+
+    @pytest.mark.parametrize("num_circs", [1, 2, 5])
+    def test_valid_circuits(self, valid_typed_qpy_circuit_dict, num_circs):
+        """Test a list of circuits."""
+        params = {
+            "circuits": [valid_typed_qpy_circuit_dict] * num_circs,
+            "options": {},
+        }
+        model = ParamsModel.model_validate(params)
+        assert len(model.circuits) == num_circs
+
+    def test_simulator_options(self):
+        """Test simulator options."""
+        params = {
+            "circuits": [],
+            "options": {"simulator": {"coupling_map": [[0, 1], [1, 2]]}},
+        }
+        model = ParamsModel.model_validate(params)
+        assert model.options.simulator is not None
+        assert model.options.simulator.coupling_map == [[0, 1], [1, 2]]
+
+    def test_simulator_none(self):
+        """Test simulator options with none"""
+        params = {
+            "circuits": [],
+            "options": {"simulator": {"coupling_map": [[0, 1], [1, 2]], "seed_simulator": None}},
+        }
+        model = ParamsModel.model_validate(params)
+        assert model.options.simulator is not None
+        assert model.options.simulator.coupling_map == [[0, 1], [1, 2]]
+        assert model.options.simulator.seed_simulator is None
