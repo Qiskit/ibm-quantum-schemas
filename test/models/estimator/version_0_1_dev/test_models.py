@@ -111,6 +111,9 @@ class TestEstimatorPubModel:
         str2 = pub_model.model_dump_json(by_alias=True)
 
         dict1 = json.loads(str1)
+
+        # We must convert the model to string then the string to dict
+        # It's not equivalent to a direct conversion from model to dict using model_dump
         dict2 = json.loads(str2)
 
         # qpy serializations of the same circuit are different
@@ -145,6 +148,9 @@ class TestParamsModel:
         str2 = params_model.model_dump_json(by_alias=True)
 
         dict1 = json.loads(str1)
+
+        # We must convert the model to string then the string to dict
+        # It's not equivalent to a direct conversion from model to dict using model_dump
         dict2 = json.loads(str2)
         
         # qpy serializations of the same circuit are different
