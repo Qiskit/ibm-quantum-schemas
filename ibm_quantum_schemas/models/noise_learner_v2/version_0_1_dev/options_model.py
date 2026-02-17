@@ -14,13 +14,23 @@
 
 from typing import Literal
 
-from pydantic import BaseModel, conlist
+from pydantic import BaseModel, Field, conlist
+
+
+class NoiseModel(BaseModel):
+    """A wrapper aroind Noise model data for the simulator."""
+
+    type_: Literal["NoiseModel"] = Field(default="NoiseModel", alias="__type__")
+    """Redundant type information."""
+
+    value_: dict = Field(alias="__value__")
+    """The actual data: qiskit-aer dict format for the NoiseModel."""
 
 
 class SimulatorOptionsModel(BaseModel):
     """Simulator options for the noise learner."""
 
-    noise_model: dict | None = None
+    noise_model: NoiseModel | None = None
     """Noise model for the simulator.
 
     This option is only supported in local testing mode.
