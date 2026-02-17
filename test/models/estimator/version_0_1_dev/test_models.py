@@ -92,8 +92,8 @@ class TestOptionsModelDefaults:
 class TestEstimatorPubModelSerialization:
     """Test EstimatorPubModel serialization."""
 
-    def test_estimator_pub_model_serialization(self, valid_typed_qpy_circuit_dict):
-        """Test EstimatorPubModel serialization with default values."""
+    def test_estimator_pub_model(self, valid_typed_qpy_circuit_dict):
+        """Test EstimatorPubModel."""
         str1 = '[{"__type__": "QuantumCircuit", "__value__": "eJwL9Az29gzhY2JmgALGgkIGrjQGDiCTiQEBQGxGmBIQkZxZlFyaWaJrYghTUl1byAhWychYyIAKGOEsNiTzsChidI5yTyxJBesvhIr9RwIwtQDCQRet"}, [{"YZ": 2.0, "XI": 1.0}, {"ZZ": 3.0, "XY": 4.0}], {"__type__": "ndarray", "__value__": "eJyb7BfqGxDJyFDGUK2eklqcXKRupaBuk2ahrqOgnpZfVFKUmBefX5SSChJ3S8wpTgWKF2ckFqQC+RoGOpo6CrUKFAAuAFOzG1s="}, null]'
 
         obs1 = {"XI": 1, "YZ": 2}
