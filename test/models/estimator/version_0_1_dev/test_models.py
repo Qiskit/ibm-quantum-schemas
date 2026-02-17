@@ -135,8 +135,8 @@ class TestParamsModel:
         encoded_circ1 = valid_typed_qpy_circuit_dict(circ)
         encoded_circ2 = valid_typed_qpy_circuit_dict(pcirc)
         
-        pub1 = (encoded_circ1, "ZZ")
-        pub2 = (encoded_circ2, ["Z"], np.array([3]))
+        pub1 = (encoded_circ1, {"ZZ": 1.0})
+        pub2 = (encoded_circ2, [{"Z": 1.0}], np.array([3]))
         
         params_model = ParamsModel(
             pubs=[pub1, pub2],
