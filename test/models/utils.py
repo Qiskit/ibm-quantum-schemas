@@ -10,27 +10,25 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Shared fixtures for model tests."""
+"""Shared utility functions for model tests."""
 
 import zlib
 from io import BytesIO
 
 import pybase64
-import pytest
 from qiskit.circuit import QuantumCircuit
 from qiskit.qpy import dump as qpy_dump
 
 
-@pytest.fixture
-def compressed_qpy_circuit() -> str:
-    """Fixture to create a base64-encoded, zlib-compressed QPY circuit (version 13).
+def compressed_qpy_circuit(circuit: QuantumCircuit) -> str:
+    """Function to create a base64-encoded, zlib-compressed QPY circuit (version 13).
+
+    Args:
+        circuit: QuantumCircuit to encode.
 
     Returns:
         Base64-encoded string of the compressed QPY circuit data.
     """
-    circuit = QuantumCircuit(2)
-    circuit.cz(0, 1)
-
     buffer = BytesIO()
     qpy_dump(circuit, buffer, version=13)
     qpy_data = buffer.getvalue()
@@ -40,14 +38,13 @@ def compressed_qpy_circuit() -> str:
     return encoded
 
 
-@pytest.fixture
-def valid_typed_qpy_circuit_dict(compressed_qpy_circuit) -> dict:
-    """Fixture to create a valid TypedQpyCircuitModel dict.
+def valid_typed_qpy_circuit_dict(circuit: QuantumCircuit) -> dict:
+    """Function to create a valid TypedQpyCircuitModel dict.
 
     Args:
-        compressed_qpy_circuit: Base64-encoded compressed QPY circuit.
+        circuit: QuantumCircuit to encode.
 
     Returns:
         Dictionary with __type__ and __value__ fields for TypedQpyCircuitModel.
     """
-    return {"__type__": "QuantumCircuit", "__value__": compressed_qpy_circuit}
+    return {"__type__": "QuantumCircuit", "__value__": compressed_qpy_circuit(circuit)}
