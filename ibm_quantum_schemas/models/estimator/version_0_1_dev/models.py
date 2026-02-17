@@ -22,6 +22,7 @@ from pydantic import BaseModel, Field, JsonValue
 from ...base_params_model import BaseParamsModel
 from ...qpy_model import QpyModelV13ToV17
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
+from .estimator_pub_model import EstimatorPubModel
 from .execution_options_model import ExecutionOptionsV2Model
 from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
@@ -38,7 +39,11 @@ class ParamsModel(BaseParamsModel):
 
     schema_version: str = "v0.1"
 
-    # TODO: pubs
+    pubs: list[EstimatorPubModel]
+    """List of Estimator Primitive Unified Blocs (PUBs).
+    
+    Each PUB contains a circuit, observables to measure, parameter values, and optional precision.
+    """
 
     support_qiskit: Annotated[bool, Literal[True]] = True
     """Whether to support Qiskit. Must be True."""
