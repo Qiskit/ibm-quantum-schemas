@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import Annotated
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, JsonValue
 
@@ -38,7 +38,13 @@ class ParamsModel(BaseParamsModel):
 
     schema_version: str = "v0.1"
 
-    # TODO: pubs, support_qiskit, version
+    # TODO: pubs
+
+    support_qiskit: Annotated[bool, Literal[True]] = True
+    """Whether to support Qiskit. Must be True."""
+
+    version: Annotated[int, Literal[2]] = 2
+    """Version number. Must be 2."""
 
     options: OptionsModel
     """Options for the Estimator."""
