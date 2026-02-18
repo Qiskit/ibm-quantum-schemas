@@ -39,7 +39,7 @@ class ParamsModel(BaseParamsModel):
     schema_version: str = "v0.1"
     """Schema version of the program input."""
 
-    version: Literal[2] = 2
+    version: Literal[2] | None = Field(default=2)
     """Version of the program."""
 
     circuits: list[TypedQpyCircuitModelV13to17]

@@ -78,6 +78,14 @@ class TestParamsModelValidation:
         }
         ParamsModel.model_validate(params)
 
+    def test_version_none(self, valid_typed_qpy_circuit_dict):
+        """Test ensuring that in addition to 2 Noise learner also accepts None version."""
+        params = {
+            "circuits": [],
+            "version": None,
+        }
+        ParamsModel.model_validate(params)
+
     def test_extra_params(self):
         """Test passing extra parameters."""
         params = {"circuits": [], "options": {}, "foo": "bar"}
