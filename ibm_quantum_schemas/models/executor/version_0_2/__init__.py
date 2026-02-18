@@ -30,7 +30,7 @@ Executor v0.2 Models and Validation.
    models.QuantumProgramModel
    models.SchedulerTimingModel
    models.StretchValueModel
-   models.itemMetadataModel
+   models.ItemMetadataModel
    models.QuantumProgramResultItemModel
    models.ChunkPart
    models.ChunkSpan
