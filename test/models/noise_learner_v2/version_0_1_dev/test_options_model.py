@@ -81,7 +81,7 @@ class TestOptionsModelValidation:
         assert model.max_layers_to_learn == 4
         assert model.shots_per_randomization == 128
         assert model.num_randomizations == 32
-        assert model.layer_pair_depths == [0, 1, 2, 4, 16, 32]
+        assert model.layer_pair_depths == (0, 1, 2, 4, 16, 32)
         assert model.twirling_strategy == "active-accum"
         assert model.support_qiskit is True
         assert model.experimental is None
@@ -103,7 +103,7 @@ class TestOptionsModelValidation:
         assert model.max_layers_to_learn == 10
         assert model.shots_per_randomization == 256
         assert model.num_randomizations == 64
-        assert model.layer_pair_depths == [0, 2, 8]
+        assert model.layer_pair_depths == (0, 2, 8)
         assert model.twirling_strategy == "active"
         assert model.support_qiskit is False
         assert model.experimental == {"test": True}
