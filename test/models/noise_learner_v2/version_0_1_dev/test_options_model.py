@@ -130,7 +130,7 @@ class TestOptionsModelValidation:
         assert model.max_layers_to_learn is None
 
     def test_extra_options(self):
-        """Test passing extra options (migrated from qiskit-ibm-primitives)."""
+        """Test passing extra options."""
         options = {"foo": "bar"}
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             OptionsModel.model_validate(options)

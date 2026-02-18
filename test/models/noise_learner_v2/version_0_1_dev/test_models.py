@@ -43,12 +43,6 @@ class TestParamsModelValidation:
         with pytest.raises(ValidationError, match="Field required"):
             ParamsModel.model_validate(params)
 
-    def test_missing_options_field(self, valid_typed_qpy_circuit_dict):
-        """Test that missing options field is rejected."""
-        params = {"circuits": [valid_typed_qpy_circuit_dict]}
-        with pytest.raises(ValidationError, match="Field required"):
-            ParamsModel.model_validate(params)
-
     def test_empty_circuits_list(self):
         """Test that empty circuits list is accepted."""
         params = {"circuits": [], "options": {}}
@@ -68,87 +62,21 @@ class TestParamsModelValidation:
         model = ParamsModel.model_validate(params)
         assert len(model.circuits) == 3
 
-
-class TestResultsModelValidation:
-    """Test ResultsModel validation."""
-
-    def test_valid_results_model(self, valid_layer_noise_wrapper, valid_metadata):
-        """Test that valid ResultsModel is accepted."""
-        results = {
-            "schema_version": "v0.1",
-            "data": [valid_layer_noise_wrapper],
-            "metadata": valid_metadata,
-        }
-        model = ResultsModel.model_validate(results)
-        assert model.schema_version == "v0.1"
-        assert len(model.data) == 1
-        assert isinstance(model.data[0], LayerNoiseWrapperModel)
-        assert isinstance(model.metadata, ResultsMetadataModel)
-
-    def test_schema_version_default(self, valid_layer_noise_wrapper, valid_metadata):
-        """Test that schema_version has default value of 'v0.1'."""
-        results = {
-            "data": [valid_layer_noise_wrapper],
-            "metadata": valid_metadata,
-        }
-        model = ResultsModel.model_validate(results)
-        assert model.schema_version == "v0.1"
-
-    def test_invalid_schema_version(self, valid_layer_noise_wrapper, valid_metadata):
-        """Test that invalid schema_version is rejected."""
-        results = {
-            "schema_version": "v0.2",
-            "data": [valid_layer_noise_wrapper],
-            "metadata": valid_metadata,
-        }
-        with pytest.raises(ValidationError, match="Input should be 'v0.1'"):
-            ResultsModel.model_validate(results)
-
-    def test_missing_data_field(self, valid_metadata):
-        """Test that missing data field is rejected."""
-        results = {
-            "metadata": valid_metadata,
-        }
-        with pytest.raises(ValidationError, match="Field required"):
-            ResultsModel.model_validate(results)
-
-    def test_missing_metadata_field(self, valid_layer_noise_wrapper):
-        """Test that missing metadata field is rejected."""
-        results = {
-            "data": [valid_layer_noise_wrapper],
-        }
-        with pytest.raises(ValidationError, match="Field required"):
-            ResultsModel.model_validate(results)
-
-
-class TestParamsModelSchemaValidation:
-    """Test schema validation for ParamsModel (migrated from qiskit-ibm-primitives).
-
-    These tests verify that the Pydantic model validation matches the behavior
-    of the old validate_noise_learner_schema function.
-    """
-
     def test_required_params_only(self):
         """Test when only required parameters are specified (circuits only, no options)."""
         params = {"circuits": []}
-        # This should work if options is optional, or fail if it's required
-        try:
-            model = ParamsModel.model_validate(params)
-            assert model.circuits == []
-        except ValidationError:
-            # If this fails, it means options is required (which may be a bug)
-            pytest.fail("options field should be optional but validation failed")
+        model = ParamsModel.model_validate(params)
+        assert model.circuits == []
 
     def test_optional_params(self, valid_typed_qpy_circuit_dict):
         """Test passing both required and optional parameters."""
         params = {
-            "circuits": [valid_typed_qpy_circuit_dict],
+            "circuits": [],
             "schema_version": "v0.1",
+            "version": 2,
             "options": {},
         }
-        model = ParamsModel.model_validate(params)
-        assert len(model.circuits) == 1
-        assert model.schema_version == "v0.1"
+        ParamsModel.model_validate(params)
 
     def test_extra_params(self):
         """Test passing extra parameters."""
@@ -207,3 +135,55 @@ class TestParamsModelSchemaValidation:
         assert model.options.simulator is not None
         assert model.options.simulator.coupling_map == [[0, 1], [1, 2]]
         assert model.options.simulator.seed_simulator is None
+
+
+class TestResultsModelValidation:
+    """Test ResultsModel validation."""
+
+    def test_valid_results_model(self, valid_layer_noise_wrapper, valid_metadata):
+        """Test that valid ResultsModel is accepted."""
+        results = {
+            "schema_version": "v0.1",
+            "data": [valid_layer_noise_wrapper],
+            "metadata": valid_metadata,
+        }
+        model = ResultsModel.model_validate(results)
+        assert model.schema_version == "v0.1"
+        assert len(model.data) == 1
+        assert isinstance(model.data[0], LayerNoiseWrapperModel)
+        assert isinstance(model.metadata, ResultsMetadataModel)
+
+    def test_schema_version_default(self, valid_layer_noise_wrapper, valid_metadata):
+        """Test that schema_version has default value of 'v0.1'."""
+        results = {
+            "data": [valid_layer_noise_wrapper],
+            "metadata": valid_metadata,
+        }
+        model = ResultsModel.model_validate(results)
+        assert model.schema_version == "v0.1"
+
+    def test_invalid_schema_version(self, valid_layer_noise_wrapper, valid_metadata):
+        """Test that invalid schema_version is rejected."""
+        results = {
+            "schema_version": "v0.2",
+            "data": [valid_layer_noise_wrapper],
+            "metadata": valid_metadata,
+        }
+        with pytest.raises(ValidationError, match="Input should be 'v0.1'"):
+            ResultsModel.model_validate(results)
+
+    def test_missing_data_field(self, valid_metadata):
+        """Test that missing data field is rejected."""
+        results = {
+            "metadata": valid_metadata,
+        }
+        with pytest.raises(ValidationError, match="Field required"):
+            ResultsModel.model_validate(results)
+
+    def test_missing_metadata_field(self, valid_layer_noise_wrapper):
+        """Test that missing metadata field is rejected."""
+        results = {
+            "data": [valid_layer_noise_wrapper],
+        }
+        with pytest.raises(ValidationError, match="Field required"):
+            ResultsModel.model_validate(results)

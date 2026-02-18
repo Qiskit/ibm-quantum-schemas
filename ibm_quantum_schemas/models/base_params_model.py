@@ -20,3 +20,10 @@ class BaseParamsModel(BaseModel):
 
     schema_version: str = Field(pattern=r"v\d+.\d+")
     """Version of the params schema being used."""
+
+    version: int | None = None
+    """Version of the program.
+
+    Some Programs are versioned, in which case this field is set to an integer value
+    indicating which verison of the program to run.
+    """
