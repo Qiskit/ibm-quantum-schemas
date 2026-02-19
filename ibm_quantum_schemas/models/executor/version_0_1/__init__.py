@@ -25,10 +25,10 @@ Executor V0.1 Models and Validation.
 
    models.ParamsModel
    models.OptionsModel
-   models.CircuitItemModel
-   models.SamplexItemModel
    models.QuantumProgramModel
    models.QuantumProgramResultItemModel
+   models.CircuitItemModel
+   models.SamplexItemModel  
    models.ChunkPart
    models.ChunkSpan
    models.MetadataModel
