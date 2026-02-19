@@ -81,7 +81,7 @@ class LayerNoiseLearningOptionsModel(BaseModel):
     each.
     """
 
-    layer_pair_depths: conlist(Annotated[int, Field(ge=0)]) = (0, 1, 2, 4, 16, 32)  # type: ignore[valid-type]
+    layer_pair_depths: tuple[Annotated[int, Field(ge=0)], ...] = (0, 1, 2, 4, 16, 32)
     """The circuit depths (measured in number of pairs) to use in learning
     experiments. Pairs are used as the unit because we exploit the order-2 nature of
     our entangling gates in the noise learning implementation. A value of ``3``
