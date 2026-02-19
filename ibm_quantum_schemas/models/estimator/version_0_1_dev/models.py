@@ -17,7 +17,7 @@ from __future__ import annotations
 import datetime
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, Field, JsonValue
+from pydantic import BaseModel, ConfigDict, Field, JsonValue
 
 from ...base_params_model import BaseParamsModel
 from ...qpy_model import QpyModelV13ToV17
@@ -36,6 +36,8 @@ MAX_RESILIENCE_LEVEL: int = 2
 
 class ParamsModel(BaseParamsModel):
     """A model describing the Estimator program inputs."""
+
+    model_config = ConfigDict(extra="forbid")
 
     schema_version: str = "v0.1"
 
@@ -73,6 +75,8 @@ class ParamsModel(BaseParamsModel):
 
 class OptionsModel(BaseModel):
     """Options for the Estimator."""
+
+    model_config = ConfigDict(extra="forbid")
 
     default_precision: Annotated[float, Field(ge=0)] = 0.015625
     """The default precision to use for any PUB or ``run()``

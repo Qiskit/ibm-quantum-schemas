@@ -14,11 +14,13 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class ExecutionOptionsV2Model(BaseModel):
     """Execution options for V2 primitives."""
+
+    model_config = ConfigDict(extra="forbid")
 
     init_qubits: bool = True
     """Whether to reset the qubits to the ground state for each shot."""

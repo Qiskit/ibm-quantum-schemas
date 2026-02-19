@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 TwirlingStrategyType = Literal[
@@ -29,6 +29,8 @@ TwirlingStrategyType = Literal[
 
 class TwirlingOptionsModel(BaseModel):
     """Twirling options."""
+
+    model_config = ConfigDict(extra="forbid")
 
     enable_gates: bool = False
     """Whether to apply 2-qubit Clifford gate twirling."""

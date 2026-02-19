@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Sequence
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from ....aliases import Self
 from ...noise_learner_v2.version_0_1_dev.layer_noise_model import LayerNoiseWrapperModel
@@ -29,6 +29,8 @@ from .zne_options_model import ZneOptionsModel
 
 class ResilienceOptionsModel(BaseModel):
     """Resilience options for V2 Estimator."""
+
+    model_config = ConfigDict(extra="forbid")
 
     measure_mitigation: bool = True
     """Whether to enable measurement error mitigation method.

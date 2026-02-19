@@ -16,11 +16,13 @@ from __future__ import annotations
 
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class PecOptionsModel(BaseModel):
     """Probabilistic error cancellation mitigation options. This is only used by V2 Estimator."""
+
+    model_config = ConfigDict(extra="forbid")
 
     max_overhead: Annotated[float, Field(gt=0)] | None = 100.0
     """The maximum circuit sampling overhead allowed, or ``None`` for no maximum."""

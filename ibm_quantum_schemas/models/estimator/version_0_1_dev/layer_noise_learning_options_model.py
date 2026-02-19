@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, ConfigDict, Field, conlist
 
 
 class LayerNoiseLearningOptionsModel(BaseModel):
@@ -49,7 +49,9 @@ class LayerNoiseLearningOptionsModel(BaseModel):
            cancellation with sparse Pauli–Lindblad models on noisy quantum processors*,
            Nature Physics volume 19, pages 1116–1121 (2023).
            `arXiv:2201.09866 [quant-ph] <https://arxiv.org/abs/2201.09866>`_
-    """
+   """
+
+    model_config = ConfigDict(extra="forbid")
 
     max_layers_to_learn: Annotated[int, Field(ge=0)] | None = 4
     """The max number of unique layers to learn.

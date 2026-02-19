@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class MeasureNoiseLearningOptionsModel(BaseModel):
@@ -26,6 +26,8 @@ class MeasureNoiseLearningOptionsModel(BaseModel):
         These options are only used when the resilience level or options specify a
         technique that requires measurement noise learning.
     """
+
+    model_config = ConfigDict(extra="forbid")
 
     num_randomizations: Annotated[int, Field(ge=1)] = 32
     """The number of random circuits to draw for the measurement learning experiment."""

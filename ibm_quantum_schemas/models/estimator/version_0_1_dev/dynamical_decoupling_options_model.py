@@ -16,11 +16,13 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class DynamicalDecouplingOptionsModel(BaseModel):
     """Options for dynamical decoupling (DD)."""
+
+    model_config = ConfigDict(extra="forbid")
 
     enable: bool = False
     """Whether to enable DD as specified by the other options in this class."""
