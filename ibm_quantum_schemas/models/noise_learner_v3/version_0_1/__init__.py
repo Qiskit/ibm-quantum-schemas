@@ -24,12 +24,12 @@ NoiseLearnerV3 V0.1 Models and Validation.
    :nosignatures:
 
    models.ParamsModel
-   models.PostSelectionOptionsModel
    models.OptionsModel
-   models.TREXResultPostSelectionMetadataModel
-   models.TREXResultMetadataModel
-   models.LinbdbladResultPostSelectionMetadataModel
-   models.LinbdbladResultMetadataModel
-   models.NoiseLearnerV3ResultModel
    models.NoiseLearnerV3ResultsModel
+   models.PostSelectionOptionsModel
+   models.NoiseLearnerV3ResultModel
+   models.TREXResultMetadataModel
+   models.TREXResultPostSelectionMetadataModel
+   models.LinbdbladResultMetadataModel
+   models.LinbdbladResultPostSelectionMetadataModel
 """

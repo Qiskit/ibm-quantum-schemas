@@ -25,13 +25,13 @@ Executor v0.2 Models and Validation.
 
    models.ParamsModel
    models.OptionsModel
+   models.QuantumProgramModel
+   models.QuantumProgramResultItemModel
    models.CircuitItemModel
    models.SamplexItemModel
-   models.QuantumProgramModel
    models.SchedulerTimingModel
    models.StretchValueModel
    models.ItemMetadataModel
-   models.QuantumProgramResultItemModel
    models.ChunkPart
    models.ChunkSpan
    models.MetadataModel
