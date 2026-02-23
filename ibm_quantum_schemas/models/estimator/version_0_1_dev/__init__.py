@@ -27,14 +27,14 @@ from .layer_noise_model import (
 )
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
 from .models import ParamsModel
+from .noise_learner_results_model import (
+    InputOptionsModel,
+    NoiseLearnerResultsMetadataModel,
+    NoiseLearnerResultsModel,
+)
 from .options_model import OptionsModel
 from .pec_options_model import PecOptionsModel
 from .resilience_options_model import ResilienceOptionsModel
-from .results_metadata_model import (
-    InputOptionsModel,
-    NoiseLearnerResultsModel,
-    ResultsMetadataModel,
-)
 from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
 from .zne_options_model import ExtrapolatorType, ZneOptionsModel
 
@@ -58,7 +58,7 @@ __all__ = [
     "PauliListWrapperModel",
     "PecOptionsModel",
     "ResilienceOptionsModel",
-    "ResultsMetadataModel",
+    "NoiseLearnerResultsMetadataModel",
     "TwirlingOptionsModel",
     "TwirlingStrategyType",
     "ZneOptionsModel",

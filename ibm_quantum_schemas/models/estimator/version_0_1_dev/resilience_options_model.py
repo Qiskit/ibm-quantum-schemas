@@ -22,8 +22,8 @@ from ....aliases import Self
 from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
 from .layer_noise_model import LayerNoiseWrapperModel
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
+from .noise_learner_results_model import NoiseLearnerResultsModel
 from .pec_options_model import PecOptionsModel
-from .results_metadata_model import NoiseLearnerResultsModel
 from .zne_options_model import ZneOptionsModel
 
 
