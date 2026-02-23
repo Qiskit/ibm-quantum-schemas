@@ -33,7 +33,7 @@ Classes
    models.OptionsModel
    models.QuantumProgramResultModel
    models.QuantumProgramResultItemModel
-   models.MetadataModel 
+   models.MetadataModel
    models.ChunkSpan
    models.ChunkPart
 """
