@@ -32,8 +32,6 @@ Common Models (:mod:`ibm_quantum_schemas.models`)
    samplex_model.SamplexModelSSV1ToSSV2
    tensor_model.TensorModel
    tensor_model.F64TensorModel
-   typed_qpy_circuit_model.TypedQpyCircuitModel
-   typed_qpy_circuit_model.TypedQpyCircuitModelV13to17
 
 Models.
 """

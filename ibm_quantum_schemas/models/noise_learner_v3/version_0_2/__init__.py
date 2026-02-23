@@ -25,7 +25,7 @@ NoiseLearnerV3 V0.2 Models and Validation.
 
    models.ParamsModel
    models.OptionsModel
-    models.PostSelectionOptionsModel
+   models.PostSelectionOptionsModel
    models.NoiseLearnerV3ResultsModel
    models.NoiseLearnerV3ResultModel
    models.TREXResultPostSelectionMetadataModel
