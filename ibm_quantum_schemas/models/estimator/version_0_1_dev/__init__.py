@@ -28,7 +28,7 @@ from .layer_noise_model import (
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
 from .models import ParamsModel
 from .noise_learner_results_model import (
-    InputOptionsModel,
+    NoiseLearnerInputOptionsModel,
     NoiseLearnerResultsMetadataModel,
     NoiseLearnerResultsModel,
 )
@@ -43,7 +43,7 @@ __all__ = [
     "EstimatorPubModel",
     "ExecutionOptionsV2Model",
     "ExtrapolatorType",
-    "InputOptionsModel",
+    "NoiseLearnerInputOptionsModel",
     "LayerNoiseLearningOptionsModel",
     "LayerNoiseModel",
     "LayerNoiseWrapperModel",
