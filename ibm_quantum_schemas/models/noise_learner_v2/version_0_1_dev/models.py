@@ -14,7 +14,7 @@
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 from ...base_params_model import BaseParamsModel
 from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
@@ -39,7 +39,7 @@ class ParamsModel(BaseParamsModel):
     schema_version: str = "v0.1"
     """Schema version of the program input."""
 
-    version: int | None = Field(default=2, ge=2, le=2)
+    version: Literal[2] | None = 2
     """Version of the program."""
 
     circuits: list[TypedQpyCircuitModelV13to17]
@@ -49,7 +49,7 @@ class ParamsModel(BaseParamsModel):
     circuits before serialization, so only circuits appear in the model.
     """
 
-    options: OptionsModel = Field(default_factory=OptionsModel)
+    options: OptionsModel = OptionsModel()
     """Options for the noise learner program."""
 
 
