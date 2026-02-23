@@ -103,4 +103,3 @@ class ResilienceOptionsModel(BaseModel):
             )
 
         return self
-

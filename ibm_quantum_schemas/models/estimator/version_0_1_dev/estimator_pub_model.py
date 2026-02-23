@@ -27,10 +27,10 @@ from .observables_array_model import ObservablesArrayModel
 
 def _serialize_and_encode(array: np.ndarray) -> str:
     """Serialize and encode a numpy array to base64 string.
-    
+
     Args:
         array: NumPy array to serialize
-        
+
     Returns:
         Base64-encoded string of the compressed numpy array
     """
@@ -41,17 +41,21 @@ def _serialize_and_encode(array: np.ndarray) -> str:
     return pybase64.b64encode(compressed).decode("utf-8")
 
 
-class EstimatorPubModel(RootModel[tuple[
-    TypedQpyCircuitModelV13to17,
-    ObservablesArrayModel,
-    NdarrayWrapperModel,
-    Annotated[float, Field(gt=0)] | None
-]]):
+class EstimatorPubModel(
+    RootModel[
+        tuple[
+            TypedQpyCircuitModelV13to17,
+            ObservablesArrayModel,
+            NdarrayWrapperModel,
+            Annotated[float, Field(gt=0)] | None,
+        ]
+    ]
+):
     """A model representing an Estimator Primitive Unified Bloc (PUB) as a tuple of length 4.
-    
+
     A PUB encapsulates a single quantum circuit along with the observables to measure,
     parameter values, and optional precision requirements.
-    
+
     Tuple elements:
     [0] circuit: The quantum circuit to execute, encoded in QPY format.
     [1] observables: The observables to measure. Can be a single observable or a list of observables.
@@ -67,11 +71,12 @@ class EstimatorPubModel(RootModel[tuple[
             data = list(data)
             # If only 2 elements provided, add defaults for parameter_values and precision
             if len(data) == 2:
-                data.append({"__type__": "ndarray", "__value__": _serialize_and_encode(np.array([]))})
+                data.append(
+                    {"__type__": "ndarray", "__value__": _serialize_and_encode(np.array([]))}
+                )
                 data.append(None)
             # If only 3 elements provided, add default for precision
             elif len(data) == 3:
                 data.append(None)
             return tuple(data)
         return data
-

@@ -32,4 +32,3 @@ class ExecutionOptionsV2Model(BaseModel):
     range supplied by ``backend.rep_delay_range``.
     Default is given by ``backend.default_rep_delay``.
     """
-

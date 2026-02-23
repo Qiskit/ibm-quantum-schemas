@@ -64,4 +64,3 @@ class ParamsModel(BaseParamsModel):
     <https://quantum.cloud.ibm.com/docs/guides/configure-error-mitigation>`_ guide
     for more information about the error mitigation methods used at each level.
     """
-

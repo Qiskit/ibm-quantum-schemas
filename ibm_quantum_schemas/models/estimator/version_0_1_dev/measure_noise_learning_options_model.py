@@ -37,4 +37,3 @@ class MeasureNoiseLearningOptionsModel(BaseModel):
     
     If "auto", the value will be chosen automatically based on the input PUBs.
     """
-

@@ -49,7 +49,7 @@ class LayerNoiseLearningOptionsModel(BaseModel):
            cancellation with sparse Pauli–Lindblad models on noisy quantum processors*,
            Nature Physics volume 19, pages 1116–1121 (2023).
            `arXiv:2201.09866 [quant-ph] <https://arxiv.org/abs/2201.09866>`_
-   """
+    """
 
     model_config = ConfigDict(extra="forbid")
 
@@ -87,4 +87,3 @@ class LayerNoiseLearningOptionsModel(BaseModel):
     our entangling gates in the noise learning implementation. A value of ``3``
     would correspond to 6 layers of the layer of interest, for example.
     """
-

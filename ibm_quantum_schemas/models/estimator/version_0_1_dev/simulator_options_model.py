@@ -62,4 +62,3 @@ class SimulatorOptionsModel(BaseModel):
 
     Default: ``None``, implying all basis gates supported by the simulator.
     """
-    

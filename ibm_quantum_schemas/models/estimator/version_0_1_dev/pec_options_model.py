@@ -47,4 +47,3 @@ class PecOptionsModel(BaseModel):
         if isinstance(value, (int, float)) and value < 0:
             raise ValueError("noise_gain must be >= 0")
         return value
-
