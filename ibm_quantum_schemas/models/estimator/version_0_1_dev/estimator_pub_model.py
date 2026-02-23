@@ -58,9 +58,12 @@ class EstimatorPubModel(
 
     Tuple elements:
     [0] circuit: The quantum circuit to execute, encoded in QPY format.
-    [1] observables: The observables to measure. Can be a single observable or a list of observables.
-    [2] parameter_values: Parameter values for the circuit's parameters (NumPy ndarray). Defaults to empty array.
-    [3] precision: Target precision for the expectation value estimates (positive float or None). Defaults to None.
+    [1] observables: The observables to measure. Can be a single observable or
+        a list of observables.
+    [2] parameter_values: Parameter values for the circuit's parameters (NumPy
+        ndarray). Defaults to empty array.
+    [3] precision: Target precision for the expectation value estimates
+        (positive float or None). Defaults to None.
     """
 
     @model_validator(mode="before")

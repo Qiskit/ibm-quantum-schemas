@@ -51,10 +51,11 @@ class ZneOptionsModel(BaseModel):
         additionally contain:
 
         1. `pub_result.data.evs_extrapolated` and `pub_result.data.stds_extrapolated`,
-            both with shape ``(*shape, num_extrapolators, num_evaluation_points)``, where
-            ``num_extrapolators`` is the length of the list of
-            ``options.resilience.zne.extrapolators``, and ``num_evaluation_points`` is the length of
-            the list ``options.resilience.extrapolated_noise_factors``. These values provide
+            both with shape ``(*shape, num_extrapolators, num_evaluation_points)``,
+            where ``num_extrapolators`` is the length of the list of
+            ``options.resilience.zne.extrapolators``, and ``num_evaluation_points``
+            is the length of the list ``options.resilience.extrapolated_noise_factors``.
+            These values provide
             evaluations of every extrapolator at every specified noise extrapolation value.
         2. ``pub_result.data.evs_noise_factors``, ``pub_result.data.stds_noise_factors``, and
            ``ensemble_stds_noise_factors`` all have shape ``(*shape, num_noise_factors)`` where
@@ -65,9 +66,10 @@ class ZneOptionsModel(BaseModel):
            ``stds_noise_factors`` is derived from the spread over twirling samples, whereas
            ``ensemble_stds_noise_factors`` assumes only shot noise and no drift.
 
-        Technical note: for single observables with multiple basis terms it might turn out that
-        multiple extrapolation methods are used in *the same* expectation value, for example, ``XX``
-        gets linearly extrapolated but ``XY`` gets exponentially extrapolated in the observable
+        Technical note: for single observables with multiple basis terms it might
+        turn out that multiple extrapolation methods are used in *the same*
+        expectation value, for example, ``XX`` gets linearly extrapolated but
+        ``XY`` gets exponentially extrapolated in the observable
         ``{"XX": 0.5, "XY": 0.5}``. Let's call this a *heterogeneous fit*. The data from (2) is
         evaluated from heterogeneous fits by selecting the best fit for every individual distinct
         term, whereas data from (1) is evaluated from forced homogenous fits, one for each provided
@@ -99,8 +101,9 @@ class ZneOptionsModel(BaseModel):
             factor requires amplifying only a subset of the gates, then these gates are selected
             from the back of the topologically ordered DAG circuit.
         * `"pea"` uses a technique called Probabilistic Error Amplification
-            (`PEA <https://www.nature.com/articles/s41586-023-06096-3>`_) to amplify noise. When this
-            option is selected, gate twirling will always be used whether or not it has been
+            (`PEA <https://www.nature.com/articles/s41586-023-06096-3>`_) to
+            amplify noise. When this option is selected, gate twirling will always
+            be used whether or not it has been
             enabled in the options. In this technique, the twirled noise model of each each unique
             layer of entangling gates in your ISA circuits is learned beforehand, see
             :class:`~.LayerNoiseLearningOptions` for relevant learning options. Once complete,
@@ -120,9 +123,10 @@ class ZneOptionsModel(BaseModel):
 
     The available options are:
 
-        * ``"exponential"``, which fits the data using an exponential decaying function
-          defined as :math:`f(x; A, \\tau) = A e^{-x/\\tau}`, where :math:`A = f(0; A, \\tau)` is the
-          value at zero noise (:math:`x=0`) and :math:`\\tau>0` is a positive rate.
+        * ``"exponential"``, which fits the data using an exponential decaying
+          function defined as :math:`f(x; A, \\tau) = A e^{-x/\\tau}`, where
+          :math:`A = f(0; A, \\tau)` is the value at zero noise (:math:`x=0`)
+          and :math:`\\tau>0` is a positive rate.
         * ``"double_exponential"``, which uses a sum of two exponential as in Ref. 1.
         * ``"polynomial_degree_(1 <= k <= 7)"``, which uses a polynomial function defined as
           :math:`f(x; c_0, c_1, \\ldots, c_k) = \\sum_{i=0, k} c_i x^i`.
@@ -130,9 +134,10 @@ class ZneOptionsModel(BaseModel):
         * ``"fallback"``, which simply returns the raw data corresponding to the lowest noise
           factor (typically ``1``) without performing any sort of extrapolation.
 
-    The extrapolated values (``evs_extrapolated`` and ``stds_extrapolated``) are sorted according to
-    the order of the provided extrapolators. If more than one extrapolator is specified, the ``evs``
-    and ``stds`` reported in the result's data refer to the first successful extrapolator, where an
+    The extrapolated values (``evs_extrapolated`` and ``stds_extrapolated``) are
+    sorted according to the order of the provided extrapolators. If more than one
+    extrapolator is specified, the ``evs`` and ``stds`` reported in the result's
+    data refer to the first successful extrapolator, where an
     extrapolator success is determined heuristically.
     """
 
@@ -147,7 +152,9 @@ class ZneOptionsModel(BaseModel):
 
     @field_validator("noise_factors")
     @classmethod
-    def _validate_zne_noise_factors(cls, factors: Sequence[float] | None) -> Sequence[float] | None:
+    def _validate_zne_noise_factors(
+        cls, factors: Sequence[float] | None
+    ) -> Sequence[float] | None:
         """Validate noise_factors."""
         if factors is not None and any(i < 1 for i in factors):
             raise ValueError("noise_factors option value must all be >= 1")

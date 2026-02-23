@@ -50,10 +50,11 @@ class TwirlingOptionsModel(BaseModel):
       * Otherwise, the value is set to ``ceil(shots/shots_per_randomization)``.
 
     .. note::
-      The ``shots`` value specified in a PUB or in the ``run()`` method is considered part of the
-      primitive execution interface and therefore is always obeyed. ``default_shots``, on the other hand,
-      is considered a Qiskit Runtime specific option. Therefore, the product of
-      ``num_randomizations`` and ``shots_per_randomization`` takes precedence over ``default_shots``.
+      The ``shots`` value specified in a PUB or in the ``run()`` method is
+      considered part of the primitive execution interface and therefore is always
+      obeyed. ``default_shots``, on the other hand, is considered a Qiskit Runtime
+      specific option. Therefore, the product of ``num_randomizations`` and
+      ``shots_per_randomization`` takes precedence over ``default_shots``.
     """
 
     shots_per_randomization: Annotated[int, Field(ge=1)] | Literal["auto"] = "auto"
@@ -67,10 +68,11 @@ class TwirlingOptionsModel(BaseModel):
       * Otherwise, the value is set to ``ceil(shots/num_randomizations)``.
 
     .. note::
-      The ``shots`` value specified in a PUB or in the ``run()`` method is considered part of the
-      primitive execution interface and therefore is always obeyed. ``default_shots``, on the other hand,
-      is considered a Qiskit Runtime specific option. Therefore, the product of
-      ``num_randomizations`` and ``shots_per_randomization`` takes precedence over ``default_shots``.
+      The ``shots`` value specified in a PUB or in the ``run()`` method is
+      considered part of the primitive execution interface and therefore is always
+      obeyed. ``default_shots``, on the other hand, is considered a Qiskit Runtime
+      specific option. Therefore, the product of ``num_randomizations`` and
+      ``shots_per_randomization`` takes precedence over ``default_shots``.
     """
 
     strategy: TwirlingStrategyType = "active-accum"

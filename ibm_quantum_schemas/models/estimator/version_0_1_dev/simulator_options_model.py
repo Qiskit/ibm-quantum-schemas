@@ -45,7 +45,9 @@ class SimulatorOptionsModel(BaseModel):
     Default: ``None``.
     """
 
-    coupling_map: conlist(conlist(int, min_length=2, max_length=2)) | None = None  # type: ignore[valid-type]
+    coupling_map: (
+        conlist(conlist(int, min_length=2, max_length=2)) | None  # type: ignore[valid-type]
+    ) = None
     """Directed coupling map to target in mapping.
 
     If the coupling map is symmetric, both directions need to be specified.

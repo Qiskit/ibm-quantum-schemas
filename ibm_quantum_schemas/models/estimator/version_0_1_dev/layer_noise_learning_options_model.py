@@ -73,12 +73,12 @@ class LayerNoiseLearningOptionsModel(BaseModel):
     num_randomizations: Annotated[int, Field(ge=1)] = 32
     """The number of random circuits to use per learning circuit configuration.
 
-    A configuration is a measurement basis and depth setting. For example, if your experiment
-    has six depths, then setting this value to 32 will result in a total of ``32 * 9 * 6``
-    circuits that need to be executed (where ``9`` is the number of circuits that need to be
-    implemented to measure all the required observables, see the note in the docstring for
-    :class:`~.LayerNoiseLearningOptionsModel` for mode details), at :attr:`~shots_per_randomization`
-    each.
+    A configuration is a measurement basis and depth setting. For example, if your
+    experiment has six depths, then setting this value to 32 will result in a total
+    of ``32 * 9 * 6`` circuits that need to be executed (where ``9`` is the number
+    of circuits that need to be implemented to measure all the required observables,
+    see the note in the docstring for :class:`~.LayerNoiseLearningOptionsModel` for
+    mode details), at :attr:`~shots_per_randomization` each.
     """
 
     layer_pair_depths: list[int] = [0, 1, 2, 4, 16, 32]
