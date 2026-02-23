@@ -131,5 +131,3 @@ class LayerNoiseWrapperModel(BaseModel):
     value_: LayerNoiseModel = Field(alias="__value__")
     """The actual data."""
 
-
-# Made with Bob
