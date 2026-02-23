@@ -37,6 +37,17 @@ ruff check .
 More conveniently, set up ruff in your IDE to run-on-save and/or set up the
 [pre-commit Hooks](#pre-commit-hooks).
 
+### Documentation
+
+`sphinx` is used for producing documentation. Run the following to render the documentation
+locally:
+
+```bash
+pip install -e ".[dev,documentation]"
+cd docs
+make html
+```
+
 ### Pre-commit Hooks
 
 It is recommended that contributers install and use `pre-commit` to ensure code quality and
@@ -118,6 +129,7 @@ To release a new version `0.1.20260122`:
                                   #  - checks out a new branch release-0.1.20260122
                                   #  - calls towncrier to prepend to CHANGELOG
                                   #  - commits this change in a new commit
+                                  #  - updates the version number in `doc/conf.py`
 
 git push origin release-0.1.20260122
 ```
