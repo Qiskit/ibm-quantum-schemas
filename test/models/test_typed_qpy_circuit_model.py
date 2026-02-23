@@ -30,7 +30,7 @@ class TestTypedQpyCircuitModelValidation:
         circuit.h(0)
         circuit.cx(0, 1)
         circuit.measure_all()
-        
+
         circuit_dict = valid_typed_qpy_circuit_dict(circuit)
         model = qpy_model.TypedQpyCircuitModelV13to17.model_validate(circuit_dict)
         assert model.type_ == "QuantumCircuit"
@@ -42,7 +42,7 @@ class TestTypedQpyCircuitModelValidation:
         circuit.h(0)
         circuit.cx(0, 1)
         circuit.measure_all()
-        
+
         compressed_circuit = compressed_qpy_circuit(circuit)
         circuit_dict = {"__type__": "WrongType", "__value__": compressed_circuit}
         with pytest.raises(ValidationError, match="Input should be 'QuantumCircuit'"):
