@@ -152,9 +152,7 @@ class ZneOptionsModel(BaseModel):
 
     @field_validator("noise_factors")
     @classmethod
-    def _validate_zne_noise_factors(
-        cls, factors: Sequence[float] | None
-    ) -> Sequence[float] | None:
+    def _validate_zne_noise_factors(cls, factors: Sequence[float] | None) -> Sequence[float] | None:
         """Validate noise_factors."""
         if factors is not None and any(i < 1 for i in factors):
             raise ValueError("noise_factors option value must all be >= 1")
