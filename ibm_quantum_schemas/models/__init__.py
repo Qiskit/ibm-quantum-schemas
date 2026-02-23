@@ -17,6 +17,10 @@ Common Models (:mod:`ibm_quantum_schemas.models`)
 
 .. currentmodule:: ibm_quantum_schemas.models
 
+Models that provide common functionality.
+
+Classes
+=======
 
 .. autosummary::
    :toctree: ../stubs/
@@ -32,6 +36,4 @@ Common Models (:mod:`ibm_quantum_schemas.models`)
    samplex_model.SamplexModelSSV1ToSSV2
    tensor_model.TensorModel
    tensor_model.F64TensorModel
-
-Models.
 """

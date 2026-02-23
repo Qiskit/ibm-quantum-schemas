@@ -17,7 +17,10 @@ Executor v0.2 (:mod:`ibm_quantum_schemas.models.executor.version_0_2`)
 
 .. currentmodule:: ibm_quantum_schemas.models.executor.version_0_2
 
-Executor v0.2 Models and Validation.
+Models and validation for ``Executor`` ``v0.2``.
+
+Classes
+=======
 
 .. autosummary::
    :toctree: ../stubs/

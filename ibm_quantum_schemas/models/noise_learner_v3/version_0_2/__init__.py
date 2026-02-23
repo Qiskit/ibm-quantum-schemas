@@ -17,7 +17,10 @@ NoiseLearnerV3 v0.2 (:mod:`ibm_quantum_schemas.models.noise_learner_v3.version_0
 
 .. currentmodule:: ibm_quantum_schemas.models.noise_learner_v3.version_0_2
 
-NoiseLearnerV3 V0.2 Models and Validation.
+Models and validation for ``NoiseLearnerV3`` ``v0.2``.
+
+Classes
+=======
 
 .. autosummary::
    :toctree: ../stubs/
