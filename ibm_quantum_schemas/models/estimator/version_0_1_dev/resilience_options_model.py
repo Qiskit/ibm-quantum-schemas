@@ -19,11 +19,11 @@ from typing import Sequence
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from ....aliases import Self
-from ...noise_learner_v2.version_0_1_dev.layer_noise_model import LayerNoiseWrapperModel
-from ...noise_learner_v2.version_0_1_dev.models import ResultsModel as NoiseLearnerResultsModel
 from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
+from .layer_noise_model import LayerNoiseWrapperModel
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
 from .pec_options_model import PecOptionsModel
+from .results_metadata_model import NoiseLearnerResultsModel
 from .zne_options_model import ZneOptionsModel
 
 

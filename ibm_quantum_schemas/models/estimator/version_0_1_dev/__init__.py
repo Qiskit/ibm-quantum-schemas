@@ -16,11 +16,25 @@ from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
 from .estimator_pub_model import EstimatorPubModel
 from .execution_options_model import ExecutionOptionsV2Model
 from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
+from .layer_noise_model import (
+    LayerNoiseModel,
+    LayerNoiseWrapperModel,
+    NdarrayWrapperModel,
+    PauliLindbladErrorModel,
+    PauliLindbladErrorWrapperModel,
+    PauliListModel,
+    PauliListWrapperModel,
+)
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
 from .models import ParamsModel
 from .options_model import OptionsModel
 from .pec_options_model import PecOptionsModel
 from .resilience_options_model import ResilienceOptionsModel
+from .results_metadata_model import (
+    InputOptionsModel,
+    NoiseLearnerResultsModel,
+    ResultsMetadataModel,
+)
 from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
 from .zne_options_model import ExtrapolatorType, ZneOptionsModel
 
@@ -29,12 +43,22 @@ __all__ = [
     "EstimatorPubModel",
     "ExecutionOptionsV2Model",
     "ExtrapolatorType",
+    "InputOptionsModel",
     "LayerNoiseLearningOptionsModel",
+    "LayerNoiseModel",
+    "LayerNoiseWrapperModel",
     "MeasureNoiseLearningOptionsModel",
+    "NdarrayWrapperModel",
+    "NoiseLearnerResultsModel",
     "OptionsModel",
     "ParamsModel",
+    "PauliLindbladErrorModel",
+    "PauliLindbladErrorWrapperModel",
+    "PauliListModel",
+    "PauliListWrapperModel",
     "PecOptionsModel",
     "ResilienceOptionsModel",
+    "ResultsMetadataModel",
     "TwirlingOptionsModel",
     "TwirlingStrategyType",
     "ZneOptionsModel",
