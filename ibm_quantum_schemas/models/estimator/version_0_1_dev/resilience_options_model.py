@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-from typing import Sequence
+from collections.abc import Sequence
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -34,7 +34,7 @@ class ResilienceOptionsModel(BaseModel):
 
     measure_mitigation: bool = True
     """Whether to enable measurement error mitigation method.
-    
+
     If you enable measurement mitigation, you can fine-tune its noise learning
     by using :attr:`~measure_noise_learning`. See :class:`MeasureNoiseLearningOptionsModel`
     for all measurement mitigation noise learning options.
@@ -44,33 +44,33 @@ class ResilienceOptionsModel(BaseModel):
         default_factory=MeasureNoiseLearningOptionsModel
     )
     """Additional measurement noise learning options.
-    
+
     See :class:`MeasureNoiseLearningOptionsModel` for all options.
     """
 
     zne_mitigation: bool = False
     """Whether to turn on Zero-Noise Extrapolation error mitigation method.
-    
+
     If you enable ZNE, you can fine-tune its options by using :attr:`~zne`.
     See :class:`ZneOptionsModel` for additional ZNE related options.
     """
 
     zne: ZneOptionsModel = Field(default_factory=ZneOptionsModel)
     """Additional zero-noise extrapolation mitigation options.
-    
+
     See :class:`ZneOptionsModel` for all options.
     """
 
     pec_mitigation: bool = False
     """Whether to turn on Probabilistic Error Cancellation error mitigation method.
-    
+
     If you enable PEC, you can fine-tune its options by using :attr:`~pec`.
     See :class:`PecOptionsModel` for additional PEC-related options.
     """
 
     pec: PecOptionsModel = Field(default_factory=PecOptionsModel)
     """Additional probabilistic error cancellation mitigation options.
-    
+
     See :class:`PecOptionsModel` for all options.
     """
 
@@ -78,13 +78,13 @@ class ResilienceOptionsModel(BaseModel):
         default_factory=LayerNoiseLearningOptionsModel
     )
     """Layer noise learning options.
-    
+
     See :class:`LayerNoiseLearningOptionsModel` for all options.
     """
 
     layer_noise_model: NoiseLearnerResultsModel | Sequence[LayerNoiseWrapperModel] | None = None
     """A noise learner result or a sequence of LayerError objects.
-    
+
     If ``None``, all the mitigation strategies that require noise data (e.g., PEC
     and PEA) perform a noise-learning stage. Otherwise, this noise-learning stage is skipped,
     and instead gather the required information from ``layer_noise_model``. Layers whose

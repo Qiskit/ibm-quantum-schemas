@@ -14,13 +14,11 @@
 
 from __future__ import annotations
 
-import datetime
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, JsonValue
+from pydantic import ConfigDict, Field
 
 from ...base_params_model import BaseParamsModel
-from ...qpy_model import QpyModelV13ToV17
 from .estimator_pub_model import EstimatorPubModel
 from .options_model import OptionsModel
 
@@ -36,7 +34,7 @@ class ParamsModel(BaseParamsModel):
 
     pubs: list[EstimatorPubModel]
     """List of Estimator Primitive Unified Blocs (PUBs).
-    
+
     Each PUB contains a circuit, observables to measure, parameter values, and optional precision.
     """
 

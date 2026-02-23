@@ -18,7 +18,6 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-
 TwirlingStrategyType = Literal[
     "active",
     "active-accum",
@@ -36,7 +35,7 @@ class TwirlingOptionsModel(BaseModel):
     """Whether to apply 2-qubit Clifford gate twirling."""
 
     enable_measure: bool = True
-    """Whether to enable twirling to measurement instructions, as long as the measurement is not 
+    """Whether to enable twirling to measurement instructions, as long as the measurement is not
     involved within a conditional block.
     """
 

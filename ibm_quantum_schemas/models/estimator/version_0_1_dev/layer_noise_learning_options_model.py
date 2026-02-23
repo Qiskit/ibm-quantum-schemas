@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from pydantic import BaseModel, ConfigDict, Field, conlist
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class LayerNoiseLearningOptionsModel(BaseModel):
@@ -55,7 +55,7 @@ class LayerNoiseLearningOptionsModel(BaseModel):
 
     max_layers_to_learn: Annotated[int, Field(ge=0)] | None = 4
     """The max number of unique layers to learn.
-    
+
     A ``None`` value indicates that there is no limit.
     If there are more unique layers present, then some layers will not be learned or
     mitigated. The learned layers are prioritized based on the number of times they
@@ -65,14 +65,14 @@ class LayerNoiseLearningOptionsModel(BaseModel):
 
     shots_per_randomization: Annotated[int, Field(ge=1)] = 128
     """The total number of shots to use per random learning circuit.
-    
+
     A learning circuit is a random circuit at a specific learning depth with a specific
     measurement basis that is executed on hardware.
     """
 
     num_randomizations: Annotated[int, Field(ge=1)] = 32
     """The number of random circuits to use per learning circuit configuration.
-    
+
     A configuration is a measurement basis and depth setting. For example, if your experiment
     has six depths, then setting this value to 32 will result in a total of ``32 * 9 * 6``
     circuits that need to be executed (where ``9`` is the number of circuits that need to be

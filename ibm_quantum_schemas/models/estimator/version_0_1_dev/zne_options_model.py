@@ -14,12 +14,12 @@
 
 from __future__ import annotations
 
-from typing import Literal, Sequence
+from collections.abc import Sequence
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, field_validator, model_validator
 
 from ....aliases import Self
-
 
 ExtrapolatorType = Literal[
     "linear",
@@ -111,7 +111,7 @@ class ZneOptionsModel(BaseModel):
 
     noise_factors: Sequence[float] | None = None
     """Noise factors to use for noise amplification.
-    
+
     Defaults to ``(1, 1.5, 2, 2.5, 3)`` for PEA, and ``(1, 3, 5)`` otherwise.
     """
 

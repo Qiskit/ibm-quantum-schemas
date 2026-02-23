@@ -21,8 +21,8 @@ from pydantic import BaseModel, ConfigDict, Field
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
 from .execution_options_model import ExecutionOptionsV2Model
 from .resilience_options_model import ResilienceOptionsModel
-from .twirling_options_model import TwirlingOptionsModel
 from .simulator_options_model import SimulatorOptionsModel
+from .twirling_options_model import TwirlingOptionsModel
 
 
 class OptionsModel(BaseModel):
@@ -62,31 +62,31 @@ class OptionsModel(BaseModel):
         default_factory=DynamicalDecouplingOptionsModel
     )
     """Dynamical decoupling options.
-    
+
     See :class:`DynamicalDecouplingOptionsModel` for all available options.
     """
 
     resilience: ResilienceOptionsModel = Field(default_factory=ResilienceOptionsModel)
     """Advanced resilience options to fine-tune the resilience strategy.
-    
+
     See :class:`ResilienceOptionsModel` for all available options.
     """
 
     execution: ExecutionOptionsV2Model = Field(default_factory=ExecutionOptionsV2Model)
     """Execution time options.
-    
+
     See :class:`ExecutionOptionsV2Model` for all available options.
     """
 
     twirling: TwirlingOptionsModel = Field(default_factory=TwirlingOptionsModel)
     """Pauli twirling options.
-    
+
     See :class:`TwirlingOptionsModel` for all available options.
     """
 
     simulator: SimulatorOptionsModel = Field(default_factory=SimulatorOptionsModel)
     """Simulator options.
-    
+
     See :class:`SimulatorOptionsModel` for all available options.
     """
 
