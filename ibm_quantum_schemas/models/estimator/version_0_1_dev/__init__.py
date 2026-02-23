@@ -17,7 +17,8 @@ from .estimator_pub_model import EstimatorPubModel
 from .execution_options_model import ExecutionOptionsV2Model
 from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
-from .models import OptionsModel, ParamsModel
+from .models import ParamsModel
+from .options_model import OptionsModel
 from .pec_options_model import PecOptionsModel
 from .resilience_options_model import ResilienceOptionsModel
 from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType

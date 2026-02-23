@@ -21,15 +21,8 @@ from pydantic import BaseModel, ConfigDict, Field, JsonValue
 
 from ...base_params_model import BaseParamsModel
 from ...qpy_model import QpyModelV13ToV17
-from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
 from .estimator_pub_model import EstimatorPubModel
-from .execution_options_model import ExecutionOptionsV2Model
-from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
-from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
-from .pec_options_model import PecOptionsModel
-from .resilience_options_model import ResilienceOptionsModel
-from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
-from .zne_options_model import ExtrapolatorType, ZneOptionsModel
+from .options_model import OptionsModel
 
 MAX_RESILIENCE_LEVEL: int = 2
 
@@ -72,67 +65,3 @@ class ParamsModel(BaseParamsModel):
     for more information about the error mitigation methods used at each level.
     """
 
-
-class OptionsModel(BaseModel):
-    """Options for the Estimator."""
-
-    model_config = ConfigDict(extra="forbid")
-
-    default_precision: Annotated[float, Field(ge=0)] = 0.015625
-    """The default precision to use for any PUB or ``run()``
-    call that does not specify one.
-    Each Estimator PUB can specify its own precision. If the ``run()`` method
-    is given a precision, then that value is used for all PUBs in the ``run()``
-    call that do not specify their own.
-    """
-
-    default_shots: Annotated[int, Field(ge=1)] | None = None
-    """The total number of shots to use per circuit per configuration.
-
-    .. note::
-        If set, this value overrides :attr:`~default_precision`.
-
-    A configuration is a combination of a specific parameter value binding set and a
-    physical measurement basis. A physical measurement basis groups together some
-    collection of qubit-wise commuting observables for some specific circuit/parameter
-    value set to create a single measurement with basis rotations that is inserted into
-    hardware executions.
-
-    If twirling is enabled, the value of this option will be divided over circuit
-    randomizations, with a smaller number of shots per randomization. See the
-    :attr:`~twirling` options.
-    """
-
-    seed_estimator: Annotated[int, Field(ge=0)] | None = None
-    """Seed used to control sampling."""
-
-    dynamical_decoupling: DynamicalDecouplingOptionsModel = Field(
-        default_factory=DynamicalDecouplingOptionsModel
-    )
-    """Dynamical decoupling options.
-    
-    See :class:`DynamicalDecouplingOptionsModel` for all available options.
-    """
-
-    resilience: ResilienceOptionsModel = Field(default_factory=ResilienceOptionsModel)
-    """Advanced resilience options to fine-tune the resilience strategy.
-    
-    See :class:`ResilienceOptionsModel` for all available options.
-    """
-
-    execution: ExecutionOptionsV2Model = Field(default_factory=ExecutionOptionsV2Model)
-    """Execution time options.
-    
-    See :class:`ExecutionOptionsV2Model` for all available options.
-    """
-
-    twirling: TwirlingOptionsModel = Field(default_factory=TwirlingOptionsModel)
-    """Pauli twirling options.
-    
-    See :class:`TwirlingOptionsModel` for all available options.
-    """
-
-    experimental: dict = {}
-    """Experimental options. These options are subject to change without notification, and
-    stability is not guaranteed.
-    """
