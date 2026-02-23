@@ -70,7 +70,7 @@ class EstimatorPubModel(
     @classmethod
     def add_defaults(cls, data):
         """Add default values for optional tuple elements."""
-        if isinstance(data, (list, tuple)):
+        if isinstance(data, list | tuple):
             data = list(data)
             # If only 2 elements provided, add defaults for parameter_values and precision
             if len(data) == 2:

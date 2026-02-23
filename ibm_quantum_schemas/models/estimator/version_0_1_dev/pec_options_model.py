@@ -44,6 +44,6 @@ class PecOptionsModel(BaseModel):
     @classmethod
     def _validate_noise_gain(cls, value: float | Literal["auto"]) -> float | Literal["auto"]:
         """Validate noise_gain."""
-        if isinstance(value, (int, float)) and value < 0:
+        if isinstance(value, int | float) and value < 0:
             raise ValueError("noise_gain must be >= 0")
         return value
