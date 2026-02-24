@@ -29,18 +29,10 @@ class TestParamsModelValidation:
         }
         model = ParamsModel.model_validate(params)
         assert model.schema_version == "v0.1"
-        assert len(model.pubs) == 1
+        assert model.pubs == [valid_estimator_pub]
         assert model.support_qiskit is True
         assert model.version == 2
         assert model.resilience_level == 1
-
-    def test_schema_version_default(self, valid_estimator_pub):
-        """Test that schema_version has default value of 'v0.1'."""
-        params = {
-            "pubs": [valid_estimator_pub],
-        }
-        model = ParamsModel.model_validate(params)
-        assert model.schema_version == "v0.1"
 
     def test_missing_pubs_field(self):
         """Test that missing pubs field is rejected."""
@@ -52,7 +44,7 @@ class TestParamsModelValidation:
         """Test that empty pubs list is accepted."""
         params = {"pubs": []}
         model = ParamsModel.model_validate(params)
-        assert len(model.pubs) == 0
+        assert model.pubs == []
 
     def test_multiple_pubs(self, valid_estimator_pub):
         """Test that multiple pubs are accepted."""
@@ -64,7 +56,7 @@ class TestParamsModelValidation:
             ],
         }
         model = ParamsModel.model_validate(params)
-        assert len(model.pubs) == 3
+        assert model.pubs == [valid_estimator_pub, valid_estimator_pub, valid_estimator_pub]
 
     def test_support_qiskit_must_be_true(self, valid_estimator_pub):
         """Test that support_qiskit must be True."""
@@ -122,7 +114,6 @@ class TestParamsModelValidation:
         """Test that options has default factory."""
         params = {"pubs": [valid_estimator_pub]}
         model = ParamsModel.model_validate(params)
-        assert model.options is not None
         assert model.options.default_precision == 0.015625
 
     def test_custom_options(self, valid_estimator_pub):
@@ -146,5 +137,3 @@ class TestParamsModelValidation:
         }
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             ParamsModel.model_validate(params)
-
-# Made with Bob
