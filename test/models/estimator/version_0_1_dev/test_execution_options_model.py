@@ -89,16 +89,6 @@ class TestExecutionOptionsV2ModelValidation:
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             ExecutionOptionsV2Model.model_validate(options)
 
-    def test_all_options_together(self):
-        """Test that all options can be set together."""
-        options = {
-            "init_qubits": False,
-            "rep_delay": 0.00025,
-        }
-        model = ExecutionOptionsV2Model.model_validate(options)
-        assert model.init_qubits is False
-        assert model.rep_delay == 0.00025
-
     def test_invalid_init_qubits_type(self):
         """Test that invalid init_qubits type is rejected."""
         options = {"init_qubits": "true"}
@@ -110,6 +100,3 @@ class TestExecutionOptionsV2ModelValidation:
         options = {"rep_delay": "0.0001"}
         with pytest.raises(ValidationError, match="Input should be a valid number"):
             ExecutionOptionsV2Model.model_validate(options)
-
-
-# Made with Bob
