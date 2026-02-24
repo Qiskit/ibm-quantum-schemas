@@ -21,6 +21,41 @@ from pydantic import BaseModel, Field, model_validator
 from qiskit.qpy.formats import FILE_HEADER_V10, FILE_HEADER_V10_PACK, FILE_HEADER_V10_SIZE
 
 
+def _validate_qpy_version_range(value: str, min_version: int, max_version: int) -> None:
+    """Validate that a base64-encoded QPY circuit is within the specified version range.
+
+    Args:
+        value: Base64-encoded string containing zlib-compressed QPY serialization.
+        min_version: Minimum allowed QPY version (inclusive).
+        max_version: Maximum allowed QPY version (inclusive).
+
+    Raises:
+        ValueError: If the QPY version is outside the allowed range or if the data
+            doesn't contain exactly one quantum circuit.
+    """
+    # Decode base64 and decompress
+    compressed_data = pybase64.b64decode(value)
+    qpy_data = zlib.decompress(compressed_data)
+
+    # Read QPY header
+    with BytesIO(qpy_data) as bytes_obj:
+        header = FILE_HEADER_V10._make(
+            struct.unpack(
+                FILE_HEADER_V10_PACK,
+                bytes_obj.read(FILE_HEADER_V10_SIZE),
+            )
+        )
+        if header.qpy_version < min_version or header.qpy_version > max_version:
+            raise ValueError(
+                f"The qpy_version is {header.qpy_version} but this model expects the version "
+                f"to be between {min_version} and {max_version}."
+            )
+        if header.num_programs != 1:
+            raise ValueError(
+                f"Expected exactly one encoded quantum circuit, received {header.num_programs}"
+            )
+
+
 class TypedQpyCircuitModel(BaseModel):
     """A circuit representation used in some primitives.
 
@@ -39,30 +74,20 @@ class TypedQpyCircuitModel(BaseModel):
 
 
 class TypedQpyCircuitModelV13to17(TypedQpyCircuitModel):
-    """A circuit representation used in some primitives with restricted QPY version range."""
+    """A circuit representation with QPY versions constrained to 13-17."""
 
     @model_validator(mode="after")
     def validate_qpy_version(self):
         """Constrain the allowed QPY encodings to versions 13-17."""
-        # Decode base64 and decompress
-        compressed_data = pybase64.b64decode(self.value_)
-        qpy_data = zlib.decompress(compressed_data)
+        _validate_qpy_version_range(self.value_, 13, 17)
+        return self
 
-        # Read QPY header
-        with BytesIO(qpy_data) as bytes_obj:
-            header = FILE_HEADER_V10._make(
-                struct.unpack(
-                    FILE_HEADER_V10_PACK,
-                    bytes_obj.read(FILE_HEADER_V10_SIZE),
-                )
-            )
-            if header.qpy_version < 13 or header.qpy_version > 17:
-                raise ValueError(
-                    f"The qpy_version is {header.qpy_version} but this model expects the version"
-                    + "to be between 13 and 17."
-                )
-            if header.num_programs != 1:
-                raise ValueError(
-                    f"Expected exactly one encoded quantum circuit, received {header.num_programs}"
-                )
+
+class TypedQpyCircuitModelV13(TypedQpyCircuitModel):
+    """A circuit representation with QPY version constrained to 13."""
+
+    @model_validator(mode="after")
+    def validate_qpy_version(self):
+        """Constrain the allowed QPY encodings to versions 13-17."""
+        _validate_qpy_version_range(self.value_, 13, 13)
         return self

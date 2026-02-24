@@ -21,15 +21,17 @@ from ibm_quantum_schemas.models import typed_qpy_circuit_model as qpy_model
 class TestTypedQpyCircuitModelValidation:
     """Test TypedQpyCircuitModelV13to17 validation."""
 
-    def test_valid_typed_qpy_circuit(self, valid_typed_qpy_circuit_dict):
+    def test_valid_typed_qpy_circuit(self, valid_typed_qpy_circuit_dict_v13):
         """Test that valid TypedQpyCircuitModel is accepted."""
-        model = qpy_model.TypedQpyCircuitModelV13to17.model_validate(valid_typed_qpy_circuit_dict)
+        model = qpy_model.TypedQpyCircuitModelV13to17.model_validate(
+            valid_typed_qpy_circuit_dict_v13
+        )
         assert model.type_ == "QuantumCircuit"
-        assert model.value_ == valid_typed_qpy_circuit_dict["__value__"]
+        assert model.value_ == valid_typed_qpy_circuit_dict_v13["__value__"]
 
-    def test_invalid_type_field(self, compressed_qpy_circuit):
+    def test_invalid_type_field(self, compressed_qpy_circuit_v13):
         """Test that wrong __type__ value is rejected."""
-        circuit_dict = {"__type__": "WrongType", "__value__": compressed_qpy_circuit}
+        circuit_dict = {"__type__": "WrongType", "__value__": compressed_qpy_circuit_v13}
         with pytest.raises(ValidationError, match="Input should be 'QuantumCircuit'"):
             qpy_model.TypedQpyCircuitModelV13to17.model_validate(circuit_dict)
 
@@ -44,3 +46,23 @@ class TestTypedQpyCircuitModelValidation:
         circuit_dict = {"__type__": "QuantumCircuit", "__value__": "not-valid-base64!!!"}
         with pytest.raises(ValidationError):
             qpy_model.TypedQpyCircuitModelV13to17.model_validate(circuit_dict)
+
+
+class TestTypedQpyCircuitModelV13Validation:
+    """Test TypedQpyCircuitModelV13 validation."""
+
+    def test_valid_v13_circuit(self, compressed_qpy_circuit_v13):
+        """Test that valid QPY v13 circuit is accepted."""
+        circuit_dict = {"__type__": "QuantumCircuit", "__value__": compressed_qpy_circuit_v13}
+        model = qpy_model.TypedQpyCircuitModelV13.model_validate(circuit_dict)
+        assert model.type_ == "QuantumCircuit"
+        assert model.value_ == compressed_qpy_circuit_v13
+
+    def test_invalid_v14_circuit(self, compressed_qpy_circuit_v14):
+        """Test that QPY v14 circuit is rejected by V13-only model."""
+        circuit_dict = {"__type__": "QuantumCircuit", "__value__": compressed_qpy_circuit_v14}
+        with pytest.raises(
+            ValidationError,
+            match=r"qpy_version is 14 but this model expects the version to be between 13 and 13",
+        ):
+            qpy_model.TypedQpyCircuitModelV13.model_validate(circuit_dict)
