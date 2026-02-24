@@ -100,8 +100,10 @@ class TestObservablesArrayModelValidation:
             {"XI": 1.0, "YZ": 2.0},
             {"ZZ": 3.0, "XY": 4.0}
         ])
-        assert isinstance(obs_array.root, list)
-        assert len(obs_array.root) == 2
+        assert obs_array.root == [
+            {"XI": 1.0, "YZ": 2.0},
+            {"ZZ": 3.0, "XY": 4.0}
+        ]
 
     def test_list_of_observables_different_lengths(self):
         """Test that a list of observables with different lengths is rejected."""
@@ -114,20 +116,17 @@ class TestObservablesArrayModelValidation:
     def test_list_with_single_observable(self):
         """Test that a list with a single observable is accepted."""
         obs_array = ObservablesArrayModel.model_validate([{"XX": 1.0}])
-        assert isinstance(obs_array.root, list)
-        assert len(obs_array.root) == 1
+        assert obs_array.root == [{"XX": 1.0}]
 
     def test_empty_list(self):
         """Test that an empty list is accepted."""
         obs_array = ObservablesArrayModel.model_validate([])
-        assert isinstance(obs_array.root, list)
-        assert len(obs_array.root) == 0
+        assert obs_array.root == []
 
     def test_list_with_empty_observables(self):
         """Test that a list with empty observables is accepted."""
         obs_array = ObservablesArrayModel.model_validate([{}, {}])
-        assert isinstance(obs_array.root, list)
-        assert len(obs_array.root) == 2
+        assert obs_array.root == [{}, {}]
 
     def test_mixed_empty_and_non_empty_observables_same_length(self):
         """Test that mixed empty and non-empty observables with same length is accepted."""
@@ -135,8 +134,10 @@ class TestObservablesArrayModelValidation:
             {},
             {"XX": 1.0, "YY": 2.0}
         ])
-        assert isinstance(obs_array.root, list)
-        assert len(obs_array.root) == 2
+        assert obs_array.root == [
+            {},
+            {"XX": 1.0, "YY": 2.0}
+        ]
 
     def test_complex_valid_case(self):
         """Test a complex valid case with multiple observables."""
@@ -145,8 +146,11 @@ class TestObservablesArrayModelValidation:
             {"XXXX": 3.0},
             {"YYYY": 4.0, "ZZZZ": 5.0, "IIII": 6.0}
         ])
-        assert isinstance(obs_array.root, list)
-        assert len(obs_array.root) == 3
+        assert obs_array.root == [
+            {"IXYZ": 1.0, "ZZII": 2.0},
+            {"XXXX": 3.0},
+            {"YYYY": 4.0, "ZZZZ": 5.0, "IIII": 6.0}
+        ]
 
     def test_complex_invalid_case(self):
         """Test a complex invalid case with observables of different lengths."""
@@ -177,5 +181,3 @@ class TestObservablesArrayModelValidation:
                 {"XX": 1.0, "YYY": 2.0},  # Different lengths within same observable
                 {"ZZ": 3.0}
             ])
-
-# Made with Bob
