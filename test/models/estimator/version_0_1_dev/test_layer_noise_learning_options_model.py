@@ -15,10 +15,9 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.\
-    layer_noise_learning_options_model import (
-        LayerNoiseLearningOptionsModel,
-    )
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.layer_noise_learning_options_model import (
+    LayerNoiseLearningOptionsModel,
+)
 
 
 class TestLayerNoiseLearningOptionsModelValidation:
