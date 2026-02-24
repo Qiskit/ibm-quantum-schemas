@@ -66,18 +66,6 @@ class TestSimulatorOptionsModelValidation:
         assert model.coupling_map is None
         assert model.basis_gates is None
 
-    def test_valid_options_with_custom_values(self):
-        """Test that custom simulator option values are accepted."""
-        options = {
-            "seed_simulator": 42,
-            "coupling_map": [[0, 1], [1, 2]],
-            "basis_gates": ["cx", "id", "rz", "sx"],
-        }
-        model = SimulatorOptionsModel.model_validate(options)
-        assert model.seed_simulator == 42
-        assert model.coupling_map == [[0, 1], [1, 2]]
-        assert model.basis_gates == ["cx", "id", "rz", "sx"]
-
     def test_noise_model_none(self):
         """Test that noise_model can be None."""
         options = {"noise_model": None}
@@ -204,6 +192,3 @@ class TestSimulatorOptionsModelValidation:
         assert model.seed_simulator == 999
         assert model.coupling_map == [[0, 1], [1, 2], [2, 0]]
         assert model.basis_gates == ["cx", "id", "rz", "sx", "x"]
-
-
-# Made with Bob
