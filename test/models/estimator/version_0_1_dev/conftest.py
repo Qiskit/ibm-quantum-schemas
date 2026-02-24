@@ -110,11 +110,11 @@ def valid_layer_noise_wrapper() -> dict:
 def valid_parameterized_circuit() -> QuantumCircuit:
     """Fixture to create a parameterized circuit with 3 parameters."""
     circuit = QuantumCircuit(2)
-    theta = Parameter("θ")
-    phi = Parameter("φ")
-    lambda_ = Parameter("λ")
+    theta = Parameter("theta")
+    phi = Parameter("phi")
+    gamma = Parameter("gamma")
     circuit.ry(theta, 0)
     circuit.rx(phi, 1)
-    circuit.rz(lambda_, 0)
+    circuit.rz(gamma, 0)
     circuit.cx(0, 1)
     return circuit
