@@ -84,7 +84,7 @@ class TestOptionsModelValidation:
         assert model.layer_pair_depths == [0, 1, 2, 4, 16, 32]
         assert model.twirling_strategy == "active-accum"
         assert model.support_qiskit is True
-        assert model.experimental is None
+        assert model.experimental == {}
         assert isinstance(model.simulator, SimulatorOptionsModel)
         assert model.simulator.seed_simulator is None
         assert model.simulator.coupling_map is None
