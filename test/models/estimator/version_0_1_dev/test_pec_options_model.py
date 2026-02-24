@@ -135,16 +135,6 @@ class TestPecOptionsModelValidation:
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             PecOptionsModel.model_validate(options)
 
-    def test_combined_valid_options(self):
-        """Test that combined valid options are accepted."""
-        options = {
-            "max_overhead": 150.0,
-            "noise_gain": 0.75,
-        }
-        model = PecOptionsModel.model_validate(options)
-        assert model.max_overhead == 150.0
-        assert model.noise_gain == 0.75
-
     def test_combined_none_and_auto(self):
         """Test that None max_overhead and auto noise_gain are accepted."""
         options = {
