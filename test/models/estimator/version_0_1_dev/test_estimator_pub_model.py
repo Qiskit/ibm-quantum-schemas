@@ -43,7 +43,7 @@ class TestEstimatorPubModelValidation:
         assert model.root[0].value_ == pub[0]["__value__"]
 
         # Verify observables element (index 1) - ObservablesArrayModel
-        assert model.root[1].root == pub[1]
+        assert model.root[1].root.root == pub[1]
 
         # Verify parameter_values element (index 2) - NdarrayWrapperModel
         assert model.root[2].type_ == pub[2]["__type__"]
@@ -73,7 +73,7 @@ class TestEstimatorPubModelValidation:
         assert model.root[0].value_ == pub[0]["__value__"]
 
         # Verify observables element (index 1) - ObservablesArrayModel
-        assert model.root[1].root == pub[1]
+        assert model.root[1].root.root == pub[1]
 
         # Verify parameter_values element (index 2) - NdarrayWrapperModel (empty)
         assert model.root[2].type_ == pub[2]["__type__"]
@@ -99,7 +99,7 @@ class TestEstimatorPubModelValidation:
         assert model.root[0].value_ == pub[0]["__value__"]
 
         # Verify observables element (index 1) - ObservablesArrayModel
-        assert model.root[1].root == pub[1]
+        assert model.root[1].root.root == pub[1]
 
         # Verify parameter_values element (index 2) - NdarrayWrapperModel
         assert model.root[2].type_ == pub[2]["__type__"]
@@ -125,7 +125,7 @@ class TestEstimatorPubModelValidation:
         assert model.root[0].value_ == pub[0]["__value__"]
 
         # Verify observables element (index 1) - ObservablesArrayModel
-        assert model.root[1].root == pub[1]
+        assert model.root[1].root.root == pub[1]
 
         # Verify parameter_values element (index 2) - NdarrayWrapperModel
         # (default empty added by model)
@@ -156,7 +156,7 @@ class TestEstimatorPubModelValidation:
         assert model.root[0].value_ == pub[0]["__value__"]
 
         # Verify observables element (index 1) - ObservablesArrayModel (list)
-        assert model.root[1].root == pub[1]
+        assert [obs.root for obs in model.root[1].root] == pub[1]
 
         # Verify parameter_values element (index 2) - NdarrayWrapperModel
         assert model.root[2].type_ == pub[2]["__type__"]
@@ -212,7 +212,7 @@ class TestEstimatorPubModelValidation:
         assert model.root[0].value_ == pub[0]["__value__"]
 
         # Verify observables element (index 1) - ObservablesArrayModel
-        assert model.root[1].root == pub[1]
+        assert model.root[1].root.root == pub[1]
 
         # Verify parameter_values element (index 2) - NdarrayWrapperModel
         assert model.root[2].type_ == pub[2]["__type__"]
