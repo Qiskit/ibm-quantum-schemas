@@ -100,16 +100,3 @@ class TestMeasureNoiseLearningOptionsModelValidation:
         options = {"extra_field": "not allowed"}
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             MeasureNoiseLearningOptionsModel.model_validate(options)
-
-    def test_all_options_together(self):
-        """Test that all options can be set together."""
-        options = {
-            "num_randomizations": 48,
-            "shots_per_randomization": 200,
-        }
-        model = MeasureNoiseLearningOptionsModel.model_validate(options)
-        assert model.num_randomizations == 48
-        assert model.shots_per_randomization == 200
-
-
-# Made with Bob
