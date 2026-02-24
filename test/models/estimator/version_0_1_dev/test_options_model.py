@@ -55,10 +55,10 @@ class TestOptionsModelValidation:
             OptionsModel.model_validate(options)
 
     def test_zero_default_precision(self):
-        """Test that zero default_precision is accepted."""
+        """Test that zero default_precision is rejected."""
         options = {"default_precision": 0.0}
-        model = OptionsModel.model_validate(options)
-        assert model.default_precision == 0.0
+        with pytest.raises(ValidationError, match="greater than 0"):
+            OptionsModel.model_validate(options)
 
     def test_negative_default_shots(self):
         """Test that negative default_shots is rejected."""

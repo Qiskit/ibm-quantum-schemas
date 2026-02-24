@@ -30,7 +30,7 @@ class OptionsModel(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    default_precision: Annotated[float, Field(ge=0)] = 0.015625
+    default_precision: Annotated[float, Field(gt=0)] = 0.015625
     """The default precision to use for any PUB or ``run()``
     call that does not specify one.
     Each Estimator PUB can specify its own precision. If the ``run()`` method
