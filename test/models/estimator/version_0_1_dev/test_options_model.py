@@ -27,11 +27,37 @@ class TestOptionsModelValidation:
         assert model.default_precision == 0.015625
         assert model.default_shots is None
         assert model.seed_estimator is None
-        assert model.dynamical_decoupling is not None
-        assert model.resilience is not None
-        assert model.execution is not None
-        assert model.twirling is not None
-        assert model.simulator is not None
+        
+        # Verify dynamical_decoupling defaults
+        assert model.dynamical_decoupling.enable is False
+        assert model.dynamical_decoupling.sequence_type == "XX"
+        assert model.dynamical_decoupling.extra_slack_distribution == "middle"
+        assert model.dynamical_decoupling.scheduling_method == "alap"
+        assert model.dynamical_decoupling.skip_reset_qubits is False
+        
+        # Verify resilience defaults
+        assert model.resilience.measure_mitigation is True
+        assert model.resilience.zne_mitigation is False
+        assert model.resilience.pec_mitigation is False
+        assert model.resilience.layer_noise_model is None
+        
+        # Verify execution defaults
+        assert model.execution.init_qubits is True
+        assert model.execution.rep_delay is None
+        
+        # Verify twirling defaults
+        assert model.twirling.enable_gates is False
+        assert model.twirling.enable_measure is True
+        assert model.twirling.num_randomizations == "auto"
+        assert model.twirling.shots_per_randomization == "auto"
+        assert model.twirling.strategy == "active-accum"
+        
+        # Verify simulator defaults
+        assert model.simulator.noise_model is None
+        assert model.simulator.seed_simulator is None
+        assert model.simulator.coupling_map is None
+        assert model.simulator.basis_gates is None
+        
         assert model.experimental == {}
 
     def test_valid_options_with_custom_values(self):
@@ -172,4 +198,3 @@ class TestOptionsModelValidation:
         model = OptionsModel.model_validate(options)
         assert model.seed_estimator is None
 
-# Made with Bob
