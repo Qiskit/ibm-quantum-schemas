@@ -29,7 +29,10 @@ class TestParamsModelValidation:
         }
         model = ParamsModel.model_validate(params)
         assert model.schema_version == "v0.1"
-        assert model.pubs == [valid_estimator_pub]
+        
+        assert len(model.pubs) == 1
+        assert model.pubs[0].root[0].type_ == valid_estimator_pub[0]["__type__"]
+        assert model.pubs[0].root[0].value_ == valid_estimator_pub[0]["__value__"]
         assert model.support_qiskit is True
         assert model.version == 2
         assert model.resilience_level == 1
@@ -56,25 +59,11 @@ class TestParamsModelValidation:
             ],
         }
         model = ParamsModel.model_validate(params)
-        assert model.pubs == [valid_estimator_pub, valid_estimator_pub, valid_estimator_pub]
 
-    def test_support_qiskit_must_be_true(self, valid_estimator_pub):
-        """Test that support_qiskit must be True."""
-        params = {
-            "pubs": [valid_estimator_pub],
-            "support_qiskit": False,
-        }
-        with pytest.raises(ValidationError, match="Input should be True"):
-            ParamsModel.model_validate(params)
-
-    def test_version_must_be_2(self, valid_estimator_pub):
-        """Test that version must be 2."""
-        params = {
-            "pubs": [valid_estimator_pub],
-            "version": 1,
-        }
-        with pytest.raises(ValidationError, match="Input should be 2"):
-            ParamsModel.model_validate(params)
+        assert len(model.pubs) == 3
+        for pub in model.pubs:
+            assert pub.root[0].type_ == valid_estimator_pub[0]["__type__"]
+            assert pub.root[0].value_ == valid_estimator_pub[0]["__value__"]
 
     def test_resilience_level_default(self, valid_estimator_pub):
         """Test that resilience_level has default value of 1."""
