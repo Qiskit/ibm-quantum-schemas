@@ -26,7 +26,7 @@ class TestMeasureNoiseLearningOptionsModelValidation:
     def test_valid_options_with_defaults(self):
         """Test that measure noise learning options with default values are accepted."""
         model = MeasureNoiseLearningOptionsModel.model_validate({})
-        
+
         # Verify all default values
         assert model.num_randomizations == 32
         assert model.shots_per_randomization == "auto"

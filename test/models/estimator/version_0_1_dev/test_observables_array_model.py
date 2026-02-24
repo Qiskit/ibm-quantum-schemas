@@ -96,22 +96,20 @@ class TestObservablesArrayModelValidation:
 
     def test_list_of_observables_same_length(self):
         """Test that a list of observables with same length is accepted."""
-        obs_array = ObservablesArrayModel.model_validate([
-            {"XI": 1.0, "YZ": 2.0},
-            {"ZZ": 3.0, "XY": 4.0}
-        ])
-        assert obs_array.root == [
-            {"XI": 1.0, "YZ": 2.0},
-            {"ZZ": 3.0, "XY": 4.0}
-        ]
+        obs_array = ObservablesArrayModel.model_validate(
+            [{"XI": 1.0, "YZ": 2.0}, {"ZZ": 3.0, "XY": 4.0}]
+        )
+        assert obs_array.root == [{"XI": 1.0, "YZ": 2.0}, {"ZZ": 3.0, "XY": 4.0}]
 
     def test_list_of_observables_different_lengths(self):
         """Test that a list of observables with different lengths is rejected."""
         with pytest.raises(ValidationError, match=r"same length"):
-            ObservablesArrayModel.model_validate([
-                {"XI": 1.0, "YZ": 2.0},  # Length 2
-                {"ZZZ": 3.0, "XYZ": 4.0}  # Length 3
-            ])
+            ObservablesArrayModel.model_validate(
+                [
+                    {"XI": 1.0, "YZ": 2.0},  # Length 2
+                    {"ZZZ": 3.0, "XYZ": 4.0},  # Length 3
+                ]
+            )
 
     def test_list_with_single_observable(self):
         """Test that a list with a single observable is accepted."""
@@ -130,36 +128,30 @@ class TestObservablesArrayModelValidation:
 
     def test_mixed_empty_and_non_empty_observables_same_length(self):
         """Test that mixed empty and non-empty observables with same length is accepted."""
-        obs_array = ObservablesArrayModel.model_validate([
-            {},
-            {"XX": 1.0, "YY": 2.0}
-        ])
-        assert obs_array.root == [
-            {},
-            {"XX": 1.0, "YY": 2.0}
-        ]
+        obs_array = ObservablesArrayModel.model_validate([{}, {"XX": 1.0, "YY": 2.0}])
+        assert obs_array.root == [{}, {"XX": 1.0, "YY": 2.0}]
 
     def test_complex_valid_case(self):
         """Test a complex valid case with multiple observables."""
-        obs_array = ObservablesArrayModel.model_validate([
-            {"IXYZ": 1.0, "ZZII": 2.0},
-            {"XXXX": 3.0},
-            {"YYYY": 4.0, "ZZZZ": 5.0, "IIII": 6.0}
-        ])
+        obs_array = ObservablesArrayModel.model_validate(
+            [{"IXYZ": 1.0, "ZZII": 2.0}, {"XXXX": 3.0}, {"YYYY": 4.0, "ZZZZ": 5.0, "IIII": 6.0}]
+        )
         assert obs_array.root == [
             {"IXYZ": 1.0, "ZZII": 2.0},
             {"XXXX": 3.0},
-            {"YYYY": 4.0, "ZZZZ": 5.0, "IIII": 6.0}
+            {"YYYY": 4.0, "ZZZZ": 5.0, "IIII": 6.0},
         ]
 
     def test_complex_invalid_case(self):
         """Test a complex invalid case with observables of different lengths."""
         with pytest.raises(ValidationError, match=r"same length"):
-            ObservablesArrayModel.model_validate([
-                {"IXYZ": 1.0, "ZZII": 2.0},  # Length 4
-                {"XXX": 3.0},  # Length 3
-                {"YYYY": 4.0, "ZZZZ": 5.0}  # Length 4
-            ])
+            ObservablesArrayModel.model_validate(
+                [
+                    {"IXYZ": 1.0, "ZZII": 2.0},  # Length 4
+                    {"XXX": 3.0},  # Length 3
+                    {"YYYY": 4.0, "ZZZZ": 5.0},  # Length 4
+                ]
+            )
 
     def test_single_observable_with_invalid_pauli(self):
         """Test that single observable with invalid Pauli is rejected."""
@@ -169,15 +161,19 @@ class TestObservablesArrayModelValidation:
     def test_list_with_invalid_pauli_in_one_observable(self):
         """Test that list with invalid Pauli in one observable is rejected."""
         with pytest.raises(ValidationError, match=r"invalid characters"):
-            ObservablesArrayModel.model_validate([
-                {"XX": 1.0},
-                {"YA": 2.0}  # Invalid
-            ])
+            ObservablesArrayModel.model_validate(
+                [
+                    {"XX": 1.0},
+                    {"YA": 2.0},  # Invalid
+                ]
+            )
 
     def test_list_with_different_lengths_within_observable(self):
         """Test that list with different lengths within one observable is rejected."""
         with pytest.raises(ValidationError, match=r"same length"):
-            ObservablesArrayModel.model_validate([
-                {"XX": 1.0, "YYY": 2.0},  # Different lengths within same observable
-                {"ZZ": 3.0}
-            ])
+            ObservablesArrayModel.model_validate(
+                [
+                    {"XX": 1.0, "YYY": 2.0},  # Different lengths within same observable
+                    {"ZZ": 3.0},
+                ]
+            )

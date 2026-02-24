@@ -26,32 +26,32 @@ class TestResilienceOptionsModelValidation:
     def test_valid_resilience_options_with_defaults(self):
         """Test that resilience options with default values are accepted."""
         model = ResilienceOptionsModel.model_validate({})
-        
+
         # Boolean mitigation flags
         assert model.measure_mitigation is True
         assert model.zne_mitigation is False
         assert model.pec_mitigation is False
-        
+
         # measure_noise_learning defaults
         assert model.measure_noise_learning.num_randomizations == 32
         assert model.measure_noise_learning.shots_per_randomization == "auto"
-        
+
         # zne defaults
         assert model.zne.amplifier == "gate_folding"
         assert model.zne.noise_factors == (1, 3, 5)
         assert model.zne.extrapolator == ("exponential", "linear")
         assert model.zne.extrapolated_noise_factors == (0, 1, 3, 5)
-        
+
         # pec defaults
         assert model.pec.max_overhead == 100.0
         assert model.pec.noise_gain == "auto"
-        
+
         # layer_noise_learning defaults
         assert model.layer_noise_learning.max_layers_to_learn == 4
         assert model.layer_noise_learning.shots_per_randomization == 128
         assert model.layer_noise_learning.num_randomizations == 32
         assert model.layer_noise_learning.layer_pair_depths == [0, 1, 2, 4, 16, 32]
-        
+
         # layer_noise_model is optional and defaults to None
         assert model.layer_noise_model is None
 
@@ -157,9 +157,7 @@ class TestResilienceOptionsModelValidation:
 
     def test_layer_noise_model_with_sequence(self, valid_layer_noise_wrapper):
         """Test that layer_noise_model accepts a sequence of LayerNoiseWrapperModel."""
-        options = {
-            "layer_noise_model": [valid_layer_noise_wrapper, valid_layer_noise_wrapper]
-        }
+        options = {"layer_noise_model": [valid_layer_noise_wrapper, valid_layer_noise_wrapper]}
         model = ResilienceOptionsModel.model_validate(options)
         assert model.layer_noise_model is not None
         assert len(model.layer_noise_model) == 2
@@ -211,4 +209,3 @@ class TestResilienceOptionsModelValidation:
         assert model.measure_mitigation is True
         assert model.zne_mitigation is False
         assert model.pec_mitigation is True
-

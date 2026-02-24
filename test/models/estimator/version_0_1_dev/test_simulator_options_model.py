@@ -59,7 +59,7 @@ class TestSimulatorOptionsModelValidation:
     def test_valid_options_with_defaults(self):
         """Test that simulator options with default values are accepted."""
         model = SimulatorOptionsModel.model_validate({})
-        
+
         # Verify all default values
         assert model.noise_model is None
         assert model.seed_simulator is None

@@ -26,7 +26,7 @@ class TestDynamicalDecouplingOptionsModelValidation:
     def test_valid_options_with_defaults(self):
         """Test that dynamical decoupling options with default values are accepted."""
         model = DynamicalDecouplingOptionsModel.model_validate({})
-        
+
         # Verify all default values
         assert model.enable is False
         assert model.sequence_type == "XX"

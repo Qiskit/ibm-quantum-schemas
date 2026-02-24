@@ -238,4 +238,3 @@ class TestZneOptionsModelValidation:
             ValidationError, match="polynomial_degree_5 requires at least 6 noise_factors"
         ):
             ZneOptionsModel.model_validate(options)
-

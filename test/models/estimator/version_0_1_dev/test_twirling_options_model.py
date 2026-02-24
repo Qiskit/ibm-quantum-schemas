@@ -26,7 +26,7 @@ class TestTwirlingOptionsModelValidation:
     def test_valid_options_with_defaults(self):
         """Test that twirling options with default values are accepted."""
         model = TwirlingOptionsModel.model_validate({})
-        
+
         # Verify all default values
         assert model.enable_gates is False
         assert model.enable_measure is True

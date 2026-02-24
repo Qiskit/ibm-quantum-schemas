@@ -18,7 +18,7 @@ from io import BytesIO
 import numpy as np
 import pybase64
 import pytest
-from qiskit.circuit import QuantumCircuit, Parameter
+from qiskit.circuit import Parameter, QuantumCircuit
 
 from test.models.utils import valid_typed_qpy_circuit_dict
 
@@ -103,7 +103,6 @@ def valid_layer_noise_wrapper() -> dict:
             "error": None,
         },
     }
-
 
 
 @pytest.fixture

@@ -133,7 +133,10 @@ class TestPauliLindbladErrorModelValidation:
         """Test that valid PauliLindbladError is accepted."""
         model = PauliLindbladErrorModel.model_validate(valid_pauli_lindblad_error)
         assert model.generators.type_ == valid_pauli_lindblad_error["generators"]["__type__"]
-        assert model.generators.value_.data == valid_pauli_lindblad_error["generators"]["__value__"]["data"]
+        assert (
+            model.generators.value_.data
+            == valid_pauli_lindblad_error["generators"]["__value__"]["data"]
+        )
         assert model.rates.type_ == valid_pauli_lindblad_error["rates"]["__type__"]
         assert model.rates.value_ == valid_pauli_lindblad_error["rates"]["__value__"]
 
@@ -157,10 +160,22 @@ class TestPauliLindbladErrorWrapperModelValidation:
         assert model.type_ == valid_pauli_lindblad_error_wrapper["__type__"]
         assert model.module_ == valid_pauli_lindblad_error_wrapper["__module__"]
         assert model.class_ == valid_pauli_lindblad_error_wrapper["__class__"]
-        assert model.value_.generators.type_ == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__type__"]
-        assert model.value_.generators.value_.data == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__value__"]["data"]
-        assert model.value_.rates.type_ == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]["__type__"]
-        assert model.value_.rates.value_ == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]["__value__"]
+        assert (
+            model.value_.generators.type_
+            == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__type__"]
+        )
+        assert (
+            model.value_.generators.value_.data
+            == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__value__"]["data"]
+        )
+        assert (
+            model.value_.rates.type_
+            == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]["__type__"]
+        )
+        assert (
+            model.value_.rates.value_
+            == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]["__value__"]
+        )
 
 
 class TestLayerNoiseModelValidation:
@@ -185,18 +200,39 @@ class TestLayerNoiseModelValidation:
         assert model.error.class_ == valid_pauli_lindblad_error_wrapper["__class__"]
         # Verify error value (PauliLindbladErrorModel)
         assert isinstance(model.error.value_, PauliLindbladErrorModel)
-        assert model.error.value_.generators == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]
+        assert (
+            model.error.value_.generators
+            == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]
+        )
         assert model.error.value_.rates == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]
         # Verify generators (PauliListWrapperModel)
         assert isinstance(model.error.value_.generators, PauliListWrapperModel)
-        assert model.error.value_.generators.type_ == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__type__"]
-        assert model.error.value_.generators.module_ == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__module__"]
-        assert model.error.value_.generators.class_ == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__class__"]
-        assert model.error.value_.generators.value_.data == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__value__"]["data"]
+        assert (
+            model.error.value_.generators.type_
+            == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__type__"]
+        )
+        assert (
+            model.error.value_.generators.module_
+            == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__module__"]
+        )
+        assert (
+            model.error.value_.generators.class_
+            == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__class__"]
+        )
+        assert (
+            model.error.value_.generators.value_.data
+            == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__value__"]["data"]
+        )
         # Verify rates (NdarrayWrapperModel)
         assert isinstance(model.error.value_.rates, NdarrayWrapperModel)
-        assert model.error.value_.rates.type_ == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]["__type__"]
-        assert model.error.value_.rates.value_ == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]["__value__"]
+        assert (
+            model.error.value_.rates.type_
+            == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]["__type__"]
+        )
+        assert (
+            model.error.value_.rates.value_
+            == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]["__value__"]
+        )
 
     def test_optional_error_field_none(self):
         """Test that error field can be None (optional)."""

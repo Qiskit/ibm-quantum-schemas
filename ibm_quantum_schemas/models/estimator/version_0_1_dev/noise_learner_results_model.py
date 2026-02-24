@@ -63,4 +63,3 @@ class NoiseLearnerResultsModel(BaseModel):
 
     metadata: NoiseLearnerResultsMetadataModel
     """Metadata for the noise learner v2 job."""
-

@@ -26,7 +26,7 @@ class TestExecutionOptionsV2ModelValidation:
     def test_valid_options_with_defaults(self):
         """Test that execution options with default values are accepted."""
         model = ExecutionOptionsV2Model.model_validate({})
-        
+
         # Verify all default values
         assert model.init_qubits is True
         assert model.rep_delay is None
