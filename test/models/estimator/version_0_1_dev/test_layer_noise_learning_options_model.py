@@ -116,5 +116,3 @@ class TestLayerNoiseLearningOptionsModelValidation:
         options = {"extra_field": "not allowed"}
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             LayerNoiseLearningOptionsModel.model_validate(options)
-
-# Made with Bob

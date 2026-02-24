@@ -88,7 +88,7 @@ class TestPauliListModelValidation:
     def test_valid_pauli_list(self, valid_pauli_list):
         """Test that valid PauliList is accepted."""
         model = PauliListModel.model_validate(valid_pauli_list)
-        assert model.data == ["IX", "IY", "IZ"]
+        assert model.data == valid_pauli_list["data"]
 
     def test_empty_pauli_list(self):
         """Test that empty PauliList is accepted."""
@@ -107,10 +107,8 @@ class TestPauliListWrapperModelValidation:
     def test_valid_pauli_list_wrapper(self, valid_pauli_list_wrapper):
         """Test that valid PauliListWrapper is accepted."""
         model = PauliListWrapperModel.model_validate(valid_pauli_list_wrapper)
-        assert model.value_.data == ["IX", "IY", "IZ"]
-        assert model.type_ == "settings"
-        assert model.module_ == "qiskit.quantum_info.operators.symplectic.pauli_list"
-        assert model.class_ == "PauliList"
+        assert model.type_ == valid_pauli_list_wrapper["__type__"]
+        assert model.value_.data == valid_pauli_list_wrapper["__value__"]["data"]
 
 
 class TestNdarrayWrapperModelValidation:
@@ -119,8 +117,8 @@ class TestNdarrayWrapperModelValidation:
     def test_valid_ndarray_wrapper(self, valid_ndarray_wrapper):
         """Test that valid NdarrayWrapper is accepted."""
         model = NdarrayWrapperModel.model_validate(valid_ndarray_wrapper)
-        assert model.type_ == "ndarray"
-        assert isinstance(model.value_, str)
+        assert model.type_ == valid_ndarray_wrapper["__type__"]
+        assert model.value_ == valid_ndarray_wrapper["__value__"]
 
     def test_missing_value_field(self):
         """Test that missing value field is rejected."""
@@ -134,8 +132,10 @@ class TestPauliLindbladErrorModelValidation:
     def test_valid_pauli_lindblad_error(self, valid_pauli_lindblad_error):
         """Test that valid PauliLindbladError is accepted."""
         model = PauliLindbladErrorModel.model_validate(valid_pauli_lindblad_error)
-        assert isinstance(model.generators, PauliListWrapperModel)
-        assert isinstance(model.rates, NdarrayWrapperModel)
+        assert model.generators.type_ == valid_pauli_lindblad_error["generators"]["__type__"]
+        assert model.generators.value_.data == valid_pauli_lindblad_error["generators"]["__value__"]["data"]
+        assert model.rates.type_ == valid_pauli_lindblad_error["rates"]["__type__"]
+        assert model.rates.value_ == valid_pauli_lindblad_error["rates"]["__value__"]
 
     def test_missing_generators_field(self, valid_ndarray_wrapper):
         """Test that missing generators field is rejected."""
@@ -154,10 +154,13 @@ class TestPauliLindbladErrorWrapperModelValidation:
     def test_valid_pauli_lindblad_error_wrapper(self, valid_pauli_lindblad_error_wrapper):
         """Test that valid PauliLindbladErrorWrapper is accepted."""
         model = PauliLindbladErrorWrapperModel.model_validate(valid_pauli_lindblad_error_wrapper)
-        assert model.type_ == "_json"
-        assert model.module_ == "qiskit_ibm_runtime.utils.noise_learner_result"
-        assert model.class_ == "PauliLindbladError"
-        assert isinstance(model.value_, PauliLindbladErrorModel)
+        assert model.type_ == valid_pauli_lindblad_error_wrapper["__type__"]
+        assert model.module_ == valid_pauli_lindblad_error_wrapper["__module__"]
+        assert model.class_ == valid_pauli_lindblad_error_wrapper["__class__"]
+        assert model.value_.generators.type_ == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__type__"]
+        assert model.value_.generators.value_.data == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__value__"]["data"]
+        assert model.value_.rates.type_ == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]["__type__"]
+        assert model.value_.rates.value_ == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]["__value__"]
 
 
 class TestLayerNoiseModelValidation:
@@ -175,8 +178,25 @@ class TestLayerNoiseModelValidation:
         }
         model = LayerNoiseModel.model_validate(layer_noise)
         assert model.qubits == [0, 1]
-        assert model.error is not None
         assert isinstance(model.error, PauliLindbladErrorWrapperModel)
+        # Verify error wrapper structure
+        assert model.error.type_ == valid_pauli_lindblad_error_wrapper["__type__"]
+        assert model.error.module_ == valid_pauli_lindblad_error_wrapper["__module__"]
+        assert model.error.class_ == valid_pauli_lindblad_error_wrapper["__class__"]
+        # Verify error value (PauliLindbladErrorModel)
+        assert isinstance(model.error.value_, PauliLindbladErrorModel)
+        assert model.error.value_.generators == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]
+        assert model.error.value_.rates == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]
+        # Verify generators (PauliListWrapperModel)
+        assert isinstance(model.error.value_.generators, PauliListWrapperModel)
+        assert model.error.value_.generators.type_ == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__type__"]
+        assert model.error.value_.generators.module_ == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__module__"]
+        assert model.error.value_.generators.class_ == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__class__"]
+        assert model.error.value_.generators.value_.data == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]["__value__"]["data"]
+        # Verify rates (NdarrayWrapperModel)
+        assert isinstance(model.error.value_.rates, NdarrayWrapperModel)
+        assert model.error.value_.rates.type_ == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]["__type__"]
+        assert model.error.value_.rates.value_ == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]["__value__"]
 
     def test_optional_error_field_none(self):
         """Test that error field can be None (optional)."""
@@ -252,10 +272,12 @@ class TestLayerNoiseWrapperModelValidation:
             },
         }
         model = LayerNoiseWrapperModel.model_validate(wrapper)
-        assert model.type_ == "_json"
-        assert model.module_ == "qiskit_ibm_runtime.utils.noise_learner_result"
-        assert model.class_ == "LayerError"
+        # Verify wrapper structure
+        assert model.type_ == wrapper["__type__"]
+        assert model.module_ == wrapper["__module__"]
+        assert model.class_ == wrapper["__class__"]
+        # Verify value (LayerNoiseModel)
         assert isinstance(model.value_, LayerNoiseModel)
-        assert model.value_.qubits == [0, 1]
-
-# Made with Bob
+        assert model.value_.qubits == wrapper["__value__"]["qubits"]
+        assert model.value_.error == wrapper["__value__"]["error"]
+        assert model.value_.error is None
