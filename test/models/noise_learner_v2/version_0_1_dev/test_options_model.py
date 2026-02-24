@@ -85,7 +85,11 @@ class TestOptionsModelValidation:
         assert model.twirling_strategy == "active-accum"
         assert model.support_qiskit is True
         assert model.experimental is None
-        assert model.simulator is None
+        assert isinstance(model.simulator, SimulatorOptionsModel)
+        assert model.simulator.seed_simulator is None
+        assert model.simulator.coupling_map is None
+        assert model.simulator.basis_gates is None
+        assert model.simulator.noise_model is None
 
     def test_valid_options_with_custom_values(self):
         """Test that custom option values are accepted."""

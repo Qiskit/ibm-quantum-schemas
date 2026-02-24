@@ -114,11 +114,13 @@ class OptionsModel(BaseModel):
     support_qiskit: bool = True
     """Whether to support Qiskit-specific features."""
 
-    experimental: dict | None = None
+    experimental: dict = {}
     """Experimental options.
 
     These options are subject to change without notification, and stability is not guaranteed.
     """
 
-    simulator: SimulatorOptionsModel | None = None
-    """Simulator options."""
+    simulator: SimulatorOptionsModel = SimulatorOptionsModel()
+    """
+    Simulator options.
+    """
