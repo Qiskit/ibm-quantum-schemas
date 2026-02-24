@@ -36,9 +36,21 @@ class TestEstimatorPubModelValidation:
             0.01,
         ]
         model = EstimatorPubModel.model_validate(pub)
-        assert model.root is not None
         assert len(model.root) == 4
-        assert model.root[3] == 0.01
+        
+        # Verify circuit element (index 0) - TypedQpyCircuitModelV13to17
+        assert model.root[0].type_ == pub[0]["__type__"]
+        assert model.root[0].value_ == pub[0]["__value__"]
+        
+        # Verify observables element (index 1) - ObservablesArrayModel
+        assert model.root[1].root == pub[1]
+        
+        # Verify parameter_values element (index 2) - NdarrayWrapperModel
+        assert model.root[2].type_ == pub[2]["__type__"]
+        assert model.root[2].value_ == pub[2]["__value__"]
+        
+        # Verify precision element (index 3)
+        assert model.root[3] == pub[3]
 
     def test_valid_estimator_pub_full_no_parameters(
         self, valid_observable, valid_empty_parameter_values
@@ -54,9 +66,21 @@ class TestEstimatorPubModelValidation:
             0.01,
         ]
         model = EstimatorPubModel.model_validate(pub)
-        assert model.root is not None
         assert len(model.root) == 4
-        assert model.root[3] == 0.01
+        
+        # Verify circuit element (index 0) - TypedQpyCircuitModelV13to17
+        assert model.root[0].type_ == pub[0]["__type__"]
+        assert model.root[0].value_ == pub[0]["__value__"]
+        
+        # Verify observables element (index 1) - ObservablesArrayModel
+        assert model.root[1].root == pub[1]
+        
+        # Verify parameter_values element (index 2) - NdarrayWrapperModel (empty)
+        assert model.root[2].type_ == pub[2]["__type__"]
+        assert model.root[2].value_ == pub[2]["__value__"]
+        
+        # Verify precision element (index 3)
+        assert model.root[3] == pub[3]
 
     def test_valid_estimator_pub_without_precision(
         self, valid_observable, valid_parameter_values, valid_parameterized_circuit
@@ -68,8 +92,20 @@ class TestEstimatorPubModelValidation:
             valid_parameter_values,
         ]
         model = EstimatorPubModel.model_validate(pub)
-        assert model.root is not None
         assert len(model.root) == 4
+        
+        # Verify circuit element (index 0) - TypedQpyCircuitModelV13to17
+        assert model.root[0].type_ == pub[0]["__type__"]
+        assert model.root[0].value_ == pub[0]["__value__"]
+        
+        # Verify observables element (index 1) - ObservablesArrayModel
+        assert model.root[1].root == pub[1]
+        
+        # Verify parameter_values element (index 2) - NdarrayWrapperModel
+        assert model.root[2].type_ == pub[2]["__type__"]
+        assert model.root[2].value_ == pub[2]["__value__"]
+        
+        # Verify precision element (index 3) - should be None (default added by model)
         assert model.root[3] is None
 
     def test_valid_estimator_pub_minimal(self, valid_observable):
@@ -82,11 +118,21 @@ class TestEstimatorPubModelValidation:
             valid_observable,
         ]
         model = EstimatorPubModel.model_validate(pub)
-        assert model.root is not None
         assert len(model.root) == 4
-        # Should have defaults for parameter_values and precision
-        assert model.root[2] is not None  # parameter_values (empty array)
-        assert model.root[3] is None  # precision
+        
+        # Verify circuit element (index 0) - TypedQpyCircuitModelV13to17
+        assert model.root[0].type_ == pub[0]["__type__"]
+        assert model.root[0].value_ == pub[0]["__value__"]
+        
+        # Verify observables element (index 1) - ObservablesArrayModel
+        assert model.root[1].root == pub[1]
+        
+        # Verify parameter_values element (index 2) - NdarrayWrapperModel (default empty added by model)
+        assert model.root[2].type_ == "ndarray"
+        assert isinstance(model.root[2].value_, str)
+        
+        # Verify precision element (index 3) - should be None (default added by model)
+        assert model.root[3] is None
 
     def test_valid_estimator_pub_with_observables_list(
         self, valid_observables_list, valid_empty_parameter_values
@@ -102,8 +148,21 @@ class TestEstimatorPubModelValidation:
             None,
         ]
         model = EstimatorPubModel.model_validate(pub)
-        assert model.root is not None
         assert len(model.root) == 4
+        
+        # Verify circuit element (index 0) - TypedQpyCircuitModelV13to17
+        assert model.root[0].type_ == pub[0]["__type__"]
+        assert model.root[0].value_ == pub[0]["__value__"]
+        
+        # Verify observables element (index 1) - ObservablesArrayModel (list)
+        assert model.root[1].root == pub[1]
+        
+        # Verify parameter_values element (index 2) - NdarrayWrapperModel
+        assert model.root[2].type_ == pub[2]["__type__"]
+        assert model.root[2].value_ == pub[2]["__value__"]
+        
+        # Verify precision element (index 3)
+        assert model.root[3] is None
 
     def test_precision_must_be_positive(
         self, valid_observable, valid_empty_parameter_values
@@ -151,6 +210,19 @@ class TestEstimatorPubModelValidation:
             None,
         ]
         model = EstimatorPubModel.model_validate(pub)
+        assert len(model.root) == 4
+        
+        # Verify circuit element (index 0) - TypedQpyCircuitModelV13to17
+        assert model.root[0].type_ == pub[0]["__type__"]
+        assert model.root[0].value_ == pub[0]["__value__"]
+        
+        # Verify observables element (index 1) - ObservablesArrayModel
+        assert model.root[1].root == pub[1]
+        
+        # Verify parameter_values element (index 2) - NdarrayWrapperModel
+        assert model.root[2].type_ == pub[2]["__type__"]
+        
+        # Verify precision element (index 3) is None
         assert model.root[3] is None
 
     def test_too_few_elements(self):
@@ -201,5 +273,3 @@ class TestEstimatorPubModelValidation:
         ]
         with pytest.raises(ValidationError):
             EstimatorPubModel.model_validate(pub)
-
-# Made with Bob
