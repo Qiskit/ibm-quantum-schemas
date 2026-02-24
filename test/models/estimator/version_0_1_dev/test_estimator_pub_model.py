@@ -127,7 +127,8 @@ class TestEstimatorPubModelValidation:
         # Verify observables element (index 1) - ObservablesArrayModel
         assert model.root[1].root == pub[1]
 
-        # Verify parameter_values element (index 2) - NdarrayWrapperModel (default empty added by model)
+        # Verify parameter_values element (index 2) - NdarrayWrapperModel
+        # (default empty added by model)
         assert model.root[2].type_ == "ndarray"
         assert isinstance(model.root[2].value_, str)
 

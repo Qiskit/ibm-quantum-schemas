@@ -15,9 +15,10 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.dynamical_decoupling_options_model import (
-    DynamicalDecouplingOptionsModel,
-)
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.\
+    dynamical_decoupling_options_model import (
+        DynamicalDecouplingOptionsModel,
+    )
 
 
 class TestDynamicalDecouplingOptionsModelValidation:
