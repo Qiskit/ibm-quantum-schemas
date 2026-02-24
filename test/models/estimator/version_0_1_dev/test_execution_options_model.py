@@ -71,12 +71,11 @@ class TestExecutionOptionsV2ModelValidation:
         model = ExecutionOptionsV2Model.model_validate(options)
         assert model.rep_delay == 0.0005
 
-    def test_rep_delay_negative(self):
-        """Test that negative rep_delay is accepted (backend validation)."""
-        # Note: The model doesn't enforce positive values; backend does
+    def test_rep_delay_negative_rejected(self):
+        """Test that negative rep_delay is rejected."""
         options = {"rep_delay": -0.0001}
-        model = ExecutionOptionsV2Model.model_validate(options)
-        assert model.rep_delay == -0.0001
+        with pytest.raises(ValidationError, match="greater than or equal to 0"):
+            ExecutionOptionsV2Model.model_validate(options)
 
     def test_rep_delay_large_value(self):
         """Test that large rep_delay values are accepted."""

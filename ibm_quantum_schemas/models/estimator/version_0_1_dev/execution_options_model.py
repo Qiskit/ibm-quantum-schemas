@@ -14,7 +14,9 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict
+from typing import Annotated
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ExecutionOptionsV2Model(BaseModel):
@@ -25,7 +27,7 @@ class ExecutionOptionsV2Model(BaseModel):
     init_qubits: bool = True
     """Whether to reset the qubits to the ground state for each shot."""
 
-    rep_delay: float | None = None
+    rep_delay: Annotated[float, Field(ge=0)] | None = None
     """The repetition delay. This is the delay between a measurement and
     the subsequent quantum circuit. This is only supported on backends that have
     ``backend.dynamic_reprate_enabled=True``. It must be from the
