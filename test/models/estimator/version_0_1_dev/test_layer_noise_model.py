@@ -200,11 +200,6 @@ class TestLayerNoiseModelValidation:
         assert model.error.class_ == valid_pauli_lindblad_error_wrapper["__class__"]
         # Verify error value (PauliLindbladErrorModel)
         assert isinstance(model.error.value_, PauliLindbladErrorModel)
-        assert (
-            model.error.value_.generators
-            == valid_pauli_lindblad_error_wrapper["__value__"]["generators"]
-        )
-        assert model.error.value_.rates == valid_pauli_lindblad_error_wrapper["__value__"]["rates"]
         # Verify generators (PauliListWrapperModel)
         assert isinstance(model.error.value_.generators, PauliListWrapperModel)
         assert (
