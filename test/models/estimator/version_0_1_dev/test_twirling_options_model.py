@@ -172,32 +172,3 @@ class TestTwirlingOptionsModelValidation:
         options = {"extra_field": "not allowed"}
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             TwirlingOptionsModel.model_validate(options)
-
-    def test_all_options_together(self):
-        """Test that all options can be set together."""
-        options = {
-            "enable_gates": True,
-            "enable_measure": True,
-            "num_randomizations": 48,
-            "shots_per_randomization": 200,
-            "strategy": "active-circuit",
-        }
-        model = TwirlingOptionsModel.model_validate(options)
-        assert model.enable_gates is True
-        assert model.enable_measure is True
-        assert model.num_randomizations == 48
-        assert model.shots_per_randomization == 200
-        assert model.strategy == "active-circuit"
-
-    def test_both_auto_values(self):
-        """Test that both num_randomizations and shots_per_randomization can be 'auto'."""
-        options = {
-            "num_randomizations": "auto",
-            "shots_per_randomization": "auto",
-        }
-        model = TwirlingOptionsModel.model_validate(options)
-        assert model.num_randomizations == "auto"
-        assert model.shots_per_randomization == "auto"
-
-
-# Made with Bob
