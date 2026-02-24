@@ -103,6 +103,11 @@ class TestNoiseLearnerResultsMetadataModelValidation:
         model = NoiseLearnerResultsMetadataModel.model_validate(metadata)
         assert model.backend == "ibm_brisbane"
         assert isinstance(model.input_options, NoiseLearnerInputOptionsModel)
+        assert model.input_options.max_layers_to_learn == 4
+        assert model.input_options.shots_per_randomization == 128
+        assert model.input_options.num_randomizations == 32
+        assert model.input_options.layer_pair_depths == [0, 1, 2]
+        assert model.input_options.twirling_strategy == "active-accum"
 
     def test_missing_backend(self):
         """Test that missing backend field is rejected."""
@@ -148,6 +153,13 @@ class TestNoiseLearnerResultsModelValidation:
         assert model.schema_version == "v0.1"
         assert len(model.data) == 1
         assert isinstance(model.metadata, NoiseLearnerResultsMetadataModel)
+        assert model.metadata.backend == "ibm_brisbane"
+        assert isinstance(model.metadata.input_options, NoiseLearnerInputOptionsModel)
+        assert model.metadata.input_options.max_layers_to_learn == 4
+        assert model.metadata.input_options.shots_per_randomization == 128
+        assert model.metadata.input_options.num_randomizations == 32
+        assert model.metadata.input_options.layer_pair_depths == [0, 1, 2]
+        assert model.metadata.input_options.twirling_strategy == "active-accum"
 
     def test_valid_results_with_empty_data(self):
         """Test that valid results with empty data are accepted."""
@@ -213,5 +225,3 @@ class TestNoiseLearnerResultsModelValidation:
         }
         with pytest.raises(ValidationError, match="Field required"):
             NoiseLearnerResultsModel.model_validate(results)
-
-# Made with Bob
