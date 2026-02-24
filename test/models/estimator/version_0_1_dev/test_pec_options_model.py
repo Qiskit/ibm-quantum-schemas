@@ -144,5 +144,3 @@ class TestPecOptionsModelValidation:
         model = PecOptionsModel.model_validate(options)
         assert model.max_overhead is None
         assert model.noise_gain == "auto"
-
-# Made with Bob

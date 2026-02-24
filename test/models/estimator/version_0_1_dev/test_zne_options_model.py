@@ -239,4 +239,3 @@ class TestZneOptionsModelValidation:
         ):
             ZneOptionsModel.model_validate(options)
 
-# Made with Bob

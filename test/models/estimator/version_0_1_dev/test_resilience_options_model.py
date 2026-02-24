@@ -212,4 +212,3 @@ class TestResilienceOptionsModelValidation:
         assert model.zne_mitigation is False
         assert model.pec_mitigation is True
 
-# Made with Bob

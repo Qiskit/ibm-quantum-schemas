@@ -155,6 +155,3 @@ class TestDynamicalDecouplingOptionsModelValidation:
         assert model.extra_slack_distribution == "edges"
         assert model.scheduling_method == "asap"
         assert model.skip_reset_qubits is True
-
-
-# Made with Bob
