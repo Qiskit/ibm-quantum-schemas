@@ -26,10 +26,10 @@ from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
 class TestParamsModelValidation:
     """Test ParamsModel validation."""
 
-    def test_valid_params_model(self, valid_typed_qpy_circuit_dict):
+    def test_valid_params_model(self, valid_typed_qpy_circuit_dict_v13):
         """Test that valid params are accepted."""
         params = {
-            "circuits": [valid_typed_qpy_circuit_dict],
+            "circuits": [valid_typed_qpy_circuit_dict_v13],
             "options": {"max_layers_to_learn": 5},
         }
         model = ParamsModel.model_validate(params)
@@ -43,9 +43,9 @@ class TestParamsModelValidation:
         with pytest.raises(ValidationError, match="Field required"):
             ParamsModel.model_validate(params)
 
-    def test_missing_options_field(self, valid_typed_qpy_circuit_dict):
+    def test_missing_options_field(self, valid_typed_qpy_circuit_dict_v13):
         """Test that missing options field is rejected."""
-        params = {"circuits": [valid_typed_qpy_circuit_dict]}
+        params = {"circuits": [valid_typed_qpy_circuit_dict_v13]}
         with pytest.raises(ValidationError, match="Field required"):
             ParamsModel.model_validate(params)
 
@@ -55,13 +55,13 @@ class TestParamsModelValidation:
         model = ParamsModel.model_validate(params)
         assert len(model.circuits) == 0
 
-    def test_multiple_circuits(self, valid_typed_qpy_circuit_dict):
+    def test_multiple_circuits(self, valid_typed_qpy_circuit_dict_v13):
         """Test that multiple circuits are accepted."""
         params = {
             "circuits": [
-                valid_typed_qpy_circuit_dict,
-                valid_typed_qpy_circuit_dict,
-                valid_typed_qpy_circuit_dict,
+                valid_typed_qpy_circuit_dict_v13,
+                valid_typed_qpy_circuit_dict_v13,
+                valid_typed_qpy_circuit_dict_v13,
             ],
             "options": {},
         }
