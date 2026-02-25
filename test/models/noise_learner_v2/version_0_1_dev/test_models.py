@@ -68,7 +68,7 @@ class TestParamsModelValidation:
         model = ParamsModel.model_validate(params)
         assert model.circuits == []
 
-    def test_optional_params(self, valid_typed_qpy_circuit_dict):
+    def test_optional_params(self, valid_typed_qpy_circuit_dict_v13):
         """Test passing both required and optional parameters."""
         params = {
             "circuits": [],
@@ -78,7 +78,7 @@ class TestParamsModelValidation:
         }
         ParamsModel.model_validate(params)
 
-    def test_version_none(self, valid_typed_qpy_circuit_dict):
+    def test_version_none(self, valid_typed_qpy_circuit_dict_v13):
         """Test ensuring that in addition to 2 Noise learner also accepts None version."""
         params = {
             "circuits": [],
@@ -114,10 +114,10 @@ class TestParamsModelValidation:
             ParamsModel.model_validate(params)
 
     @pytest.mark.parametrize("num_circs", [1, 2, 5])
-    def test_valid_circuits(self, valid_typed_qpy_circuit_dict, num_circs):
+    def test_valid_circuits(self, valid_typed_qpy_circuit_dict_v13, num_circs):
         """Test a list of circuits."""
         params = {
-            "circuits": [valid_typed_qpy_circuit_dict] * num_circs,
+            "circuits": [valid_typed_qpy_circuit_dict_v13] * num_circs,
             "options": {},
         }
         model = ParamsModel.model_validate(params)

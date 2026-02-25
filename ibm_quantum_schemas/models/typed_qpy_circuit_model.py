@@ -81,13 +81,3 @@ class TypedQpyCircuitModelV13to17(TypedQpyCircuitModel):
         """Constrain the allowed QPY version."""
         _validate_qpy_version_range(self.value_, 13, 17)
         return self
-
-
-class TypedQpyCircuitModelV13(TypedQpyCircuitModel):
-    """A circuit representation with QPY version constrained to 13."""
-
-    @model_validator(mode="after")
-    def validate_qpy_version(self):
-        """Constrain the allowed QPY version."""
-        _validate_qpy_version_range(self.value_, 13, 13)
-        return self
