@@ -10,4 +10,33 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Executor V0.2 Models and Validation"""
+"""
+======================================================================
+Executor v0.2 (:mod:`ibm_quantum_schemas.models.executor.version_0_2`)
+======================================================================
+
+.. currentmodule:: ibm_quantum_schemas.models.executor.version_0_2
+
+Models and validation for ``Executor`` ``v0.2``.
+
+Classes
+=======
+
+.. autosummary::
+   :toctree: ../stubs/
+   :nosignatures:
+
+   models.ParamsModel
+   models.QuantumProgramModel
+   models.CircuitItemModel
+   models.SamplexItemModel
+   models.OptionsModel
+   models.QuantumProgramResultModel
+   models.QuantumProgramResultItemModel
+   models.ItemMetadataModel
+   models.SchedulerTimingModel
+   models.StretchValueModel
+   models.MetadataModel
+   models.ChunkSpan
+   models.ChunkPart
+"""
