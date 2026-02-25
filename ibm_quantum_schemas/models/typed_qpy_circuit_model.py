@@ -78,7 +78,7 @@ class TypedQpyCircuitModelV13to17(TypedQpyCircuitModel):
 
     @model_validator(mode="after")
     def validate_qpy_version(self):
-        """Constrain the allowed QPY encodings to versions 13-17."""
+        """Constrain the allowed QPY version."""
         _validate_qpy_version_range(self.value_, 13, 17)
         return self
 
@@ -88,6 +88,6 @@ class TypedQpyCircuitModelV13(TypedQpyCircuitModel):
 
     @model_validator(mode="after")
     def validate_qpy_version(self):
-        """Constrain the allowed QPY encodings to versions 13-17."""
+        """Constrain the allowed QPY version."""
         _validate_qpy_version_range(self.value_, 13, 13)
         return self
