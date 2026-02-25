@@ -21,15 +21,17 @@ from ibm_quantum_schemas.models import typed_qpy_circuit_model as qpy_model
 class TestTypedQpyCircuitModelValidation:
     """Test TypedQpyCircuitModelV13to17 validation."""
 
-    def test_valid_typed_qpy_circuit(self, valid_typed_qpy_circuit_dict):
+    def test_valid_typed_qpy_circuit(self, valid_typed_qpy_circuit_dict_v13):
         """Test that valid TypedQpyCircuitModel is accepted."""
-        model = qpy_model.TypedQpyCircuitModelV13to17.model_validate(valid_typed_qpy_circuit_dict)
+        model = qpy_model.TypedQpyCircuitModelV13to17.model_validate(
+            valid_typed_qpy_circuit_dict_v13
+        )
         assert model.type_ == "QuantumCircuit"
-        assert model.value_ == valid_typed_qpy_circuit_dict["__value__"]
+        assert model.value_ == valid_typed_qpy_circuit_dict_v13["__value__"]
 
-    def test_invalid_type_field(self, compressed_qpy_circuit):
+    def test_invalid_type_field(self, compressed_qpy_circuit_v13):
         """Test that wrong __type__ value is rejected."""
-        circuit_dict = {"__type__": "WrongType", "__value__": compressed_qpy_circuit}
+        circuit_dict = {"__type__": "WrongType", "__value__": compressed_qpy_circuit_v13}
         with pytest.raises(ValidationError, match="Input should be 'QuantumCircuit'"):
             qpy_model.TypedQpyCircuitModelV13to17.model_validate(circuit_dict)
 

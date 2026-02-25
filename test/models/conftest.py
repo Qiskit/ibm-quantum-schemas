@@ -22,7 +22,7 @@ from qiskit.qpy import dump as qpy_dump
 
 
 @pytest.fixture
-def compressed_qpy_circuit() -> str:
+def compressed_qpy_circuit_v13() -> str:
     """Fixture to create a base64-encoded, zlib-compressed QPY circuit (version 13).
 
     Returns:
@@ -42,13 +42,13 @@ def compressed_qpy_circuit() -> str:
 
 
 @pytest.fixture
-def valid_typed_qpy_circuit_dict(compressed_qpy_circuit) -> dict:
-    """Fixture to create a valid TypedQpyCircuitModel dict.
+def valid_typed_qpy_circuit_dict_v13(compressed_qpy_circuit_v13) -> dict:
+    """Fixture to create a valid TypedQpyCircuitModel dict with QPY v13.
 
     Args:
-        compressed_qpy_circuit: Base64-encoded compressed QPY circuit.
+        compressed_qpy_circuit_v13: Base64-encoded compressed QPY circuit (version 13).
 
     Returns:
         Dictionary with __type__ and __value__ fields for TypedQpyCircuitModel.
     """
-    return {"__type__": "QuantumCircuit", "__value__": compressed_qpy_circuit}
+    return {"__type__": "QuantumCircuit", "__value__": compressed_qpy_circuit_v13}
