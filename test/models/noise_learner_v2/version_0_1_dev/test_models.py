@@ -20,6 +20,7 @@ from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
     ParamsModel,
     ResultsMetadataModel,
     ResultsModel,
+    TypedQpyCircuitModelV13to17,
 )
 
 
@@ -61,6 +62,17 @@ class TestParamsModelValidation:
         }
         model = ParamsModel.model_validate(params)
         assert len(model.circuits) == 3
+        assert isinstance(model.circuits[0], TypedQpyCircuitModelV13to17)
+
+    def test_qasm_circuits(self):
+        """Test that multiple circuits are accepted."""
+        params = {
+            "circuits": ["OPENQASM 3.0; qubit q; x q;"],
+            "options": {},
+        }
+        model = ParamsModel.model_validate(params)
+        assert len(model.circuits) == 1
+        assert isinstance(model.circuits[0], str)
 
     def test_required_params_only(self):
         """Test when only required parameters are specified (circuits only, no options)."""
