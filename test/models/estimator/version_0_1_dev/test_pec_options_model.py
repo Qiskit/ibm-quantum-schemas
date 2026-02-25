@@ -102,7 +102,7 @@ class TestPecOptionsModelValidation:
     def test_negative_noise_gain(self):
         """Test that negative noise_gain is rejected."""
         options = {"noise_gain": -0.5}
-        with pytest.raises(ValidationError, match="noise_gain must be >= 0"):
+        with pytest.raises(ValidationError, match="Input should be greater than or equal to 0"):
             PecOptionsModel.model_validate(options)
 
     def test_noise_gain_integer_zero(self):
@@ -120,7 +120,7 @@ class TestPecOptionsModelValidation:
     def test_noise_gain_integer_negative(self):
         """Test that negative integer noise_gain is rejected."""
         options = {"noise_gain": -1}
-        with pytest.raises(ValidationError, match="noise_gain must be >= 0"):
+        with pytest.raises(ValidationError, match="Input should be greater than or equal to 0"):
             PecOptionsModel.model_validate(options)
 
     def test_invalid_noise_gain_string(self):
