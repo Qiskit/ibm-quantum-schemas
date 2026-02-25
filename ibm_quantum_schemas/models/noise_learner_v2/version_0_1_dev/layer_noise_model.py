@@ -16,7 +16,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
+from ...typed_qpy_circuit_model import TypedQpyCircuitModel
 
 
 class PauliListModel(BaseModel):
@@ -98,8 +98,11 @@ class PauliLindbladErrorWrapperModel(BaseModel):
 class LayerNoiseModel(BaseModel):
     """The error data."""
 
-    circuit: TypedQpyCircuitModelV13to17
-    """The quantum circuit whose noise has been learned, encoded in QPY format."""
+    circuit: TypedQpyCircuitModel
+    """The quantum circuit whose noise has been learned, encoded in QPY format.
+
+    The QPY version is determined by the server dynamically.
+    """
 
     qubits: list[int]
     """The physical qubit labels for this layer.
