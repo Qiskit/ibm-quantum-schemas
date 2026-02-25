@@ -42,11 +42,12 @@ class ParamsModel(BaseParamsModel):
     version: Literal[2] | None = 2
     """Version of the program."""
 
-    circuits: list[TypedQpyCircuitModelV13to17]
+    circuits: list[TypedQpyCircuitModelV13to17 | str]
     """The circuits to run the noise learner program for.
 
-    Note that while the noise learner accepts EstimatorPubLike objects, they are converted to
-    circuits before serialization, so only circuits appear in the model.
+    The list may contain individual circuits serialized in one of the following ways:
+    - QPY format (Packaged in `TypedQpyCircuitModelV13to17`)
+    - QASM string (stored directly as a `str` in the list)
     """
 
     options: OptionsModel = OptionsModel()
