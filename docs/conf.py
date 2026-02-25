@@ -41,6 +41,7 @@ extensions = [
     # This is used by qiskit/documentation to generate links to github.com.
     "sphinx.ext.linkcode",
     "sphinxcontrib.katex",
+    "sphinxcontrib.autodoc_pydantic",
 ]
 templates_path = ["_templates"]
 
@@ -98,10 +99,10 @@ intersphinx_mapping = {
 
 autosummary_generate = True
 autosummary_generate_overwrite = False
-autoclass_content = "both"
+autoclass_content = "class"
 autodoc_typehints = "description"
 autodoc_default_options = {
-    "inherited-members": None,
+    "inherited-members": "BaseModel",
     "show-inheritance": True,
 }
 autodoc_type_aliases = {
@@ -111,6 +112,14 @@ autodoc_type_aliases = {
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
 
+# Disable jsonschema preview, as some models cannot be serializable.
+autodoc_pydantic_model_show_json = False
+
+# Disable field summary, as it uses the full module name, causing long lines.
+autodoc_pydantic_model_show_field_summary = False
+
+# Disable validator summary, as we are hiding the field summary.
+autodoc_pydantic_model_show_validator_summary = False
 
 # If true, figures, tables and code-blocks are automatically numbered if they
 # have a caption.
@@ -224,4 +233,4 @@ def linkcode_resolve(domain, info):
     else:
         ending_lineno = lineno + len(source) - 1
         linespec = f"#L{lineno}-L{ending_lineno}"
-    return f"https://github.com/Qiskit/ibm-quantum-schemas/tree/{GITHUB_BRANCH}/ibm_quantum_schemas{file_name}{linespec}"
+    return f"https://github.com/Qiskit/ibm-quantum-schemas/tree/{GITHUB_BRANCH}/ibm_quantum_schemas/{file_name}{linespec}"
