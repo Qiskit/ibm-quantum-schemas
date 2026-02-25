@@ -30,13 +30,14 @@ class TestSimulatorOptionsValidation:
             "seed_simulator": 42,
             "coupling_map": [[0, 1], [1, 2], [2, 3]],
             "basis_gates": ["u1", "u2", "u3", "cx"],
-            "noise_model": None,
+            "noise_model": {"__type__": "NoiseModel", "__value__": {}},
         }
         model = SimulatorOptionsModel.model_validate(valid_options)
         assert model.seed_simulator == 42
         assert model.coupling_map == [[0, 1], [1, 2], [2, 3]]
         assert model.basis_gates == ["u1", "u2", "u3", "cx"]
-        assert model.noise_model is None
+        assert model.noise_model.type_ == "NoiseModel"
+        assert model.noise_model.value_ == {}
 
     def test_coupling_map_with_invalid_length(self):
         """Test that coupling_map entries with wrong length are rejected."""
@@ -83,8 +84,12 @@ class TestOptionsModelValidation:
         assert model.layer_pair_depths == [0, 1, 2, 4, 16, 32]
         assert model.twirling_strategy == "active-accum"
         assert model.support_qiskit is True
-        assert model.experimental is None
-        assert model.simulator is None
+        assert model.experimental == {}
+        assert isinstance(model.simulator, SimulatorOptionsModel)
+        assert model.simulator.seed_simulator is None
+        assert model.simulator.coupling_map is None
+        assert model.simulator.basis_gates is None
+        assert model.simulator.noise_model is None
 
     def test_valid_options_with_custom_values(self):
         """Test that custom option values are accepted."""
@@ -127,3 +132,9 @@ class TestOptionsModelValidation:
         options = {"max_layers_to_learn": None}
         model = OptionsModel.model_validate(options)
         assert model.max_layers_to_learn is None
+
+    def test_extra_options(self):
+        """Test passing extra options."""
+        options = {"foo": "bar"}
+        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
+            OptionsModel.model_validate(options)

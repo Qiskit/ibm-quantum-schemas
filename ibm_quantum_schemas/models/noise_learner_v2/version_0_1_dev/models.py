@@ -14,7 +14,7 @@
 
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from ...base_params_model import BaseParamsModel
 from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
@@ -34,8 +34,13 @@ from .results_metadata_model import InputOptionsModel, ResultsMetadataModel
 class ParamsModel(BaseParamsModel):
     """A model describing the NoiseLearnerV2 program inputs, also known as "params"."""
 
+    model_config = ConfigDict(extra="forbid")
+
     schema_version: str = "v0.1"
     """Schema version of the program input."""
+
+    version: Literal[2] | None = 2
+    """Version of the program."""
 
     circuits: list[TypedQpyCircuitModelV13to17]
     """The circuits to run the noise learner program for.
@@ -44,7 +49,7 @@ class ParamsModel(BaseParamsModel):
     circuits before serialization, so only circuits appear in the model.
     """
 
-    options: OptionsModel
+    options: OptionsModel = OptionsModel()
     """Options for the noise learner program."""
 
 

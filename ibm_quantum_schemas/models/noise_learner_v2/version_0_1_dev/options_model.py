@@ -14,13 +14,25 @@
 
 from typing import Literal
 
-from pydantic import BaseModel, conlist
+from pydantic import BaseModel, ConfigDict, Field, conlist
+
+
+class NoiseModel(BaseModel):
+    """A wrapper around Noise model data for the simulator."""
+
+    type_: Literal["NoiseModel"] = Field(default="NoiseModel", alias="__type__")
+    """Redundant type information."""
+
+    value_: dict = Field(alias="__value__")
+    """The actual data: qiskit-aer dict format for the NoiseModel."""
 
 
 class SimulatorOptionsModel(BaseModel):
     """Simulator options for the noise learner."""
 
-    noise_model: dict | None = None
+    model_config = ConfigDict(extra="forbid")
+
+    noise_model: NoiseModel | None = None
     """Noise model for the simulator.
 
     This option is only supported in local testing mode.
@@ -54,6 +66,8 @@ class SimulatorOptionsModel(BaseModel):
 
 class OptionsModel(BaseModel):
     """Options for the noise learner program."""
+
+    model_config = ConfigDict(extra="forbid")
 
     max_layers_to_learn: int | None = 4
     """The max number of unique layers to learn.
@@ -100,11 +114,13 @@ class OptionsModel(BaseModel):
     support_qiskit: bool = True
     """Whether to support Qiskit-specific features."""
 
-    experimental: dict | None = None
+    experimental: dict = {}
     """Experimental options.
 
     These options are subject to change without notification, and stability is not guaranteed.
     """
 
-    simulator: SimulatorOptionsModel | None = None
-    """Simulator options."""
+    simulator: SimulatorOptionsModel = SimulatorOptionsModel()
+    """
+    Simulator options.
+    """
