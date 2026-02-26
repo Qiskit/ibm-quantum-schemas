@@ -20,8 +20,6 @@ import pybase64
 import pytest
 from qiskit.circuit import Parameter, QuantumCircuit
 
-from test.models.utils import valid_typed_qpy_circuit_dict
-
 
 @pytest.fixture
 def valid_observable() -> dict:
@@ -60,13 +58,10 @@ def valid_empty_parameter_values() -> dict:
 
 
 @pytest.fixture
-def valid_estimator_pub(valid_observable, valid_empty_parameter_values) -> list:
+def valid_estimator_pub(valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13) -> list:
     """Fixture to create a valid EstimatorPub as a list."""
-    circuit = QuantumCircuit(2)
-    circuit.h(0)
-    circuit.cx(0, 1)
     return [
-        valid_typed_qpy_circuit_dict(circuit),
+        valid_typed_qpy_circuit_dict_v13,
         valid_observable,
         valid_empty_parameter_values,
         None,
@@ -74,13 +69,10 @@ def valid_estimator_pub(valid_observable, valid_empty_parameter_values) -> list:
 
 
 @pytest.fixture
-def valid_estimator_pub_with_precision(valid_observable, valid_empty_parameter_values) -> list:
+def valid_estimator_pub_with_precision(valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13) -> list:
     """Fixture to create a valid EstimatorPub with precision."""
-    circuit = QuantumCircuit(2)
-    circuit.h(0)
-    circuit.cx(0, 1)
     return [
-        valid_typed_qpy_circuit_dict(circuit),
+        valid_typed_qpy_circuit_dict_v13,
         valid_observable,
         valid_empty_parameter_values,
         0.01,
@@ -88,17 +80,14 @@ def valid_estimator_pub_with_precision(valid_observable, valid_empty_parameter_v
 
 
 @pytest.fixture
-def valid_layer_noise_wrapper() -> dict:
+def valid_layer_noise_wrapper(valid_typed_qpy_circuit_dict_v13) -> dict:
     """Fixture to create a valid LayerNoiseWrapperModel dict."""
-    circuit = QuantumCircuit(2)
-    circuit.h(0)
-    circuit.cx(0, 1)
     return {
         "__type__": "_json",
         "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
         "__class__": "LayerError",
         "__value__": {
-            "circuit": valid_typed_qpy_circuit_dict(circuit),
+            "circuit": valid_typed_qpy_circuit_dict_v13,
             "qubits": [0, 1],
             "error": None,
         },

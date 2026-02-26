@@ -19,7 +19,6 @@ from qiskit.circuit import QuantumCircuit
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.estimator_pub_model import (
     EstimatorPubModel,
 )
-from test.models.utils import valid_typed_qpy_circuit_dict
 
 
 class TestEstimatorPubModelValidation:
@@ -30,7 +29,7 @@ class TestEstimatorPubModelValidation:
     ):
         """Test that valid EstimatorPub with all fields is accepted (with parameters)."""
         pub = [
-            valid_typed_qpy_circuit_dict(valid_typed_qpy_circuit_dict_v13_parametrized),
+            valid_typed_qpy_circuit_dict_v13_parametrized,
             valid_observable,
             valid_parameter_values,
             0.01,
@@ -53,14 +52,11 @@ class TestEstimatorPubModelValidation:
         assert model.root[3] == pub[3]
 
     def test_valid_estimator_pub_full_no_parameters(
-        self, valid_observable, valid_empty_parameter_values
+        self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
     ):
         """Test that valid EstimatorPub with all fields is accepted (without parameters)."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
         pub = [
-            valid_typed_qpy_circuit_dict(circuit),
+            valid_typed_qpy_circuit_dict_v13,
             valid_observable,
             valid_empty_parameter_values,
             0.01,
@@ -87,7 +83,7 @@ class TestEstimatorPubModelValidation:
     ):
         """Test that EstimatorPub without precision is accepted (defaults to None)."""
         pub = [
-            valid_typed_qpy_circuit_dict(valid_typed_qpy_circuit_dict_v13_parametrized),
+            valid_typed_qpy_circuit_dict_v13_parametrized,
             valid_observable,
             valid_parameter_values,
         ]
@@ -108,13 +104,10 @@ class TestEstimatorPubModelValidation:
         # Verify precision element (index 3) - should be None (default added by model)
         assert model.root[3] is None
 
-    def test_valid_estimator_pub_minimal(self, valid_observable):
+    def test_valid_estimator_pub_minimal(self, valid_observable, valid_typed_qpy_circuit_dict_v13):
         """Test that EstimatorPub with only circuit and observables is accepted."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
         pub = [
-            valid_typed_qpy_circuit_dict(circuit),
+            valid_typed_qpy_circuit_dict_v13,
             valid_observable,
         ]
         model = EstimatorPubModel.model_validate(pub)
@@ -136,14 +129,11 @@ class TestEstimatorPubModelValidation:
         assert model.root[3] is None
 
     def test_valid_estimator_pub_with_observables_list(
-        self, valid_observables_list, valid_empty_parameter_values
+        self, valid_observables_list, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
     ):
         """Test that EstimatorPub with list of observables is accepted."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
         pub = [
-            valid_typed_qpy_circuit_dict(circuit),
+            valid_typed_qpy_circuit_dict_v13,
             valid_observables_list,
             valid_empty_parameter_values,
             None,
@@ -165,13 +155,10 @@ class TestEstimatorPubModelValidation:
         # Verify precision element (index 3)
         assert model.root[3] is None
 
-    def test_precision_must_be_positive(self, valid_observable, valid_empty_parameter_values):
+    def test_precision_must_be_positive(self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13):
         """Test that precision must be positive."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
         pub = [
-            valid_typed_qpy_circuit_dict(circuit),
+            valid_typed_qpy_circuit_dict_v13,
             valid_observable,
             valid_empty_parameter_values,
             0.0,
@@ -179,13 +166,10 @@ class TestEstimatorPubModelValidation:
         with pytest.raises(ValidationError, match="greater than 0"):
             EstimatorPubModel.model_validate(pub)
 
-    def test_negative_precision(self, valid_observable, valid_empty_parameter_values):
+    def test_negative_precision(self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13):
         """Test that negative precision is rejected."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
         pub = [
-            valid_typed_qpy_circuit_dict(circuit),
+            valid_typed_qpy_circuit_dict_v13,
             valid_observable,
             valid_empty_parameter_values,
             -0.01,
@@ -193,13 +177,10 @@ class TestEstimatorPubModelValidation:
         with pytest.raises(ValidationError, match="greater than 0"):
             EstimatorPubModel.model_validate(pub)
 
-    def test_precision_none_is_valid(self, valid_observable, valid_empty_parameter_values):
+    def test_precision_none_is_valid(self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13):
         """Test that precision can be None."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
         pub = [
-            valid_typed_qpy_circuit_dict(circuit),
+            valid_typed_qpy_circuit_dict_v13,
             valid_observable,
             valid_empty_parameter_values,
             None,
@@ -220,22 +201,16 @@ class TestEstimatorPubModelValidation:
         # Verify precision element (index 3) is None
         assert model.root[3] is None
 
-    def test_too_few_elements(self):
+    def test_too_few_elements(self, valid_typed_qpy_circuit_dict_v13):
         """Test that tuple with only 1 element is rejected."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
-        pub = [valid_typed_qpy_circuit_dict(circuit)]
+        pub = [valid_typed_qpy_circuit_dict_v13]
         with pytest.raises(ValidationError):
             EstimatorPubModel.model_validate(pub)
 
-    def test_too_many_elements(self, valid_observable, valid_empty_parameter_values):
+    def test_too_many_elements(self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13):
         """Test that tuple with more than 4 elements is rejected."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
         pub = [
-            valid_typed_qpy_circuit_dict(circuit),
+            valid_typed_qpy_circuit_dict_v13,
             valid_observable,
             valid_empty_parameter_values,
             0.01,
@@ -253,13 +228,10 @@ class TestEstimatorPubModelValidation:
         with pytest.raises(ValidationError):
             EstimatorPubModel.model_validate(pub)
 
-    def test_invalid_observable_type(self, valid_empty_parameter_values):
+    def test_invalid_observable_type(self, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13):
         """Test that invalid observable type is rejected."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
         pub = [
-            valid_typed_qpy_circuit_dict(circuit),
+            valid_typed_qpy_circuit_dict_v13,
             "not an observable",
             valid_empty_parameter_values,
             None,

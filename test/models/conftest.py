@@ -17,7 +17,7 @@ from io import BytesIO
 
 import pybase64
 import pytest
-from qiskit.circuit import QuantumCircuit
+from qiskit.circuit import QuantumCircuit, Parameter
 from qiskit.qpy import dump as qpy_dump
 
 
