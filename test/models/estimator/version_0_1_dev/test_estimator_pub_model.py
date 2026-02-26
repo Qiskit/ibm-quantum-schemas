@@ -26,11 +26,11 @@ class TestEstimatorPubModelValidation:
     """Test EstimatorPubModel validation."""
 
     def test_valid_estimator_pub_full(
-        self, valid_observable, valid_parameter_values, valid_parameterized_circuit
+        self, valid_observable, valid_parameter_values, valid_typed_qpy_circuit_dict_v13_parametrized
     ):
         """Test that valid EstimatorPub with all fields is accepted (with parameters)."""
         pub = [
-            valid_typed_qpy_circuit_dict(valid_parameterized_circuit),
+            valid_typed_qpy_circuit_dict(valid_typed_qpy_circuit_dict_v13_parametrized),
             valid_observable,
             valid_parameter_values,
             0.01,
@@ -83,11 +83,11 @@ class TestEstimatorPubModelValidation:
         assert model.root[3] == pub[3]
 
     def test_valid_estimator_pub_without_precision(
-        self, valid_observable, valid_parameter_values, valid_parameterized_circuit
+        self, valid_observable, valid_parameter_values, valid_typed_qpy_circuit_dict_v13_parametrized
     ):
         """Test that EstimatorPub without precision is accepted (defaults to None)."""
         pub = [
-            valid_typed_qpy_circuit_dict(valid_parameterized_circuit),
+            valid_typed_qpy_circuit_dict(valid_typed_qpy_circuit_dict_v13_parametrized),
             valid_observable,
             valid_parameter_values,
         ]
