@@ -14,7 +14,6 @@
 
 import pytest
 from pydantic import ValidationError
-from qiskit.circuit import QuantumCircuit
 
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.estimator_pub_model import (
     EstimatorPubModel,
@@ -25,7 +24,10 @@ class TestEstimatorPubModelValidation:
     """Test EstimatorPubModel validation."""
 
     def test_valid_estimator_pub_full(
-        self, valid_observable, valid_parameter_values, valid_typed_qpy_circuit_dict_v13_parametrized
+        self,
+        valid_observable,
+        valid_parameter_values,
+        valid_typed_qpy_circuit_dict_v13_parametrized,
     ):
         """Test that valid EstimatorPub with all fields is accepted (with parameters)."""
         pub = [
@@ -79,7 +81,10 @@ class TestEstimatorPubModelValidation:
         assert model.root[3] == pub[3]
 
     def test_valid_estimator_pub_without_precision(
-        self, valid_observable, valid_parameter_values, valid_typed_qpy_circuit_dict_v13_parametrized
+        self,
+        valid_observable,
+        valid_parameter_values,
+        valid_typed_qpy_circuit_dict_v13_parametrized,
     ):
         """Test that EstimatorPub without precision is accepted (defaults to None)."""
         pub = [
@@ -155,7 +160,9 @@ class TestEstimatorPubModelValidation:
         # Verify precision element (index 3)
         assert model.root[3] is None
 
-    def test_precision_must_be_positive(self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13):
+    def test_precision_must_be_positive(
+        self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+    ):
         """Test that precision must be positive."""
         pub = [
             valid_typed_qpy_circuit_dict_v13,
@@ -166,7 +173,9 @@ class TestEstimatorPubModelValidation:
         with pytest.raises(ValidationError, match="greater than 0"):
             EstimatorPubModel.model_validate(pub)
 
-    def test_negative_precision(self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13):
+    def test_negative_precision(
+        self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+    ):
         """Test that negative precision is rejected."""
         pub = [
             valid_typed_qpy_circuit_dict_v13,
@@ -177,7 +186,9 @@ class TestEstimatorPubModelValidation:
         with pytest.raises(ValidationError, match="greater than 0"):
             EstimatorPubModel.model_validate(pub)
 
-    def test_precision_none_is_valid(self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13):
+    def test_precision_none_is_valid(
+        self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+    ):
         """Test that precision can be None."""
         pub = [
             valid_typed_qpy_circuit_dict_v13,
@@ -207,7 +218,9 @@ class TestEstimatorPubModelValidation:
         with pytest.raises(ValidationError):
             EstimatorPubModel.model_validate(pub)
 
-    def test_too_many_elements(self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13):
+    def test_too_many_elements(
+        self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+    ):
         """Test that tuple with more than 4 elements is rejected."""
         pub = [
             valid_typed_qpy_circuit_dict_v13,
@@ -228,7 +241,9 @@ class TestEstimatorPubModelValidation:
         with pytest.raises(ValidationError):
             EstimatorPubModel.model_validate(pub)
 
-    def test_invalid_observable_type(self, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13):
+    def test_invalid_observable_type(
+        self, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+    ):
         """Test that invalid observable type is rejected."""
         pub = [
             valid_typed_qpy_circuit_dict_v13,

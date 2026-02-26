@@ -18,7 +18,6 @@ from io import BytesIO
 import numpy as np
 import pybase64
 import pytest
-from qiskit.circuit import Parameter, QuantumCircuit
 
 
 @pytest.fixture
@@ -58,7 +57,9 @@ def valid_empty_parameter_values() -> dict:
 
 
 @pytest.fixture
-def valid_estimator_pub(valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13) -> list:
+def valid_estimator_pub(
+    valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+) -> list:
     """Fixture to create a valid EstimatorPub as a list."""
     return [
         valid_typed_qpy_circuit_dict_v13,
@@ -69,7 +70,9 @@ def valid_estimator_pub(valid_observable, valid_empty_parameter_values, valid_ty
 
 
 @pytest.fixture
-def valid_estimator_pub_with_precision(valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13) -> list:
+def valid_estimator_pub_with_precision(
+    valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+) -> list:
     """Fixture to create a valid EstimatorPub with precision."""
     return [
         valid_typed_qpy_circuit_dict_v13,

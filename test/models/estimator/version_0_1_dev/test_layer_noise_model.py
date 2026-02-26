@@ -19,7 +19,6 @@ import numpy as np
 import pybase64
 import pytest
 from pydantic import ValidationError
-from qiskit.circuit import QuantumCircuit
 
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.layer_noise_model import (
     LayerNoiseModel,
@@ -180,7 +179,9 @@ class TestPauliLindbladErrorWrapperModelValidation:
 class TestLayerNoiseModelValidation:
     """Test LayerNoiseModel validation."""
 
-    def test_valid_layer_noise_with_error(self, valid_pauli_lindblad_error_wrapper, valid_typed_qpy_circuit_dict_v13):
+    def test_valid_layer_noise_with_error(
+        self, valid_pauli_lindblad_error_wrapper, valid_typed_qpy_circuit_dict_v13
+    ):
         """Test that valid LayerNoiseModel with error is accepted."""
         layer_noise = {
             "circuit": valid_typed_qpy_circuit_dict_v13,
