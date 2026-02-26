@@ -44,8 +44,6 @@ from .resilience_options_model import ResilienceOptionsModel
 from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
 from .zne_options_model import ExtrapolatorType, ZneOptionsModel
 
-MAX_RESILIENCE_LEVEL: int = 2
-
 
 class ParamsModel(BaseParamsModel):
     """A model describing the Estimator program inputs."""
@@ -69,7 +67,7 @@ class ParamsModel(BaseParamsModel):
     options: OptionsModel = Field(default_factory=OptionsModel)
     """Options for the Estimator."""
 
-    resilience_level: Annotated[int, Field(ge=0, le=MAX_RESILIENCE_LEVEL)] = 1
+    resilience_level: Annotated[int, Field(ge=0, le=2)] = 1
     """How much resilience to build against errors.
     Higher levels generate more accurate results,
     at the expense of longer processing times.
