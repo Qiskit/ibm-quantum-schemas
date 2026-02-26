@@ -21,6 +21,7 @@ from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.models import (
     ParamsModel,
     ResultsMetadataModel,
     ResultsModel,
+    TypedQpyCircuitModelV13to17,
 )
 from test.models.utils import valid_typed_qpy_circuit_dict
 
@@ -28,13 +29,10 @@ from test.models.utils import valid_typed_qpy_circuit_dict
 class TestParamsModelValidation:
     """Test ParamsModel validation."""
 
-    def test_valid_params_model(self):
+    def test_valid_params_model(self, valid_typed_qpy_circuit_dict_v13):
         """Test that valid params are accepted."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
         params = {
-            "circuits": [valid_typed_qpy_circuit_dict(circuit)],
+            "circuits": [valid_typed_qpy_circuit_dict_v13],
             "options": {"max_layers_to_learn": 5},
         }
         model = ParamsModel.model_validate(params)
@@ -54,22 +52,29 @@ class TestParamsModelValidation:
         model = ParamsModel.model_validate(params)
         assert len(model.circuits) == 0
 
-    def test_multiple_circuits(self):
+    def test_multiple_circuits(self, valid_typed_qpy_circuit_dict_v13):
         """Test that multiple circuits are accepted."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
-        circuit_dict = valid_typed_qpy_circuit_dict(circuit)
         params = {
             "circuits": [
-                circuit_dict,
-                circuit_dict,
-                circuit_dict,
+                valid_typed_qpy_circuit_dict_v13,
+                valid_typed_qpy_circuit_dict_v13,
+                valid_typed_qpy_circuit_dict_v13,
             ],
             "options": {},
         }
         model = ParamsModel.model_validate(params)
         assert len(model.circuits) == 3
+        assert isinstance(model.circuits[0], TypedQpyCircuitModelV13to17)
+
+    def test_qasm_circuits(self):
+        """Test that multiple circuits are accepted."""
+        params = {
+            "circuits": ["OPENQASM 3.0; qubit q; x q;"],
+            "options": {},
+        }
+        model = ParamsModel.model_validate(params)
+        assert len(model.circuits) == 1
+        assert isinstance(model.circuits[0], str)
 
     def test_required_params_only(self):
         """Test when only required parameters are specified (circuits only, no options)."""
@@ -77,7 +82,7 @@ class TestParamsModelValidation:
         model = ParamsModel.model_validate(params)
         assert model.circuits == []
 
-    def test_optional_params(self):
+    def test_optional_params(self, valid_typed_qpy_circuit_dict_v13):
         """Test passing both required and optional parameters."""
         params = {
             "circuits": [],
@@ -87,7 +92,7 @@ class TestParamsModelValidation:
         }
         ParamsModel.model_validate(params)
 
-    def test_version_none(self):
+    def test_version_none(self, valid_typed_qpy_circuit_dict_v13):
         """Test ensuring that in addition to 2 Noise learner also accepts None version."""
         params = {
             "circuits": [],
@@ -123,14 +128,10 @@ class TestParamsModelValidation:
             ParamsModel.model_validate(params)
 
     @pytest.mark.parametrize("num_circs", [1, 2, 5])
-    def test_valid_circuits(self, num_circs):
+    def test_valid_circuits(self, valid_typed_qpy_circuit_dict_v13, num_circs):
         """Test a list of circuits."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
-        circuit_dict = valid_typed_qpy_circuit_dict(circuit)
         params = {
-            "circuits": [circuit_dict] * num_circs,
+            "circuits": [valid_typed_qpy_circuit_dict_v13] * num_circs,
             "options": {},
         }
         model = ParamsModel.model_validate(params)

@@ -24,27 +24,17 @@ from .utils import compressed_qpy_circuit, valid_typed_qpy_circuit_dict
 class TestTypedQpyCircuitModelValidation:
     """Test TypedQpyCircuitModelV13to17 validation."""
 
-    def test_valid_typed_qpy_circuit(self):
+    def test_valid_typed_qpy_circuit(self, valid_typed_qpy_circuit_dict_v13):
         """Test that valid TypedQpyCircuitModel is accepted."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
-        circuit.measure_all()
-
-        circuit_dict = valid_typed_qpy_circuit_dict(circuit)
-        model = qpy_model.TypedQpyCircuitModelV13to17.model_validate(circuit_dict)
+        model = qpy_model.TypedQpyCircuitModelV13to17.model_validate(
+            valid_typed_qpy_circuit_dict_v13
+        )
         assert model.type_ == "QuantumCircuit"
-        assert model.value_ == circuit_dict["__value__"]
+        assert model.value_ == valid_typed_qpy_circuit_dict_v13["__value__"]
 
-    def test_invalid_type_field(self):
+    def test_invalid_type_field(self, compressed_qpy_circuit_v13):
         """Test that wrong __type__ value is rejected."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
-        circuit.measure_all()
-
-        compressed_circuit = compressed_qpy_circuit(circuit)
-        circuit_dict = {"__type__": "WrongType", "__value__": compressed_circuit}
+        circuit_dict = {"__type__": "WrongType", "__value__": compressed_qpy_circuit_v13}
         with pytest.raises(ValidationError, match="Input should be 'QuantumCircuit'"):
             qpy_model.TypedQpyCircuitModelV13to17.model_validate(circuit_dict)
 

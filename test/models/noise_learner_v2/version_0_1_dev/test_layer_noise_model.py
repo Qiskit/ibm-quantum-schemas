@@ -26,13 +26,12 @@ from test.models.utils import valid_typed_qpy_circuit_dict
 class TestLayerNoiseModelValidation:
     """Test LayerNoiseModel validation."""
 
-    def test_valid_layer_noise_with_error(self, valid_pauli_lindblad_error):
+    def test_valid_layer_noise_with_error(
+        self, valid_typed_qpy_circuit_dict_v13, valid_pauli_lindblad_error
+    ):
         """Test that valid LayerNoiseModel with error is accepted."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
         layer_noise = {
-            "circuit": valid_typed_qpy_circuit_dict(circuit),
+            "circuit": valid_typed_qpy_circuit_dict_v13,
             "qubits": [0, 1],
             "error": valid_pauli_lindblad_error,
         }
@@ -41,13 +40,10 @@ class TestLayerNoiseModelValidation:
         assert model.error is not None
         assert isinstance(model.error, PauliLindbladErrorWrapperModel)
 
-    def test_optional_error_field_none(self):
+    def test_optional_error_field_none(self, valid_typed_qpy_circuit_dict_v13):
         """Test that error field can be None (optional)."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
         layer_noise = {
-            "circuit": valid_typed_qpy_circuit_dict(circuit),
+            "circuit": valid_typed_qpy_circuit_dict_v13,
             "qubits": [0, 1],
             "error": None,
         }
@@ -55,13 +51,10 @@ class TestLayerNoiseModelValidation:
         assert model.qubits == [0, 1]
         assert model.error is None
 
-    def test_optional_error_field_omitted(self):
+    def test_optional_error_field_omitted(self, valid_typed_qpy_circuit_dict_v13):
         """Test that error field can be omitted (defaults to None)."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
         layer_noise = {
-            "circuit": valid_typed_qpy_circuit_dict(circuit),
+            "circuit": valid_typed_qpy_circuit_dict_v13,
             "qubits": [0, 1],
         }
         model = LayerNoiseModel.model_validate(layer_noise)
@@ -74,11 +67,8 @@ class TestLayerNoiseModelValidation:
         with pytest.raises(ValidationError, match="Field required"):
             LayerNoiseModel.model_validate(layer_noise)
 
-    def test_missing_required_qubits_field(self):
+    def test_missing_required_qubits_field(self, valid_typed_qpy_circuit_dict_v13):
         """Test that missing qubits field is rejected."""
-        circuit = QuantumCircuit(2)
-        circuit.h(0)
-        circuit.cx(0, 1)
-        layer_noise = {"circuit": valid_typed_qpy_circuit_dict(circuit)}
+        layer_noise = {"circuit": valid_typed_qpy_circuit_dict_v13}
         with pytest.raises(ValidationError, match="Field required"):
             LayerNoiseModel.model_validate(layer_noise)

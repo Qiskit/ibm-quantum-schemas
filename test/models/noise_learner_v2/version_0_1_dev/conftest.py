@@ -51,7 +51,7 @@ def valid_pauli_lindblad_error() -> dict:
 
 
 @pytest.fixture
-def valid_layer_noise_wrapper() -> dict:
+def valid_layer_noise_wrapper(valid_typed_qpy_circuit_dict_v13) -> dict:
     """Fixture to create a valid LayerNoiseWrapperModel dict."""
     circuit = QuantumCircuit(2)
     circuit.h(0)
@@ -61,7 +61,7 @@ def valid_layer_noise_wrapper() -> dict:
         "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
         "__class__": "LayerError",
         "__value__": {
-            "circuit": valid_typed_qpy_circuit_dict(circuit),
+            "circuit": valid_typed_qpy_circuit_dict_v13,
             "qubits": [0, 1],
             "error": None,
         },

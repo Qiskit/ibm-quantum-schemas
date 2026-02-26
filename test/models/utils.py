@@ -20,11 +20,9 @@ from qiskit.circuit import QuantumCircuit
 from qiskit.qpy import dump as qpy_dump
 
 
-def compressed_qpy_circuit(circuit: QuantumCircuit) -> str:
-    """Function to create a base64-encoded, zlib-compressed QPY circuit (version 13).
-
-    Args:
-        circuit: QuantumCircuit to encode.
+@pytest.fixture
+def compressed_qpy_circuit_v13() -> str:
+    """Fixture to create a base64-encoded, zlib-compressed QPY circuit (version 13).
 
     Returns:
         Base64-encoded string of the compressed QPY circuit data.
@@ -38,13 +36,14 @@ def compressed_qpy_circuit(circuit: QuantumCircuit) -> str:
     return encoded
 
 
-def valid_typed_qpy_circuit_dict(circuit: QuantumCircuit) -> dict:
-    """Function to create a valid TypedQpyCircuitModel dict.
+@pytest.fixture
+def valid_typed_qpy_circuit_dict_v13(compressed_qpy_circuit_v13) -> dict:
+    """Fixture to create a valid TypedQpyCircuitModel dict with QPY v13.
 
     Args:
-        circuit: QuantumCircuit to encode.
+        compressed_qpy_circuit_v13: Base64-encoded compressed QPY circuit (version 13).
 
     Returns:
         Dictionary with __type__ and __value__ fields for TypedQpyCircuitModel.
     """
-    return {"__type__": "QuantumCircuit", "__value__": compressed_qpy_circuit(circuit)}
+    return {"__type__": "QuantumCircuit", "__value__": compressed_qpy_circuit_v13}
