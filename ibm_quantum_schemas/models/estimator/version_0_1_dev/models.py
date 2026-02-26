@@ -63,7 +63,7 @@ class ParamsModel(BaseParamsModel):
     support_qiskit: bool = True
     """Whether to support Qiskit-specific features."""
 
-    version: Annotated[int, Literal[2]] = 2
+    version: Literal[2] = 2
     """Version number. Must be 2."""
 
     options: OptionsModel = Field(default_factory=OptionsModel)
