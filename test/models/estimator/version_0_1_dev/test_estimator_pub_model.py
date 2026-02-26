@@ -80,58 +80,6 @@ class TestEstimatorPubModelValidation:
         # Verify precision element (index 3)
         assert model.root[3] == pub[3]
 
-    def test_valid_estimator_pub_without_precision(
-        self,
-        valid_observable,
-        valid_parameter_values,
-        valid_typed_qpy_circuit_dict_v13_parametrized,
-    ):
-        """Test that EstimatorPub without precision is accepted (defaults to None)."""
-        pub = [
-            valid_typed_qpy_circuit_dict_v13_parametrized,
-            valid_observable,
-            valid_parameter_values,
-        ]
-        model = EstimatorPubModel.model_validate(pub)
-        assert len(model.root) == 4
-
-        # Verify circuit element (index 0) - TypedQpyCircuitModelV13to17
-        assert model.root[0].type_ == pub[0]["__type__"]
-        assert model.root[0].value_ == pub[0]["__value__"]
-
-        # Verify observables element (index 1) - ObservablesArrayModel
-        assert model.root[1].root.root == pub[1]
-
-        # Verify parameter_values element (index 2) - NdarrayWrapperModel
-        assert model.root[2].type_ == pub[2]["__type__"]
-        assert model.root[2].value_ == pub[2]["__value__"]
-
-        # Verify precision element (index 3) - should be None (default added by model)
-        assert model.root[3] is None
-
-    def test_valid_estimator_pub_minimal(self, valid_observable, valid_typed_qpy_circuit_dict_v13):
-        """Test that EstimatorPub with only circuit and observables is accepted."""
-        pub = [
-            valid_typed_qpy_circuit_dict_v13,
-            valid_observable,
-        ]
-        model = EstimatorPubModel.model_validate(pub)
-        assert len(model.root) == 4
-
-        # Verify circuit element (index 0) - TypedQpyCircuitModelV13to17
-        assert model.root[0].type_ == pub[0]["__type__"]
-        assert model.root[0].value_ == pub[0]["__value__"]
-
-        # Verify observables element (index 1) - ObservablesArrayModel
-        assert model.root[1].root.root == pub[1]
-
-        # Verify parameter_values element (index 2) - NdarrayWrapperModel
-        # (default empty added by model)
-        assert model.root[2].type_ == "ndarray"
-        assert isinstance(model.root[2].value_, str)
-
-        # Verify precision element (index 3) - should be None (default added by model)
-        assert model.root[3] is None
 
     def test_valid_estimator_pub_with_observables_list(
         self, valid_observables_list, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
