@@ -19,8 +19,30 @@ from typing import Annotated, Literal
 from pydantic import ConfigDict, Field
 
 from ...base_params_model import BaseParamsModel
+from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
 from .estimator_pub_model import EstimatorPubModel
+from .execution_options_model import ExecutionOptionsV2Model
+from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
+from .layer_noise_model import (
+    LayerNoiseModel,
+    LayerNoiseWrapperModel,
+    NdarrayWrapperModel,
+    PauliLindbladErrorModel,
+    PauliLindbladErrorWrapperModel,
+    PauliListModel,
+    PauliListWrapperModel,
+)
+from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
+from .noise_learner_results_model import (
+    NoiseLearnerInputOptionsModel,
+    NoiseLearnerResultsMetadataModel,
+    NoiseLearnerResultsModel,
+)
 from .options_model import OptionsModel
+from .pec_options_model import PecOptionsModel
+from .resilience_options_model import ResilienceOptionsModel
+from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
+from .zne_options_model import ExtrapolatorType, ZneOptionsModel
 
 MAX_RESILIENCE_LEVEL: int = 2
 
@@ -62,3 +84,30 @@ class ParamsModel(BaseParamsModel):
     <https://quantum.cloud.ibm.com/docs/guides/configure-error-mitigation>`_ guide
     for more information about the error mitigation methods used at each level.
     """
+
+
+__all__ = [
+    "DynamicalDecouplingOptionsModel",
+    "EstimatorPubModel",
+    "ExecutionOptionsV2Model",
+    "ExtrapolatorType",
+    "NoiseLearnerInputOptionsModel",
+    "LayerNoiseLearningOptionsModel",
+    "LayerNoiseModel",
+    "LayerNoiseWrapperModel",
+    "MeasureNoiseLearningOptionsModel",
+    "NdarrayWrapperModel",
+    "NoiseLearnerResultsModel",
+    "OptionsModel",
+    "ParamsModel",
+    "PauliLindbladErrorModel",
+    "PauliLindbladErrorWrapperModel",
+    "PauliListModel",
+    "PauliListWrapperModel",
+    "PecOptionsModel",
+    "ResilienceOptionsModel",
+    "NoiseLearnerResultsMetadataModel",
+    "TwirlingOptionsModel",
+    "TwirlingStrategyType",
+    "ZneOptionsModel",
+]
