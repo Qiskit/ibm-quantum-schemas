@@ -1,6 +1,7 @@
 ## [0.3.20260226](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.3.20260226) - 2026-02-26
 
-No significant changes.
+- The module docstrings for the released programs can now be consumed by `qiskit-ibm-runtime`
+  documentation.
 
 
 ## [0.2.20260209](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.2.20260209) - 2026-02-09
