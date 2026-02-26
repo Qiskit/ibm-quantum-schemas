@@ -60,8 +60,8 @@ class ParamsModel(BaseParamsModel):
     Each PUB contains a circuit, observables to measure, parameter values, and optional precision.
     """
 
-    support_qiskit: Annotated[bool, Literal[True]] = True
-    """Whether to support Qiskit. Must be True."""
+    support_qiskit: bool = True
+    """Whether to support Qiskit-specific features."""
 
     version: Annotated[int, Literal[2]] = 2
     """Version number. Must be 2."""
