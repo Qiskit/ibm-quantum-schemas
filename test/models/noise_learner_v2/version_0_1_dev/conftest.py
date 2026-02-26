@@ -18,9 +18,6 @@ from io import BytesIO
 import numpy as np
 import pybase64
 import pytest
-from qiskit.circuit import QuantumCircuit
-
-from test.models.utils import valid_typed_qpy_circuit_dict
 
 
 @pytest.fixture
@@ -53,9 +50,6 @@ def valid_pauli_lindblad_error() -> dict:
 @pytest.fixture
 def valid_layer_noise_wrapper(valid_typed_qpy_circuit_dict_v13) -> dict:
     """Fixture to create a valid LayerNoiseWrapperModel dict."""
-    circuit = QuantumCircuit(2)
-    circuit.h(0)
-    circuit.cx(0, 1)
     return {
         "__type__": "_json",
         "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",

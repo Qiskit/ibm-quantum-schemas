@@ -14,13 +14,11 @@
 
 import pytest
 from pydantic import ValidationError
-from qiskit.circuit import QuantumCircuit
 
 from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.layer_noise_model import (
     LayerNoiseModel,
     PauliLindbladErrorWrapperModel,
 )
-from test.models.utils import valid_typed_qpy_circuit_dict
 
 
 class TestLayerNoiseModelValidation:

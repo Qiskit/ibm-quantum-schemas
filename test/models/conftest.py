@@ -10,12 +10,13 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Shared utility functions for model tests."""
+"""Shared fixtures for model tests."""
 
 import zlib
 from io import BytesIO
 
 import pybase64
+import pytest
 from qiskit.circuit import QuantumCircuit
 from qiskit.qpy import dump as qpy_dump
 
@@ -27,6 +28,10 @@ def compressed_qpy_circuit_v13() -> str:
     Returns:
         Base64-encoded string of the compressed QPY circuit data.
     """
+    circuit = QuantumCircuit(2)
+    circuit.h(0)
+    circuit.cx(0, 1)
+
     buffer = BytesIO()
     qpy_dump(circuit, buffer, version=13)
     qpy_data = buffer.getvalue()
