@@ -80,7 +80,6 @@ class TestEstimatorPubModelValidation:
         # Verify precision element (index 3)
         assert model.root[3] == pub[3]
 
-
     def test_valid_estimator_pub_with_observables_list(
         self, valid_observables_list, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
     ):
