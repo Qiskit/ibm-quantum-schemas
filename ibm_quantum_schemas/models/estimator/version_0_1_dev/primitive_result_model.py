@@ -39,3 +39,15 @@ class PubResultModel(BaseModel):
 
     metadata: PubResultMetadataModel
     """Metadata for the estimator v2 job."""
+
+
+class ResultsMetadataModel(BaseModel):
+    """Metadata for the estimator v2 job."""
+
+    # TBD
+
+
+class PubResultMetadataModel(BaseModel):
+    """Metadata for the estimator v2 job."""
+
+    # TBD
