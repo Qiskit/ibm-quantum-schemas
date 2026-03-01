@@ -87,7 +87,7 @@ class ResilienceMetadataModel(BaseModel):
     """Metadata about ZNE, applicable if `zne_mitifation` is `True`."""
 
     layer_noise_model: list[LayerNoiseWrapperModel] | None = None
-    """Noise learner results."
+    """Noise learner results."""
 
 
 class ZneMetadataModel(BaseModel):
