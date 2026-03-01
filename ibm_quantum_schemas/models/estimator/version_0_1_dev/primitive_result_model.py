@@ -78,7 +78,7 @@ class PubResultMetadataModel(BaseModel):
 class LayerNoiseMetadataModel(BaseModel):
     
     noise_overhead: float | None = None
-    #total_mitigated_layers
+    total_mitigated_layers: int | None = None
     #unique_mitigated_layers
     #unique_mitigated_layers_noise_overhead
 
