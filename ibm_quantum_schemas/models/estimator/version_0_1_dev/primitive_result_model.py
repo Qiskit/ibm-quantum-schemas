@@ -59,6 +59,18 @@ class ResultsMetadataModel(BaseModel):
     See :class:`TwirlingOptionsModel` for all available options.
     """
 
+    resilience: ResilienceMetadataModel
+
+
+class PubResultMetadataModel(BaseModel):
+    """Metadata for the estimator v2 job."""
+
+    # TBD
+
+
+class ResilienceMetadataModel(BaseModel):
+    """Metadata about resilience."""
+
     measure_mitigation: bool
     """Whether measure mitigation was applied for the job."""
 
@@ -67,10 +79,3 @@ class ResultsMetadataModel(BaseModel):
 
     pec_mitigation: bool
     """Whether PEC mitigation was applied for the job."""
-
-
-
-class PubResultMetadataModel(BaseModel):
-    """Metadata for the estimator v2 job."""
-
-    # TBD
