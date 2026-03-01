@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Literal, Sequence
 
+from ...typed_qpy_circuit_model import TypedQpyCircuitModel
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
 from .layer_noise_model import LayerNoiseWrapperModel
 from .twirling_options_model import TwirlingOptionsModel
@@ -79,7 +80,7 @@ class LayerNoiseMetadataModel(BaseModel):
     
     noise_overhead: float | None = None
     total_mitigated_layers: int | None = None
-    #unique_mitigated_layers
+    unique_mitigated_layers: set[tuple[TypedQpyCircuitModel, ...]] | None = None
     #unique_mitigated_layers_noise_overhead
 
 
