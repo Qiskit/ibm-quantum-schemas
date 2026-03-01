@@ -49,19 +49,19 @@ class PubResultModel(BaseModel):
 class ResultsMetadataModel(BaseModel):
     """Metadata for the estimator v2 job."""
 
-    dynamical_decoupling: DynamicalDecouplingOptionsModel
+    dynamical_decoupling: DynamicalDecouplingOptionsModel | None = None
     """Dynamical decoupling options.
 
     See :class:`DynamicalDecouplingOptionsModel` for all available options.
     """
 
-    twirling: TwirlingOptionsModel
+    twirling: TwirlingOptionsModel | None = None
     """Pauli twirling options.
 
     See :class:`TwirlingOptionsModel` for all available options.
     """
 
-    resilience: ResilienceMetadataModel
+    resilience: ResilienceMetadataModel | None = None
     """Metadata about resilience."""
 
 
@@ -71,13 +71,13 @@ class PubResultMetadataModel(BaseModel):
     pec: PecMetadataModel | None = None
     """Metadata about PEC."""
 
-    layer_noise: LayerNoiseMetadataModel
+    layer_noise: LayerNoiseMetadataModel  | None = None
+    """Metadata about layer noise."""
 
     
 class LayerNoiseMetadataModel(BaseModel):
-    """Metadata about layer noise."""
-
-    #noise_overhead
+    
+    noise_overhead: float | None = None
     #total_mitigated_layers
     #unique_mitigated_layers
     #unique_mitigated_layers_noise_overhead
@@ -93,13 +93,13 @@ class PecMetadataModel(BaseModel):
 class ResilienceMetadataModel(BaseModel):
     """Metadata about resilience."""
 
-    measure_mitigation: bool
+    measure_mitigation: bool | None = None
     """Whether measure mitigation was applied for the job."""
 
-    zne_mitigation: bool
+    zne_mitigation: bool | None = None
     """Whether ZNE mitigation was applied for the job."""
 
-    pec_mitigation: bool
+    pec_mitigation: bool | None = None
     """Whether PEC mitigation was applied for the job."""
 
     zne: ZneMetadataModel | None = None
@@ -116,7 +116,7 @@ class ZneMetadataModel(BaseModel):
     """Noise factors used for noise amplification.
     """
 
-    extrapolator: ExtrapolatorType | Sequence[ExtrapolatorType]
+    extrapolator: ExtrapolatorType | Sequence[ExtrapolatorType] | None = None
     """Extrapolator(s) used for extrapolating to zero noise.
 
     The available extrapolators are:
@@ -139,7 +139,7 @@ class ZneMetadataModel(BaseModel):
     extrapolator success is determined heuristically.
     """
 
-    extrapolated_noise_factors: Sequence[float]
+    extrapolated_noise_factors: Sequence[float] | None = None
     """Noise factors used to evaluate the fit extrapolation models at.
     
     The noise factors determine the
