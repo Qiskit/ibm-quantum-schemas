@@ -18,22 +18,9 @@ from __future__ import annotations
 from pydantic import BaseModel, Literal, Sequence
 
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
+from .layer_noise_model import LayerNoiseWrapperModel
 from .twirling_options_model import TwirlingOptionsModel
-
-
-ExtrapolatorType = Literal[
-    "linear",
-    "exponential",
-    "double_exponential",
-    "polynomial_degree_1",
-    "polynomial_degree_2",
-    "polynomial_degree_3",
-    "polynomial_degree_4",
-    "polynomial_degree_5",
-    "polynomial_degree_6",
-    "polynomial_degree_7",
-    "fallback",
-]
+from .zne_options_model import ExtrapolatorType
 
 
 class PrimitiveResultModel(BaseModel):
@@ -98,6 +85,9 @@ class ResilienceMetadataModel(BaseModel):
 
     zne: ZneMetadataModel | None = None
     """Metadata about ZNE, applicable if `zne_mitifation` is `True`."""
+
+    layer_noise_model: list[LayerNoiseWrapperModel] | None = None
+    """Noise learner results."
 
 
 class ZneMetadataModel(BaseModel):
