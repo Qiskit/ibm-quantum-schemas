@@ -76,11 +76,11 @@ class PubResultMetadataModel(BaseModel):
 
     
 class LayerNoiseMetadataModel(BaseModel):
-    
-    noise_overhead: float  str | None = None
+
+    noise_overhead: float | Literal["infinity"] | None = None
     total_mitigated_layers: int | None = None
     unique_mitigated_layers: int | None = None
-    unique_mitigated_layers_noise_overhead: list[float | str] | None = None
+    unique_mitigated_layers_noise_overhead: list[float | Literal["infinity"]] | None = None
 
 
 class PecMetadataModel(BaseModel):
