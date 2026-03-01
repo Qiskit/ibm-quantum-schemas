@@ -15,9 +15,10 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, Literal
+from pydantic import BaseModel, Literal
 
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
+from .twirling_options_model import TwirlingOptionsModel
 
 
 class PrimitiveResultModel(BaseModel):
@@ -46,12 +47,16 @@ class PubResultModel(BaseModel):
 class ResultsMetadataModel(BaseModel):
     """Metadata for the estimator v2 job."""
 
-    dynamical_decoupling: DynamicalDecouplingOptionsModel = Field(
-        default_factory=DynamicalDecouplingOptionsModel
-    )
+    dynamical_decoupling: DynamicalDecouplingOptionsModel
     """Dynamical decoupling options.
 
     See :class:`DynamicalDecouplingOptionsModel` for all available options.
+    """
+
+    twirling: TwirlingOptionsModel
+    """Pauli twirling options.
+
+    See :class:`TwirlingOptionsModel` for all available options.
     """
 
 
