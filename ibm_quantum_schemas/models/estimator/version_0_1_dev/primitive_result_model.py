@@ -68,7 +68,26 @@ class ResultsMetadataModel(BaseModel):
 class PubResultMetadataModel(BaseModel):
     """Metadata for the estimator v2 job."""
 
-    # TBD
+    pec: PecMetadataModel | None = None
+    """Metadata about PEC."""
+
+    layer_noise: LayerNoiseMetadataModel
+
+    
+class LayerNoiseMetadataModel(BaseModel):
+    """Metadata about layer noise."""
+
+    #noise_overhead
+    #total_mitigated_layers
+    #unique_mitigated_layers
+    #unique_mitigated_layers_noise_overhead
+
+
+class PecMetadataModel(BaseModel):
+    """Metadata about PEC."""
+
+    # num_randomizations_scaling
+    # noise_gain
 
 
 class ResilienceMetadataModel(BaseModel):
