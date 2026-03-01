@@ -74,6 +74,9 @@ class PubResultMetadataModel(BaseModel):
     layer_noise: LayerNoiseMetadataModel  | None = None
     """Metadata about layer noise."""
 
+    circuit_metadata: dict | None = None
+    """Circuit metadata, attached by the user to the input circuit."""
+
     
 class LayerNoiseMetadataModel(BaseModel):
 
