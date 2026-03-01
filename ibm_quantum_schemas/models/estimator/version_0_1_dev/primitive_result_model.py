@@ -59,6 +59,15 @@ class ResultsMetadataModel(BaseModel):
     See :class:`TwirlingOptionsModel` for all available options.
     """
 
+    measure_mitigation: bool
+    """Whether measure mitigation was applied for the job."""
+
+    zne_mitigation: bool
+    """Whether ZNE mitigation was applied for the job."""
+
+    pec_mitigation: bool
+    """Whether PEC mitigation was applied for the job."""
+
 
 
 class PubResultMetadataModel(BaseModel):
