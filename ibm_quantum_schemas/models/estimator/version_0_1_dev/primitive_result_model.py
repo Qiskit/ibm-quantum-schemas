@@ -64,6 +64,9 @@ class ResultsMetadataModel(BaseModel):
     resilience: ResilienceMetadataModel | None = None
     """Metadata about resilience."""
 
+    version: Literal[2] = 2
+    """Version number. Must be 2."""
+
 
 class PubResultMetadataModel(BaseModel):
     """Metadata for the estimator v2 job."""
@@ -80,6 +83,7 @@ class PubResultMetadataModel(BaseModel):
     target_precision: float | None = None
     shots: int | None = None
     num_randomizations: int | None = None
+    warning: str | None = None
 
     
 class LayerNoiseMetadataModel(BaseModel):
