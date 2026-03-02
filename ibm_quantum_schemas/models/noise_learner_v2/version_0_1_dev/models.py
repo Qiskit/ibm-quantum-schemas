@@ -18,10 +18,10 @@ from pydantic import BaseModel, ConfigDict
 
 from ...base_params_model import BaseParamsModel
 from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
+from ...ndarray_wrapper_model import NdarrayWrapperModel
 from .layer_noise_model import (
     LayerNoiseModel,
     LayerNoiseWrapperModel,
-    NdarrayWrapperModel,
     PauliLindbladErrorModel,
     PauliLindbladErrorWrapperModel,
     PauliListModel,

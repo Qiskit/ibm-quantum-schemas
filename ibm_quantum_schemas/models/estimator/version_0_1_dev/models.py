@@ -23,10 +23,10 @@ from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
 from .estimator_pub_model import EstimatorPubModel
 from .execution_options_model import ExecutionOptionsV2Model
 from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
+from ...ndarray_wrapper_model import NdarrayWrapperModel
 from .layer_noise_model import (
     LayerNoiseModel,
     LayerNoiseWrapperModel,
-    NdarrayWrapperModel,
     PauliLindbladErrorModel,
     PauliLindbladErrorWrapperModel,
     PauliListModel,
