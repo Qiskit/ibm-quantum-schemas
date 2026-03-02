@@ -77,6 +77,10 @@ class PubResultMetadataModel(BaseModel):
     circuit_metadata: dict | None = None
     """Circuit metadata, attached by the user to the input circuit."""
 
+    target_precision: float | None = None
+    shots: int | None = None
+    num_randomizations: int | None = None
+
     
 class LayerNoiseMetadataModel(BaseModel):
 
