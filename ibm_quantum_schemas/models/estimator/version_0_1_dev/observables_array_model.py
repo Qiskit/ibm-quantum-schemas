@@ -16,7 +16,7 @@ from typing import Annotated
 
 from pydantic import AfterValidator, RootModel, model_validator
 
-from ....aliases import Self
+from ibm_quantum_schemas.aliases import Self
 
 
 def validate_pauli_string(value: str) -> str:
