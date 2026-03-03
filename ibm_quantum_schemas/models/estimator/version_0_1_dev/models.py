@@ -16,9 +16,8 @@ from __future__ import annotations
 
 from typing import Annotated, Literal
 
-from pydantic import ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field
 
-from ibm_quantum_schemas.models.base_params_model import BaseParamsModel
 from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
 
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
@@ -46,12 +45,10 @@ from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
 from .zne_options_model import ExtrapolatorType, ZneOptionsModel
 
 
-class ParamsModel(BaseParamsModel):
+class ParamsModel(BaseModel):
     """A model describing the Estimator program inputs."""
 
     model_config = ConfigDict(extra="forbid")
-
-    schema_version: str = "v0.1"
 
     pubs: list[EstimatorPubModel]
     """List of Estimator Primitive Unified Blocs (PUBs).

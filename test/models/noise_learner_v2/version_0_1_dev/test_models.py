@@ -34,7 +34,6 @@ class TestParamsModelValidation:
             "options": {"max_layers_to_learn": 5},
         }
         model = ParamsModel.model_validate(params)
-        assert model.schema_version == "v0.1"
         assert len(model.circuits) == 1
         assert model.options.max_layers_to_learn == 5
 
@@ -84,7 +83,6 @@ class TestParamsModelValidation:
         """Test passing both required and optional parameters."""
         params = {
             "circuits": [],
-            "schema_version": "v0.1",
             "version": 2,
             "options": {},
         }
@@ -163,34 +161,13 @@ class TestResultsModelValidation:
     def test_valid_results_model(self, valid_layer_noise_wrapper, valid_metadata):
         """Test that valid ResultsModel is accepted."""
         results = {
-            "schema_version": "v0.1",
             "data": [valid_layer_noise_wrapper],
             "metadata": valid_metadata,
         }
         model = ResultsModel.model_validate(results)
-        assert model.schema_version == "v0.1"
         assert len(model.data) == 1
         assert isinstance(model.data[0], LayerNoiseWrapperModel)
         assert isinstance(model.metadata, ResultsMetadataModel)
-
-    def test_schema_version_default(self, valid_layer_noise_wrapper, valid_metadata):
-        """Test that schema_version has default value of 'v0.1'."""
-        results = {
-            "data": [valid_layer_noise_wrapper],
-            "metadata": valid_metadata,
-        }
-        model = ResultsModel.model_validate(results)
-        assert model.schema_version == "v0.1"
-
-    def test_invalid_schema_version(self, valid_layer_noise_wrapper, valid_metadata):
-        """Test that invalid schema_version is rejected."""
-        results = {
-            "schema_version": "v0.2",
-            "data": [valid_layer_noise_wrapper],
-            "metadata": valid_metadata,
-        }
-        with pytest.raises(ValidationError, match="Input should be 'v0.1'"):
-            ResultsModel.model_validate(results)
 
     def test_missing_data_field(self, valid_metadata):
         """Test that missing data field is rejected."""
