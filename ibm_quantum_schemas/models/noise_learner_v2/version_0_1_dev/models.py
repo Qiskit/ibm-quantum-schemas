@@ -16,7 +16,6 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
-from ...base_params_model import BaseParamsModel
 from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
 from .layer_noise_model import (
     LayerNoiseModel,
@@ -31,7 +30,7 @@ from .options_model import OptionsModel, SimulatorOptionsModel
 from .results_metadata_model import InputOptionsModel, ResultsMetadataModel
 
 
-class ParamsModel(BaseParamsModel):
+class ParamsModel(BaseModel):
     """A model describing the NoiseLearnerV2 program inputs, also known as "params"."""
 
     model_config = ConfigDict(extra="forbid")
