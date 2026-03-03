@@ -70,3 +70,86 @@ class TestLayerNoiseModelValidation:
         layer_noise = {"circuit": valid_typed_qpy_circuit_dict_v13}
         with pytest.raises(ValidationError, match="Field required"):
             LayerNoiseModel.model_validate(layer_noise)
+
+
+class TestSerializeByAlias:
+    """Test that models with aliases serialize correctly."""
+
+    def test_pauli_list_wrapper_serializes_with_aliases(self):
+        """Test that PauliListWrapperModel serializes with aliases."""
+        from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.layer_noise_model import (
+            PauliListWrapperModel,
+        )
+
+        # Create using alias names in dict
+        wrapper_data = {
+            "__type__": "settings",
+            "__module__": "qiskit.quantum_info.operators.symplectic.pauli_list",
+            "__class__": "PauliList",
+            "__value__": {"data": ["XX", "YY"]},
+        }
+        wrapper = PauliListWrapperModel.model_validate(wrapper_data)
+
+        serialized = wrapper.model_dump(mode="json")
+        assert "__type__" in serialized
+        assert "__module__" in serialized
+        assert "__class__" in serialized
+        assert "__value__" in serialized
+        assert serialized["__type__"] == "settings"
+        assert serialized["__class__"] == "PauliList"
+
+    def test_pauli_lindblad_error_wrapper_serializes_with_aliases(self, valid_pauli_lindblad_error):
+        """Test that PauliLindbladErrorWrapperModel serializes with aliases."""
+        # valid_pauli_lindblad_error is already a wrapper
+        model = PauliLindbladErrorWrapperModel.model_validate(valid_pauli_lindblad_error)
+
+        serialized = model.model_dump(mode="json")
+        assert "__type__" in serialized
+        assert "__module__" in serialized
+        assert "__class__" in serialized
+        assert "__value__" in serialized
+        assert serialized["__type__"] == "_json"
+        assert serialized["__class__"] == "PauliLindbladError"
+
+    def test_layer_noise_wrapper_serializes_with_aliases(
+        self, valid_typed_qpy_circuit_dict_v13, valid_pauli_lindblad_error
+    ):
+        """Test that LayerNoiseWrapperModel serializes with aliases."""
+        from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.layer_noise_model import (
+            LayerNoiseWrapperModel,
+        )
+
+        layer_noise = {
+            "circuit": valid_typed_qpy_circuit_dict_v13,
+            "qubits": [0, 1],
+            "error": valid_pauli_lindblad_error,
+        }
+        wrapper_data = {
+            "__type__": "_json",
+            "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
+            "__class__": "LayerError",
+            "__value__": layer_noise,
+        }
+        model = LayerNoiseWrapperModel.model_validate(wrapper_data)
+
+        serialized = model.model_dump(mode="json")
+        assert "__type__" in serialized
+        assert "__module__" in serialized
+        assert "__class__" in serialized
+        assert "__value__" in serialized
+        assert serialized["__type__"] == "_json"
+        assert serialized["__class__"] == "LayerError"
+
+    def test_noise_model_serializes_with_aliases(self):
+        """Test that NoiseModel serializes with aliases."""
+        from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.options_model import (
+            NoiseModel,
+        )
+
+        noise_model_data = {"__type__": "NoiseModel", "__value__": {"some": "data"}}
+        model = NoiseModel.model_validate(noise_model_data)
+
+        serialized = model.model_dump(mode="json")
+        assert "__type__" in serialized
+        assert "__value__" in serialized
+        assert serialized["__type__"] == "NoiseModel"
