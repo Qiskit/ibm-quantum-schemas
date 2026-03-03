@@ -17,7 +17,7 @@ from io import BytesIO
 from typing import Literal
 
 import pybase64
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from qiskit.qpy.formats import FILE_HEADER_V10, FILE_HEADER_V10_PACK, FILE_HEADER_V10_SIZE
 
 
@@ -63,6 +63,8 @@ class TypedQpyCircuitModel(BaseModel):
     stores the QPY data in zlib compressed form, is only intended to store Circuits
     and does not include the QPY version as a field.
     """
+
+    model_config = ConfigDict(serialize_by_alias=True)
 
     type_: Literal["QuantumCircuit"] = Field(default="QuantumCircuit", alias="__type__")
     """Redundant type information."""

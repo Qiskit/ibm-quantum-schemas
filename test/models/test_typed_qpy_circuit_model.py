@@ -46,3 +46,21 @@ class TestTypedQpyCircuitModelValidation:
         circuit_dict = {"__type__": "QuantumCircuit", "__value__": "not-valid-base64!!!"}
         with pytest.raises(ValidationError):
             qpy_model.TypedQpyCircuitModelV13to17.model_validate(circuit_dict)
+
+
+class TestSerializeByAlias:
+    """Test that models with aliases serialize correctly."""
+
+    def test_typed_qpy_circuit_model_serializes_with_aliases(
+        self, valid_typed_qpy_circuit_dict_v13
+    ):
+        """Test that TypedQpyCircuitModel serializes with aliases."""
+        model = qpy_model.TypedQpyCircuitModelV13to17.model_validate(
+            valid_typed_qpy_circuit_dict_v13
+        )
+
+        serialized = model.model_dump(mode="json")
+        assert "__type__" in serialized
+        assert "__value__" in serialized
+        assert serialized["__type__"] == "QuantumCircuit"
+        assert serialized["__value__"] == valid_typed_qpy_circuit_dict_v13["__value__"]
