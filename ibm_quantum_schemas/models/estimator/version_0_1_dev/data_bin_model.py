@@ -10,22 +10,31 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Data bin models for estimator version 0.1 dev."""
+"""Data bin models"""
 
 
-class DataBinModel:
+from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
+
+
+class DataBinObjectModel(BaseModel):
+    evs: NdarrayWrapperModel | None = None
+    stds: NdarrayWrapperModel | None = None
+    evs_noise_factors: NdarrayWrapperModel | None = None
+    stds_noise_factors: NdarrayWrapperModel | None = None
+    ensemble_stds_noise_factors: NdarrayWrapperModel | None = None
+    evs_extrapolated: NdarrayWrapperModel | None = None
+    stds_extrapolated: NdarrayWrapperModel | None = None
+
+
+
+
+class DataBinModel(BaseModel):
     """Data bin model class.
-    
-    This class will be implemented later.
     """
-    pass
+    
 
 
-class DataBinWrapperModel:
+class DataBinWrapperModel(BaseModel):
     """Data bin wrapper model class.
-    
-    This class will be implemented later.
     """
     pass
-
-# Made with Bob
