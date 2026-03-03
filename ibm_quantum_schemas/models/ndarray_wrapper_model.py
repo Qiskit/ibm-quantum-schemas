@@ -14,11 +14,13 @@
 
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class NdarrayWrapperModel(BaseModel):
     """A wrapper around ndarray data adding redundant type information."""
+
+    model_config = ConfigDict(serialize_by_alias=True)
 
     type_: Literal["ndarray"] = Field(default="ndarray", alias="__type__")
     """Redundant type information."""

@@ -14,7 +14,7 @@
 
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from ...ndarray_wrapper_model import NdarrayWrapperModel
 from ...typed_qpy_circuit_model import TypedQpyCircuitModel
@@ -35,6 +35,8 @@ class PauliListModel(BaseModel):
 
 class PauliListWrapperModel(BaseModel):
     """A wrapper around PauliListModel adding redundant type information."""
+
+    model_config = ConfigDict(serialize_by_alias=True)
 
     type_: Literal["settings"] = Field(default="settings", alias="__type__")
     """Redundant type information."""
@@ -70,6 +72,8 @@ class PauliLindbladErrorModel(BaseModel):
 
 class PauliLindbladErrorWrapperModel(BaseModel):
     """A wrapper around PauliLindbladErrorModel adding redundant type information."""
+
+    model_config = ConfigDict(serialize_by_alias=True)
 
     type_: Literal["_json"] = Field(default="_json", alias="__type__")
     """Redundant type information."""
@@ -110,6 +114,8 @@ class LayerNoiseModel(BaseModel):
 
 class LayerNoiseWrapperModel(BaseModel):
     """A wrapper around LayerNoiseModel adding redundant type information."""
+
+    model_config = ConfigDict(serialize_by_alias=True)
 
     type_: Literal["_json"] = Field(default="_json", alias="__type__")
     """Redundant type information."""
