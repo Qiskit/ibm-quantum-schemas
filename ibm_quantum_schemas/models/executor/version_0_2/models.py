@@ -39,7 +39,7 @@ DataTree = TypeAliasType(
 
 
 class ParamsModel(BaseParamsModel):
-    """A model describing the Executor program inputs, also known as "params"."""
+    """A model describing the Executor program inputs."""
 
     schema_version: str = "v0.2"
 
