@@ -52,11 +52,8 @@ class TestOptionsModelValidation:
         assert model.twirling.shots_per_randomization == "auto"
         assert model.twirling.strategy == "active-accum"
 
-        # Verify simulator defaults
-        assert model.simulator.noise_model is None
-        assert model.simulator.seed_simulator is None
-        assert model.simulator.coupling_map is None
-        assert model.simulator.basis_gates is None
+        # Verify simulator default
+        assert model.simulator is None
 
         assert model.experimental == {}
 
