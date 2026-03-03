@@ -57,9 +57,6 @@ class ParamsModel(BaseParamsModel):
 class ResultsModel(BaseModel):
     """A model describing the result from executing a noise learner v2 job."""
 
-    schema_version: Literal["v0.1"] = "v0.1"
-    """Schema version of the results."""
-
     data: list[LayerNoiseWrapperModel]
     """Result data from the noise learner v2 job."""
 

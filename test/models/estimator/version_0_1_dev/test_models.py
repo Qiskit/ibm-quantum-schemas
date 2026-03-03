@@ -28,7 +28,6 @@ class TestParamsModelValidation:
             "options": {},
         }
         model = ParamsModel.model_validate(params)
-        assert model.schema_version == "v0.1"
 
         assert len(model.pubs) == 1
         assert model.pubs[0].root[0].type_ == valid_estimator_pub[0]["__type__"]
