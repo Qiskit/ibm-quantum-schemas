@@ -21,13 +21,11 @@ from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
 from .layer_noise_model import LayerNoiseWrapperModel
 from .twirling_options_model import TwirlingOptionsModel
 from .zne_options_model import ExtrapolatorType
+from .data_bin_model import DataBinWrapperModel
 
 
 class PrimitiveResultModel(BaseModel):
     """A model describing the Estimator program output."""
-
-    schema_version: Literal["v0.1"] = "v0.1"
-    """Schema version of the results."""
 
     pub_results: list[PubResultModel]
     """Result data from the estimator v2 job."""
@@ -39,7 +37,7 @@ class PrimitiveResultModel(BaseModel):
 class PubResultModel(BaseModel):
     """A model describing the Estimator program output for a single pub."""
 
-    # data: TBD
+    data: DataBinWrapperModel
     """Result data from the estimator v2 job."""
 
     metadata: PubResultMetadataModel
