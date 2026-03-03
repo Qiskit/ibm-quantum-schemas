@@ -34,7 +34,7 @@ from .results_metadata_model import InputOptionsModel, ResultsMetadataModel
 class ParamsModel(BaseParamsModel):
     """A model describing the NoiseLearnerV2 program inputs, also known as "params"."""
 
-    model_config = ConfigDict(extra="forbid", serialize_by_alias=True)
+    model_config = ConfigDict(extra="forbid")
 
     schema_version: str = "v0.1"
     """Schema version of the program input."""
