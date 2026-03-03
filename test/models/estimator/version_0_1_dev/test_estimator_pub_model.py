@@ -1,0 +1,202 @@
+# This code is a Qiskit project.
+#
+# (C) Copyright IBM 2026.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+"""Validation tests for estimator_pub_model.py classes."""
+
+import pytest
+from pydantic import ValidationError
+
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.estimator_pub_model import (
+    EstimatorPubModel,
+)
+
+
+class TestEstimatorPubModelValidation:
+    """Test EstimatorPubModel validation."""
+
+    def test_valid_estimator_pub_full(
+        self,
+        valid_observable,
+        valid_parameter_values,
+        valid_typed_qpy_circuit_dict_v13_parametrized,
+    ):
+        """Test that valid EstimatorPub with all fields is accepted (with parameters)."""
+        pub = [
+            valid_typed_qpy_circuit_dict_v13_parametrized,
+            valid_observable,
+            valid_parameter_values,
+            0.01,
+        ]
+        model = EstimatorPubModel.model_validate(pub)
+        assert len(model.root) == 4
+
+        # Verify circuit element (index 0) - TypedQpyCircuitModelV13to17
+        assert model.root[0].type_ == pub[0]["__type__"]
+        assert model.root[0].value_ == pub[0]["__value__"]
+
+        # Verify observables element (index 1) - ObservablesArrayModel
+        assert model.root[1].root.root == pub[1]
+
+        # Verify parameter_values element (index 2) - NdarrayWrapperModel
+        assert model.root[2].type_ == pub[2]["__type__"]
+        assert model.root[2].value_ == pub[2]["__value__"]
+
+        # Verify precision element (index 3)
+        assert model.root[3] == pub[3]
+
+    def test_valid_estimator_pub_full_no_parameters(
+        self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+    ):
+        """Test that valid EstimatorPub with all fields is accepted (without parameters)."""
+        pub = [
+            valid_typed_qpy_circuit_dict_v13,
+            valid_observable,
+            valid_empty_parameter_values,
+            0.01,
+        ]
+        model = EstimatorPubModel.model_validate(pub)
+        assert len(model.root) == 4
+
+        # Verify circuit element (index 0) - TypedQpyCircuitModelV13to17
+        assert model.root[0].type_ == pub[0]["__type__"]
+        assert model.root[0].value_ == pub[0]["__value__"]
+
+        # Verify observables element (index 1) - ObservablesArrayModel
+        assert model.root[1].root.root == pub[1]
+
+        # Verify parameter_values element (index 2) - NdarrayWrapperModel (empty)
+        assert model.root[2].type_ == pub[2]["__type__"]
+        assert model.root[2].value_ == pub[2]["__value__"]
+
+        # Verify precision element (index 3)
+        assert model.root[3] == pub[3]
+
+    def test_valid_estimator_pub_with_observables_list(
+        self, valid_observables_list, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+    ):
+        """Test that EstimatorPub with list of observables is accepted."""
+        pub = [
+            valid_typed_qpy_circuit_dict_v13,
+            valid_observables_list,
+            valid_empty_parameter_values,
+            None,
+        ]
+        model = EstimatorPubModel.model_validate(pub)
+        assert len(model.root) == 4
+
+        # Verify circuit element (index 0) - TypedQpyCircuitModelV13to17
+        assert model.root[0].type_ == pub[0]["__type__"]
+        assert model.root[0].value_ == pub[0]["__value__"]
+
+        # Verify observables element (index 1) - ObservablesArrayModel (list)
+        assert [obs.root for obs in model.root[1].root] == pub[1]
+
+        # Verify parameter_values element (index 2) - NdarrayWrapperModel
+        assert model.root[2].type_ == pub[2]["__type__"]
+        assert model.root[2].value_ == pub[2]["__value__"]
+
+        # Verify precision element (index 3)
+        assert model.root[3] is None
+
+    def test_precision_must_be_positive(
+        self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+    ):
+        """Test that precision must be positive."""
+        pub = [
+            valid_typed_qpy_circuit_dict_v13,
+            valid_observable,
+            valid_empty_parameter_values,
+            0.0,
+        ]
+        with pytest.raises(ValidationError, match="greater than 0"):
+            EstimatorPubModel.model_validate(pub)
+
+    def test_negative_precision(
+        self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+    ):
+        """Test that negative precision is rejected."""
+        pub = [
+            valid_typed_qpy_circuit_dict_v13,
+            valid_observable,
+            valid_empty_parameter_values,
+            -0.01,
+        ]
+        with pytest.raises(ValidationError, match="greater than 0"):
+            EstimatorPubModel.model_validate(pub)
+
+    def test_precision_none_is_valid(
+        self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+    ):
+        """Test that precision can be None."""
+        pub = [
+            valid_typed_qpy_circuit_dict_v13,
+            valid_observable,
+            valid_empty_parameter_values,
+            None,
+        ]
+        model = EstimatorPubModel.model_validate(pub)
+        assert len(model.root) == 4
+
+        # Verify circuit element (index 0) - TypedQpyCircuitModelV13to17
+        assert model.root[0].type_ == pub[0]["__type__"]
+        assert model.root[0].value_ == pub[0]["__value__"]
+
+        # Verify observables element (index 1) - ObservablesArrayModel
+        assert model.root[1].root.root == pub[1]
+
+        # Verify parameter_values element (index 2) - NdarrayWrapperModel
+        assert model.root[2].type_ == pub[2]["__type__"]
+
+        # Verify precision element (index 3) is None
+        assert model.root[3] is None
+
+    def test_too_few_elements(self, valid_typed_qpy_circuit_dict_v13):
+        """Test that tuple with only 1 element is rejected."""
+        pub = [valid_typed_qpy_circuit_dict_v13]
+        with pytest.raises(ValidationError):
+            EstimatorPubModel.model_validate(pub)
+
+    def test_too_many_elements(
+        self, valid_observable, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+    ):
+        """Test that tuple with more than 4 elements is rejected."""
+        pub = [
+            valid_typed_qpy_circuit_dict_v13,
+            valid_observable,
+            valid_empty_parameter_values,
+            0.01,
+            "extra",
+        ]
+        with pytest.raises(ValidationError):
+            EstimatorPubModel.model_validate(pub)
+
+    def test_invalid_circuit_type(self, valid_observable):
+        """Test that invalid circuit type is rejected."""
+        pub = [
+            "not a circuit",
+            valid_observable,
+        ]
+        with pytest.raises(ValidationError):
+            EstimatorPubModel.model_validate(pub)
+
+    def test_invalid_observable_type(
+        self, valid_empty_parameter_values, valid_typed_qpy_circuit_dict_v13
+    ):
+        """Test that invalid observable type is rejected."""
+        pub = [
+            valid_typed_qpy_circuit_dict_v13,
+            "not an observable",
+            valid_empty_parameter_values,
+            None,
+        ]
+        with pytest.raises(ValidationError):
+            EstimatorPubModel.model_validate(pub)

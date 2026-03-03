@@ -43,7 +43,7 @@ class SamplexModel(BaseModel):
 
         if self.ssv != encoded_ssv:
             raise ValueError(
-                f"The 'ssv' is set to {self.ssv} but the encoded SSV " f"version is {encoded_ssv}."
+                f"The 'ssv' is set to {self.ssv} but the encoded SSV version is {encoded_ssv}."
             )
 
         return self
