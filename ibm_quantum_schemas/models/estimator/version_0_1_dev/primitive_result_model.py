@@ -15,7 +15,8 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Literal, Sequence
+from pydantic import BaseModel
+from typing import Literal, Sequence
 
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
 from .layer_noise_model import LayerNoiseWrapperModel
