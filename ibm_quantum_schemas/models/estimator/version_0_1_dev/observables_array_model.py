@@ -14,8 +14,9 @@
 
 from typing import Annotated
 
-from ibm_quantum_schemas.aliases import Self
 from pydantic import AfterValidator, RootModel, model_validator
+
+from ibm_quantum_schemas.aliases import Self
 
 
 def validate_pauli_string(value: str) -> str:
