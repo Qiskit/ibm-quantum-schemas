@@ -41,7 +41,7 @@ DataTree = TypeAliasType(
 class ParamsModel(BaseParamsModel):
     """A model describing the Executor program inputs."""
 
-    schema_version: str = "v0.2"
+    schema_version: Literal["v0.2"] = "v0.2"
 
     quantum_program: QuantumProgramModel
     """The quantum program to execution."""
