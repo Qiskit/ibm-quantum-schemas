@@ -24,7 +24,7 @@ from .observables_array_model import ObservablesArrayModel
 class EstimatorPubModel(
     RootModel[
         tuple[
-            TypedQpyCircuitModelV13to17,
+            TypedQpyCircuitModelV13to17 | str,
             ObservablesArrayModel,
             NdarrayWrapperModel,
             Annotated[float, Field(gt=0)] | None,
@@ -37,7 +37,7 @@ class EstimatorPubModel(
     parameter values, and optional precision requirements.
 
     Tuple elements:
-    [0] circuit: The quantum circuit to execute, encoded in QPY format.
+    [0] circuit: The quantum circuit to execute, encoded in QPY format or as a QASM string.
     [1] observables: The observables to measure. Can be a single observable or
         a list of observables.
     [2] parameter_values: Parameter values for the circuit's parameters (NumPy ndarray).
