@@ -14,7 +14,7 @@
 
 from typing import Annotated
 
-from ibm_quantum_schmeas.aliases import Self
+from ibm_quantum_schemas.aliases import Self
 from pydantic import AfterValidator, RootModel, model_validator
 
 
