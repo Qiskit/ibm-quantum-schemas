@@ -12,6 +12,7 @@
 
 """Data bin models"""
 
+from pydantic import BaseModel
 
 from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
 
@@ -26,11 +27,14 @@ class DataBinObjectModel(BaseModel):
     stds_extrapolated: NdarrayWrapperModel | None = None
 
 
-
-
 class DataBinModel(BaseModel):
     """Data bin model class.
     """
+
+    field_names: list[str]
+    field_types: list[str]
+    shape: tuple[int, ...]
+    fields: DataBinObjectModel
     
 
 
