@@ -35,9 +35,6 @@ class ParamsModel(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    schema_version: str = "v0.1"
-    """Schema version of the program input."""
-
     version: Literal[2] | None = 2
     """Version of the program."""
 
