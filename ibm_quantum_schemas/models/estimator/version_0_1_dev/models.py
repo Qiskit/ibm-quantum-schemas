@@ -18,7 +18,8 @@ from typing import Annotated, Literal
 
 from pydantic import ConfigDict, Field
 
-from ...base_params_model import BaseParamsModel
+from ibm_quantum_schemas.models.base_params_model import BaseParamsModel
+from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
 from .estimator_pub_model import EstimatorPubModel
 from .execution_options_model import ExecutionOptionsV2Model
@@ -26,7 +27,6 @@ from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
 from .layer_noise_model import (
     LayerNoiseModel,
     LayerNoiseWrapperModel,
-    NdarrayWrapperModel,
     PauliLindbladErrorModel,
     PauliLindbladErrorWrapperModel,
     PauliListModel,

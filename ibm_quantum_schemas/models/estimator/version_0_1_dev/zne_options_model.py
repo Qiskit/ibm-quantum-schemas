@@ -19,7 +19,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, field_validator, model_validator
 
-from ....aliases import Self
+from ibm_quantum_schemas.aliases import Self
 
 ExtrapolatorType = Literal[
     "linear",

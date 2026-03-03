@@ -18,7 +18,7 @@ from collections.abc import Sequence
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from ....aliases import Self
+from ibm_quantum_schemas.aliases import Self
 from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
 from .layer_noise_model import LayerNoiseWrapperModel
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel

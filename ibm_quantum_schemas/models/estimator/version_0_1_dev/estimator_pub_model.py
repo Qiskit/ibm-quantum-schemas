@@ -16,8 +16,8 @@ from typing import Annotated
 
 from pydantic import Field, RootModel
 
-from ...ndarray_wrapper_model import NdarrayWrapperModel
-from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
+from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
+from ibm_quantum_schemas.models.typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
 from .observables_array_model import ObservablesArrayModel
 
 
