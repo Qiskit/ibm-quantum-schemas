@@ -12,7 +12,8 @@
 
 """Data bin models"""
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Literal
 
 from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
 
