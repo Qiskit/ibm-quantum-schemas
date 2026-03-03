@@ -16,7 +16,7 @@ from typing import Annotated
 
 from pydantic import Field, RootModel
 
-from ...noise_learner_v2.version_0_1_dev.layer_noise_model import NdarrayWrapperModel
+from ...ndarray_wrapper_model import NdarrayWrapperModel
 from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
 from .observables_array_model import ObservablesArrayModel
 

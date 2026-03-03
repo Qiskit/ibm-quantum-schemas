@@ -16,6 +16,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from ...ndarray_wrapper_model import NdarrayWrapperModel
 from ...typed_qpy_circuit_model import TypedQpyCircuitModel
 
 
@@ -48,16 +49,6 @@ class PauliListWrapperModel(BaseModel):
 
     value_: PauliListModel = Field(alias="__value__")
     """The actual data."""
-
-
-class NdarrayWrapperModel(BaseModel):
-    """A wrapper around ndarray data adding redundant type information."""
-
-    type_: Literal["ndarray"] = Field(default="ndarray", alias="__type__")
-    """Redundant type information."""
-
-    value_: str = Field(alias="__value__")
-    """The actual data: Base64-encoded, zlib compressed numpy binary format of an ndarray."""
 
 
 class PauliLindbladErrorModel(BaseModel):
