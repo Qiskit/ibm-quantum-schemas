@@ -12,7 +12,7 @@
 
 """Data bin models"""
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
 
@@ -37,8 +37,13 @@ class DataBinModel(BaseModel):
     fields: DataBinObjectModel
     
 
-
 class DataBinWrapperModel(BaseModel):
     """Data bin wrapper model class.
     """
-    pass
+    
+    model_config = ConfigDict(serialize_by_alias=True)
+
+    type_: Literal["DataBin"] = Field(default="DataBin", alias="__type__")
+    """Redundant type information."""
+
+    value_: DataBinModel = Field(alias="__value__")
