@@ -15,7 +15,7 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Literal, Sequence
 
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
@@ -28,11 +28,23 @@ from .data_bin_model import DataBinWrapperModel
 class PrimitiveResultModel(BaseModel):
     """A model describing the Estimator program output."""
 
-    pub_results: list[PubResultModel]
+    pub_results: list[PubResultWrapperModel]
     """Result data from the estimator v2 job."""
 
     metadata: ResultsMetadataModel
     """Metadata for the estimator v2 job."""
+
+
+class PrimitiveResultWrapperModel(BaseModel):
+    """Primitive result wrapper model class.
+    """
+    
+    model_config = ConfigDict(serialize_by_alias=True)
+
+    type_: Literal["PrimitiveResult"] = Field(default="PrimitiveResult", alias="__type__")
+    """Redundant type information."""
+
+    value_: PrimitiveResultModel = Field(alias="__value__")
 
 
 class PubResultModel(BaseModel):
@@ -43,6 +55,18 @@ class PubResultModel(BaseModel):
 
     metadata: PubResultMetadataModel
     """Metadata for the estimator v2 job."""
+
+
+class PubResultWrapperModel(BaseModel):
+    """Pub result wrapper model class.
+    """
+    
+    model_config = ConfigDict(serialize_by_alias=True)
+
+    type_: Literal["PubResult"] = Field(default="PubResult", alias="__type__")
+    """Redundant type information."""
+
+    value_: PubResultModel = Field(alias="__value__")
 
 
 class ResultsMetadataModel(BaseModel):

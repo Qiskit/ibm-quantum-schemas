@@ -43,7 +43,7 @@ from .pec_options_model import PecOptionsModel
 from .resilience_options_model import ResilienceOptionsModel
 from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
 from .zne_options_model import ExtrapolatorType, ZneOptionsModel
-from .primitive_result_model import PrimitiveResultModel
+from .primitive_result_model import PrimitiveResultWrapperModel
 
 
 class ParamsModel(BaseModel):
@@ -107,5 +107,5 @@ __all__ = [
     "TwirlingOptionsModel",
     "TwirlingStrategyType",
     "ZneOptionsModel",
-    "PrimitiveResultModel"
+    "PrimitiveResultWrapperModel"
 ]
