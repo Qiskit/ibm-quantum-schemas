@@ -20,12 +20,12 @@ from pydantic import BaseModel, ConfigDict
 
 
 class DynamicalDecouplingMetadataModel(BaseModel):
-    """Options for dynamical decoupling (DD)."""
+    """Metadata for dynamical decoupling (DD)."""
 
     model_config = ConfigDict(extra="forbid")
 
     enable: bool = False
-    """Whether to enable DD as specified by the other options in this class."""
+    """Whether DD was enabled."""
 
     sequence_type: Literal["XX", "XpXm", "XY4"] = "XX"
     """Which dynamical decoupling sequence to use.
@@ -40,7 +40,7 @@ class DynamicalDecouplingMetadataModel(BaseModel):
     """Where to put extra timing delays due to rounding issues.
 
     Rounding issues arise because the discrete time step ``dt`` of the system cannot
-    be divided. This option takes following values.
+    be divided. This field takes following values:
 
     * ``"middle"``: Put the extra slack to the interval at the middle of the sequence.
     * ``"edges"``: Divide the extra slack as evenly as possible into intervals at

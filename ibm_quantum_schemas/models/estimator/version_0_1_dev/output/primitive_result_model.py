@@ -74,15 +74,11 @@ class ResultsMetadataModel(BaseModel):
     """Metadata for the estimator v2 job."""
 
     dynamical_decoupling: DynamicalDecouplingMetadataModel | None = None
-    """Dynamical decoupling options.
-
-    See :class:`DynamicalDecouplingOptionsModel` for all available options.
+    """Dynamical decoupling metadata.
     """
 
     twirling: TwirlingMetadataModel | None = None
-    """Pauli twirling options.
-
-    See :class:`TwirlingOptionsModel` for all available options.
+    """Pauli twirling metadata.
     """
 
     resilience: ResilienceMetadataModel | None = None

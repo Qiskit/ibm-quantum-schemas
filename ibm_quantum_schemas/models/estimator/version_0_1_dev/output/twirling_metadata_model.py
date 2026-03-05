@@ -27,7 +27,7 @@ TwirlingStrategyType = Literal[
 
 
 class TwirlingMetadataModel(BaseModel):
-    """Twirling options."""
+    """Twirling metadata."""
 
     model_config = ConfigDict(extra="forbid")
 
