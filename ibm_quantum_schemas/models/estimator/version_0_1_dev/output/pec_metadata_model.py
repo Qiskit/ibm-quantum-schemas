@@ -21,6 +21,3 @@ class PecMetadataModel(BaseModel):
     """Metadata about PEC."""
 
     num_randomizations_scaling: float | None = None
-    noise_gain: float | None = None
-
-# Made with Bob

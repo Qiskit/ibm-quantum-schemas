@@ -53,7 +53,3 @@ class PubResultMetadataModel(BaseModel):
     shots: int | None = None
     num_randomizations: int | None = None
     warning: str | None = None
-
-    
-
-# Made with Bob
