@@ -18,8 +18,6 @@ from typing import Sequence
 
 from pydantic import BaseModel
 
-from ..input.zne_options_model import ExtrapolatorType
-
 
 class ZneMetadataModel(BaseModel):
     """Metadata about ZNE."""
@@ -28,7 +26,7 @@ class ZneMetadataModel(BaseModel):
     """Noise factors used for noise amplification.
     """
 
-    extrapolator: ExtrapolatorType | Sequence[ExtrapolatorType] | None = None
+    extrapolator: str | None = None
     """Extrapolator(s) used for extrapolating to zero noise.
 
     The available extrapolators are:
