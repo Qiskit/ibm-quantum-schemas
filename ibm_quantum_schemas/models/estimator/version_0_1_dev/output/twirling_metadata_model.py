@@ -91,3 +91,6 @@ class TwirlingMetadataModel(BaseModel):
       * If ``"all"`` all qubits in the input circuit will be twirled in each
         twirled layer.
     """
+
+    interleave_randomizations: bool = True
+    """Interleave randomizations with parameter values when executing."""
