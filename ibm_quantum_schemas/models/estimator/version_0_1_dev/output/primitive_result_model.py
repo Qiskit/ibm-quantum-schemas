@@ -20,10 +20,8 @@ from typing import Literal
 
 from .dynamical_decoupling_metadata_model import DynamicalDecouplingMetadataModel
 from .twirling_metadata_model import TwirlingMetadataModel
-from .data_bin_model import DataBinWrapperModel
-from .layer_noise_metadata_model import LayerNoiseMetadataModel
-from .pec_metadata_model import PecMetadataModel
 from .resilience_metadata_model import ResilienceMetadataModel
+from .pub_result_model import PubResultWrapperModel, PubResultMetadataModel
 
 
 class PrimitiveResultModel(BaseModel):
@@ -48,28 +46,6 @@ class PrimitiveResultWrapperModel(BaseModel):
     value_: PrimitiveResultModel = Field(alias="__value__")
 
 
-class PubResultModel(BaseModel):
-    """A model describing the Estimator program output for a single pub."""
-
-    data: DataBinWrapperModel
-    """Result data from the estimator v2 job."""
-
-    metadata: PubResultMetadataModel
-    """Metadata for the estimator v2 job."""
-
-
-class PubResultWrapperModel(BaseModel):
-    """Pub result wrapper model class.
-    """
-    
-    model_config = ConfigDict(serialize_by_alias=True)
-
-    type_: Literal["PubResult"] = Field(default="PubResult", alias="__type__")
-    """Redundant type information."""
-
-    value_: PubResultModel = Field(alias="__value__")
-
-
 class ResultsMetadataModel(BaseModel):
     """Metadata for the estimator v2 job."""
 
@@ -86,23 +62,5 @@ class ResultsMetadataModel(BaseModel):
 
     version: Literal[2] = 2
     """Version number. Must be 2."""
-
-
-class PubResultMetadataModel(BaseModel):
-    """Metadata for the estimator v2 job."""
-
-    pec: PecMetadataModel | None = None
-    """Metadata about PEC."""
-
-    layer_noise: LayerNoiseMetadataModel  | None = None
-    """Metadata about layer noise."""
-
-    circuit_metadata: dict | None = None
-    """Circuit metadata, attached by the user to the input circuit."""
-
-    target_precision: float | None = None
-    shots: int | None = None
-    num_randomizations: int | None = None
-    warning: str | None = None
 
     
