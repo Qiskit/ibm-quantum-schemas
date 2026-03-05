@@ -18,8 +18,8 @@ from __future__ import annotations
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Literal
 
-from ..input.dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
-from ..input.twirling_options_model import TwirlingOptionsModel
+from .dynamical_decoupling_metadata_model import DynamicalDecouplingMetadataModel
+from .twirling_metadata_model import TwirlingMetadataModel
 from .data_bin_model import DataBinWrapperModel
 from .layer_noise_metadata_model import LayerNoiseMetadataModel
 from .pec_metadata_model import PecMetadataModel
@@ -73,13 +73,13 @@ class PubResultWrapperModel(BaseModel):
 class ResultsMetadataModel(BaseModel):
     """Metadata for the estimator v2 job."""
 
-    dynamical_decoupling: DynamicalDecouplingOptionsModel | None = None
+    dynamical_decoupling: DynamicalDecouplingMetadataModel | None = None
     """Dynamical decoupling options.
 
     See :class:`DynamicalDecouplingOptionsModel` for all available options.
     """
 
-    twirling: TwirlingOptionsModel | None = None
+    twirling: TwirlingMetadataModel | None = None
     """Pauli twirling options.
 
     See :class:`TwirlingOptionsModel` for all available options.
