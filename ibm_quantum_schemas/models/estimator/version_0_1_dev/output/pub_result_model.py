@@ -19,8 +19,6 @@ from pydantic import BaseModel, ConfigDict, Field
 from typing import Literal
 
 from .data_bin_model import DataBinWrapperModel
-from .layer_noise_metadata_model import LayerNoiseMetadataModel
-from .pec_metadata_model import PecMetadataModel
 
 
 class PubResultModel(BaseModel):
@@ -47,12 +45,6 @@ class PubResultWrapperModel(BaseModel):
 
 class PubResultMetadataModel(BaseModel):
     """Metadata for the estimator v2 job."""
-
-    pec: PecMetadataModel | None = None
-    """Metadata about PEC."""
-
-    layer_noise: LayerNoiseMetadataModel  | None = None
-    """Metadata about layer noise."""
 
     circuit_metadata: dict | None = None
     """Circuit metadata, attached by the user to the input circuit."""

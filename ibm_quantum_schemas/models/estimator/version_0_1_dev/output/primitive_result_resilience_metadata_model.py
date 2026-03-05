@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Resilience Metadata Model."""
+"""Primitive result resilience metadata model."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ from .zne_metadata_model import ZneMetadataModel
 
 
 class PrimitiveResultResilienceMetadataModel(BaseModel):
-    """Metadata about resilience."""
+    """Primitive result resilience metadata model."""
 
     measure_mitigation: bool | None = None
     """Whether measure mitigation was applied for the job."""
