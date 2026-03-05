@@ -21,8 +21,8 @@ import pytest
 from pydantic import ValidationError
 
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.input.layer_noise_model_model import (
-    LayerNoiseModel,
-    LayerNoiseWrapperModel,
+    LayerNoiseModelModel,
+    LayerNoiseModelWrapperModel,
     NdarrayWrapperModel,
     PauliLindbladErrorModel,
     PauliLindbladErrorWrapperModel,
@@ -188,7 +188,7 @@ class TestLayerNoiseModelValidation:
             "qubits": [0, 1],
             "error": valid_pauli_lindblad_error_wrapper,
         }
-        model = LayerNoiseModel.model_validate(layer_noise)
+        model = LayerNoiseModelModel.model_validate(layer_noise)
         assert model.qubits == [0, 1]
         assert isinstance(model.error, PauliLindbladErrorWrapperModel)
         # Verify error wrapper structure
@@ -233,7 +233,7 @@ class TestLayerNoiseModelValidation:
             "qubits": [0, 1],
             "error": None,
         }
-        model = LayerNoiseModel.model_validate(layer_noise)
+        model = LayerNoiseModelModel.model_validate(layer_noise)
         assert model.qubits == [0, 1]
         assert model.error is None
 
@@ -243,7 +243,7 @@ class TestLayerNoiseModelValidation:
             "circuit": valid_typed_qpy_circuit_dict_v13,
             "qubits": [0, 1],
         }
-        model = LayerNoiseModel.model_validate(layer_noise)
+        model = LayerNoiseModelModel.model_validate(layer_noise)
         assert model.qubits == [0, 1]
         assert model.error is None
 
@@ -251,13 +251,13 @@ class TestLayerNoiseModelValidation:
         """Test that missing circuit field is rejected."""
         layer_noise = {"qubits": [0, 1]}
         with pytest.raises(ValidationError, match="Field required"):
-            LayerNoiseModel.model_validate(layer_noise)
+            LayerNoiseModelModel.model_validate(layer_noise)
 
     def test_missing_required_qubits_field(self, valid_typed_qpy_circuit_dict_v13):
         """Test that missing qubits field is rejected."""
         layer_noise = {"circuit": valid_typed_qpy_circuit_dict_v13}
         with pytest.raises(ValidationError, match="Field required"):
-            LayerNoiseModel.model_validate(layer_noise)
+            LayerNoiseModelModel.model_validate(layer_noise)
 
     def test_empty_qubits_list(self, valid_typed_qpy_circuit_dict_v13):
         """Test that empty qubits list is accepted."""
@@ -265,7 +265,7 @@ class TestLayerNoiseModelValidation:
             "circuit": valid_typed_qpy_circuit_dict_v13,
             "qubits": [],
         }
-        model = LayerNoiseModel.model_validate(layer_noise)
+        model = LayerNoiseModelModel.model_validate(layer_noise)
         assert model.qubits == []
 
 
@@ -284,13 +284,13 @@ class TestLayerNoiseWrapperModelValidation:
                 "error": None,
             },
         }
-        model = LayerNoiseWrapperModel.model_validate(wrapper)
+        model = LayerNoiseModelWrapperModel.model_validate(wrapper)
         # Verify wrapper structure
         assert model.type_ == wrapper["__type__"]
         assert model.module_ == wrapper["__module__"]
         assert model.class_ == wrapper["__class__"]
         # Verify value (LayerNoiseModel)
-        assert isinstance(model.value_, LayerNoiseModel)
+        assert isinstance(model.value_, LayerNoiseModelModel)
         assert model.value_.qubits == wrapper["__value__"]["qubits"]
         assert model.value_.error == wrapper["__value__"]["error"]
         assert model.value_.error is None
@@ -339,7 +339,7 @@ class TestSerializeByAlias:
                 "error": valid_pauli_lindblad_error_wrapper,
             },
         }
-        model = LayerNoiseWrapperModel.model_validate(wrapper_data)
+        model = LayerNoiseModelWrapperModel.model_validate(wrapper_data)
 
         serialized = model.model_dump(mode="json")
         assert "__type__" in serialized

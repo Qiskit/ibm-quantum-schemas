@@ -90,7 +90,7 @@ class PauliLindbladErrorWrapperModel(BaseModel):
     """The actual data."""
 
 
-class LayerNoiseModel(BaseModel):
+class LayerNoiseModelModel(BaseModel):
     """The error data."""
 
     circuit: TypedQpyCircuitModel
@@ -109,7 +109,7 @@ class LayerNoiseModel(BaseModel):
     """
 
 
-class LayerNoiseWrapperModel(BaseModel):
+class LayerNoiseModelWrapperModel(BaseModel):
     """A wrapper around LayerNoiseModel adding redundant type information."""
 
     model_config = ConfigDict(serialize_by_alias=True)
@@ -125,5 +125,5 @@ class LayerNoiseWrapperModel(BaseModel):
     class_: Literal["LayerError"] = Field(default="LayerError", alias="__class__")
     """Redundant type information."""
 
-    value_: LayerNoiseModel = Field(alias="__value__")
+    value_: LayerNoiseModelModel = Field(alias="__value__")
     """The actual data."""

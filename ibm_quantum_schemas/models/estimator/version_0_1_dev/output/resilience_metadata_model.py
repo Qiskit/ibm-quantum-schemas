@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
-from ..input.layer_noise_model_model import LayerNoiseWrapperModel
+from ..input.layer_noise_model_model import LayerNoiseModelWrapperModel
 from .zne_metadata_model import ZneMetadataModel
 
 
@@ -35,7 +35,7 @@ class ResilienceMetadataModel(BaseModel):
     zne: ZneMetadataModel | None = None
     """Metadata about ZNE, applicable if `zne_mitifation` is `True`."""
 
-    layer_noise_model: list[LayerNoiseWrapperModel] | None = None
+    layer_noise_model: list[LayerNoiseModelWrapperModel] | None = None
     """Noise learner results."""
 
 # Made with Bob
