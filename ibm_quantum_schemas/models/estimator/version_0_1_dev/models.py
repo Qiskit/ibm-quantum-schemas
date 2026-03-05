@@ -20,7 +20,7 @@ from .input.dynamical_decoupling_options_model import DynamicalDecouplingOptions
 from .input.estimator_pub_model import EstimatorPubModel
 from .input.execution_options_model import ExecutionOptionsV2Model
 from .input.layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
-from .input.layer_noise_model import (
+from .input.layer_noise_model_model import (
     LayerNoiseModel,
     LayerNoiseWrapperModel,
     PauliLindbladErrorModel,

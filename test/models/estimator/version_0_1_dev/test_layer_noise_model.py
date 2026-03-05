@@ -20,7 +20,7 @@ import pybase64
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.input.layer_noise_model import (
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.input.layer_noise_model_model import (
     LayerNoiseModel,
     LayerNoiseWrapperModel,
     NdarrayWrapperModel,

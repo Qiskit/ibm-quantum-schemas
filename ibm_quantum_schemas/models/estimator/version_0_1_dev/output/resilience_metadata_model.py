@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
-from ..input.layer_noise_model import LayerNoiseWrapperModel
+from ..input.layer_noise_model_model import LayerNoiseWrapperModel
 from .zne_metadata_model import ZneMetadataModel
 
 

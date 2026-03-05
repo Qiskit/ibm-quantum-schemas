@@ -21,7 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from ibm_quantum_schemas.aliases import Self
 
 from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
-from .layer_noise_model import LayerNoiseWrapperModel
+from .layer_noise_model_model import LayerNoiseWrapperModel
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
 from .noise_learner_results_model import NoiseLearnerResultsModel
 from .pec_options_model import PecOptionsModel
