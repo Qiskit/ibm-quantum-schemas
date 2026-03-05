@@ -1,0 +1,41 @@
+# This code is a Qiskit project.
+#
+# (C) Copyright IBM 2026.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+"""Resilience Metadata Model."""
+
+from __future__ import annotations
+
+from pydantic import BaseModel
+
+from ..input.layer_noise_model import LayerNoiseWrapperModel
+from .zne_metadata_model import ZneMetadataModel
+
+
+class ResilienceMetadataModel(BaseModel):
+    """Metadata about resilience."""
+
+    measure_mitigation: bool | None = None
+    """Whether measure mitigation was applied for the job."""
+
+    zne_mitigation: bool | None = None
+    """Whether ZNE mitigation was applied for the job."""
+
+    pec_mitigation: bool | None = None
+    """Whether PEC mitigation was applied for the job."""
+
+    zne: ZneMetadataModel | None = None
+    """Metadata about ZNE, applicable if `zne_mitifation` is `True`."""
+
+    layer_noise_model: list[LayerNoiseWrapperModel] | None = None
+    """Noise learner results."""
+
+# Made with Bob
