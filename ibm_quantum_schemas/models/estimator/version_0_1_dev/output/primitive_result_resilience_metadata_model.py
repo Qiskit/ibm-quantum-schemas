@@ -20,7 +20,7 @@ from .layer_noise_model_metadata_model import LayerNoiseModelMetadataWrapperMode
 from .zne_metadata_model import ZneMetadataModel
 
 
-class ResilienceMetadataModel(BaseModel):
+class PrimitiveResultResilienceMetadataModel(BaseModel):
     """Metadata about resilience."""
 
     measure_mitigation: bool | None = None

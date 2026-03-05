@@ -20,7 +20,7 @@ from typing import Literal
 
 from .dynamical_decoupling_metadata_model import DynamicalDecouplingMetadataModel
 from .twirling_metadata_model import TwirlingMetadataModel
-from .resilience_metadata_model import ResilienceMetadataModel
+from .primitive_result_resilience_metadata_model import PrimitiveResultResilienceMetadataModel
 from .pub_result_model import PubResultWrapperModel, PubResultMetadataModel
 
 
@@ -30,7 +30,7 @@ class PrimitiveResultModel(BaseModel):
     pub_results: list[PubResultWrapperModel]
     """Result data from the estimator v2 job."""
 
-    metadata: ResultsMetadataModel
+    metadata: PrimitiveResultMetadataModel
     """Metadata for the estimator v2 job."""
 
 
@@ -46,7 +46,7 @@ class PrimitiveResultWrapperModel(BaseModel):
     value_: PrimitiveResultModel = Field(alias="__value__")
 
 
-class ResultsMetadataModel(BaseModel):
+class PrimitiveResultMetadataModel(BaseModel):
     """Metadata for the estimator v2 job."""
 
     dynamical_decoupling: DynamicalDecouplingMetadataModel | None = None
@@ -57,7 +57,7 @@ class ResultsMetadataModel(BaseModel):
     """Pauli twirling metadata.
     """
 
-    resilience: ResilienceMetadataModel | None = None
+    resilience: PrimitiveResultResilienceMetadataModel | None = None
     """Metadata about resilience."""
 
     version: Literal[2] = 2
