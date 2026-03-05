@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.options_model import OptionsModel
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.input.options_model import OptionsModel
 
 
 class TestOptionsModelValidation:

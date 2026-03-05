@@ -20,7 +20,7 @@ import pybase64
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.layer_noise_model import (
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.input.layer_noise_model import (
     LayerNoiseModel,
     LayerNoiseWrapperModel,
     NdarrayWrapperModel,
@@ -351,7 +351,7 @@ class TestSerializeByAlias:
 
     def test_noise_model_serializes_with_aliases(self):
         """Test that NoiseModel serializes with aliases."""
-        from ibm_quantum_schemas.models.estimator.version_0_1_dev.simulator_options_model import (
+        from ibm_quantum_schemas.models.estimator.version_0_1_dev.input.simulator_options_model import (
             NoiseModel,
         )
 

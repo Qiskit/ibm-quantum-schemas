@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.observables_array_model import (
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.input.observables_array_model import (
     ObservableModel,
     ObservablesArrayModel,
 )

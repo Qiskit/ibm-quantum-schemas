@@ -18,10 +18,10 @@ from __future__ import annotations
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Literal, Sequence
 
-from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
-from .layer_noise_model import LayerNoiseWrapperModel
-from .twirling_options_model import TwirlingOptionsModel
-from .zne_options_model import ExtrapolatorType
+from ..input.dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
+from ..input.layer_noise_model import LayerNoiseWrapperModel
+from ..input.twirling_options_model import TwirlingOptionsModel
+from ..input.zne_options_model import ExtrapolatorType
 from .data_bin_model import DataBinWrapperModel
 
 

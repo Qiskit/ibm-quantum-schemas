@@ -20,11 +20,11 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
 
-from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
-from .estimator_pub_model import EstimatorPubModel
-from .execution_options_model import ExecutionOptionsV2Model
-from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
-from .layer_noise_model import (
+from .input.dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
+from .input.estimator_pub_model import EstimatorPubModel
+from .input.execution_options_model import ExecutionOptionsV2Model
+from .input.layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
+from .input.layer_noise_model import (
     LayerNoiseModel,
     LayerNoiseWrapperModel,
     PauliLindbladErrorModel,
@@ -32,18 +32,18 @@ from .layer_noise_model import (
     PauliListModel,
     PauliListWrapperModel,
 )
-from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
-from .noise_learner_results_model import (
+from .input.measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
+from .input.noise_learner_results_model import (
     NoiseLearnerInputOptionsModel,
     NoiseLearnerResultsMetadataModel,
     NoiseLearnerResultsModel,
 )
-from .options_model import OptionsModel
-from .pec_options_model import PecOptionsModel
-from .resilience_options_model import ResilienceOptionsModel
-from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
-from .zne_options_model import ExtrapolatorType, ZneOptionsModel
-from .primitive_result_model import PrimitiveResultWrapperModel
+from .input.options_model import OptionsModel
+from .input.pec_options_model import PecOptionsModel
+from .input.resilience_options_model import ResilienceOptionsModel
+from .input.twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
+from .input.zne_options_model import ExtrapolatorType, ZneOptionsModel
+from .output.primitive_result_model import PrimitiveResultWrapperModel
 
 
 class ParamsModel(BaseModel):
