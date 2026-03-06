@@ -26,6 +26,7 @@ class DataBinObjectModel(BaseModel):
     ensemble_stds_noise_factors: NdarrayWrapperModel | None = None
     evs_extrapolated: NdarrayWrapperModel | None = None
     stds_extrapolated: NdarrayWrapperModel | None = None
+    ensemble_standard_error: NdarrayWrapperModel | None = None
 
 
 class DataBinModel(BaseModel):
