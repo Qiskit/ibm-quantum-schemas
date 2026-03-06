@@ -23,3 +23,4 @@ class PecMetadataModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     num_randomizations_scaling: float | None = None
+    """Scaling of the number of randomizations with circuit depth."""

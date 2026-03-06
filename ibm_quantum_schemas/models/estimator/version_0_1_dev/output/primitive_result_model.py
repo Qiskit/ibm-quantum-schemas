@@ -69,4 +69,5 @@ class PrimitiveResultWrapperModel(BaseModel):
     """Redundant type information."""
 
     value_: PrimitiveResultModel = Field(alias="__value__")
+    """The actual data."""
  

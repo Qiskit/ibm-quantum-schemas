@@ -31,9 +31,17 @@ class PubResultMetadataModel(BaseModel):
     """Circuit metadata, attached by the user to the input circuit."""
 
     target_precision: float | None = None
+    """The target precision, which is a function of the requested pub's precision,
+    default precision, and number of shots."""
+
     shots: int | None = None
+    """Number of shots."""
+
     num_randomizations: int | None = None
+    """Number of randomizations."""
+
     resilience: PubResultResilienceMetadataModel | None = None
+    """Metadata about error mitigation."""
 
     experimental: dict[str, Any] | None = None
     """Experimental metadata."""
@@ -61,3 +69,4 @@ class PubResultWrapperModel(BaseModel):
     """Redundant type information."""
 
     value_: PubResultModel = Field(alias="__value__")
+    """The actual data."""

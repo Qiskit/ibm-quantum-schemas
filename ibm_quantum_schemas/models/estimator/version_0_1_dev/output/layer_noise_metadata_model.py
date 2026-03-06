@@ -25,6 +25,13 @@ class LayerNoiseMetadataModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     noise_overhead: float | Literal["infinity"] | None = None
+    """Overall noise overhead."""
+
     total_mitigated_layers: int | None = None
+    """Number of mitigated layers, including duplications of unique layers."""
+
     unique_mitigated_layers: int | None = None
+    """Number of unique mitigated layers."""
+
     unique_mitigated_layers_noise_overhead: list[float | Literal["infinity"]] | None = None
+    """Noise overhead per unique layer."""

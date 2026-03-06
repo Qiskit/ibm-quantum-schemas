@@ -53,3 +53,4 @@ class DataBinWrapperModel(BaseModel):
     """Redundant type information."""
 
     value_: DataBinModel = Field(alias="__value__")
+    """The actual data."""
