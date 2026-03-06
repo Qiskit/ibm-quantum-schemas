@@ -49,7 +49,7 @@ class DataBinObjectModel(BaseModel):
     """Uncertainty of the extrapolated expectation values, based on the fit model."""
 
     ensemble_standard_error: NdarrayWrapperModel | None = None
-    """Standard error assuming only shot noise, computed by treating all shots 
+    """Standard error assuming only shot noise, computed by treating all shots
     as a single ensemble. Identical to `stds` when twirling is disabled."""
 
 
