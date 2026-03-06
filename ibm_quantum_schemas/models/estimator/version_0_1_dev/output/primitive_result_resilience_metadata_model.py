@@ -17,7 +17,7 @@ from __future__ import annotations
 from pydantic import BaseModel, ConfigDict
 
 from .layer_noise_model_metadata_model import LayerNoiseModelMetadataWrapperModel
-from .zne_metadata_model import ZneMetadataModel
+from .primitive_result_zne_metadata_model import PrimitiveResultZneMetadataModel
 
 
 class PrimitiveResultResilienceMetadataModel(BaseModel):
@@ -34,7 +34,7 @@ class PrimitiveResultResilienceMetadataModel(BaseModel):
     pec_mitigation: bool | None = None
     """Whether PEC mitigation was applied for the job."""
 
-    zne: ZneMetadataModel | None = None
+    zne: PrimitiveResultZneMetadataModel | None = None
     """Metadata about ZNE, applicable if `zne_mitifation` is `True`."""
 
     layer_noise_model: list[LayerNoiseModelMetadataWrapperModel] | None = None

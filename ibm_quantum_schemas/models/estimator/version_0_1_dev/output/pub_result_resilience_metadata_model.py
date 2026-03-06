@@ -18,6 +18,7 @@ from pydantic import BaseModel, ConfigDict
 
 from .layer_noise_metadata_model import LayerNoiseMetadataModel
 from .pec_metadata_model import PecMetadataModel
+from .pub_result_zne_metadata_model import PubResultZneMetadataModel
 
 
 class PubResultResilienceMetadataModel(BaseModel):
@@ -30,3 +31,6 @@ class PubResultResilienceMetadataModel(BaseModel):
 
     layer_noise: LayerNoiseMetadataModel  | None = None
     """Metadata about layer noise."""
+
+    zne: PubResultZneMetadataModel | None = None
+    """Metadata about ZNE."""

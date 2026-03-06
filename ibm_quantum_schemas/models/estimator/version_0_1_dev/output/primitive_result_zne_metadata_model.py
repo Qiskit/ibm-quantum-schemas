@@ -10,17 +10,32 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""ZNE Metadata Model."""
+"""Primitive Result ZNE Metadata Model."""
 
 from __future__ import annotations
 
-from typing import Sequence
+from typing import Sequence, Literal
 
 from pydantic import BaseModel, ConfigDict
 
 
-class ZneMetadataModel(BaseModel):
-    """Metadata about ZNE."""
+PrimitiveResultExtrapolatorType = Literal[
+    "linear",
+    "exponential",
+    "double_exponential",
+    "polynomial_degree_1",
+    "polynomial_degree_2",
+    "polynomial_degree_3",
+    "polynomial_degree_4",
+    "polynomial_degree_5",
+    "polynomial_degree_6",
+    "polynomial_degree_7",
+    "fallback",
+]
+
+
+class PrimitiveResultZneMetadataModel(BaseModel):
+    """Primitive Result Metadata about ZNE."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -28,7 +43,7 @@ class ZneMetadataModel(BaseModel):
     """Noise factors used for noise amplification.
     """
 
-    extrapolator: str | None = None
+    extrapolator: PrimitiveResultExtrapolatorType | Sequence[PrimitiveResultExtrapolatorType] | None = None
     """Extrapolator(s) used for extrapolating to zero noise.
 
     The available extrapolators are:
