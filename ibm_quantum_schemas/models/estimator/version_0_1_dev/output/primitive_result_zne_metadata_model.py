@@ -72,5 +72,3 @@ class PrimitiveResultZneMetadataModel(BaseModel):
     The noise factors determine the
     points at which the ``extrapolator``\\s are evaluated, to be returned in the data
     fields called ``evs_extrapolated`` and ``stds_extrapolated``."""
-
-# Made with Bob

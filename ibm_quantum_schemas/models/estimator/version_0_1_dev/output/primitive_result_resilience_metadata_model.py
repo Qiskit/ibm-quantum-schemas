@@ -39,5 +39,3 @@ class PrimitiveResultResilienceMetadataModel(BaseModel):
 
     layer_noise_model: list[LayerNoiseModelMetadataWrapperModel] | None = None
     """Noise learner results."""
-
-# Made with Bob

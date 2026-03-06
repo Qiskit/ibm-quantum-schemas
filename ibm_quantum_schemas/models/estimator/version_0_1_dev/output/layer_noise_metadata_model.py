@@ -28,5 +28,3 @@ class LayerNoiseMetadataModel(BaseModel):
     total_mitigated_layers: int | None = None
     unique_mitigated_layers: int | None = None
     unique_mitigated_layers_noise_overhead: list[float | Literal["infinity"]] | None = None
-
-# Made with Bob
