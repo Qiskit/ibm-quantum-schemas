@@ -16,9 +16,25 @@
 from __future__ import annotations
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Literal
+from typing import Literal, Any
 
 from .data_bin_model import DataBinWrapperModel
+
+
+class PubResultMetadataModel(BaseModel):
+    """Metadata for the estimator v2 job."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    circuit_metadata: dict | None = None
+    """Circuit metadata, attached by the user to the input circuit."""
+
+    target_precision: float | None = None
+    shots: int | None = None
+    num_randomizations: int | None = None
+
+    experimental: dict[str, Any] | None = None
+    """Experimental metadata."""
 
 
 class PubResultModel(BaseModel):
@@ -43,19 +59,3 @@ class PubResultWrapperModel(BaseModel):
     """Redundant type information."""
 
     value_: PubResultModel = Field(alias="__value__")
-
-
-class PubResultMetadataModel(BaseModel):
-    """Metadata for the estimator v2 job."""
-
-    model_config = ConfigDict(extra="forbid")
-
-    circuit_metadata: dict | None = None
-    """Circuit metadata, attached by the user to the input circuit."""
-
-    target_precision: float | None = None
-    shots: int | None = None
-    num_randomizations: int | None = None
-
-    experimental: dict[str, Any] | None = None
-    """Experimental metadata."""

@@ -21,31 +21,7 @@ from typing import Literal, Any
 from .dynamical_decoupling_metadata_model import DynamicalDecouplingMetadataModel
 from .twirling_metadata_model import TwirlingMetadataModel
 from .primitive_result_resilience_metadata_model import PrimitiveResultResilienceMetadataModel
-from .pub_result_model import PubResultWrapperModel, PubResultMetadataModel
-
-
-class PrimitiveResultModel(BaseModel):
-    """A model describing the Estimator program output."""
-
-    model_config = ConfigDict(extra="forbid")
-
-    pub_results: list[PubResultWrapperModel]
-    """Result data from the estimator v2 job."""
-
-    metadata: PrimitiveResultMetadataModel
-    """Metadata for the estimator v2 job."""
-
-
-class PrimitiveResultWrapperModel(BaseModel):
-    """Primitive result wrapper model class.
-    """
-    
-    model_config = ConfigDict(serialize_by_alias=True, extra="forbid")
-
-    type_: Literal["PrimitiveResult"] = Field(default="PrimitiveResult", alias="__type__")
-    """Redundant type information."""
-
-    value_: PrimitiveResultModel = Field(alias="__value__")
+from .pub_result_model import PubResultWrapperModel
 
 
 class PrimitiveResultMetadataModel(BaseModel):
@@ -70,4 +46,27 @@ class PrimitiveResultMetadataModel(BaseModel):
     experimental: dict[str, Any] | None = None
     """Experimental metadata."""
 
+
+class PrimitiveResultModel(BaseModel):
+    """A model describing the Estimator program output."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    pub_results: list[PubResultWrapperModel]
+    """Result data from the estimator v2 job."""
+
+    metadata: PrimitiveResultMetadataModel
+    """Metadata for the estimator v2 job."""
+
+
+class PrimitiveResultWrapperModel(BaseModel):
+    """Primitive result wrapper model class.
+    """
     
+    model_config = ConfigDict(serialize_by_alias=True, extra="forbid")
+
+    type_: Literal["PrimitiveResult"] = Field(default="PrimitiveResult", alias="__type__")
+    """Redundant type information."""
+
+    value_: PrimitiveResultModel = Field(alias="__value__")
+ 
