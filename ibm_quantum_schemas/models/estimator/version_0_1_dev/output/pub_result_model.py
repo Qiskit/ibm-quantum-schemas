@@ -52,4 +52,3 @@ class PubResultMetadataModel(BaseModel):
     target_precision: float | None = None
     shots: int | None = None
     num_randomizations: int | None = None
-    warning: str | None = None
