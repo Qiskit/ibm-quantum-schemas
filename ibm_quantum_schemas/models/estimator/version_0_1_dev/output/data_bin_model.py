@@ -20,16 +20,37 @@ from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
 
 
 class DataBinObjectModel(BaseModel):
+    """Data bin object model."""
+
     model_config = ConfigDict(extra="forbid")
 
     evs: NdarrayWrapperModel | None = None
+    """Expectation values for the given observables."""
+
     stds: NdarrayWrapperModel | None = None
+    """Standard errors computed from variation across twirling groups.
+    If twirling is disabled, this equals `ensemble_standard_error`."""
+
     evs_noise_factors: NdarrayWrapperModel | None = None
+    """Raw expectation values evaluated at each ZNE noise amplification factor."""
+
     stds_noise_factors: NdarrayWrapperModel | None = None
+    """Standard errors computed from variation across twirling groups,
+    reported separately for each ZNE noise factor."""
+
     ensemble_stds_noise_factors: NdarrayWrapperModel | None = None
+    """Standard deviations assuming only shot noise (no twirling variance, no drift),
+    reported for each ZNE noise factor. Useful for custom ZNE fitting."""
+
     evs_extrapolated: NdarrayWrapperModel | None = None
+    """Expectation values predicted by the ZNE extrapolation model."""
+
     stds_extrapolated: NdarrayWrapperModel | None = None
+    """Uncertainty of the extrapolated expectation values, based on the fit model."""
+
     ensemble_standard_error: NdarrayWrapperModel | None = None
+    """Standard error assuming only shot noise, computed by treating all shots 
+    as a single ensemble. Identical to `stds` when twirling is disabled."""
 
 
 class DataBinModel(BaseModel):
@@ -38,9 +59,16 @@ class DataBinModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     field_names: list[str]
+    """Names of fields contained the data bin."""
+
     field_types: list[str]
+    """Types of fields contained the data bin."""
+
     shape: tuple[int, ...]
+    """Data bin shape."""
+
     fields: DataBinObjectModel
+    """Data bin fields."""
 
 
 class DataBinWrapperModel(BaseModel):
