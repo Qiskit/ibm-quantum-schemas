@@ -14,10 +14,10 @@
 
 from __future__ import annotations
 
-from typing import Sequence, Literal
+from collections.abc import Sequence
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
-
 
 PrimitiveResultExtrapolatorType = Literal[
     "linear",
@@ -43,7 +43,9 @@ class PrimitiveResultZneMetadataModel(BaseModel):
     """Noise factors used for noise amplification.
     """
 
-    extrapolator: PrimitiveResultExtrapolatorType | Sequence[PrimitiveResultExtrapolatorType] | None = None
+    extrapolator: (
+        PrimitiveResultExtrapolatorType | Sequence[PrimitiveResultExtrapolatorType] | None
+    ) = None
     """Extrapolator(s) used for extrapolating to zero noise.
 
     The available extrapolators are:
@@ -68,7 +70,7 @@ class PrimitiveResultZneMetadataModel(BaseModel):
 
     extrapolated_noise_factors: Sequence[float] | None = None
     """Noise factors used to evaluate the fit extrapolation models at.
-    
+
     The noise factors determine the
     points at which the ``extrapolator``\\s are evaluated, to be returned in the data
     fields called ``evs_extrapolated`` and ``stds_extrapolated``."""

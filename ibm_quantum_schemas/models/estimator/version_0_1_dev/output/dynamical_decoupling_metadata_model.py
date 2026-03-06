@@ -51,4 +51,3 @@ class DynamicalDecouplingMetadataModel(BaseModel):
     """Whether to schedule gates as soon as ("asap") or
     as late as ("alap") possible.
     """
-

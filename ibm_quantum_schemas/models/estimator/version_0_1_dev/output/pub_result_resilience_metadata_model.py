@@ -29,7 +29,7 @@ class PubResultResilienceMetadataModel(BaseModel):
     pec: PecMetadataModel | None = None
     """Metadata about PEC."""
 
-    layer_noise: LayerNoiseMetadataModel  | None = None
+    layer_noise: LayerNoiseMetadataModel | None = None
     """Metadata about layer noise."""
 
     zne: PubResultZneMetadataModel | None = None

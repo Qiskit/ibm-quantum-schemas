@@ -12,16 +12,16 @@
 
 """Primitive Result Model."""
 
-
 from __future__ import annotations
 
+from typing import Any, Literal
+
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Literal, Any
 
 from .dynamical_decoupling_metadata_model import DynamicalDecouplingMetadataModel
-from .twirling_metadata_model import TwirlingMetadataModel
 from .primitive_result_resilience_metadata_model import PrimitiveResultResilienceMetadataModel
 from .pub_result_model import PubResultWrapperModel
+from .twirling_metadata_model import TwirlingMetadataModel
 
 
 class PrimitiveResultMetadataModel(BaseModel):
@@ -60,9 +60,8 @@ class PrimitiveResultModel(BaseModel):
 
 
 class PrimitiveResultWrapperModel(BaseModel):
-    """Primitive result wrapper model class.
-    """
-    
+    """Primitive result wrapper model class."""
+
     model_config = ConfigDict(serialize_by_alias=True, extra="forbid")
 
     type_: Literal["PrimitiveResult"] = Field(default="PrimitiveResult", alias="__type__")
@@ -70,4 +69,3 @@ class PrimitiveResultWrapperModel(BaseModel):
 
     value_: PrimitiveResultModel = Field(alias="__value__")
     """The actual data."""
- 

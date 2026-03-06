@@ -83,7 +83,9 @@ class ResilienceOptionsModel(BaseModel):
     See :class:`LayerNoiseLearningOptionsModel` for all options.
     """
 
-    layer_noise_model: NoiseLearnerResultsModel | Sequence[LayerNoiseModelWrapperModel] | None = None
+    layer_noise_model: NoiseLearnerResultsModel | Sequence[LayerNoiseModelWrapperModel] | None = (
+        None
+    )
     """A noise learner result or a sequence of LayerError objects.
 
     If ``None``, all the mitigation strategies that require noise data (e.g., PEC

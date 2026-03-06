@@ -42,7 +42,6 @@ from .input.twirling_options_model import TwirlingOptionsModel, TwirlingStrategy
 from .input.zne_options_model import ExtrapolatorType, ZneOptionsModel
 from .output.primitive_result_model import PrimitiveResultWrapperModel
 
-
 __all__ = [
     "DynamicalDecouplingOptionsModel",
     "EstimatorPubModel",
@@ -67,5 +66,5 @@ __all__ = [
     "TwirlingOptionsModel",
     "TwirlingStrategyType",
     "ZneOptionsModel",
-    "PrimitiveResultWrapperModel"
+    "PrimitiveResultWrapperModel",
 ]

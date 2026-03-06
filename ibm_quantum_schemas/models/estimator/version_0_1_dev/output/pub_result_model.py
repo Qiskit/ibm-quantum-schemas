@@ -12,11 +12,11 @@
 
 """Pub Result Model."""
 
-
 from __future__ import annotations
 
+from typing import Any, Literal
+
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Literal, Any
 
 from .data_bin_model import DataBinWrapperModel
 from .pub_result_resilience_metadata_model import PubResultResilienceMetadataModel
@@ -60,9 +60,8 @@ class PubResultModel(BaseModel):
 
 
 class PubResultWrapperModel(BaseModel):
-    """Pub result wrapper model class.
-    """
-    
+    """Pub result wrapper model class."""
+
     model_config = ConfigDict(serialize_by_alias=True, extra="forbid")
 
     type_: Literal["PubResult"] = Field(default="PubResult", alias="__type__")

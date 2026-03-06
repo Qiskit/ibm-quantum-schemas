@@ -14,10 +14,10 @@
 
 from __future__ import annotations
 
-from typing import Sequence, Literal
+from collections.abc import Sequence
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
-
 
 PubResultExtrapolatorType = Literal[
     "linear",

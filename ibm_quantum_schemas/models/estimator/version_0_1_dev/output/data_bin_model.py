@@ -12,8 +12,9 @@
 
 """Data bin models"""
 
-from pydantic import BaseModel, ConfigDict, Field
 from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, Field
 
 from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
 
@@ -32,8 +33,7 @@ class DataBinObjectModel(BaseModel):
 
 
 class DataBinModel(BaseModel):
-    """Data bin model class.
-    """
+    """Data bin model class."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -41,12 +41,11 @@ class DataBinModel(BaseModel):
     field_types: list[str]
     shape: tuple[int, ...]
     fields: DataBinObjectModel
-    
+
 
 class DataBinWrapperModel(BaseModel):
-    """Data bin wrapper model class.
-    """
-    
+    """Data bin wrapper model class."""
+
     model_config = ConfigDict(serialize_by_alias=True, extra="forbid")
 
     type_: Literal["DataBin"] = Field(default="DataBin", alias="__type__")

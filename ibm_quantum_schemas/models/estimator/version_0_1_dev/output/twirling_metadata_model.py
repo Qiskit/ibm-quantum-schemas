@@ -33,7 +33,7 @@ class TwirlingMetadataModel(BaseModel):
 
     enable_gates: bool | None = None
     """Whether to apply 2-qubit Clifford gate twirling.
-    
+
     """
 
     enable_measure: bool = True
