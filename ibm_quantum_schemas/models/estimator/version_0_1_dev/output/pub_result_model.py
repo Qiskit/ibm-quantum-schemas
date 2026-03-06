@@ -56,3 +56,6 @@ class PubResultMetadataModel(BaseModel):
     target_precision: float | None = None
     shots: int | None = None
     num_randomizations: int | None = None
+
+    experimental: dict[str, Any] | None = None
+    """Experimental metadata."""

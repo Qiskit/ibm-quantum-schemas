@@ -16,7 +16,7 @@
 from __future__ import annotations
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Literal
+from typing import Literal, Any
 
 from .dynamical_decoupling_metadata_model import DynamicalDecouplingMetadataModel
 from .twirling_metadata_model import TwirlingMetadataModel
@@ -66,5 +66,8 @@ class PrimitiveResultMetadataModel(BaseModel):
 
     version: Literal[2] = 2
     """Version number. Must be 2."""
+
+    experimental: dict[str, Any] | None = None
+    """Experimental metadata."""
 
     
