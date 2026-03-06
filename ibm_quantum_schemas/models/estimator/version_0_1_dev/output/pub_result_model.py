@@ -19,6 +19,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from typing import Literal, Any
 
 from .data_bin_model import DataBinWrapperModel
+from .pub_result_resilience_metadata_model import PubResultResilienceMetadataModel
 
 
 class PubResultMetadataModel(BaseModel):
@@ -32,6 +33,7 @@ class PubResultMetadataModel(BaseModel):
     target_precision: float | None = None
     shots: int | None = None
     num_randomizations: int | None = None
+    resilience: PubResultResilienceMetadataModel | None = None
 
     experimental: dict[str, Any] | None = None
     """Experimental metadata."""
