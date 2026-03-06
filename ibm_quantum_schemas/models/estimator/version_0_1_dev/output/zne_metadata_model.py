@@ -16,11 +16,13 @@ from __future__ import annotations
 
 from typing import Sequence
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class ZneMetadataModel(BaseModel):
     """Metadata about ZNE."""
+
+    model_config = ConfigDict(extra="forbid")
 
     noise_factors: Sequence[float] | None
     """Noise factors used for noise amplification.

@@ -20,7 +20,7 @@ from pydantic import BaseModel, ConfigDict, Field, conlist
 class NoiseModel(BaseModel):
     """A wrapper around Noise model data for the simulator."""
 
-    model_config = ConfigDict(serialize_by_alias=True)
+    model_config = ConfigDict(serialize_by_alias=True, extra="forbid")
 
     type_: Literal["NoiseModel"] = Field(default="NoiseModel", alias="__type__")
     """Redundant type information."""

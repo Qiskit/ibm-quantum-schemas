@@ -24,6 +24,8 @@ from .data_bin_model import DataBinWrapperModel
 class PubResultModel(BaseModel):
     """A model describing the Estimator program output for a single pub."""
 
+    model_config = ConfigDict(extra="forbid")
+
     data: DataBinWrapperModel
     """Result data from the estimator v2 job."""
 
@@ -35,7 +37,7 @@ class PubResultWrapperModel(BaseModel):
     """Pub result wrapper model class.
     """
     
-    model_config = ConfigDict(serialize_by_alias=True)
+    model_config = ConfigDict(serialize_by_alias=True, extra="forbid")
 
     type_: Literal["PubResult"] = Field(default="PubResult", alias="__type__")
     """Redundant type information."""
@@ -45,6 +47,8 @@ class PubResultWrapperModel(BaseModel):
 
 class PubResultMetadataModel(BaseModel):
     """Metadata for the estimator v2 job."""
+
+    model_config = ConfigDict(extra="forbid")
 
     circuit_metadata: dict | None = None
     """Circuit metadata, attached by the user to the input circuit."""
