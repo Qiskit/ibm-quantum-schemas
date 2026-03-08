@@ -46,7 +46,7 @@ class TestPubResultResilienceMetadataModelValidation:
         })
         data = {"pec": pec_data}
         model = PubResultResilienceMetadataModel.model_validate(data)
-        assert model.pec is not None
+        assert model.pec == pec_data
         assert model.pec.num_randomizations_scaling == 1.5
 
     def test_pec_none(self):
@@ -63,8 +63,9 @@ class TestPubResultResilienceMetadataModelValidation:
         })
         data = {"layer_noise": layer_noise_data}
         model = PubResultResilienceMetadataModel.model_validate(data)
-        assert model.layer_noise is not None
+        assert model.layer_noise == layer_noise_data
         assert model.layer_noise.noise_overhead == 2.5
+        assert model.layer_noise.total_mitigated_layers == 10
 
     def test_layer_noise_none(self):
         """Test that layer_noise can be None."""
@@ -79,7 +80,7 @@ class TestPubResultResilienceMetadataModelValidation:
         })
         data = {"zne": zne_data}
         model = PubResultResilienceMetadataModel.model_validate(data)
-        assert model.zne is not None
+        assert model.zne == zne_data
         assert model.zne.extrapolator == "exponential"
 
     def test_zne_none(self):
@@ -107,9 +108,9 @@ class TestPubResultResilienceMetadataModelValidation:
             "zne": zne_data,
         }
         model = PubResultResilienceMetadataModel.model_validate(data)
-        assert model.pec is not None
-        assert model.layer_noise is not None
-        assert model.zne is not None
+        assert model.pec == pec_data
+        assert model.layer_noise == layer_noise_data
+        assert model.zne == zne_data
 
     def test_valid_with_layer_noise_infinity(self):
         """Test that layer_noise with infinity noise_overhead is valid."""
@@ -155,9 +156,13 @@ class TestPubResultResilienceMetadataModelValidation:
         }
         model = PubResultResilienceMetadataModel.model_validate(data)
         serialized = model.model_dump()
-        assert serialized["pec"] is not None
-        assert serialized["layer_noise"] is not None
-        assert serialized["zne"] is not None
+        assert "pec" in serialized
+        assert serialized["pec"]["num_randomizations_scaling"] == 2.0
+        assert "layer_noise" in serialized
+        assert serialized["layer_noise"]["noise_overhead"] == 3.0
+        assert serialized["layer_noise"]["total_mitigated_layers"] == 15
+        assert "zne" in serialized
+        assert serialized["zne"]["extrapolator"] == "linear"
 
     def test_serialization_with_none_values(self):
         """Test that serialization works with None values."""

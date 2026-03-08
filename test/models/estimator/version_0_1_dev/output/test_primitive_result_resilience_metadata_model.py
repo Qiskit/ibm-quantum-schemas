@@ -15,6 +15,9 @@
 import pytest
 from pydantic import ValidationError
 
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.layer_noise_model_metadata_model import (
+    LayerNoiseModelMetadataWrapperModel,
+)
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.primitive_result_resilience_metadata_model import (
     PrimitiveResultResilienceMetadataModel,
 )
@@ -97,8 +100,9 @@ class TestPrimitiveResultResilienceMetadataModelValidation:
         })
         data = {"zne": zne_data}
         model = PrimitiveResultResilienceMetadataModel.model_validate(data)
-        assert model.zne is not None
+        assert model.zne == zne_data
         assert model.zne.noise_factors == [1.0, 2.0]
+        assert model.zne.extrapolator == "exponential"
 
     def test_zne_none(self):
         """Test that zne can be None."""
@@ -110,8 +114,9 @@ class TestPrimitiveResultResilienceMetadataModelValidation:
         """Test that metadata with layer_noise_model is valid."""
         data = {"layer_noise_model": [valid_layer_noise_wrapper]}
         model = PrimitiveResultResilienceMetadataModel.model_validate(data)
-        assert model.layer_noise_model is not None
         assert len(model.layer_noise_model) == 1
+        expected_wrapper = LayerNoiseModelMetadataWrapperModel.model_validate(valid_layer_noise_wrapper)
+        assert model.layer_noise_model[0] == expected_wrapper
 
     def test_layer_noise_model_empty_list(self):
         """Test that layer_noise_model accepts empty list."""
@@ -147,8 +152,10 @@ class TestPrimitiveResultResilienceMetadataModelValidation:
         assert model.measure_mitigation is True
         assert model.zne_mitigation is True
         assert model.pec_mitigation is False
-        assert model.zne is not None
-        assert model.layer_noise_model is not None
+        assert model.zne == zne_data
+        assert len(model.layer_noise_model) == 1
+        expected_wrapper = LayerNoiseModelMetadataWrapperModel.model_validate(valid_layer_noise_wrapper)
+        assert model.layer_noise_model[0] == expected_wrapper
 
     def test_extra_fields_forbidden(self):
         """Test that extra fields are forbidden."""
@@ -174,7 +181,10 @@ class TestPrimitiveResultResilienceMetadataModelValidation:
         assert serialized["measure_mitigation"] is True
         assert serialized["zne_mitigation"] is False
         assert serialized["pec_mitigation"] is True
-        assert serialized["zne"] is not None
-        assert serialized["layer_noise_model"] is not None
+        assert "zne" in serialized
+        assert serialized["zne"]["noise_factors"] == [1.0, 2.0]
+        assert serialized["zne"]["extrapolator"] == "linear"
+        assert "layer_noise_model" in serialized
+        assert len(serialized["layer_noise_model"]) == 1
 
 # Made with Bob

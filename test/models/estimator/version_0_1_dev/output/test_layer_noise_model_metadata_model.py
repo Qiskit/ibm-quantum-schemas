@@ -23,6 +23,8 @@ from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.layer_noise_mod
     PauliListMetadataModel,
     PauliListMetadataWrapperModel,
 )
+from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
+from ibm_quantum_schemas.models.typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
 
 
 class TestPauliListMetadataModelValidation:
@@ -116,8 +118,9 @@ class TestPauliLindbladErrorMetadataModelValidation:
             "rates": valid_ndarray_wrapper,
         }
         model = PauliLindbladErrorMetadataModel.model_validate(data)
-        assert model.generators is not None
-        assert model.rates is not None
+        assert model.generators == generators
+        expected_rates = NdarrayWrapperModel.model_validate(valid_ndarray_wrapper)
+        assert model.rates == expected_rates
 
     def test_missing_required_generators(self, valid_ndarray_wrapper):
         """Test that missing generators is rejected."""
@@ -203,9 +206,11 @@ class TestLayerNoiseModelMetadataModelValidation:
             "error": error,
         }
         model = LayerNoiseModelMetadataModel.model_validate(data)
-        assert model.circuit is not None
+        expected_circuit = TypedQpyCircuitModelV13to17.model_validate(valid_typed_qpy_circuit_dict_v13)
+        assert model.circuit.type_ == expected_circuit.type_
+        assert model.circuit.value_ == expected_circuit.value_
         assert model.qubits == [0, 1, 2]
-        assert model.error is not None
+        assert model.error == error
 
     def test_valid_with_none_error(self, valid_typed_qpy_circuit_dict_v13):
         """Test that layer noise model with None error is accepted."""

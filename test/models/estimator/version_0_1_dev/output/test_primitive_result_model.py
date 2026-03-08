@@ -58,7 +58,7 @@ class TestPrimitiveResultMetadataModelValidation:
         dd_data = DynamicalDecouplingMetadataModel.model_validate({"enable": True})
         data = {"dynamical_decoupling": dd_data}
         model = PrimitiveResultMetadataModel.model_validate(data)
-        assert model.dynamical_decoupling is not None
+        assert model.dynamical_decoupling == dd_data
         assert model.dynamical_decoupling.enable is True
 
     def test_dynamical_decoupling_none(self):
@@ -72,7 +72,7 @@ class TestPrimitiveResultMetadataModelValidation:
         twirling_data = TwirlingMetadataModel.model_validate({"enable_gates": True})
         data = {"twirling": twirling_data}
         model = PrimitiveResultMetadataModel.model_validate(data)
-        assert model.twirling is not None
+        assert model.twirling == twirling_data
         assert model.twirling.enable_gates is True
 
     def test_twirling_none(self):
@@ -88,7 +88,7 @@ class TestPrimitiveResultMetadataModelValidation:
         })
         data = {"resilience": resilience_data}
         model = PrimitiveResultMetadataModel.model_validate(data)
-        assert model.resilience is not None
+        assert model.resilience == resilience_data
         assert model.resilience.measure_mitigation is True
 
     def test_resilience_none(self):
@@ -154,9 +154,9 @@ class TestPrimitiveResultMetadataModelValidation:
             "experimental": {"debug": True},
         }
         model = PrimitiveResultMetadataModel.model_validate(data)
-        assert model.dynamical_decoupling is not None
-        assert model.twirling is not None
-        assert model.resilience is not None
+        assert model.dynamical_decoupling == dd_data
+        assert model.twirling == twirling_data
+        assert model.resilience == resilience_data
         assert model.version == 2
         assert model.experimental == {"debug": True}
 
@@ -196,7 +196,8 @@ class TestPrimitiveResultModelValidation:
         }
         model = PrimitiveResultModel.model_validate(data)
         assert len(model.pub_results) == 1
-        assert model.metadata is not None
+        assert model.pub_results[0] == pub_result_wrapper
+        assert model.metadata == metadata
 
     def test_valid_with_multiple_pub_results(self, valid_ndarray_wrapper):
         """Test primitive result with multiple pub results."""
@@ -271,9 +272,9 @@ class TestPrimitiveResultModelValidation:
             "metadata": metadata,
         }
         model = PrimitiveResultModel.model_validate(data)
-        assert model.metadata.dynamical_decoupling is not None
-        assert model.metadata.twirling is not None
-        assert model.metadata.resilience is not None
+        assert model.metadata.dynamical_decoupling == dd_data
+        assert model.metadata.twirling == twirling_data
+        assert model.metadata.resilience == resilience_data
 
     def test_missing_required_pub_results(self):
         """Test that missing pub_results is rejected."""

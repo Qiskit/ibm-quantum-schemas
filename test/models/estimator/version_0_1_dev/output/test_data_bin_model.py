@@ -20,6 +20,7 @@ from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.data_bin_model 
     DataBinObjectModel,
     DataBinWrapperModel,
 )
+from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
 
 
 class TestDataBinObjectModelValidation:
@@ -41,7 +42,8 @@ class TestDataBinObjectModelValidation:
         """Test that data bin object with evs is valid."""
         data = {"evs": valid_ndarray_wrapper}
         model = DataBinObjectModel.model_validate(data)
-        assert model.evs is not None
+        expected_evs = NdarrayWrapperModel.model_validate(valid_ndarray_wrapper)
+        assert model.evs == expected_evs
         assert model.stds is None
 
     def test_valid_with_all_fields(self, valid_ndarray_wrapper):
@@ -57,14 +59,15 @@ class TestDataBinObjectModelValidation:
             "ensemble_standard_error": valid_ndarray_wrapper,
         }
         model = DataBinObjectModel.model_validate(data)
-        assert model.evs is not None
-        assert model.stds is not None
-        assert model.evs_noise_factors is not None
-        assert model.stds_noise_factors is not None
-        assert model.ensemble_stds_noise_factors is not None
-        assert model.evs_extrapolated is not None
-        assert model.stds_extrapolated is not None
-        assert model.ensemble_standard_error is not None
+        expected = NdarrayWrapperModel.model_validate(valid_ndarray_wrapper)
+        assert model.evs == expected
+        assert model.stds == expected
+        assert model.evs_noise_factors == expected
+        assert model.stds_noise_factors == expected
+        assert model.ensemble_stds_noise_factors == expected
+        assert model.evs_extrapolated == expected
+        assert model.stds_extrapolated == expected
+        assert model.ensemble_standard_error == expected
 
     def test_extra_fields_forbidden(self):
         """Test that extra fields are forbidden."""
@@ -89,7 +92,8 @@ class TestDataBinModelValidation:
         assert model.field_names == ["evs"]
         assert model.field_types == ["ndarray"]
         assert model.shape == (10,)
-        assert model.fields.evs is not None
+        expected_evs = NdarrayWrapperModel.model_validate(valid_ndarray_wrapper)
+        assert model.fields.evs == expected_evs
 
     def test_valid_with_multiple_fields(self, valid_ndarray_wrapper):
         """Test data bin with multiple fields."""

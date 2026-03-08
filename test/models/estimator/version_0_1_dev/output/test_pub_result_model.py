@@ -108,7 +108,7 @@ class TestPubResultMetadataModelValidation:
         resilience_data = PubResultResilienceMetadataModel.model_validate({})
         data = {"resilience": resilience_data}
         model = PubResultMetadataModel.model_validate(data)
-        assert model.resilience is not None
+        assert model.resilience == resilience_data
 
     def test_resilience_none(self):
         """Test that resilience can be None."""
@@ -150,7 +150,7 @@ class TestPubResultMetadataModelValidation:
         assert model.target_precision == 0.05
         assert model.shots == 2048
         assert model.num_randomizations == 50
-        assert model.resilience is not None
+        assert model.resilience == resilience_data
         assert model.experimental == {"debug": True}
 
     def test_extra_fields_forbidden(self):
@@ -180,8 +180,8 @@ class TestPubResultModelValidation:
             "metadata": metadata,
         }
         model = PubResultModel.model_validate(data)
-        assert model.data is not None
-        assert model.metadata is not None
+        assert model.data == data_bin_wrapper
+        assert model.metadata == metadata
 
     def test_valid_with_full_metadata(self, valid_ndarray_wrapper):
         """Test pub result with full metadata."""
@@ -277,7 +277,8 @@ class TestPubResultWrapperModelValidation:
         data = {"__value__": value}
         model = PubResultWrapperModel.model_validate(data)
         assert model.type_ == "PubResult"
-        assert model.value_.data is not None
+        assert model.value_ == value
+        assert model.value_.data == data_bin_wrapper
 
     def test_valid_wrapper_with_explicit_type(self, valid_ndarray_wrapper):
         """Test that a valid wrapper with explicit type is accepted."""
