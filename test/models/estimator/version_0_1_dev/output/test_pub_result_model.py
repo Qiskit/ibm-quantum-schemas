@@ -15,9 +15,6 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pub_result_resilience_metadata_model import (
-    PubResultResilienceMetadataModel,
-)
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.data_bin_model import (
     DataBinModel,
     DataBinObjectModel,
@@ -27,6 +24,9 @@ from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pub_result_mode
     PubResultMetadataModel,
     PubResultModel,
     PubResultWrapperModel,
+)
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pub_result_resilience_metadata_model import (
+    PubResultResilienceMetadataModel,
 )
 
 
