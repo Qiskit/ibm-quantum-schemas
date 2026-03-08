@@ -14,9 +14,9 @@
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class LayerNoiseMetadataModel(BaseModel):
@@ -27,10 +27,10 @@ class LayerNoiseMetadataModel(BaseModel):
     noise_overhead: float | Literal["infinity"] | None = None
     """Overall noise overhead."""
 
-    total_mitigated_layers: int | None = None
+    total_mitigated_layers: Annotated[int, Field(ge=0)] | None = None
     """Number of mitigated layers, including duplications of unique layers."""
 
-    unique_mitigated_layers: int | None = None
+    unique_mitigated_layers: Annotated[int, Field(ge=0)] | None = None
     """Number of unique mitigated layers."""
 
     unique_mitigated_layers_noise_overhead: list[float | Literal["infinity"]] | None = None

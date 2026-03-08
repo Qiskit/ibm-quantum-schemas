@@ -52,18 +52,6 @@ def valid_pauli_list_wrapper() -> dict:
 
 
 @pytest.fixture
-def valid_ndarray_wrapper() -> dict:
-    """Fixture to create a valid NdarrayWrapper dict."""
-    rates = np.array([0.1, 0.2, 0.3])
-    buffer = BytesIO()
-    np.save(buffer, rates)
-    rates_data = buffer.getvalue()
-    compressed = zlib.compress(rates_data)
-    encoded = pybase64.b64encode(compressed).decode("utf-8")
-    return {"__type__": "ndarray", "__value__": encoded}
-
-
-@pytest.fixture
 def valid_pauli_lindblad_error(valid_pauli_list_wrapper, valid_ndarray_wrapper) -> dict:
     """Fixture to create a valid PauliLindbladError dict."""
     return {
