@@ -29,6 +29,9 @@ from ibm_quantum_schemas.models.estimator.version_0_1_dev.input.layer_noise_mode
     PauliListModel,
     PauliListWrapperModel,
 )
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.input.simulator_options_model import (
+    NoiseModel,
+)
 
 
 @pytest.fixture
@@ -351,10 +354,6 @@ class TestSerializeByAlias:
 
     def test_noise_model_serializes_with_aliases(self):
         """Test that NoiseModel serializes with aliases."""
-        from ibm_quantum_schemas.models.estimator.version_0_1_dev.input.simulator_options_model import (
-            NoiseModel,
-        )
-
         noise_model_data = {"__type__": "NoiseModel", "__value__": {"some": "data"}}
         model = NoiseModel.model_validate(noise_model_data)
 
