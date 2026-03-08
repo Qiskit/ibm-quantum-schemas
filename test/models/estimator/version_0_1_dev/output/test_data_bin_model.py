@@ -114,7 +114,7 @@ class TestDataBinModelValidation:
         assert len(model.field_types) == 2
         assert model.shape == (5, 3)
 
-    def test_missing_required_field_names(self, valid_ndarray_wrapper):
+    def test_missing_required_field_names(self):
         """Test that missing field_names is rejected."""
         fields = DataBinObjectModel.model_validate({})
         data = {
@@ -125,7 +125,7 @@ class TestDataBinModelValidation:
         with pytest.raises(ValidationError, match="Field required"):
             DataBinModel.model_validate(data)
 
-    def test_missing_required_field_types(self, valid_ndarray_wrapper):
+    def test_missing_required_field_types(self):
         """Test that missing field_types is rejected."""
         fields = DataBinObjectModel.model_validate({})
         data = {
@@ -136,7 +136,7 @@ class TestDataBinModelValidation:
         with pytest.raises(ValidationError, match="Field required"):
             DataBinModel.model_validate(data)
 
-    def test_missing_required_shape(self, valid_ndarray_wrapper):
+    def test_missing_required_shape(self):
         """Test that missing shape is rejected."""
         fields = DataBinObjectModel.model_validate({})
         data = {
@@ -208,7 +208,7 @@ class TestDataBinWrapperModelValidation:
         model = DataBinWrapperModel.model_validate(data)
         assert model.type_ == "DataBin"
 
-    def test_invalid_type(self, valid_ndarray_wrapper):
+    def test_invalid_type(self):
         """Test that invalid type is rejected."""
         fields = DataBinObjectModel.model_validate({})
         value = DataBinModel.model_validate(
