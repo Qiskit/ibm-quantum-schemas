@@ -15,18 +15,15 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.\
-    layer_noise_model_metadata_model import (
-        LayerNoiseModelMetadataWrapperModel,
-    )
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.\
-    primitive_result_resilience_metadata_model import (
-        PrimitiveResultResilienceMetadataModel,
-    )
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.\
-    primitive_result_zne_metadata_model import (
-        PrimitiveResultZneMetadataModel,
-    )
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.layer_noise_model_metadata_model import (
+    LayerNoiseModelMetadataWrapperModel,
+)
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.primitive_result_resilience_metadata_model import (
+    PrimitiveResultResilienceMetadataModel,
+)
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.primitive_result_zne_metadata_model import (
+    PrimitiveResultZneMetadataModel,
+)
 
 
 class TestPrimitiveResultResilienceMetadataModelValidation:

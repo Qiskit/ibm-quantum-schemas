@@ -15,15 +15,14 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.\
-    layer_noise_model_metadata_model import (
-        LayerNoiseModelMetadataModel,
-        LayerNoiseModelMetadataWrapperModel,
-        PauliLindbladErrorMetadataModel,
-        PauliLindbladErrorMetadataWrapperModel,
-        PauliListMetadataModel,
-        PauliListMetadataWrapperModel,
-    )
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.layer_noise_model_metadata_model import (
+    LayerNoiseModelMetadataModel,
+    LayerNoiseModelMetadataWrapperModel,
+    PauliLindbladErrorMetadataModel,
+    PauliLindbladErrorMetadataWrapperModel,
+    PauliListMetadataModel,
+    PauliListMetadataWrapperModel,
+)
 from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
 from ibm_quantum_schemas.models.typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
 
