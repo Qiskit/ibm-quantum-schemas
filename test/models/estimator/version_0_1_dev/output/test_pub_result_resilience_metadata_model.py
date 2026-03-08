@@ -15,14 +15,14 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pub_result_resilience_metadata_model import (
-    PubResultResilienceMetadataModel,
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.layer_noise_metadata_model import (
+    LayerNoiseMetadataModel,
 )
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pec_metadata_model import (
     PecMetadataModel,
 )
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.layer_noise_metadata_model import (
-    LayerNoiseMetadataModel,
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pub_result_resilience_metadata_model import (
+    PubResultResilienceMetadataModel,
 )
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pub_result_zne_metadata_model import (
     PubResultZneMetadataModel,
@@ -41,9 +41,7 @@ class TestPubResultResilienceMetadataModelValidation:
 
     def test_valid_with_pec_metadata(self):
         """Test that metadata with pec is valid."""
-        pec_data = PecMetadataModel.model_validate({
-            "num_randomizations_scaling": 1.5
-        })
+        pec_data = PecMetadataModel.model_validate({"num_randomizations_scaling": 1.5})
         data = {"pec": pec_data}
         model = PubResultResilienceMetadataModel.model_validate(data)
         assert model.pec == pec_data
@@ -57,10 +55,12 @@ class TestPubResultResilienceMetadataModelValidation:
 
     def test_valid_with_layer_noise_metadata(self):
         """Test that metadata with layer_noise is valid."""
-        layer_noise_data = LayerNoiseMetadataModel.model_validate({
-            "noise_overhead": 2.5,
-            "total_mitigated_layers": 10,
-        })
+        layer_noise_data = LayerNoiseMetadataModel.model_validate(
+            {
+                "noise_overhead": 2.5,
+                "total_mitigated_layers": 10,
+            }
+        )
         data = {"layer_noise": layer_noise_data}
         model = PubResultResilienceMetadataModel.model_validate(data)
         assert model.layer_noise == layer_noise_data
@@ -75,9 +75,7 @@ class TestPubResultResilienceMetadataModelValidation:
 
     def test_valid_with_zne_metadata(self):
         """Test that metadata with zne is valid."""
-        zne_data = PubResultZneMetadataModel.model_validate({
-            "extrapolator": "exponential"
-        })
+        zne_data = PubResultZneMetadataModel.model_validate({"extrapolator": "exponential"})
         data = {"zne": zne_data}
         model = PubResultResilienceMetadataModel.model_validate(data)
         assert model.zne == zne_data
@@ -91,17 +89,17 @@ class TestPubResultResilienceMetadataModelValidation:
 
     def test_all_fields_together(self):
         """Test that all fields can be set together."""
-        pec_data = PecMetadataModel.model_validate({
-            "num_randomizations_scaling": 1.5
-        })
-        layer_noise_data = LayerNoiseMetadataModel.model_validate({
-            "noise_overhead": 2.5,
-            "total_mitigated_layers": 10,
-            "unique_mitigated_layers": 5,
-        })
-        zne_data = PubResultZneMetadataModel.model_validate({
-            "extrapolator": ["exponential", "linear"]
-        })
+        pec_data = PecMetadataModel.model_validate({"num_randomizations_scaling": 1.5})
+        layer_noise_data = LayerNoiseMetadataModel.model_validate(
+            {
+                "noise_overhead": 2.5,
+                "total_mitigated_layers": 10,
+                "unique_mitigated_layers": 5,
+            }
+        )
+        zne_data = PubResultZneMetadataModel.model_validate(
+            {"extrapolator": ["exponential", "linear"]}
+        )
         data = {
             "pec": pec_data,
             "layer_noise": layer_noise_data,
@@ -114,19 +112,21 @@ class TestPubResultResilienceMetadataModelValidation:
 
     def test_valid_with_layer_noise_infinity(self):
         """Test that layer_noise with infinity noise_overhead is valid."""
-        layer_noise_data = LayerNoiseMetadataModel.model_validate({
-            "noise_overhead": "infinity",
-            "total_mitigated_layers": 5,
-        })
+        layer_noise_data = LayerNoiseMetadataModel.model_validate(
+            {
+                "noise_overhead": "infinity",
+                "total_mitigated_layers": 5,
+            }
+        )
         data = {"layer_noise": layer_noise_data}
         model = PubResultResilienceMetadataModel.model_validate(data)
         assert model.layer_noise.noise_overhead == "infinity"
 
     def test_valid_with_zne_list_extrapolator(self):
         """Test that zne with list extrapolator is valid."""
-        zne_data = PubResultZneMetadataModel.model_validate({
-            "extrapolator": ["exponential", "linear", "fallback"]
-        })
+        zne_data = PubResultZneMetadataModel.model_validate(
+            {"extrapolator": ["exponential", "linear", "fallback"]}
+        )
         data = {"zne": zne_data}
         model = PubResultResilienceMetadataModel.model_validate(data)
         assert len(model.zne.extrapolator) == 3
@@ -139,16 +139,14 @@ class TestPubResultResilienceMetadataModelValidation:
 
     def test_serialization(self):
         """Test that serialization works correctly."""
-        pec_data = PecMetadataModel.model_validate({
-            "num_randomizations_scaling": 2.0
-        })
-        layer_noise_data = LayerNoiseMetadataModel.model_validate({
-            "noise_overhead": 3.0,
-            "total_mitigated_layers": 15,
-        })
-        zne_data = PubResultZneMetadataModel.model_validate({
-            "extrapolator": "linear"
-        })
+        pec_data = PecMetadataModel.model_validate({"num_randomizations_scaling": 2.0})
+        layer_noise_data = LayerNoiseMetadataModel.model_validate(
+            {
+                "noise_overhead": 3.0,
+                "total_mitigated_layers": 15,
+            }
+        )
+        zne_data = PubResultZneMetadataModel.model_validate({"extrapolator": "linear"})
         data = {
             "pec": pec_data,
             "layer_noise": layer_noise_data,
@@ -171,5 +169,6 @@ class TestPubResultResilienceMetadataModelValidation:
         assert serialized["pec"] is None
         assert serialized["layer_noise"] is None
         assert serialized["zne"] is None
+
 
 # Made with Bob

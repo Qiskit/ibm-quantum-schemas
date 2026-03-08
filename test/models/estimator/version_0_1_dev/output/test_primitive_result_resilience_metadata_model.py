@@ -94,10 +94,12 @@ class TestPrimitiveResultResilienceMetadataModelValidation:
 
     def test_valid_with_zne_metadata(self):
         """Test that metadata with zne metadata is valid."""
-        zne_data = PrimitiveResultZneMetadataModel.model_validate({
-            "noise_factors": [1.0, 2.0],
-            "extrapolator": "exponential",
-        })
+        zne_data = PrimitiveResultZneMetadataModel.model_validate(
+            {
+                "noise_factors": [1.0, 2.0],
+                "extrapolator": "exponential",
+            }
+        )
         data = {"zne": zne_data}
         model = PrimitiveResultResilienceMetadataModel.model_validate(data)
         assert model.zne == zne_data
@@ -115,7 +117,9 @@ class TestPrimitiveResultResilienceMetadataModelValidation:
         data = {"layer_noise_model": [valid_layer_noise_wrapper]}
         model = PrimitiveResultResilienceMetadataModel.model_validate(data)
         assert len(model.layer_noise_model) == 1
-        expected_wrapper = LayerNoiseModelMetadataWrapperModel.model_validate(valid_layer_noise_wrapper)
+        expected_wrapper = LayerNoiseModelMetadataWrapperModel.model_validate(
+            valid_layer_noise_wrapper
+        )
         assert model.layer_noise_model[0] == expected_wrapper
 
     def test_layer_noise_model_empty_list(self):
@@ -138,9 +142,11 @@ class TestPrimitiveResultResilienceMetadataModelValidation:
 
     def test_all_fields_together(self, valid_layer_noise_wrapper):
         """Test that all fields can be set together."""
-        zne_data = PrimitiveResultZneMetadataModel.model_validate({
-            "noise_factors": [1.0, 2.0],
-        })
+        zne_data = PrimitiveResultZneMetadataModel.model_validate(
+            {
+                "noise_factors": [1.0, 2.0],
+            }
+        )
         data = {
             "measure_mitigation": True,
             "zne_mitigation": True,
@@ -154,7 +160,9 @@ class TestPrimitiveResultResilienceMetadataModelValidation:
         assert model.pec_mitigation is False
         assert model.zne == zne_data
         assert len(model.layer_noise_model) == 1
-        expected_wrapper = LayerNoiseModelMetadataWrapperModel.model_validate(valid_layer_noise_wrapper)
+        expected_wrapper = LayerNoiseModelMetadataWrapperModel.model_validate(
+            valid_layer_noise_wrapper
+        )
         assert model.layer_noise_model[0] == expected_wrapper
 
     def test_extra_fields_forbidden(self):
@@ -165,10 +173,12 @@ class TestPrimitiveResultResilienceMetadataModelValidation:
 
     def test_serialization(self, valid_layer_noise_wrapper):
         """Test that serialization works correctly."""
-        zne_data = PrimitiveResultZneMetadataModel.model_validate({
-            "noise_factors": [1.0, 2.0],
-            "extrapolator": "linear",
-        })
+        zne_data = PrimitiveResultZneMetadataModel.model_validate(
+            {
+                "noise_factors": [1.0, 2.0],
+                "extrapolator": "linear",
+            }
+        )
         data = {
             "measure_mitigation": True,
             "zne_mitigation": False,
@@ -186,5 +196,6 @@ class TestPrimitiveResultResilienceMetadataModelValidation:
         assert serialized["zne"]["extrapolator"] == "linear"
         assert "layer_noise_model" in serialized
         assert len(serialized["layer_noise_model"]) == 1
+
 
 # Made with Bob

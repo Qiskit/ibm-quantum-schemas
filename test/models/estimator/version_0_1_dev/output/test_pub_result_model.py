@@ -15,15 +15,15 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pub_result_model import (
-    PubResultMetadataModel,
-    PubResultModel,
-    PubResultWrapperModel,
-)
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.data_bin_model import (
     DataBinModel,
     DataBinObjectModel,
     DataBinWrapperModel,
+)
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pub_result_model import (
+    PubResultMetadataModel,
+    PubResultModel,
+    PubResultWrapperModel,
 )
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pub_result_resilience_metadata_model import (
     PubResultResilienceMetadataModel,
@@ -166,15 +166,17 @@ class TestPubResultModelValidation:
     def test_valid_pub_result(self, valid_ndarray_wrapper):
         """Test that a valid pub result is accepted."""
         fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        data_bin = DataBinModel.model_validate({
-            "field_names": ["evs"],
-            "field_types": ["ndarray"],
-            "shape": (10,),
-            "fields": fields,
-        })
+        data_bin = DataBinModel.model_validate(
+            {
+                "field_names": ["evs"],
+                "field_types": ["ndarray"],
+                "shape": (10,),
+                "fields": fields,
+            }
+        )
         data_bin_wrapper = DataBinWrapperModel.model_validate({"__value__": data_bin})
         metadata = PubResultMetadataModel.model_validate({})
-        
+
         data = {
             "data": data_bin_wrapper,
             "metadata": metadata,
@@ -186,24 +188,28 @@ class TestPubResultModelValidation:
     def test_valid_with_full_metadata(self, valid_ndarray_wrapper):
         """Test pub result with full metadata."""
         fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        data_bin = DataBinModel.model_validate({
-            "field_names": ["evs"],
-            "field_types": ["ndarray"],
-            "shape": (5,),
-            "fields": fields,
-        })
+        data_bin = DataBinModel.model_validate(
+            {
+                "field_names": ["evs"],
+                "field_types": ["ndarray"],
+                "shape": (5,),
+                "fields": fields,
+            }
+        )
         data_bin_wrapper = DataBinWrapperModel.model_validate({"__value__": data_bin})
-        
+
         resilience_data = PubResultResilienceMetadataModel.model_validate({})
-        metadata = PubResultMetadataModel.model_validate({
-            "circuit_metadata": {"id": "circuit_1"},
-            "target_precision": 0.01,
-            "shots": 1024,
-            "num_randomizations": 100,
-            "resilience": resilience_data,
-            "experimental": {"test": True},
-        })
-        
+        metadata = PubResultMetadataModel.model_validate(
+            {
+                "circuit_metadata": {"id": "circuit_1"},
+                "target_precision": 0.01,
+                "shots": 1024,
+                "num_randomizations": 100,
+                "resilience": resilience_data,
+                "experimental": {"test": True},
+            }
+        )
+
         data = {
             "data": data_bin_wrapper,
             "metadata": metadata,
@@ -222,14 +228,16 @@ class TestPubResultModelValidation:
     def test_missing_required_metadata(self, valid_ndarray_wrapper):
         """Test that missing metadata is rejected."""
         fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        data_bin = DataBinModel.model_validate({
-            "field_names": ["evs"],
-            "field_types": ["ndarray"],
-            "shape": (10,),
-            "fields": fields,
-        })
+        data_bin = DataBinModel.model_validate(
+            {
+                "field_names": ["evs"],
+                "field_types": ["ndarray"],
+                "shape": (10,),
+                "fields": fields,
+            }
+        )
         data_bin_wrapper = DataBinWrapperModel.model_validate({"__value__": data_bin})
-        
+
         data = {"data": data_bin_wrapper}
         with pytest.raises(ValidationError, match="Field required"):
             PubResultModel.model_validate(data)
@@ -237,15 +245,17 @@ class TestPubResultModelValidation:
     def test_extra_fields_forbidden(self, valid_ndarray_wrapper):
         """Test that extra fields are forbidden."""
         fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        data_bin = DataBinModel.model_validate({
-            "field_names": ["evs"],
-            "field_types": ["ndarray"],
-            "shape": (10,),
-            "fields": fields,
-        })
+        data_bin = DataBinModel.model_validate(
+            {
+                "field_names": ["evs"],
+                "field_types": ["ndarray"],
+                "shape": (10,),
+                "fields": fields,
+            }
+        )
         data_bin_wrapper = DataBinWrapperModel.model_validate({"__value__": data_bin})
         metadata = PubResultMetadataModel.model_validate({})
-        
+
         data = {
             "data": data_bin_wrapper,
             "metadata": metadata,
@@ -261,19 +271,23 @@ class TestPubResultWrapperModelValidation:
     def test_valid_wrapper_with_defaults(self, valid_ndarray_wrapper):
         """Test that a valid wrapper with default type is accepted."""
         fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        data_bin = DataBinModel.model_validate({
-            "field_names": ["evs"],
-            "field_types": ["ndarray"],
-            "shape": (10,),
-            "fields": fields,
-        })
+        data_bin = DataBinModel.model_validate(
+            {
+                "field_names": ["evs"],
+                "field_types": ["ndarray"],
+                "shape": (10,),
+                "fields": fields,
+            }
+        )
         data_bin_wrapper = DataBinWrapperModel.model_validate({"__value__": data_bin})
         metadata = PubResultMetadataModel.model_validate({})
-        
-        value = PubResultModel.model_validate({
-            "data": data_bin_wrapper,
-            "metadata": metadata,
-        })
+
+        value = PubResultModel.model_validate(
+            {
+                "data": data_bin_wrapper,
+                "metadata": metadata,
+            }
+        )
         data = {"__value__": value}
         model = PubResultWrapperModel.model_validate(data)
         assert model.type_ == "PubResult"
@@ -283,19 +297,23 @@ class TestPubResultWrapperModelValidation:
     def test_valid_wrapper_with_explicit_type(self, valid_ndarray_wrapper):
         """Test that a valid wrapper with explicit type is accepted."""
         fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        data_bin = DataBinModel.model_validate({
-            "field_names": ["evs"],
-            "field_types": ["ndarray"],
-            "shape": (10,),
-            "fields": fields,
-        })
+        data_bin = DataBinModel.model_validate(
+            {
+                "field_names": ["evs"],
+                "field_types": ["ndarray"],
+                "shape": (10,),
+                "fields": fields,
+            }
+        )
         data_bin_wrapper = DataBinWrapperModel.model_validate({"__value__": data_bin})
         metadata = PubResultMetadataModel.model_validate({})
-        
-        value = PubResultModel.model_validate({
-            "data": data_bin_wrapper,
-            "metadata": metadata,
-        })
+
+        value = PubResultModel.model_validate(
+            {
+                "data": data_bin_wrapper,
+                "metadata": metadata,
+            }
+        )
         data = {
             "__type__": "PubResult",
             "__value__": value,
@@ -306,19 +324,23 @@ class TestPubResultWrapperModelValidation:
     def test_invalid_type(self, valid_ndarray_wrapper):
         """Test that invalid type is rejected."""
         fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        data_bin = DataBinModel.model_validate({
-            "field_names": ["evs"],
-            "field_types": ["ndarray"],
-            "shape": (10,),
-            "fields": fields,
-        })
+        data_bin = DataBinModel.model_validate(
+            {
+                "field_names": ["evs"],
+                "field_types": ["ndarray"],
+                "shape": (10,),
+                "fields": fields,
+            }
+        )
         data_bin_wrapper = DataBinWrapperModel.model_validate({"__value__": data_bin})
         metadata = PubResultMetadataModel.model_validate({})
-        
-        value = PubResultModel.model_validate({
-            "data": data_bin_wrapper,
-            "metadata": metadata,
-        })
+
+        value = PubResultModel.model_validate(
+            {
+                "data": data_bin_wrapper,
+                "metadata": metadata,
+            }
+        )
         data = {
             "__type__": "InvalidType",
             "__value__": value,
@@ -335,19 +357,23 @@ class TestPubResultWrapperModelValidation:
     def test_serialization_uses_aliases(self, valid_ndarray_wrapper):
         """Test that serialization uses aliases."""
         fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        data_bin = DataBinModel.model_validate({
-            "field_names": ["evs"],
-            "field_types": ["ndarray"],
-            "shape": (10,),
-            "fields": fields,
-        })
+        data_bin = DataBinModel.model_validate(
+            {
+                "field_names": ["evs"],
+                "field_types": ["ndarray"],
+                "shape": (10,),
+                "fields": fields,
+            }
+        )
         data_bin_wrapper = DataBinWrapperModel.model_validate({"__value__": data_bin})
         metadata = PubResultMetadataModel.model_validate({})
-        
-        value = PubResultModel.model_validate({
-            "data": data_bin_wrapper,
-            "metadata": metadata,
-        })
+
+        value = PubResultModel.model_validate(
+            {
+                "data": data_bin_wrapper,
+                "metadata": metadata,
+            }
+        )
         model = PubResultWrapperModel.model_validate({"__value__": value})
         serialized = model.model_dump(mode="json")
         assert "__type__" in serialized
@@ -358,24 +384,29 @@ class TestPubResultWrapperModelValidation:
     def test_extra_fields_forbidden(self, valid_ndarray_wrapper):
         """Test that extra fields are forbidden."""
         fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        data_bin = DataBinModel.model_validate({
-            "field_names": ["evs"],
-            "field_types": ["ndarray"],
-            "shape": (10,),
-            "fields": fields,
-        })
+        data_bin = DataBinModel.model_validate(
+            {
+                "field_names": ["evs"],
+                "field_types": ["ndarray"],
+                "shape": (10,),
+                "fields": fields,
+            }
+        )
         data_bin_wrapper = DataBinWrapperModel.model_validate({"__value__": data_bin})
         metadata = PubResultMetadataModel.model_validate({})
-        
-        value = PubResultModel.model_validate({
-            "data": data_bin_wrapper,
-            "metadata": metadata,
-        })
+
+        value = PubResultModel.model_validate(
+            {
+                "data": data_bin_wrapper,
+                "metadata": metadata,
+            }
+        )
         data = {
             "__value__": value,
             "extra_field": "not allowed",
         }
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             PubResultWrapperModel.model_validate(data)
+
 
 # Made with Bob

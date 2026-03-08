@@ -152,4 +152,5 @@ class TestDynamicalDecouplingMetadataModelValidation:
         assert serialized["extra_slack_distribution"] == "edges"
         assert serialized["scheduling_method"] == "asap"
 
+
 # Made with Bob

@@ -12,11 +12,6 @@
 
 """Validation tests for layer_noise_model.py classes."""
 
-import zlib
-from io import BytesIO
-
-import numpy as np
-import pybase64
 import pytest
 from pydantic import ValidationError
 

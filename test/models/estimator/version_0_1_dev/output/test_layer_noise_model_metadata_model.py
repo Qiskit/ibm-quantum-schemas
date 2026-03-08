@@ -110,9 +110,9 @@ class TestPauliLindbladErrorMetadataModelValidation:
 
     def test_valid_error_metadata(self, valid_ndarray_wrapper):
         """Test that valid error metadata is accepted."""
-        generators = PauliListMetadataWrapperModel.model_validate({
-            "__value__": {"data": ["X", "Y", "Z"]}
-        })
+        generators = PauliListMetadataWrapperModel.model_validate(
+            {"__value__": {"data": ["X", "Y", "Z"]}}
+        )
         data = {
             "generators": generators,
             "rates": valid_ndarray_wrapper,
@@ -130,18 +130,14 @@ class TestPauliLindbladErrorMetadataModelValidation:
 
     def test_missing_required_rates(self):
         """Test that missing rates is rejected."""
-        generators = PauliListMetadataWrapperModel.model_validate({
-            "__value__": {"data": ["X"]}
-        })
+        generators = PauliListMetadataWrapperModel.model_validate({"__value__": {"data": ["X"]}})
         data = {"generators": generators}
         with pytest.raises(ValidationError, match="Field required"):
             PauliLindbladErrorMetadataModel.model_validate(data)
 
     def test_extra_fields_forbidden(self, valid_ndarray_wrapper):
         """Test that extra fields are forbidden."""
-        generators = PauliListMetadataWrapperModel.model_validate({
-            "__value__": {"data": ["X"]}
-        })
+        generators = PauliListMetadataWrapperModel.model_validate({"__value__": {"data": ["X"]}})
         data = {
             "generators": generators,
             "rates": valid_ndarray_wrapper,
@@ -156,13 +152,13 @@ class TestPauliLindbladErrorMetadataWrapperModelValidation:
 
     def test_valid_wrapper_with_defaults(self, valid_ndarray_wrapper):
         """Test that a valid wrapper with default values is accepted."""
-        generators = PauliListMetadataWrapperModel.model_validate({
-            "__value__": {"data": ["X"]}
-        })
-        value = PauliLindbladErrorMetadataModel.model_validate({
-            "generators": generators,
-            "rates": valid_ndarray_wrapper,
-        })
+        generators = PauliListMetadataWrapperModel.model_validate({"__value__": {"data": ["X"]}})
+        value = PauliLindbladErrorMetadataModel.model_validate(
+            {
+                "generators": generators,
+                "rates": valid_ndarray_wrapper,
+            }
+        )
         data = {"__value__": value}
         model = PauliLindbladErrorMetadataWrapperModel.model_validate(data)
         assert model.type_ == "_json"
@@ -171,13 +167,13 @@ class TestPauliLindbladErrorMetadataWrapperModelValidation:
 
     def test_serialization_uses_aliases(self, valid_ndarray_wrapper):
         """Test that serialization uses aliases."""
-        generators = PauliListMetadataWrapperModel.model_validate({
-            "__value__": {"data": ["X"]}
-        })
-        value = PauliLindbladErrorMetadataModel.model_validate({
-            "generators": generators,
-            "rates": valid_ndarray_wrapper,
-        })
+        generators = PauliListMetadataWrapperModel.model_validate({"__value__": {"data": ["X"]}})
+        value = PauliLindbladErrorMetadataModel.model_validate(
+            {
+                "generators": generators,
+                "rates": valid_ndarray_wrapper,
+            }
+        )
         model = PauliLindbladErrorMetadataWrapperModel.model_validate({"__value__": value})
         serialized = model.model_dump(mode="json")
         assert "__type__" in serialized
@@ -191,22 +187,24 @@ class TestLayerNoiseModelMetadataModelValidation:
 
     def test_valid_layer_noise_model(self, valid_typed_qpy_circuit_dict_v13, valid_ndarray_wrapper):
         """Test that valid layer noise model is accepted."""
-        generators = PauliListMetadataWrapperModel.model_validate({
-            "__value__": {"data": ["X"]}
-        })
-        error = PauliLindbladErrorMetadataWrapperModel.model_validate({
-            "__value__": {
-                "generators": generators,
-                "rates": valid_ndarray_wrapper,
+        generators = PauliListMetadataWrapperModel.model_validate({"__value__": {"data": ["X"]}})
+        error = PauliLindbladErrorMetadataWrapperModel.model_validate(
+            {
+                "__value__": {
+                    "generators": generators,
+                    "rates": valid_ndarray_wrapper,
+                }
             }
-        })
+        )
         data = {
             "circuit": valid_typed_qpy_circuit_dict_v13,
             "qubits": [0, 1, 2],
             "error": error,
         }
         model = LayerNoiseModelMetadataModel.model_validate(data)
-        expected_circuit = TypedQpyCircuitModelV13to17.model_validate(valid_typed_qpy_circuit_dict_v13)
+        expected_circuit = TypedQpyCircuitModelV13to17.model_validate(
+            valid_typed_qpy_circuit_dict_v13
+        )
         assert model.circuit.type_ == expected_circuit.type_
         assert model.circuit.value_ == expected_circuit.value_
         assert model.qubits == [0, 1, 2]
@@ -261,11 +259,13 @@ class TestLayerNoiseModelMetadataWrapperModelValidation:
 
     def test_valid_wrapper_with_defaults(self, valid_typed_qpy_circuit_dict_v13):
         """Test that a valid wrapper with default values is accepted."""
-        value = LayerNoiseModelMetadataModel.model_validate({
-            "circuit": valid_typed_qpy_circuit_dict_v13,
-            "qubits": [0, 1],
-            "error": None,
-        })
+        value = LayerNoiseModelMetadataModel.model_validate(
+            {
+                "circuit": valid_typed_qpy_circuit_dict_v13,
+                "qubits": [0, 1],
+                "error": None,
+            }
+        )
         data = {"__value__": value}
         model = LayerNoiseModelMetadataWrapperModel.model_validate(data)
         assert model.type_ == "_json"
@@ -274,11 +274,13 @@ class TestLayerNoiseModelMetadataWrapperModelValidation:
 
     def test_valid_wrapper_with_explicit_values(self, valid_typed_qpy_circuit_dict_v13):
         """Test that a valid wrapper with explicit values is accepted."""
-        value = LayerNoiseModelMetadataModel.model_validate({
-            "circuit": valid_typed_qpy_circuit_dict_v13,
-            "qubits": [0],
-            "error": None,
-        })
+        value = LayerNoiseModelMetadataModel.model_validate(
+            {
+                "circuit": valid_typed_qpy_circuit_dict_v13,
+                "qubits": [0],
+                "error": None,
+            }
+        )
         data = {
             "__type__": "_json",
             "__module__": "qiskit_ibm_runtime.utils.noise_learner_result",
@@ -292,27 +294,32 @@ class TestLayerNoiseModelMetadataWrapperModelValidation:
 
     def test_invalid_type(self, valid_typed_qpy_circuit_dict_v13):
         """Test that invalid type is rejected."""
-        value = LayerNoiseModelMetadataModel.model_validate({
-            "circuit": valid_typed_qpy_circuit_dict_v13,
-            "qubits": [],
-            "error": None,
-        })
+        value = LayerNoiseModelMetadataModel.model_validate(
+            {
+                "circuit": valid_typed_qpy_circuit_dict_v13,
+                "qubits": [],
+                "error": None,
+            }
+        )
         data = {"__type__": "invalid", "__value__": value}
         with pytest.raises(ValidationError, match="Input should be '_json'"):
             LayerNoiseModelMetadataWrapperModel.model_validate(data)
 
     def test_serialization_uses_aliases(self, valid_typed_qpy_circuit_dict_v13):
         """Test that serialization uses aliases."""
-        value = LayerNoiseModelMetadataModel.model_validate({
-            "circuit": valid_typed_qpy_circuit_dict_v13,
-            "qubits": [0],
-            "error": None,
-        })
+        value = LayerNoiseModelMetadataModel.model_validate(
+            {
+                "circuit": valid_typed_qpy_circuit_dict_v13,
+                "qubits": [0],
+                "error": None,
+            }
+        )
         model = LayerNoiseModelMetadataWrapperModel.model_validate({"__value__": value})
         serialized = model.model_dump(mode="json")
         assert "__type__" in serialized
         assert "__module__" in serialized
         assert "__class__" in serialized
         assert "__value__" in serialized
+
 
 # Made with Bob

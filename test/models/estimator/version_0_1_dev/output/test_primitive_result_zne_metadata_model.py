@@ -177,4 +177,5 @@ class TestPrimitiveResultZneMetadataModelValidation:
         assert serialized["extrapolator"] == ["exponential", "linear"]
         assert serialized["extrapolated_noise_factors"] == [0.0, 1.0, 2.0]
 
+
 # Made with Bob

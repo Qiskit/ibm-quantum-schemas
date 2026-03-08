@@ -229,4 +229,5 @@ class TestTwirlingMetadataModelValidation:
         assert serialized["strategy"] == "all"
         assert serialized["interleave_randomizations"] is False
 
+
 # Made with Bob

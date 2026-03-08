@@ -97,10 +97,12 @@ class TestDataBinModelValidation:
 
     def test_valid_with_multiple_fields(self, valid_ndarray_wrapper):
         """Test data bin with multiple fields."""
-        fields = DataBinObjectModel.model_validate({
-            "evs": valid_ndarray_wrapper,
-            "stds": valid_ndarray_wrapper,
-        })
+        fields = DataBinObjectModel.model_validate(
+            {
+                "evs": valid_ndarray_wrapper,
+                "stds": valid_ndarray_wrapper,
+            }
+        )
         data = {
             "field_names": ["evs", "stds"],
             "field_types": ["ndarray", "ndarray"],
@@ -175,12 +177,14 @@ class TestDataBinWrapperModelValidation:
     def test_valid_wrapper_with_defaults(self, valid_ndarray_wrapper):
         """Test that a valid wrapper with default type is accepted."""
         fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        value = DataBinModel.model_validate({
-            "field_names": ["evs"],
-            "field_types": ["ndarray"],
-            "shape": (10,),
-            "fields": fields,
-        })
+        value = DataBinModel.model_validate(
+            {
+                "field_names": ["evs"],
+                "field_types": ["ndarray"],
+                "shape": (10,),
+                "fields": fields,
+            }
+        )
         data = {"__value__": value}
         model = DataBinWrapperModel.model_validate(data)
         assert model.type_ == "DataBin"
@@ -189,12 +193,14 @@ class TestDataBinWrapperModelValidation:
     def test_valid_wrapper_with_explicit_type(self, valid_ndarray_wrapper):
         """Test that a valid wrapper with explicit type is accepted."""
         fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        value = DataBinModel.model_validate({
-            "field_names": ["evs"],
-            "field_types": ["ndarray"],
-            "shape": (10,),
-            "fields": fields,
-        })
+        value = DataBinModel.model_validate(
+            {
+                "field_names": ["evs"],
+                "field_types": ["ndarray"],
+                "shape": (10,),
+                "fields": fields,
+            }
+        )
         data = {
             "__type__": "DataBin",
             "__value__": value,
@@ -205,12 +211,14 @@ class TestDataBinWrapperModelValidation:
     def test_invalid_type(self, valid_ndarray_wrapper):
         """Test that invalid type is rejected."""
         fields = DataBinObjectModel.model_validate({})
-        value = DataBinModel.model_validate({
-            "field_names": [],
-            "field_types": [],
-            "shape": (),
-            "fields": fields,
-        })
+        value = DataBinModel.model_validate(
+            {
+                "field_names": [],
+                "field_types": [],
+                "shape": (),
+                "fields": fields,
+            }
+        )
         data = {
             "__type__": "InvalidType",
             "__value__": value,
@@ -227,12 +235,14 @@ class TestDataBinWrapperModelValidation:
     def test_serialization_uses_aliases(self, valid_ndarray_wrapper):
         """Test that serialization uses aliases."""
         fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        value = DataBinModel.model_validate({
-            "field_names": ["evs"],
-            "field_types": ["ndarray"],
-            "shape": (10,),
-            "fields": fields,
-        })
+        value = DataBinModel.model_validate(
+            {
+                "field_names": ["evs"],
+                "field_types": ["ndarray"],
+                "shape": (10,),
+                "fields": fields,
+            }
+        )
         model = DataBinWrapperModel.model_validate({"__value__": value})
         serialized = model.model_dump(mode="json")
         assert "__type__" in serialized
@@ -243,17 +253,20 @@ class TestDataBinWrapperModelValidation:
     def test_extra_fields_forbidden(self, valid_ndarray_wrapper):
         """Test that extra fields are forbidden."""
         fields = DataBinObjectModel.model_validate({})
-        value = DataBinModel.model_validate({
-            "field_names": [],
-            "field_types": [],
-            "shape": (),
-            "fields": fields,
-        })
+        value = DataBinModel.model_validate(
+            {
+                "field_names": [],
+                "field_types": [],
+                "shape": (),
+                "fields": fields,
+            }
+        )
         data = {
             "__value__": value,
             "extra_field": "not allowed",
         }
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             DataBinWrapperModel.model_validate(data)
+
 
 # Made with Bob
