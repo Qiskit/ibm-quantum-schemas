@@ -84,7 +84,7 @@ class OptionsModel(BaseModel):
     See :class:`TwirlingOptionsModel` for all available options.
     """
 
-    simulator: SimulatorOptionsModel = Field(default_factory=SimulatorOptionsModel)
+    simulator: SimulatorOptionsModel | None = None
     """Simulator options.
 
     See :class:`SimulatorOptionsModel` for all available options.
