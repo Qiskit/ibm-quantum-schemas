@@ -25,11 +25,10 @@ class DataBinObjectModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     evs: NdarrayWrapperModel | None = None
-    """Expectation values for the given observables."""
+    """Expectation values."""
 
     stds: NdarrayWrapperModel | None = None
-    """Standard errors computed from variation across twirling groups.
-    If twirling is disabled, this equals `ensemble_standard_error`."""
+    """Standard errors computed from variation across twirling groups."""
 
     evs_noise_factors: NdarrayWrapperModel | None = None
     """Raw expectation values evaluated at each ZNE noise amplification factor."""
@@ -40,17 +39,17 @@ class DataBinObjectModel(BaseModel):
 
     ensemble_stds_noise_factors: NdarrayWrapperModel | None = None
     """Standard deviations assuming only shot noise (no twirling variance, no drift),
-    reported for each ZNE noise factor. Useful for custom ZNE fitting."""
+    reported for each ZNE noise factor."""
 
     evs_extrapolated: NdarrayWrapperModel | None = None
     """Expectation values predicted by the ZNE extrapolation model."""
 
     stds_extrapolated: NdarrayWrapperModel | None = None
-    """Uncertainty of the extrapolated expectation values, based on the fit model."""
+    """Uncertainty of the extrapolated expectation values, based on the ZNE fit model."""
 
     ensemble_standard_error: NdarrayWrapperModel | None = None
     """Standard error assuming only shot noise, computed by treating all shots
-    as a single ensemble. Identical to `stds` when twirling is disabled."""
+    as a single ensemble. Returns `None` if ZNE is enabled."""
 
 
 class DataBinModel(BaseModel):
