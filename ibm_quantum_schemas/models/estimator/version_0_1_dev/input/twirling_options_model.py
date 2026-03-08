@@ -31,9 +31,8 @@ class TwirlingOptionsModel(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    enable_gates: bool | None = None
+    enable_gates: bool = False
     """Whether to apply 2-qubit Clifford gate twirling.
-
     """
 
     enable_measure: bool = True
