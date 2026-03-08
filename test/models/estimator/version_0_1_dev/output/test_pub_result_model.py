@@ -407,6 +407,3 @@ class TestPubResultWrapperModelValidation:
         }
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             PubResultWrapperModel.model_validate(data)
-
-
-# Made with Bob

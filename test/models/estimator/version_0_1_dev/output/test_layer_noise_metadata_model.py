@@ -179,6 +179,3 @@ class TestLayerNoiseMetadataModelValidation:
         assert serialized["total_mitigated_layers"] == 10
         assert serialized["unique_mitigated_layers"] == 5
         assert serialized["unique_mitigated_layers_noise_overhead"] == [1.5, 2.0, "infinity"]
-
-
-# Made with Bob

@@ -11,5 +11,3 @@
 # that they have been altered from the originals.
 
 """Tests for estimator version 0.1-dev input models."""
-
-# Made with Bob

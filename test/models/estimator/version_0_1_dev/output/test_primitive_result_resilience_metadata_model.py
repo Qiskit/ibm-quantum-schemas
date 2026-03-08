@@ -196,6 +196,3 @@ class TestPrimitiveResultResilienceMetadataModelValidation:
         assert serialized["zne"]["extrapolator"] == "linear"
         assert "layer_noise_model" in serialized
         assert len(serialized["layer_noise_model"]) == 1
-
-
-# Made with Bob

@@ -183,6 +183,3 @@ class TestPubResultZneMetadataModelValidation:
         model = PubResultZneMetadataModel.model_validate({})
         serialized = model.model_dump()
         assert serialized["extrapolator"] is None
-
-
-# Made with Bob

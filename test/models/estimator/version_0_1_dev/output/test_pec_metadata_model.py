@@ -88,6 +88,3 @@ class TestPecMetadataModelValidation:
         model = PecMetadataModel.model_validate({})
         serialized = model.model_dump()
         assert serialized["num_randomizations_scaling"] is None
-
-
-# Made with Bob

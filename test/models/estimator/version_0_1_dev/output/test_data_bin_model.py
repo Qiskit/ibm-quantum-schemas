@@ -267,6 +267,3 @@ class TestDataBinWrapperModelValidation:
         }
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             DataBinWrapperModel.model_validate(data)
-
-
-# Made with Bob

@@ -151,6 +151,3 @@ class TestDynamicalDecouplingMetadataModelValidation:
         assert serialized["sequence_type"] == "XY4"
         assert serialized["extra_slack_distribution"] == "edges"
         assert serialized["scheduling_method"] == "asap"
-
-
-# Made with Bob

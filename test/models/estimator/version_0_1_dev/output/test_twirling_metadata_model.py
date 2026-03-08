@@ -228,6 +228,3 @@ class TestTwirlingMetadataModelValidation:
         assert serialized["shots_per_randomization"] == 64
         assert serialized["strategy"] == "all"
         assert serialized["interleave_randomizations"] is False
-
-
-# Made with Bob

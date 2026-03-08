@@ -169,6 +169,3 @@ class TestPubResultResilienceMetadataModelValidation:
         assert serialized["pec"] is None
         assert serialized["layer_noise"] is None
         assert serialized["zne"] is None
-
-
-# Made with Bob

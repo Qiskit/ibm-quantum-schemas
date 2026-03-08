@@ -320,6 +320,3 @@ class TestLayerNoiseModelMetadataWrapperModelValidation:
         assert "__module__" in serialized
         assert "__class__" in serialized
         assert "__value__" in serialized
-
-
-# Made with Bob

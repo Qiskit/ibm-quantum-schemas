@@ -541,6 +541,3 @@ class TestPrimitiveResultWrapperModelValidation:
         }
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             PrimitiveResultWrapperModel.model_validate(data)
-
-
-# Made with Bob
