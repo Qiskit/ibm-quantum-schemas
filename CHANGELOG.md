@@ -1,3 +1,10 @@
+## [0.4.20260309](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.4.20260309) - 2026-03-09
+
+### Added
+
+- `estimator` model version `0.1_dev`
+- `noise-learner` model version `0.1_dev`
+
 ## [0.3.20260226](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.3.20260226) - 2026-02-26
 
 ### Changed
