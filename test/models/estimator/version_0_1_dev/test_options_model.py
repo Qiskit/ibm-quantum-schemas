@@ -36,8 +36,8 @@ class TestOptionsModelValidation:
         assert model.dynamical_decoupling.skip_reset_qubits is False
 
         # Verify resilience defaults
-        assert model.resilience.measure_mitigation is True
-        assert model.resilience.zne_mitigation is False
+        assert model.resilience.measure_mitigation is None
+        assert model.resilience.zne_mitigation is None
         assert model.resilience.pec_mitigation is False
         assert model.resilience.layer_noise_model is None
 
@@ -46,8 +46,8 @@ class TestOptionsModelValidation:
         assert model.execution.rep_delay is None
 
         # Verify twirling defaults
-        assert model.twirling.enable_gates is False
-        assert model.twirling.enable_measure is True
+        assert model.twirling.enable_gates is None
+        assert model.twirling.enable_measure is None
         assert model.twirling.num_randomizations == "auto"
         assert model.twirling.shots_per_randomization == "auto"
         assert model.twirling.strategy == "active-accum"

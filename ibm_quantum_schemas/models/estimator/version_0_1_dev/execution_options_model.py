@@ -32,5 +32,5 @@ class ExecutionOptionsV2Model(BaseModel):
     the subsequent quantum circuit. This is only supported on backends that have
     ``backend.dynamic_reprate_enabled=True``. It must be from the
     range supplied by ``backend.rep_delay_range``.
-    Default is given by ``backend.default_rep_delay``.
+    Default is ``None``, in which case the server assigns ``backend.default_rep_delay``.
     """
