@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.layer_noise_model_metadata_model import (  # noqa: E501
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.layer_noise_model_metadata_model import (  # noqa: E501
     LayerNoiseModelMetadataModel,
     LayerNoiseModelMetadataWrapperModel,
     PauliLindbladErrorMetadataModel,

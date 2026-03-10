@@ -15,17 +15,17 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.data_bin_model import (
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.data_bin_model import (
     DataBinModel,
     DataBinObjectModel,
     DataBinWrapperModel,
 )
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pub_result_model import (
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.pub_result_model import (
     PubResultMetadataModel,
     PubResultModel,
     PubResultWrapperModel,
 )
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pub_result_resilience_metadata_model import (  # noqa: E501
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.pub_result_resilience_metadata_model import (  # noqa: E501
     PubResultResilienceMetadataModel,
 )
 

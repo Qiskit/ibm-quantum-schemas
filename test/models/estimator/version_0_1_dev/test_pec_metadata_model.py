@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pec_metadata_model import (
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.pec_metadata_model import (
     PecMetadataModel,
 )
 

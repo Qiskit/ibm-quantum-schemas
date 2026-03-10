@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.dynamical_decoupling_metadata_model import (  # noqa: E501
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.dynamical_decoupling_metadata_model import (  # noqa: E501
     DynamicalDecouplingMetadataModel,
 )
 

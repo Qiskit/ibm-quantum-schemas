@@ -12,13 +12,13 @@
 
 """Validation tests for primitive_result_resilience_metadata_model.py classes."""
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.layer_noise_model_metadata_model import (  # noqa: E501
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.layer_noise_model_metadata_model import (  # noqa: E501
     LayerNoiseModelMetadataWrapperModel,
 )
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.primitive_result_resilience_metadata_model import (  # noqa: E501
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.primitive_result_resilience_metadata_model import (  # noqa: E501
     PrimitiveResultResilienceMetadataModel,
 )
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.primitive_result_zne_metadata_model import (  # noqa: E501
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.primitive_result_zne_metadata_model import (  # noqa: E501
     PrimitiveResultZneMetadataModel,
 )
 

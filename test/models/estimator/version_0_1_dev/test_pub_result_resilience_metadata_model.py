@@ -12,16 +12,16 @@
 
 """Validation tests for pub_result_resilience_metadata_model.py classes."""
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.layer_noise_metadata_model import (
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.layer_noise_metadata_model import (
     LayerNoiseMetadataModel,
 )
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pec_metadata_model import (
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.pec_metadata_model import (
     PecMetadataModel,
 )
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pub_result_resilience_metadata_model import (  # noqa: E501
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.pub_result_resilience_metadata_model import (  # noqa: E501
     PubResultResilienceMetadataModel,
 )
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.pub_result_zne_metadata_model import (  # noqa: E501
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.pub_result_zne_metadata_model import (  # noqa: E501
     PubResultZneMetadataModel,
 )
 

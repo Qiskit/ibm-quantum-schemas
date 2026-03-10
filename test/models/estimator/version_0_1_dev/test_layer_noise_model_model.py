@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.input.layer_noise_model_model import (
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.layer_noise_model_model import (
     LayerNoiseModelModel,
     LayerNoiseModelWrapperModel,
     NdarrayWrapperModel,
@@ -24,7 +24,7 @@ from ibm_quantum_schemas.models.estimator.version_0_1_dev.input.layer_noise_mode
     PauliListModel,
     PauliListWrapperModel,
 )
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.input.simulator_options_model import (
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.simulator_options_model import (
     NoiseModel,
 )
 
