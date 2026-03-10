@@ -17,7 +17,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 PrimitiveResultExtrapolatorType = Literal[
     "linear",
@@ -36,8 +36,6 @@ PrimitiveResultExtrapolatorType = Literal[
 
 class PrimitiveResultZneMetadataModel(BaseModel):
     """Primitive Result Metadata about ZNE."""
-
-    model_config = ConfigDict(extra="forbid")
 
     noise_factors: Sequence[float] | None
     """Noise factors used for noise amplification.

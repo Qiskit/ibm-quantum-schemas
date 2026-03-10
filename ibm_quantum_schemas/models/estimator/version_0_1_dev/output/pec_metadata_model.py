@@ -14,13 +14,11 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 
 class PecMetadataModel(BaseModel):
     """Metadata about PEC."""
-
-    model_config = ConfigDict(extra="forbid")
 
     num_randomizations_scaling: float | None = None
     """Scaling of the number of randomizations with circuit depth."""

@@ -159,12 +159,6 @@ class TestLayerNoiseMetadataModelValidation:
         assert model.unique_mitigated_layers == 5
         assert model.unique_mitigated_layers_noise_overhead == [1.5, 2.0, "infinity"]
 
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        data = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            LayerNoiseMetadataModel.model_validate(data)
-
     def test_serialization(self):
         """Test that serialization works correctly."""
         data = {

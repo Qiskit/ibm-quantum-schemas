@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 from .layer_noise_model_metadata_model import LayerNoiseModelMetadataWrapperModel
 from .primitive_result_zne_metadata_model import PrimitiveResultZneMetadataModel
@@ -22,8 +22,6 @@ from .primitive_result_zne_metadata_model import PrimitiveResultZneMetadataModel
 
 class PrimitiveResultResilienceMetadataModel(BaseModel):
     """Primitive result resilience metadata model."""
-
-    model_config = ConfigDict(extra="forbid")
 
     measure_mitigation: bool | None = None
     """Whether measure mitigation was applied for the job."""

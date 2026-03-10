@@ -204,12 +204,6 @@ class TestTwirlingMetadataModelValidation:
         assert model.strategy == "active-circuit"
         assert model.interleave_randomizations is False
 
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        data = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            TwirlingMetadataModel.model_validate(data)
-
     def test_serialization(self):
         """Test that serialization works correctly."""
         data = {

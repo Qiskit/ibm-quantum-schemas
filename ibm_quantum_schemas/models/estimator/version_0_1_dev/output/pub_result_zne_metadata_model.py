@@ -17,7 +17,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 PubResultExtrapolatorType = Literal[
     "linear",
@@ -36,8 +36,6 @@ PubResultExtrapolatorType = Literal[
 
 class PubResultZneMetadataModel(BaseModel):
     """Pub Result Metadata about ZNE."""
-
-    model_config = ConfigDict(extra="forbid")
 
     extrapolator: PubResultExtrapolatorType | Sequence[PubResultExtrapolatorType] | None = None
     """Extrapolator(s) used for extrapolating to zero noise.

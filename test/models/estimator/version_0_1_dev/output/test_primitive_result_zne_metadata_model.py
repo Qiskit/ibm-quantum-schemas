@@ -158,12 +158,6 @@ class TestPrimitiveResultZneMetadataModelValidation:
         model = PrimitiveResultZneMetadataModel.model_validate(data)
         assert len(model.extrapolator) == 5
 
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        data = {"noise_factors": [1.0], "extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            PrimitiveResultZneMetadataModel.model_validate(data)
-
     def test_serialization(self):
         """Test that serialization works correctly."""
         data = {

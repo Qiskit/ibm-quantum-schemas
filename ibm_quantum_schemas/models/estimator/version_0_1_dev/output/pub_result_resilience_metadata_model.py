@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 from .layer_noise_metadata_model import LayerNoiseMetadataModel
 from .pec_metadata_model import PecMetadataModel
@@ -23,8 +23,6 @@ from .pub_result_zne_metadata_model import PubResultZneMetadataModel
 
 class PubResultResilienceMetadataModel(BaseModel):
     """Pub result resilience metadata model."""
-
-    model_config = ConfigDict(extra="forbid")
 
     pec: PecMetadataModel | None = None
     """Metadata about PEC."""

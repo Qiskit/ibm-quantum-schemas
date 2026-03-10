@@ -12,9 +12,6 @@
 
 """Validation tests for pub_result_resilience_metadata_model.py classes."""
 
-import pytest
-from pydantic import ValidationError
-
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.layer_noise_metadata_model import (
     LayerNoiseMetadataModel,
 )
@@ -130,12 +127,6 @@ class TestPubResultResilienceMetadataModelValidation:
         data = {"zne": zne_data}
         model = PubResultResilienceMetadataModel.model_validate(data)
         assert len(model.zne.extrapolator) == 3
-
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        data = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            PubResultResilienceMetadataModel.model_validate(data)
 
     def test_serialization(self):
         """Test that serialization works correctly."""

@@ -131,12 +131,6 @@ class TestDynamicalDecouplingMetadataModelValidation:
         assert model.extra_slack_distribution == "edges"
         assert model.scheduling_method == "asap"
 
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        data = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            DynamicalDecouplingMetadataModel.model_validate(data)
-
     def test_serialization(self):
         """Test that serialization works correctly."""
         data = {

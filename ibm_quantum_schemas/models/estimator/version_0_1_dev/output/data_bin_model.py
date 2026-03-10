@@ -22,8 +22,6 @@ from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
 class DataBinObjectModel(BaseModel):
     """Data bin object model."""
 
-    model_config = ConfigDict(extra="forbid")
-
     evs: NdarrayWrapperModel | None = None
     """Expectation values."""
 
@@ -55,8 +53,6 @@ class DataBinObjectModel(BaseModel):
 class DataBinModel(BaseModel):
     """Data bin model class."""
 
-    model_config = ConfigDict(extra="forbid")
-
     field_names: list[str]
     """Names of fields contained the data bin."""
 
@@ -73,7 +69,7 @@ class DataBinModel(BaseModel):
 class DataBinWrapperModel(BaseModel):
     """Data bin wrapper model class."""
 
-    model_config = ConfigDict(serialize_by_alias=True, extra="forbid")
+    model_config = ConfigDict(serialize_by_alias=True)
 
     type_: Literal["DataBin"] = Field(default="DataBin", alias="__type__")
     """Redundant type information."""

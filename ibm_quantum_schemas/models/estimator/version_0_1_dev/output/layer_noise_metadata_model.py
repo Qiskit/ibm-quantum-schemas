@@ -16,13 +16,11 @@ from __future__ import annotations
 
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 
 
 class LayerNoiseMetadataModel(BaseModel):
     """Metadata about layer noise."""
-
-    model_config = ConfigDict(extra="forbid")
 
     noise_overhead: float | Literal["infinity"] | None = None
     """Overall noise overhead."""

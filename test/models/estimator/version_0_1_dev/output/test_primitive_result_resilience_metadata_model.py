@@ -12,9 +12,6 @@
 
 """Validation tests for primitive_result_resilience_metadata_model.py classes."""
 
-import pytest
-from pydantic import ValidationError
-
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.output.layer_noise_model_metadata_model import (  # noqa: E501
     LayerNoiseModelMetadataWrapperModel,
 )
@@ -164,12 +161,6 @@ class TestPrimitiveResultResilienceMetadataModelValidation:
             valid_layer_noise_wrapper
         )
         assert model.layer_noise_model[0] == expected_wrapper
-
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        data = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            PrimitiveResultResilienceMetadataModel.model_validate(data)
 
     def test_serialization(self, valid_layer_noise_wrapper):
         """Test that serialization works correctly."""

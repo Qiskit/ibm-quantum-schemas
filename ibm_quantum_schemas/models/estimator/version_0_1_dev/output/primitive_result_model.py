@@ -27,8 +27,6 @@ from .twirling_metadata_model import TwirlingMetadataModel
 class PrimitiveResultMetadataModel(BaseModel):
     """Metadata for the estimator v2 job."""
 
-    model_config = ConfigDict(extra="forbid")
-
     dynamical_decoupling: DynamicalDecouplingMetadataModel | None = None
     """Dynamical decoupling metadata.
     """
@@ -50,8 +48,6 @@ class PrimitiveResultMetadataModel(BaseModel):
 class PrimitiveResultModel(BaseModel):
     """A model describing the Estimator program output."""
 
-    model_config = ConfigDict(extra="forbid")
-
     pub_results: list[PubResultWrapperModel]
     """Result data from the estimator v2 job."""
 
@@ -62,7 +58,7 @@ class PrimitiveResultModel(BaseModel):
 class PrimitiveResultWrapperModel(BaseModel):
     """Primitive result wrapper model class."""
 
-    model_config = ConfigDict(serialize_by_alias=True, extra="forbid")
+    model_config = ConfigDict(serialize_by_alias=True)
 
     type_: Literal["PrimitiveResult"] = Field(default="PrimitiveResult", alias="__type__")
     """Redundant type information."""

@@ -158,12 +158,6 @@ class TestPubResultZneMetadataModelValidation:
         model = PubResultZneMetadataModel.model_validate(data)
         assert len(model.extrapolator) == 6
 
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        data = {"extrapolator": "linear", "extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            PubResultZneMetadataModel.model_validate(data)
-
     def test_serialization_with_string(self):
         """Test that serialization works correctly with string extrapolator."""
         data = {"extrapolator": "exponential"}

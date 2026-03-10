@@ -157,12 +157,6 @@ class TestPrimitiveResultMetadataModelValidation:
         assert model.version == 2
         assert model.experimental == {"debug": True}
 
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        data = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            PrimitiveResultMetadataModel.model_validate(data)
-
 
 class TestPrimitiveResultModelValidation:
     """Test PrimitiveResultModel validation."""
@@ -317,36 +311,6 @@ class TestPrimitiveResultModelValidation:
 
         data = {"pub_results": [pub_result_wrapper]}
         with pytest.raises(ValidationError, match="Field required"):
-            PrimitiveResultModel.model_validate(data)
-
-    def test_extra_fields_forbidden(self, valid_ndarray_wrapper):
-        """Test that extra fields are forbidden."""
-        fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        data_bin = DataBinModel.model_validate(
-            {
-                "field_names": ["evs"],
-                "field_types": ["ndarray"],
-                "shape": (10,),
-                "fields": fields,
-            }
-        )
-        data_bin_wrapper = DataBinWrapperModel.model_validate({"__value__": data_bin})
-        pub_metadata = PubResultMetadataModel.model_validate({})
-        pub_result = PubResultModel.model_validate(
-            {
-                "data": data_bin_wrapper,
-                "metadata": pub_metadata,
-            }
-        )
-        pub_result_wrapper = PubResultWrapperModel.model_validate({"__value__": pub_result})
-        metadata = PrimitiveResultMetadataModel.model_validate({})
-
-        data = {
-            "pub_results": [pub_result_wrapper],
-            "metadata": metadata,
-            "extra_field": "not allowed",
-        }
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             PrimitiveResultModel.model_validate(data)
 
 
@@ -504,40 +468,3 @@ class TestPrimitiveResultWrapperModelValidation:
         assert "__value__" in serialized
         assert "type_" not in serialized
         assert "value_" not in serialized
-
-    def test_extra_fields_forbidden(self, valid_ndarray_wrapper):
-        """Test that extra fields are forbidden."""
-        # Create a pub result
-        fields = DataBinObjectModel.model_validate({"evs": valid_ndarray_wrapper})
-        data_bin = DataBinModel.model_validate(
-            {
-                "field_names": ["evs"],
-                "field_types": ["ndarray"],
-                "shape": (10,),
-                "fields": fields,
-            }
-        )
-        data_bin_wrapper = DataBinWrapperModel.model_validate({"__value__": data_bin})
-        pub_metadata = PubResultMetadataModel.model_validate({})
-        pub_result = PubResultModel.model_validate(
-            {
-                "data": data_bin_wrapper,
-                "metadata": pub_metadata,
-            }
-        )
-        pub_result_wrapper = PubResultWrapperModel.model_validate({"__value__": pub_result})
-
-        # Create primitive result
-        metadata = PrimitiveResultMetadataModel.model_validate({})
-        value = PrimitiveResultModel.model_validate(
-            {
-                "pub_results": [pub_result_wrapper],
-                "metadata": metadata,
-            }
-        )
-        data = {
-            "__value__": value,
-            "extra_field": "not allowed",
-        }
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            PrimitiveResultWrapperModel.model_validate(data)

@@ -53,12 +53,6 @@ class TestPauliListMetadataModelValidation:
         with pytest.raises(ValidationError, match="Field required"):
             PauliListMetadataModel.model_validate({})
 
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        data = {"data": ["X"], "extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            PauliListMetadataModel.model_validate(data)
-
 
 class TestPauliListMetadataWrapperModelValidation:
     """Test PauliListMetadataWrapperModel validation."""
@@ -133,17 +127,6 @@ class TestPauliLindbladErrorMetadataModelValidation:
         generators = PauliListMetadataWrapperModel.model_validate({"__value__": {"data": ["X"]}})
         data = {"generators": generators}
         with pytest.raises(ValidationError, match="Field required"):
-            PauliLindbladErrorMetadataModel.model_validate(data)
-
-    def test_extra_fields_forbidden(self, valid_ndarray_wrapper):
-        """Test that extra fields are forbidden."""
-        generators = PauliListMetadataWrapperModel.model_validate({"__value__": {"data": ["X"]}})
-        data = {
-            "generators": generators,
-            "rates": valid_ndarray_wrapper,
-            "extra_field": "not allowed",
-        }
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             PauliLindbladErrorMetadataModel.model_validate(data)
 
 
@@ -240,17 +223,6 @@ class TestLayerNoiseModelMetadataModelValidation:
         """Test that missing qubits is rejected."""
         data = {"circuit": valid_typed_qpy_circuit_dict_v13, "error": None}
         with pytest.raises(ValidationError, match="Field required"):
-            LayerNoiseModelMetadataModel.model_validate(data)
-
-    def test_extra_fields_forbidden(self, valid_typed_qpy_circuit_dict_v13):
-        """Test that extra fields are forbidden."""
-        data = {
-            "circuit": valid_typed_qpy_circuit_dict_v13,
-            "qubits": [0],
-            "error": None,
-            "extra_field": "not allowed",
-        }
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
             LayerNoiseModelMetadataModel.model_validate(data)
 
 

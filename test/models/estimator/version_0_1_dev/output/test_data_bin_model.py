@@ -69,12 +69,6 @@ class TestDataBinObjectModelValidation:
         assert model.stds_extrapolated == expected
         assert model.ensemble_standard_error == expected
 
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        data = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            DataBinObjectModel.model_validate(data)
-
 
 class TestDataBinModelValidation:
     """Test DataBinModel validation."""
@@ -157,19 +151,6 @@ class TestDataBinModelValidation:
         with pytest.raises(ValidationError, match="Field required"):
             DataBinModel.model_validate(data)
 
-    def test_extra_fields_forbidden(self, valid_ndarray_wrapper):
-        """Test that extra fields are forbidden."""
-        fields = DataBinObjectModel.model_validate({})
-        data = {
-            "field_names": ["evs"],
-            "field_types": ["ndarray"],
-            "shape": (10,),
-            "fields": fields,
-            "extra_field": "not allowed",
-        }
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            DataBinModel.model_validate(data)
-
 
 class TestDataBinWrapperModelValidation:
     """Test DataBinWrapperModel validation."""
@@ -249,21 +230,3 @@ class TestDataBinWrapperModelValidation:
         assert "__value__" in serialized
         assert "type_" not in serialized
         assert "value_" not in serialized
-
-    def test_extra_fields_forbidden(self, valid_ndarray_wrapper):
-        """Test that extra fields are forbidden."""
-        fields = DataBinObjectModel.model_validate({})
-        value = DataBinModel.model_validate(
-            {
-                "field_names": [],
-                "field_types": [],
-                "shape": (),
-                "fields": fields,
-            }
-        )
-        data = {
-            "__value__": value,
-            "extra_field": "not allowed",
-        }
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            DataBinWrapperModel.model_validate(data)
