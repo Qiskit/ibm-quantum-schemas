@@ -58,11 +58,9 @@ class SimulatorOptionsModel(BaseModel):
     """
 
     basis_gates: list[str] | None = None
-    """List of basis gate names to unroll to.
+    """ Deprecated field.
 
-    For example, ``['u1', 'u2', 'u3', 'cx']``. Unrolling is not done if not set.
-
-    Default: ``None``, implying all basis gates supported by the simulator.
+    Passed values will be ignored.
     """
 
 
