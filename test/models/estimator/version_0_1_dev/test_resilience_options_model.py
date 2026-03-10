@@ -28,8 +28,8 @@ class TestResilienceOptionsModelValidation:
         model = ResilienceOptionsModel.model_validate({})
 
         # Boolean mitigation flags
-        assert model.measure_mitigation is True
-        assert model.zne_mitigation is False
+        assert model.measure_mitigation is None
+        assert model.zne_mitigation is None
         assert model.pec_mitigation is False
 
         # measure_noise_learning defaults

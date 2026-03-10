@@ -28,8 +28,8 @@ class TestTwirlingOptionsModelValidation:
         model = TwirlingOptionsModel.model_validate({})
 
         # Verify all default values
-        assert model.enable_gates is False
-        assert model.enable_measure is True
+        assert model.enable_gates is None
+        assert model.enable_measure is None
         assert model.num_randomizations == "auto"
         assert model.shots_per_randomization == "auto"
         assert model.strategy == "active-accum"
