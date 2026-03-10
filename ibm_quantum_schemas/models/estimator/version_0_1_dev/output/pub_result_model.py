@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Literal
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -40,9 +40,6 @@ class PubResultMetadataModel(BaseModel):
 
     resilience: PubResultResilienceMetadataModel | None = None
     """Metadata about error mitigation."""
-
-    experimental: dict[str, Any] | None = None
-    """Experimental metadata."""
 
 
 class PubResultModel(BaseModel):

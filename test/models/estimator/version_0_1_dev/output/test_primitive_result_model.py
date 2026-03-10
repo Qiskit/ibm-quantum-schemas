@@ -51,7 +51,6 @@ class TestPrimitiveResultMetadataModelValidation:
         assert model.twirling is None
         assert model.resilience is None
         assert model.version == 2
-        assert model.experimental is None
 
     def test_valid_with_dynamical_decoupling(self):
         """Test that metadata with dynamical_decoupling is valid."""
@@ -114,24 +113,6 @@ class TestPrimitiveResultMetadataModelValidation:
         with pytest.raises(ValidationError, match="Input should be 2"):
             PrimitiveResultMetadataModel.model_validate(data)
 
-    def test_valid_with_experimental(self):
-        """Test that metadata with experimental is valid."""
-        data = {"experimental": {"feature": "test"}}
-        model = PrimitiveResultMetadataModel.model_validate(data)
-        assert model.experimental == {"feature": "test"}
-
-    def test_experimental_empty_dict(self):
-        """Test that experimental accepts empty dict."""
-        data = {"experimental": {}}
-        model = PrimitiveResultMetadataModel.model_validate(data)
-        assert model.experimental == {}
-
-    def test_experimental_none(self):
-        """Test that experimental can be None."""
-        data = {"experimental": None}
-        model = PrimitiveResultMetadataModel.model_validate(data)
-        assert model.experimental is None
-
     def test_all_fields_together(self):
         """Test that all fields can be set together."""
         dd_data = DynamicalDecouplingMetadataModel.model_validate(
@@ -148,14 +129,12 @@ class TestPrimitiveResultMetadataModelValidation:
             "twirling": twirling_data,
             "resilience": resilience_data,
             "version": 2,
-            "experimental": {"debug": True},
         }
         model = PrimitiveResultMetadataModel.model_validate(data)
         assert model.dynamical_decoupling == dd_data
         assert model.twirling == twirling_data
         assert model.resilience == resilience_data
         assert model.version == 2
-        assert model.experimental == {"debug": True}
 
 
 class TestPrimitiveResultModelValidation:
@@ -268,7 +247,6 @@ class TestPrimitiveResultModelValidation:
                 "dynamical_decoupling": dd_data,
                 "twirling": twirling_data,
                 "resilience": resilience_data,
-                "experimental": {"test": True},
             }
         )
 

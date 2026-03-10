@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Literal
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -40,9 +40,6 @@ class PrimitiveResultMetadataModel(BaseModel):
 
     version: Literal[2] = 2
     """Version number. Must be 2."""
-
-    experimental: dict[str, Any] | None = None
-    """Experimental metadata."""
 
 
 class PrimitiveResultModel(BaseModel):

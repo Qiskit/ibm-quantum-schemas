@@ -41,7 +41,6 @@ class TestPubResultMetadataModelValidation:
         assert model.shots is None
         assert model.num_randomizations is None
         assert model.resilience is None
-        assert model.experimental is None
 
     def test_valid_with_circuit_metadata(self):
         """Test that metadata with circuit_metadata is valid."""
@@ -116,24 +115,6 @@ class TestPubResultMetadataModelValidation:
         model = PubResultMetadataModel.model_validate(data)
         assert model.resilience is None
 
-    def test_valid_with_experimental(self):
-        """Test that metadata with experimental is valid."""
-        data = {"experimental": {"feature": "test"}}
-        model = PubResultMetadataModel.model_validate(data)
-        assert model.experimental == {"feature": "test"}
-
-    def test_experimental_empty_dict(self):
-        """Test that experimental accepts empty dict."""
-        data = {"experimental": {}}
-        model = PubResultMetadataModel.model_validate(data)
-        assert model.experimental == {}
-
-    def test_experimental_none(self):
-        """Test that experimental can be None."""
-        data = {"experimental": None}
-        model = PubResultMetadataModel.model_validate(data)
-        assert model.experimental is None
-
     def test_all_fields_together(self):
         """Test that all fields can be set together."""
         resilience_data = PubResultResilienceMetadataModel.model_validate({})
@@ -143,7 +124,6 @@ class TestPubResultMetadataModelValidation:
             "shots": 2048,
             "num_randomizations": 50,
             "resilience": resilience_data,
-            "experimental": {"debug": True},
         }
         model = PubResultMetadataModel.model_validate(data)
         assert model.circuit_metadata == {"name": "test_circuit"}
@@ -151,7 +131,6 @@ class TestPubResultMetadataModelValidation:
         assert model.shots == 2048
         assert model.num_randomizations == 50
         assert model.resilience == resilience_data
-        assert model.experimental == {"debug": True}
 
 
 class TestPubResultModelValidation:
@@ -200,7 +179,6 @@ class TestPubResultModelValidation:
                 "shots": 1024,
                 "num_randomizations": 100,
                 "resilience": resilience_data,
-                "experimental": {"test": True},
             }
         )
 
