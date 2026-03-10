@@ -112,9 +112,3 @@ class TestLayerNoiseLearningOptionsModelValidation:
         options = {"layer_pair_depths": [1, 3, 5, 7, 9]}
         model = LayerNoiseLearningOptionsModel.model_validate(options)
         assert model.layer_pair_depths == [1, 3, 5, 7, 9]
-
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        options = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            LayerNoiseLearningOptionsModel.model_validate(options)

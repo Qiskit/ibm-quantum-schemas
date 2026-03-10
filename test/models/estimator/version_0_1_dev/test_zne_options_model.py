@@ -208,12 +208,6 @@ class TestZneOptionsModelValidation:
         model = ZneOptionsModel.model_validate(options)
         assert model.extrapolated_noise_factors == (0, 1, 2)
 
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        options = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            ZneOptionsModel.model_validate(options)
-
     def test_complex_valid_case(self):
         """Test a complex valid case with multiple options."""
         options = {

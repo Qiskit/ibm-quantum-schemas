@@ -17,7 +17,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, field_validator, model_validator
+from pydantic import BaseModel, field_validator, model_validator
 
 from ibm_quantum_schemas.aliases import Self
 
@@ -81,8 +81,6 @@ class ZneOptionsModel(BaseModel):
            for NISQ applications*,
            `npj Quantum Inf 7, 80 (2021) <https://www.nature.com/articles/s41534-021-00404-3>`_
     """
-
-    model_config = ConfigDict(extra="forbid")
 
     amplifier: Literal["gate_folding", "gate_folding_front", "gate_folding_back", "pea"] = (
         "gate_folding"

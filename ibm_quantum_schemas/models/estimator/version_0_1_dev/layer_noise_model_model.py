@@ -23,8 +23,6 @@ from ibm_quantum_schemas.models.typed_qpy_circuit_model import TypedQpyCircuitMo
 class PauliListModel(BaseModel):
     """Represents a PauliList"""
 
-    model_config = ConfigDict(extra="forbid")
-
     data: list[str]
     """List of Pauli string labels.
 
@@ -38,7 +36,7 @@ class PauliListModel(BaseModel):
 class PauliListWrapperModel(BaseModel):
     """A wrapper around PauliListModel adding redundant type information."""
 
-    model_config = ConfigDict(serialize_by_alias=True, extra="forbid")
+    model_config = ConfigDict(serialize_by_alias=True)
 
     type_: Literal["settings"] = Field(default="settings", alias="__type__")
     """Redundant type information."""
@@ -58,8 +56,6 @@ class PauliListWrapperModel(BaseModel):
 class PauliLindbladErrorModel(BaseModel):
     """The Pauli Lindblad error data."""
 
-    model_config = ConfigDict(extra="forbid")
-
     generators: PauliListWrapperModel
     """The Pauli Lindblad generators as a PauliList.
 
@@ -77,7 +73,7 @@ class PauliLindbladErrorModel(BaseModel):
 class PauliLindbladErrorWrapperModel(BaseModel):
     """A wrapper around PauliLindbladErrorModel adding redundant type information."""
 
-    model_config = ConfigDict(serialize_by_alias=True, extra="forbid")
+    model_config = ConfigDict(serialize_by_alias=True)
 
     type_: Literal["_json"] = Field(default="_json", alias="__type__")
     """Redundant type information."""
@@ -96,8 +92,6 @@ class PauliLindbladErrorWrapperModel(BaseModel):
 
 class LayerNoiseModelModel(BaseModel):
     """The error data."""
-
-    model_config = ConfigDict(extra="forbid")
 
     circuit: TypedQpyCircuitModel
     """The quantum circuit whose noise has been learned, encoded in QPY format."""
@@ -118,7 +112,7 @@ class LayerNoiseModelModel(BaseModel):
 class LayerNoiseModelWrapperModel(BaseModel):
     """A wrapper around LayerNoiseModel adding redundant type information."""
 
-    model_config = ConfigDict(serialize_by_alias=True, extra="forbid")
+    model_config = ConfigDict(serialize_by_alias=True)
 
     type_: Literal["_json"] = Field(default="_json", alias="__type__")
     """Redundant type information."""

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, Field, model_validator
 
 from ibm_quantum_schemas.aliases import Self
 
@@ -30,8 +30,6 @@ from .zne_options_model import ZneOptionsModel
 
 class ResilienceOptionsModel(BaseModel):
     """Resilience options for V2 Estimator."""
-
-    model_config = ConfigDict(extra="forbid")
 
     measure_mitigation: bool = True
     """Whether to enable measurement error mitigation method.

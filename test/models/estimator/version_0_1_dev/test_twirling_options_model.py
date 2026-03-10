@@ -166,9 +166,3 @@ class TestTwirlingOptionsModelValidation:
             match="Input should be 'active', 'active-accum', 'active-circuit' or 'all'",
         ):
             TwirlingOptionsModel.model_validate(options)
-
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        options = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            TwirlingOptionsModel.model_validate(options)

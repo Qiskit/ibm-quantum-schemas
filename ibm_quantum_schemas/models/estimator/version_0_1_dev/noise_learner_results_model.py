@@ -14,15 +14,13 @@
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 from .layer_noise_model_model import LayerNoiseModelWrapperModel
 
 
 class NoiseLearnerInputOptionsModel(BaseModel):
     """The input options used for the noise learning experiment."""
-
-    model_config = ConfigDict(extra="forbid")
 
     max_layers_to_learn: int | None
     """The max number of unique layers to learn."""
@@ -47,8 +45,6 @@ class NoiseLearnerResultsMetadataModel(BaseModel):
     the noise learning experiment.
     """
 
-    model_config = ConfigDict(extra="forbid")
-
     backend: str
     """The name of the backend on which the noise learning was performed."""
 
@@ -58,8 +54,6 @@ class NoiseLearnerResultsMetadataModel(BaseModel):
 
 class NoiseLearnerResultsModel(BaseModel):
     """A model describing the result from executing a noise learner v2 job."""
-
-    model_config = ConfigDict(extra="forbid")
 
     schema_version: Literal["v0.1"] = "v0.1"
     """Schema version of the results."""
