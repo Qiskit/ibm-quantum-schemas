@@ -29,13 +29,21 @@ TwirlingStrategyType = Literal[
 class TwirlingOptionsModel(BaseModel):
     """Twirling options."""
 
-    enable_gates: bool = False
+    enable_gates: bool | None = None
     """Whether to apply 2-qubit Clifford gate twirling.
+
+    If ``enables_gates`` is ``None``, it is determined by the server according to the
+    resilience level: it is ``False`` for resilience levels 0 and 1, and ``True`` for resilience
+    level 2.
     """
 
-    enable_measure: bool = True
+    enable_measure: bool | None = None
     """Whether to enable twirling to measurement instructions, as long as the measurement is not
     involved within a conditional block.
+
+    If ``enable_measure`` is ``None``, it is determined by the server according to the
+    resilience level: it is ``False`` for resilience level 0, and ``True`` for resilience
+    levels 1 and 2.
     """
 
     num_randomizations: Annotated[int, Field(ge=1)] | Literal["auto"] = "auto"
