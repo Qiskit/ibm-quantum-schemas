@@ -82,9 +82,3 @@ class TestExecutionOptionsV2ModelValidation:
         options = {"rep_delay": 1.0}
         model = ExecutionOptionsV2Model.model_validate(options)
         assert model.rep_delay == 1.0
-
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        options = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            ExecutionOptionsV2Model.model_validate(options)

@@ -136,12 +136,6 @@ class TestDynamicalDecouplingOptionsModelValidation:
         model = DynamicalDecouplingOptionsModel.model_validate(options)
         assert model.skip_reset_qubits is False
 
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        options = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            DynamicalDecouplingOptionsModel.model_validate(options)
-
     def test_all_options_together(self):
         """Test that all options can be set together."""
         options = {

@@ -33,18 +33,6 @@ def valid_observables_list() -> list:
 
 
 @pytest.fixture
-def valid_parameter_values() -> dict:
-    """Fixture to create valid parameter values as ndarray wrapper."""
-    params = np.array([0.1, 0.2, 0.3])
-    buffer = BytesIO()
-    np.save(buffer, params)
-    params_data = buffer.getvalue()
-    compressed = zlib.compress(params_data)
-    encoded = pybase64.b64encode(compressed).decode("utf-8")
-    return {"__type__": "ndarray", "__value__": encoded}
-
-
-@pytest.fixture
 def valid_empty_parameter_values() -> dict:
     """Fixture to create empty parameter values as ndarray wrapper."""
     params = np.array([])
@@ -80,6 +68,18 @@ def valid_estimator_pub_with_precision(
         valid_empty_parameter_values,
         0.01,
     ]
+
+
+@pytest.fixture
+def valid_ndarray_wrapper() -> dict:
+    """Fixture to create a valid ndarray wrapper."""
+    data = np.array([0.1, 0.2, 0.3])
+    buffer = BytesIO()
+    np.save(buffer, data)
+    array_data = buffer.getvalue()
+    compressed = zlib.compress(array_data)
+    encoded = pybase64.b64encode(compressed).decode("utf-8")
+    return {"__type__": "ndarray", "__value__": encoded}
 
 
 @pytest.fixture

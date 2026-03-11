@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Twirling Options Model"""
+"""Twirling Metadata Model"""
 
 from __future__ import annotations
 
@@ -26,24 +26,17 @@ TwirlingStrategyType = Literal[
 ]
 
 
-class TwirlingOptionsModel(BaseModel):
-    """Twirling options."""
+class TwirlingMetadataModel(BaseModel):
+    """Twirling metadata."""
 
     enable_gates: bool | None = None
     """Whether to apply 2-qubit Clifford gate twirling.
 
-    If ``enables_gates`` is ``None``, it is determined by the server according to the
-    resilience level: it is ``False`` for resilience levels 0 and 1, and ``True`` for resilience
-    level 2.
     """
 
-    enable_measure: bool | None = None
+    enable_measure: bool = True
     """Whether to enable twirling to measurement instructions, as long as the measurement is not
     involved within a conditional block.
-
-    If ``enable_measure`` is ``None``, it is determined by the server according to the
-    resilience level: it is ``False`` for resilience level 0, and ``True`` for resilience
-    levels 1 and 2.
     """
 
     num_randomizations: Annotated[int, Field(ge=1)] | Literal["auto"] = "auto"
@@ -96,3 +89,6 @@ class TwirlingOptionsModel(BaseModel):
       * If ``"all"`` all qubits in the input circuit will be twirled in each
         twirled layer.
     """
+
+    interleave_randomizations: bool = True
+    """Interleave randomizations with parameter values when executing."""

@@ -14,19 +14,15 @@
 
 from __future__ import annotations
 
-from typing import Annotated, Literal
-
-from pydantic import BaseModel, ConfigDict, Field
-
 from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
 
 from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
 from .estimator_pub_model import EstimatorPubModel
 from .execution_options_model import ExecutionOptionsV2Model
 from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
-from .layer_noise_model import (
-    LayerNoiseModel,
-    LayerNoiseWrapperModel,
+from .layer_noise_model_model import (
+    LayerNoiseModelModel,
+    LayerNoiseModelWrapperModel,
     PauliLindbladErrorModel,
     PauliLindbladErrorWrapperModel,
     PauliListModel,
@@ -39,48 +35,12 @@ from .noise_learner_results_model import (
     NoiseLearnerResultsModel,
 )
 from .options_model import OptionsModel
+from .params_model import ParamsModel
 from .pec_options_model import PecOptionsModel
+from .primitive_result_model import PrimitiveResultWrapperModel
 from .resilience_options_model import ResilienceOptionsModel
 from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
 from .zne_options_model import ExtrapolatorType, ZneOptionsModel
-
-
-class ParamsModel(BaseModel):
-    """A model describing the Estimator program inputs."""
-
-    model_config = ConfigDict(extra="forbid")
-
-    pubs: list[EstimatorPubModel]
-    """List of Estimator Primitive Unified Blocs (PUBs).
-
-    Each PUB contains a circuit, observables to measure, parameter values, and optional precision.
-    """
-
-    support_qiskit: bool = True
-    """Whether to support Qiskit-specific features."""
-
-    version: Literal[2] = 2
-    """Version number. Must be 2."""
-
-    options: OptionsModel = Field(default_factory=OptionsModel)
-    """Options for the Estimator."""
-
-    resilience_level: Annotated[int, Field(ge=0, le=2)] = 1
-    """How much resilience to build against errors.
-    Higher levels generate more accurate results,
-    at the expense of longer processing times.
-
-    * 0: No mitigation.
-    * 1: Minimal mitigation costs. Mitigate error associated with readout errors.
-    * 2: Medium mitigation costs. Typically reduces bias in estimators but
-      is not guaranteed to be zero bias.
-
-    Refer to the
-    `Configure error mitigation for Qiskit Runtime
-    <https://quantum.cloud.ibm.com/docs/guides/configure-error-mitigation>`_ guide
-    for more information about the error mitigation methods used at each level.
-    """
-
 
 __all__ = [
     "DynamicalDecouplingOptionsModel",
@@ -89,8 +49,8 @@ __all__ = [
     "ExtrapolatorType",
     "NoiseLearnerInputOptionsModel",
     "LayerNoiseLearningOptionsModel",
-    "LayerNoiseModel",
-    "LayerNoiseWrapperModel",
+    "LayerNoiseModelModel",
+    "LayerNoiseModelWrapperModel",
     "MeasureNoiseLearningOptionsModel",
     "NdarrayWrapperModel",
     "NoiseLearnerResultsModel",
@@ -106,4 +66,5 @@ __all__ = [
     "TwirlingOptionsModel",
     "TwirlingStrategyType",
     "ZneOptionsModel",
+    "PrimitiveResultWrapperModel",
 ]

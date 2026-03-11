@@ -16,7 +16,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from .layer_noise_model import LayerNoiseWrapperModel
+from .layer_noise_model_model import LayerNoiseModelWrapperModel
 
 
 class NoiseLearnerInputOptionsModel(BaseModel):
@@ -58,7 +58,7 @@ class NoiseLearnerResultsModel(BaseModel):
     schema_version: Literal["v0.1"] = "v0.1"
     """Schema version of the results."""
 
-    data: list[LayerNoiseWrapperModel]
+    data: list[LayerNoiseModelWrapperModel]
     """Result data from the noise learner v2 job."""
 
     metadata: NoiseLearnerResultsMetadataModel

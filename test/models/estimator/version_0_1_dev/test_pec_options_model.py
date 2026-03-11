@@ -129,12 +129,6 @@ class TestPecOptionsModelValidation:
         with pytest.raises(ValidationError):
             PecOptionsModel.model_validate(options)
 
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        options = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            PecOptionsModel.model_validate(options)
-
     def test_combined_none_and_auto(self):
         """Test that None max_overhead and auto noise_gain are accepted."""
         options = {

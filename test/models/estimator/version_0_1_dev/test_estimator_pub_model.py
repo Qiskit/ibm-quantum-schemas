@@ -26,14 +26,14 @@ class TestEstimatorPubModelValidation:
     def test_valid_estimator_pub_full(
         self,
         valid_observable,
-        valid_parameter_values,
+        valid_ndarray_wrapper,
         valid_typed_qpy_circuit_dict_v13_parametrized,
     ):
         """Test that valid EstimatorPub with all fields is accepted (with parameters)."""
         pub = [
             valid_typed_qpy_circuit_dict_v13_parametrized,
             valid_observable,
-            valid_parameter_values,
+            valid_ndarray_wrapper,
             0.01,
         ]
         model = EstimatorPubModel.model_validate(pub)

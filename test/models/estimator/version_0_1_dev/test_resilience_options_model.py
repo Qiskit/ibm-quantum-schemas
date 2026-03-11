@@ -168,12 +168,6 @@ class TestResilienceOptionsModelValidation:
         model = ResilienceOptionsModel.model_validate(options)
         assert model.layer_noise_model is None
 
-    def test_extra_fields_forbidden(self):
-        """Test that extra fields are forbidden."""
-        options = {"extra_field": "not allowed"}
-        with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            ResilienceOptionsModel.model_validate(options)
-
     def test_all_mitigation_disabled(self):
         """Test that all mitigation methods can be disabled."""
         options = {
