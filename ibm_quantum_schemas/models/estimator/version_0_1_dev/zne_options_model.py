@@ -185,5 +185,5 @@ class ZneOptionsModel(BaseModel):
                 raise ValueError(
                     f"{extrap} requires at least {required_factors[extrap]} noise_factors"
                 )
-                
+
         return self
