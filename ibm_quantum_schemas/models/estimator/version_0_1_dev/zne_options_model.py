@@ -114,7 +114,11 @@ class ZneOptionsModel(BaseModel):
     """Noise factors to use for noise amplification.
     """
 
-    extrapolator: ExtrapolatorType | Sequence[ExtrapolatorType] = ("exponential", "linear")
+    extrapolator: ExtrapolatorType | Sequence[ExtrapolatorType] = (
+        "exponential",
+        "linear",
+        "fallback",
+    )
     """Extrapolator(s) to try (in order) for extrapolating to zero noise.
 
     The available options are:

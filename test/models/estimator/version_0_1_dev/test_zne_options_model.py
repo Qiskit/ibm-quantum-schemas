@@ -28,7 +28,7 @@ class TestZneOptionsModelValidation:
         model = ZneOptionsModel.model_validate({})
         assert model.amplifier == "gate_folding"
         assert model.noise_factors == (1, 3, 5)
-        assert model.extrapolator == ("exponential", "linear")
+        assert model.extrapolator == ("exponential", "linear", "fallback")
         assert model.extrapolated_noise_factors is None
 
     def test_valid_options_with_custom_values(self):
