@@ -27,9 +27,9 @@ class TestZneOptionsModelValidation:
         """Test that options with default values are accepted."""
         model = ZneOptionsModel.model_validate({})
         assert model.amplifier == "gate_folding"
-        assert model.noise_factors == (1, 3, 5)
+        assert model.noise_factors is None
         assert model.extrapolator == ("exponential", "linear")
-        assert model.extrapolated_noise_factors == (0, 1, 3, 5)
+        assert model.extrapolated_noise_factors is None
 
     def test_valid_options_with_custom_values(self):
         """Test that custom option values are accepted."""
@@ -68,26 +68,14 @@ class TestZneOptionsModelValidation:
         options = {"amplifier": "pea"}
         model = ZneOptionsModel.model_validate(options)
         assert model.amplifier == "pea"
-        # PEA should set default noise_factors to (1, 1.5, 2, 2.5, 3)
-        assert model.noise_factors == (1, 1.5, 2, 2.5, 3)
+        # Server will set default noise_factors based on amplifier
+        assert model.noise_factors is None
 
     def test_invalid_amplifier(self):
         """Test that invalid amplifier is rejected."""
         options = {"amplifier": "invalid"}
         with pytest.raises(ValidationError):
             ZneOptionsModel.model_validate(options)
-
-    def test_none_noise_factors_with_gate_folding(self):
-        """Test that None noise_factors defaults correctly for gate_folding."""
-        options = {"amplifier": "gate_folding", "noise_factors": None}
-        model = ZneOptionsModel.model_validate(options)
-        assert model.noise_factors == (1, 3, 5)
-
-    def test_none_noise_factors_with_pea(self):
-        """Test that None noise_factors defaults correctly for pea."""
-        options = {"amplifier": "pea", "noise_factors": None}
-        model = ZneOptionsModel.model_validate(options)
-        assert model.noise_factors == (1, 1.5, 2, 2.5, 3)
 
     def test_noise_factors_less_than_one(self):
         """Test that noise_factors less than 1 are rejected."""
@@ -187,12 +175,6 @@ class TestZneOptionsModelValidation:
         assert model.extrapolator == "fallback"
         assert model.noise_factors == [1]
 
-    def test_extrapolated_noise_factors_default(self):
-        """Test that extrapolated_noise_factors defaults correctly."""
-        options = {"noise_factors": [1, 2, 3]}
-        model = ZneOptionsModel.model_validate(options)
-        assert model.extrapolated_noise_factors == (0, 1, 2, 3)
-
     def test_extrapolated_noise_factors_custom(self):
         """Test that custom extrapolated_noise_factors are accepted."""
         options = {
@@ -203,10 +185,10 @@ class TestZneOptionsModelValidation:
         assert model.extrapolated_noise_factors == [0, 0.5, 1, 1.5, 2]
 
     def test_empty_extrapolated_noise_factors(self):
-        """Test that empty extrapolated_noise_factors defaults correctly."""
+        """Test that empty extrapolated_noise_factors is accepted."""
         options = {"noise_factors": [1, 2], "extrapolated_noise_factors": []}
         model = ZneOptionsModel.model_validate(options)
-        assert model.extrapolated_noise_factors == (0, 1, 2)
+        assert model.extrapolated_noise_factors == []
 
     def test_complex_valid_case(self):
         """Test a complex valid case with multiple options."""
