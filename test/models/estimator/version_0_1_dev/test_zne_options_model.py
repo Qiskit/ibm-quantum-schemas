@@ -27,7 +27,7 @@ class TestZneOptionsModelValidation:
         """Test that options with default values are accepted."""
         model = ZneOptionsModel.model_validate({})
         assert model.amplifier == "gate_folding"
-        assert model.noise_factors is None
+        assert model.noise_factors == (1, 3, 5)
         assert model.extrapolator == ("exponential", "linear")
         assert model.extrapolated_noise_factors is None
 

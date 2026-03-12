@@ -102,7 +102,7 @@ class ZneOptionsModel(BaseModel):
             (`PEA <https://www.nature.com/articles/s41586-023-06096-3>`_) to
             amplify noise. When this option is selected, gate twirling will always
             be used whether or not it has been
-            enabled in the options. In this technique, the twirled noise model of each each unique
+            enabled in the options. In this technique, the twirled noise model of each unique
             layer of entangling gates in your ISA circuits is learned beforehand, see
             :class:`~.LayerNoiseLearningOptions` for relevant learning options. Once complete,
             your circuits are executed at each noise factor, where every entangling layer of
@@ -110,11 +110,8 @@ class ZneOptionsModel(BaseModel):
             proportional to the corresponding learned noise model.
     """
 
-    noise_factors: Sequence[float] | None = None
+    noise_factors: Sequence[float] = (1, 3, 5)
     """Noise factors to use for noise amplification.
-
-    If ``noise_factors`` is ``None`` then the server will set it
-    to ``(1, 1.5, 2, 2.5, 3)`` for PEA, and ``(1, 3, 5)`` otherwise.
     """
 
     extrapolator: ExtrapolatorType | Sequence[ExtrapolatorType] = ("exponential", "linear")
@@ -152,19 +149,15 @@ class ZneOptionsModel(BaseModel):
 
     @field_validator("noise_factors")
     @classmethod
-    def _validate_zne_noise_factors(cls, factors: Sequence[float] | None) -> Sequence[float] | None:
+    def _validate_zne_noise_factors(cls, factors: Sequence[float]) -> Sequence[float]:
         """Validate noise_factors."""
-        if factors is not None and any(i < 1 for i in factors):
+        if any(i < 1 for i in factors):
             raise ValueError("noise_factors option value must all be >= 1")
         return factors
 
     @model_validator(mode="after")
     def _validate_options(self) -> Self:
         """Set defaults and validate options."""
-        # Skip validation if noise_factors is None (server will set defaults)
-        if self.noise_factors is None:
-            return self
-
         # Check that there are enough noise factors for all extrapolators
         required_factors = {
             "linear": 2,
