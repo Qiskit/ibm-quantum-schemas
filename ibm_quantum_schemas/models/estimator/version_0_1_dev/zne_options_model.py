@@ -160,6 +160,11 @@ class ZneOptionsModel(BaseModel):
     @model_validator(mode="after")
     def _validate_options(self) -> Self:
         """Set defaults and validate options."""
+        # Check that extrapolator sequence is not empty
+        if isinstance(self.extrapolator, Sequence) and not isinstance(self.extrapolator, str):
+            if len(self.extrapolator) == 0:
+                raise ValueError("extrapolator sequence cannot be empty")
+        
         # Check that there are enough noise factors for all extrapolators
         required_factors = {
             "linear": 2,

@@ -135,3 +135,9 @@ class TestZneOptionsModelValidation:
             ValidationError, match="polynomial_degree_5 requires at least 6 noise_factors"
         ):
             ZneOptionsModel.model_validate(options)
+
+    def test_empty_extrapolator_sequence(self):
+        """Test that empty extrapolator sequence is rejected."""
+        options = {"extrapolator": []}
+        with pytest.raises(ValidationError, match="extrapolator sequence cannot be empty"):
+            ZneOptionsModel.model_validate(options)
