@@ -117,7 +117,6 @@ class ZneOptionsModel(BaseModel):
     extrapolator: ExtrapolatorType | Sequence[ExtrapolatorType] = (
         "exponential",
         "linear",
-        "fallback",
     )
     """Extrapolator(s) to try (in order) for extrapolating to zero noise.
 
@@ -141,11 +140,10 @@ class ZneOptionsModel(BaseModel):
     extrapolator success is determined heuristically.
     """
 
-    extrapolated_noise_factors: Sequence[float] | None = None
+    extrapolated_noise_factors: Sequence[float] | Literal["auto"] = "auto"
     """Noise factors to evaluate the fit extrapolation models at.
 
-    If ``extrapolated_noise_factors`` is ``None`` then the server will set it
-    to ``[0, *noise_factors]``. This
+    If "auto" then the server will set it to ``[0, *noise_factors]``. This
     option does not affect execution or model fitting in any way, it only determines the
     points at which the ``extrapolator``\\s are evaluated to be returned in the data
     fields called ``evs_extrapolated`` and ``stds_extrapolated``.
