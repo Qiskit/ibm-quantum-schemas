@@ -32,7 +32,7 @@ from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsMod
 from .noise_learner_results_model import (
     NoiseLearnerInputOptionsModel,
     NoiseLearnerResultsMetadataModel,
-    NoiseLearnerResultsModel,
+    NoiseLearnerResultModel,
 )
 from .options_model import OptionsModel
 from .params_model import ParamsModel
@@ -53,7 +53,7 @@ __all__ = [
     "LayerNoiseModelWrapperModel",
     "MeasureNoiseLearningOptionsModel",
     "NdarrayWrapperModel",
-    "NoiseLearnerResultsModel",
+    "NoiseLearnerResultModel",
     "OptionsModel",
     "ParamsModel",
     "PauliLindbladErrorModel",

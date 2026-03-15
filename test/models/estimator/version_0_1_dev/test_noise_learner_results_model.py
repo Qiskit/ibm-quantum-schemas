@@ -18,7 +18,7 @@ from pydantic import ValidationError
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.noise_learner_results_model import (
     NoiseLearnerInputOptionsModel,
     NoiseLearnerResultsMetadataModel,
-    NoiseLearnerResultsModel,
+    NoiseLearnerResultModel,
 )
 
 
@@ -149,7 +149,7 @@ class TestNoiseLearnerResultsModelValidation:
                 },
             },
         }
-        model = NoiseLearnerResultsModel.model_validate(results)
+        model = NoiseLearnerResultModel.model_validate(results)
         assert model.schema_version == "v0.1"
         assert len(model.data) == 1
         assert isinstance(model.metadata, NoiseLearnerResultsMetadataModel)
@@ -177,7 +177,7 @@ class TestNoiseLearnerResultsModelValidation:
                 },
             },
         }
-        model = NoiseLearnerResultsModel.model_validate(results)
+        model = NoiseLearnerResultModel.model_validate(results)
         assert model.schema_version == "v0.1"
         assert len(model.data) == 0
 
@@ -196,7 +196,7 @@ class TestNoiseLearnerResultsModelValidation:
                 },
             },
         }
-        model = NoiseLearnerResultsModel.model_validate(results)
+        model = NoiseLearnerResultModel.model_validate(results)
         assert model.schema_version == "v0.1"
 
     def test_missing_data_field(self):
@@ -215,7 +215,7 @@ class TestNoiseLearnerResultsModelValidation:
             },
         }
         with pytest.raises(ValidationError, match="Field required"):
-            NoiseLearnerResultsModel.model_validate(results)
+            NoiseLearnerResultModel.model_validate(results)
 
     def test_missing_metadata_field(self):
         """Test that missing metadata field is rejected."""
@@ -224,4 +224,4 @@ class TestNoiseLearnerResultsModelValidation:
             "data": [],
         }
         with pytest.raises(ValidationError, match="Field required"):
-            NoiseLearnerResultsModel.model_validate(results)
+            NoiseLearnerResultModel.model_validate(results)
