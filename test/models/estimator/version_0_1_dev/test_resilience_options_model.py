@@ -40,7 +40,7 @@ class TestResilienceOptionsModelValidation:
         assert model.zne.amplifier == "gate_folding"
         assert model.zne.noise_factors == (1, 3, 5)
         assert model.zne.extrapolator == ("exponential", "linear")
-        assert model.zne.extrapolated_noise_factors == (0, 1, 3, 5)
+        assert model.zne.extrapolated_noise_factors == "auto"
 
         # pec defaults
         assert model.pec.max_overhead == 100.0
