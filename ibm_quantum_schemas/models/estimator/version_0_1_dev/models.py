@@ -33,6 +33,7 @@ from .noise_learner_results_model import (
     NoiseLearnerInputOptionsModel,
     NoiseLearnerResultMetadataModel,
     NoiseLearnerResultModel,
+    NoiseLearnerResultWrapperModel,
 )
 from .options_model import OptionsModel
 from .params_model import ParamsModel
@@ -54,6 +55,8 @@ __all__ = [
     "MeasureNoiseLearningOptionsModel",
     "NdarrayWrapperModel",
     "NoiseLearnerResultModel",
+    "NoiseLearnerResultMetadataModel",
+    "NoiseLearnerResultWrapperModel",
     "OptionsModel",
     "ParamsModel",
     "PauliLindbladErrorModel",
@@ -61,10 +64,9 @@ __all__ = [
     "PauliListModel",
     "PauliListWrapperModel",
     "PecOptionsModel",
+    "PrimitiveResultWrapperModel",
     "ResilienceOptionsModel",
-    "NoiseLearnerResultMetadataModel",
     "TwirlingOptionsModel",
     "TwirlingStrategyType",
     "ZneOptionsModel",
-    "PrimitiveResultWrapperModel",
 ]

@@ -19,6 +19,7 @@ from ibm_quantum_schemas.models.estimator.version_0_1_dev.noise_learner_results_
     NoiseLearnerInputOptionsModel,
     NoiseLearnerResultMetadataModel,
     NoiseLearnerResultModel,
+    NoiseLearnerResultWrapperModel,
 )
 
 
@@ -136,7 +137,6 @@ class TestNoiseLearnerResultModelValidation:
     def test_valid_results_with_data(self, valid_layer_noise_wrapper):
         """Test that valid results with data are accepted."""
         results = {
-            "schema_version": "v0.1",
             "data": [valid_layer_noise_wrapper],
             "metadata": {
                 "backend": "ibm_brisbane",
@@ -150,7 +150,6 @@ class TestNoiseLearnerResultModelValidation:
             },
         }
         model = NoiseLearnerResultModel.model_validate(results)
-        assert model.schema_version == "v0.1"
         assert len(model.data) == 1
         assert isinstance(model.metadata, NoiseLearnerResultMetadataModel)
         assert model.metadata.backend == "ibm_brisbane"
@@ -164,7 +163,6 @@ class TestNoiseLearnerResultModelValidation:
     def test_valid_results_with_empty_data(self):
         """Test that valid results with empty data are accepted."""
         results = {
-            "schema_version": "v0.1",
             "data": [],
             "metadata": {
                 "backend": "ibm_brisbane",
@@ -178,31 +176,11 @@ class TestNoiseLearnerResultModelValidation:
             },
         }
         model = NoiseLearnerResultModel.model_validate(results)
-        assert model.schema_version == "v0.1"
         assert len(model.data) == 0
-
-    def test_default_schema_version(self):
-        """Test that schema_version defaults to v0.1."""
-        results = {
-            "data": [],
-            "metadata": {
-                "backend": "ibm_brisbane",
-                "input_options": {
-                    "max_layers_to_learn": 4,
-                    "shots_per_randomization": 128,
-                    "num_randomizations": 32,
-                    "layer_pair_depths": [0, 1, 2],
-                    "twirling_strategy": "active",
-                },
-            },
-        }
-        model = NoiseLearnerResultModel.model_validate(results)
-        assert model.schema_version == "v0.1"
 
     def test_missing_data_field(self):
         """Test that missing data field is rejected."""
         results = {
-            "schema_version": "v0.1",
             "metadata": {
                 "backend": "ibm_brisbane",
                 "input_options": {
@@ -220,8 +198,36 @@ class TestNoiseLearnerResultModelValidation:
     def test_missing_metadata_field(self):
         """Test that missing metadata field is rejected."""
         results = {
-            "schema_version": "v0.1",
             "data": [],
         }
         with pytest.raises(ValidationError, match="Field required"):
             NoiseLearnerResultModel.model_validate(results)
+
+
+class TestNoiseLearnerResultWrapperModelValidation:
+    """Test NoiseLearnerResultWrapperModel validation."""
+
+    def test_valid_wrapper_with_data(self, valid_layer_noise_wrapper):
+        """Test that valid wrapper with data is accepted."""
+        wrapper = {
+            "__type__": "NoiseLearnerResult",
+            "__value__": {
+                "data": [valid_layer_noise_wrapper],
+                "metadata": {
+                    "backend": "ibm_brisbane",
+                    "input_options": {
+                        "max_layers_to_learn": 4,
+                        "shots_per_randomization": 128,
+                        "num_randomizations": 32,
+                        "layer_pair_depths": [0, 1, 2],
+                        "twirling_strategy": "active-accum",
+                    },
+                },
+            },
+        }
+        model = NoiseLearnerResultWrapperModel.model_validate(wrapper)
+        assert model.type_ == "NoiseLearnerResult"
+        assert isinstance(model.value_, NoiseLearnerResultModel)
+        assert len(model.value_.data) == 1
+        assert isinstance(model.value_.metadata, NoiseLearnerResultMetadataModel)
+        assert model.value_.metadata.backend == "ibm_brisbane"
