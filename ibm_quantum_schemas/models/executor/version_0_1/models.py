@@ -17,7 +17,6 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from ....aliases import Self
 from ...base_params_model import BaseParamsModel
 from ...pauli_lindblad_map_model import PauliLindbladMapModel
 from ...qpy_model import QpyModelV13ToV16
@@ -78,20 +77,6 @@ class CircuitItemModel(BaseModel):
     session exection mode.
     """
 
-    @model_validator(mode="after")
-    def cross_validate(self) -> Self:
-        """Check for mutual compatibility of types and shapes of attributes."""
-        circuit = self.circuit.to_quantum_circuit(use_cached=True)
-
-        num_parameters = self.circuit_arguments.shape[-1] if self.circuit_arguments.shape else 0
-        if num_parameters != circuit.num_parameters:
-            raise ValueError(
-                f"The size of the last axis of circuit arguments, {num_parameters}, does not "
-                f"match the number of parameters of the circuit, {circuit.num_parameters}."
-            )
-
-        return self
-
 
 class SamplexItemModel(BaseModel):
     """Execution specifications for a single quantum circuit."""
@@ -123,24 +108,6 @@ class SamplexItemModel(BaseModel):
     integer-valued, or all chunk sizes are ``"auto"``. Integer values are only allowed inside of
     session exection mode.
     """
-
-    @model_validator(mode="after")
-    def cross_validate(self) -> Self:
-        """Check for mutual compatibility of types and shapes of attributes."""
-        circuit = self.circuit.to_quantum_circuit(use_cached=True)
-        samplex = self.samplex.to_samplex(use_cached=True)
-
-        if specs := samplex.outputs().get_specs("parameter_values"):
-            num_output_params = specs[0].shape[-1]
-        else:
-            num_output_params = 0
-        if (num_samplex_out := num_output_params) != circuit.num_parameters:
-            raise ValueError(
-                f"The number of samplex output parameters, {num_samplex_out}, does not match the "
-                f"number of parameters of the circuit, {circuit.num_parameters}."
-            )
-
-        return self
 
 
 class QuantumProgramModel(BaseModel):
