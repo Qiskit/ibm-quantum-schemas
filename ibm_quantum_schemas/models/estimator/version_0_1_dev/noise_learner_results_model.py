@@ -64,6 +64,7 @@ class NoiseLearnerResultModel(BaseModel):
 
 class NoiseLearnerResultWrapperModel(BaseModel):
     """A wrapper around NoiseLearnerResultModel adding redundant type information."""
+
     type_: Literal["NoiseLearnerResult"] = Field(default="NoiseLearnerResult", alias="__type__")
     """Redundant type information."""
 
