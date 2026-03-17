@@ -18,7 +18,7 @@ from pydantic import BaseModel, ConfigDict
 
 from ibm_quantum_schemas.common.version_0_1.ndarray_wrapper import NdarrayWrapperModel
 from ibm_quantum_schemas.common.version_0_1.typed_qpy_circuit import TypedQpyCircuitModelV13to17
-from .layer_noise import (
+from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.layer_noise import (
     LayerNoiseModel,
     LayerNoiseWrapperModel,
     PauliLindbladErrorModel,
@@ -26,8 +26,14 @@ from .layer_noise import (
     PauliListModel,
     PauliListWrapperModel,
 )
-from .options import OptionsModel, SimulatorOptionsModel
-from .results_metadata import InputOptionsModel, ResultsMetadataModel
+from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.options import (
+    OptionsModel,
+    SimulatorOptionsModel,
+)
+from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.results_metadata import (
+    InputOptionsModel,
+    ResultsMetadataModel,
+)
 
 
 class ParamsModel(BaseModel):

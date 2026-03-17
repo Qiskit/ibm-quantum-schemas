@@ -18,11 +18,13 @@ from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .dynamical_decoupling_options import DynamicalDecouplingOptionsModel
-from .execution_options import ExecutionOptionsV2Model
-from .resilience_options import ResilienceOptionsModel
-from .simulator_options import SimulatorOptionsModel
-from .twirling_options import TwirlingOptionsModel
+from ibm_quantum_schemas.estimator.version_0_1_dev.dynamical_decoupling_options import (
+    DynamicalDecouplingOptionsModel,
+)
+from ibm_quantum_schemas.estimator.version_0_1_dev.execution_options import ExecutionOptionsV2Model
+from ibm_quantum_schemas.estimator.version_0_1_dev.resilience_options import ResilienceOptionsModel
+from ibm_quantum_schemas.estimator.version_0_1_dev.simulator_options import SimulatorOptionsModel
+from ibm_quantum_schemas.estimator.version_0_1_dev.twirling_options import TwirlingOptionsModel
 
 
 class OptionsModel(BaseModel):

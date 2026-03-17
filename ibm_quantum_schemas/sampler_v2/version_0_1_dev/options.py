@@ -18,10 +18,10 @@ from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .dynamical_decoupling_options import DynamicalDecouplingOptionsModel
-from .execution_options import SamplerExecutionOptionsModel
-from .simulator_options import SimulatorOptionsModel
-from .twirling_options import TwirlingOptionsModel
+from version_0_1_dev.dynamical_decoupling_options import DynamicalDecouplingOptionsModel
+from version_0_1_dev.execution_options import SamplerExecutionOptionsModel
+from version_0_1_dev.simulator_options import SimulatorOptionsModel
+from version_0_1_dev.twirling_options import TwirlingOptionsModel
 
 
 class OptionsModel(BaseModel):

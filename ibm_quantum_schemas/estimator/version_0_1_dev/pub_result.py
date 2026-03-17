@@ -18,8 +18,10 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .data_bin import DataBinWrapperModel
-from .pub_result_resilience_metadata import PubResultResilienceMetadataModel
+from ibm_quantum_schemas.estimator.version_0_1_dev.data_bin import DataBinWrapperModel
+from ibm_quantum_schemas.estimator.version_0_1_dev.pub_result_resilience_metadata import (
+    PubResultResilienceMetadataModel,
+)
 
 
 class PubResultMetadataModel(BaseModel):

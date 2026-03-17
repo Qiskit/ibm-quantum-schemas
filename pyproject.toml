@@ -60,12 +60,13 @@ documentation = [
 
 [tool.ruff]
 lint.select = [
-    "D1", "D2", "D3",         # pydocstyle
-    "E",      # pycodestyle
-    "F",      # pyflake
-    "I",      # isort
-    "SLF",    # private member access rules
-    "UP",     # pyupgrade
+    "D1", "D2", "D3", # pydocstyle
+    "E",              # pycodestyle
+    "F",              # pyflake
+    "I",              # isort
+    "SLF",            # private member access rules
+    "UP",             # pyupgrade
+    "TID252",         # relative-imports
 ]
 line-length = 100
 target-version = "py310"
@@ -80,6 +81,9 @@ target-version = "py310"
 "test/unit/**/*.py" = [
     "D100",   #
 ]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
 
 [tool.towncrier]
 package = "ibm-quantum-schemas"

@@ -12,18 +12,15 @@
 
 """Pytest configuration and fixtures."""
 
-import pytest
-from qiskit.qpy import QPY_VERSION
-from samplomatic.ssv import SSV
-
 import zlib
 from io import BytesIO
 
 import pybase64
 import pytest
 from qiskit.circuit import Parameter, QuantumCircuit
+from qiskit.qpy import QPY_VERSION
 from qiskit.qpy import dump as qpy_dump
-
+from samplomatic.ssv import SSV
 
 
 def pytest_configure(config):

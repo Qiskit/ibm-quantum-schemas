@@ -156,4 +156,3 @@ class NoiseLearnerV3ResultsModel(BaseModel):
 
     data: list[NoiseLearnerV3ResultModel]
     """Resulting data for each item."""
-

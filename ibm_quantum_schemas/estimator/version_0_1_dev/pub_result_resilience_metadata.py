@@ -16,9 +16,13 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
-from .layer_noise_metadata import LayerNoiseMetadataModel
-from .pec_metadata import PecMetadataModel
-from .pub_result_zne_metadata import PubResultZneMetadataModel
+from ibm_quantum_schemas.estimator.version_0_1_dev.layer_noise_metadata import (
+    LayerNoiseMetadataModel,
+)
+from ibm_quantum_schemas.estimator.version_0_1_dev.pec_metadata import PecMetadataModel
+from ibm_quantum_schemas.estimator.version_0_1_dev.pub_result_zne_metadata import (
+    PubResultZneMetadataModel,
+)
 
 
 class PubResultResilienceMetadataModel(BaseModel):

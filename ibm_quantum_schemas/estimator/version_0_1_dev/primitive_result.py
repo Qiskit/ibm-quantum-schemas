@@ -18,10 +18,14 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .dynamical_decoupling_metadata import DynamicalDecouplingMetadataModel
-from .primitive_result_resilience_metadata import PrimitiveResultResilienceMetadataModel
-from .pub_result import PubResultWrapperModel
-from .twirling_metadata import TwirlingMetadataModel
+from ibm_quantum_schemas.estimator.version_0_1_dev.dynamical_decoupling_metadata import (
+    DynamicalDecouplingMetadataModel,
+)
+from ibm_quantum_schemas.estimator.version_0_1_dev.primitive_result_resilience_metadata import (
+    PrimitiveResultResilienceMetadataModel,
+)
+from ibm_quantum_schemas.estimator.version_0_1_dev.pub_result import PubResultWrapperModel
+from ibm_quantum_schemas.estimator.version_0_1_dev.twirling_metadata import TwirlingMetadataModel
 
 
 class PrimitiveResultMetadataModel(BaseModel):

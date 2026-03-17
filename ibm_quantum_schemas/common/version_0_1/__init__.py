@@ -38,8 +38,12 @@ Classes
    tensor_model.F64TensorModel
 """
 
-from .qpy import QpyModel, QpyModelV13ToV16, QpyModelV13ToV17
-from .base_params import BaseParamsModel
-from .pauli_lindblad_map import PauliLindbladMapModel
-from .samplex import SamplexModel, SamplexModelSSV1, SamplexModelSSV1ToSSV2
-from .tensor import TensorModel, F64TensorModel
+from ibm_quantum_schemas.common.version_0_1.base_params import BaseParamsModel
+from ibm_quantum_schemas.common.version_0_1.pauli_lindblad_map import PauliLindbladMapModel
+from ibm_quantum_schemas.common.version_0_1.qpy import QpyModel, QpyModelV13ToV16, QpyModelV13ToV17
+from ibm_quantum_schemas.common.version_0_1.samplex import (
+    SamplexModel,
+    SamplexModelSSV1,
+    SamplexModelSSV1ToSSV2,
+)
+from ibm_quantum_schemas.common.version_0_1.tensor import F64TensorModel, TensorModel

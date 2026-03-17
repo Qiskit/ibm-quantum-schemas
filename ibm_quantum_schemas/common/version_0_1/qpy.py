@@ -21,7 +21,7 @@ from qiskit import QuantumCircuit
 from qiskit.qpy import QPY_VERSION, dump, load
 from qiskit.qpy.formats import FILE_HEADER_V10, FILE_HEADER_V10_PACK, FILE_HEADER_V10_SIZE
 
-from .annotation_serializer import AnnotationSerializer
+from ibm_quantum_schemas.common.version_0_1.annotation_serializer import AnnotationSerializer
 
 ANNOTATION_FACTORIES = {"samplomatic": AnnotationSerializer}
 

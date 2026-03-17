@@ -16,6 +16,8 @@ import numpy as np
 import pytest
 from qiskit.circuit import QuantumCircuit
 
+from ibm_quantum_schemas.common.version_0_1.qpy import QpyModelV13ToV17
+from ibm_quantum_schemas.common.version_0_1.tensor import F64TensorModel
 from ibm_quantum_schemas.noise_learner_v3.version_0_2 import (
     LinbdbladResultMetadataModel,
     LinbdbladResultPostSelectionMetadataModel,
@@ -27,8 +29,6 @@ from ibm_quantum_schemas.noise_learner_v3.version_0_2 import (
     TREXResultMetadataModel,
     TREXResultPostSelectionMetadataModel,
 )
-from ibm_quantum_schemas.common.version_0_1.qpy import QpyModelV13ToV17
-from ibm_quantum_schemas.common.version_0_1.tensor import F64TensorModel
 
 
 @pytest.mark.skip_if_qiskit_too_old_for_qpy
