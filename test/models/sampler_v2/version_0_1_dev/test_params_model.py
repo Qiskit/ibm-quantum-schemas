@@ -12,7 +12,7 @@
 
 """Validation tests for params_model.py classes."""
 
-from ibm_quantum_schemas.models.sampler_v2.version_0_1_dev.params_model import ParamsModel
+from ibm_quantum_schemas.models.sampler_v2.version_0_1_dev.params import ParamsModel
 
 
 class TestParamsModelValidation:

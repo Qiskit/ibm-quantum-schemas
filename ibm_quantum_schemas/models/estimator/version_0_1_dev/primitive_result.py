@@ -18,10 +18,10 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .dynamical_decoupling_metadata_model import DynamicalDecouplingMetadataModel
-from .primitive_result_resilience_metadata_model import PrimitiveResultResilienceMetadataModel
-from .pub_result_model import PubResultWrapperModel
-from .twirling_metadata_model import TwirlingMetadataModel
+from .dynamical_decoupling_metadata import DynamicalDecouplingMetadataModel
+from .primitive_result_resilience_metadata import PrimitiveResultResilienceMetadataModel
+from .pub_result import PubResultWrapperModel
+from .twirling_metadata import TwirlingMetadataModel
 
 
 class PrimitiveResultMetadataModel(BaseModel):

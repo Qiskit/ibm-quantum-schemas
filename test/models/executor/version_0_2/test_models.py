@@ -34,9 +34,9 @@ from ibm_quantum_schemas.models.executor.version_0_2.models import (
     SchedulerTimingModel,
     StretchValueModel,
 )
-from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV17
-from ibm_quantum_schemas.models.samplex_model import SamplexModelSSV1ToSSV2 as SamplexModel
-from ibm_quantum_schemas.models.tensor_model import F64TensorModel, TensorModel
+from ibm_quantum_schemas.models.qpy import QpyModelV13ToV17
+from ibm_quantum_schemas.models.samplex import SamplexModelSSV1ToSSV2 as SamplexModel
+from ibm_quantum_schemas.models.tensor import F64TensorModel, TensorModel
 
 
 @pytest.mark.skip_if_qiskit_too_old_for_qpy

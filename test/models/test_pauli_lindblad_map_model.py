@@ -14,7 +14,7 @@
 
 from qiskit.quantum_info import PauliLindbladMap
 
-from ibm_quantum_schemas.models.pauli_lindblad_map_model import PauliLindbladMapModel
+from ibm_quantum_schemas.models.pauli_lindblad_map import PauliLindbladMapModel
 
 
 def test_roundtrip():

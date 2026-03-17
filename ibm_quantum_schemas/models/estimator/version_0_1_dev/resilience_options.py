@@ -20,12 +20,12 @@ from pydantic import BaseModel, Field, model_validator
 
 from ibm_quantum_schemas.aliases import Self
 
-from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
-from .layer_noise_model_model import LayerNoiseModelWrapperModel
-from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
-from .noise_learner_results_model import NoiseLearnerResultsModel
-from .pec_options_model import PecOptionsModel
-from .zne_options_model import ZneOptionsModel
+from .layer_noise_learning_options import LayerNoiseLearningOptionsModel
+from .layer_noise_model import LayerNoiseModelWrapperModel
+from .measure_noise_learning_options import MeasureNoiseLearningOptionsModel
+from .noise_learner_results import NoiseLearnerResultsModel
+from .pec_options import PecOptionsModel
+from .zne_options import ZneOptionsModel
 
 
 class ResilienceOptionsModel(BaseModel):

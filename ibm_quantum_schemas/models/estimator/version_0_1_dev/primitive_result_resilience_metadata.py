@@ -16,8 +16,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
-from .layer_noise_model_metadata_model import LayerNoiseModelMetadataWrapperModel
-from .primitive_result_zne_metadata_model import PrimitiveResultZneMetadataModel
+from .layer_noise_model_metadata import LayerNoiseModelMetadataWrapperModel
+from .primitive_result_zne_metadata import PrimitiveResultZneMetadataModel
 
 
 class PrimitiveResultResilienceMetadataModel(BaseModel):

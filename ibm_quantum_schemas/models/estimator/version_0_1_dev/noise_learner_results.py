@@ -16,7 +16,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from .layer_noise_model_model import LayerNoiseModelWrapperModel
+from .layer_noise_model import LayerNoiseModelWrapperModel
 
 
 class NoiseLearnerInputOptionsModel(BaseModel):

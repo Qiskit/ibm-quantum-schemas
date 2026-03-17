@@ -14,13 +14,13 @@
 
 from __future__ import annotations
 
-from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
-from .execution_options_model import SamplerExecutionOptionsModel
-from .options_model import OptionsModel
-from .params_model import ParamsModel
-from .sampler_pub_model import SamplerPubModel
-from .simulator_options_model import NoiseModel, SimulatorOptionsModel
-from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
+from .dynamical_decoupling_options import DynamicalDecouplingOptionsModel
+from .execution_options import SamplerExecutionOptionsModel
+from .options import OptionsModel
+from .params import ParamsModel
+from .sampler_pub import SamplerPubModel
+from .simulator_options import NoiseModel, SimulatorOptionsModel
+from .twirling_options import TwirlingOptionsModel, TwirlingStrategyType
 
 __all__ = [
     "DynamicalDecouplingOptionsModel",

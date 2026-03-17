@@ -16,7 +16,7 @@ import pytest
 from qiskit.circuit import QuantumCircuit
 from samplomatic import ChangeBasis, InjectNoise, Twirl
 
-from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV16, QpyModelV13ToV17
+from ibm_quantum_schemas.models.qpy import QpyModelV13ToV16, QpyModelV13ToV17
 
 
 class TestQpyModelV13ToV16:

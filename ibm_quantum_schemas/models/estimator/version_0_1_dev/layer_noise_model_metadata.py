@@ -16,8 +16,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
-from ibm_quantum_schemas.models.typed_qpy_circuit_model import TypedQpyCircuitModel
+from ibm_quantum_schemas.models.ndarray_wrapper import NdarrayWrapperModel
+from ibm_quantum_schemas.models.typed_qpy_circuit import TypedQpyCircuitModel
 
 
 class PauliListMetadataModel(BaseModel):

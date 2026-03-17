@@ -16,7 +16,7 @@ import pytest
 from pydantic import ValidationError
 
 from ibm_quantum_schemas.models.estimator.version_0_1_dev import (
-    measure_noise_learning_options_model as mnl_options,
+    measure_noise_learning_options as mnl_options,
 )
 
 MeasureNoiseLearningOptionsModel = mnl_options.MeasureNoiseLearningOptionsModel

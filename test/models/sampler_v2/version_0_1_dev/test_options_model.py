@@ -12,7 +12,7 @@
 
 """Validation tests for options_model.py classes."""
 
-from ibm_quantum_schemas.models.sampler_v2.version_0_1_dev.options_model import OptionsModel
+from ibm_quantum_schemas.models.sampler_v2.version_0_1_dev.options import OptionsModel
 
 
 class TestOptionsModelValidation:

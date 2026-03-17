@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.layer_noise_model_metadata_model import (  # noqa: E501
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.layer_noise_model_metadata import (  # noqa: E501
     LayerNoiseModelMetadataModel,
     LayerNoiseModelMetadataWrapperModel,
     PauliLindbladErrorMetadataModel,
@@ -23,8 +23,8 @@ from ibm_quantum_schemas.models.estimator.version_0_1_dev.layer_noise_model_meta
     PauliListMetadataModel,
     PauliListMetadataWrapperModel,
 )
-from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
-from ibm_quantum_schemas.models.typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
+from ibm_quantum_schemas.models.ndarray_wrapper import NdarrayWrapperModel
+from ibm_quantum_schemas.models.typed_qpy_circuit import TypedQpyCircuitModelV13to17
 
 
 class TestPauliListMetadataModelValidation:

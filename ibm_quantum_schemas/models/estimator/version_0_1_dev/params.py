@@ -18,8 +18,8 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .estimator_pub_model import EstimatorPubModel
-from .options_model import OptionsModel
+from .estimator_pub import EstimatorPubModel
+from .options import OptionsModel
 
 
 class ParamsModel(BaseModel):

@@ -18,8 +18,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .options_model import OptionsModel
-from .sampler_pub_model import SamplerPubModel
+from .options import OptionsModel
+from .sampler_pub import SamplerPubModel
 
 
 class ParamsModel(BaseModel):

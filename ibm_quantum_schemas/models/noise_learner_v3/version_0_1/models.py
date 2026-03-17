@@ -16,9 +16,9 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, confloat
 
-from ...base_params_model import BaseParamsModel
-from ...qpy_model import QpyModelV13ToV16
-from ...tensor_model import F64TensorModel
+from ...base_params import BaseParamsModel
+from ...qpy import QpyModelV13ToV16
+from ...tensor import F64TensorModel
 
 
 class ParamsModel(BaseParamsModel):

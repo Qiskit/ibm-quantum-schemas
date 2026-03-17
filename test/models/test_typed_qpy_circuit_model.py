@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models import typed_qpy_circuit_model as qpy_model
+from ibm_quantum_schemas.models import typed_qpy_circuit as qpy_model
 
 
 class TestTypedQpyCircuitModelValidation:

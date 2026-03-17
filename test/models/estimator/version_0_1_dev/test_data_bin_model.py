@@ -15,12 +15,12 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.data_bin_model import (
+from ibm_quantum_schemas.models.estimator.version_0_1_dev.data_bin import (
     DataBinModel,
     DataBinObjectModel,
     DataBinWrapperModel,
 )
-from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
+from ibm_quantum_schemas.models.ndarray_wrapper import NdarrayWrapperModel
 
 
 class TestDataBinObjectModelValidation:

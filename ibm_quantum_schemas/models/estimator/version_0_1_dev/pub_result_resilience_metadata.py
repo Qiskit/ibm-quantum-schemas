@@ -16,9 +16,9 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
-from .layer_noise_metadata_model import LayerNoiseMetadataModel
-from .pec_metadata_model import PecMetadataModel
-from .pub_result_zne_metadata_model import PubResultZneMetadataModel
+from .layer_noise_metadata import LayerNoiseMetadataModel
+from .pec_metadata import PecMetadataModel
+from .pub_result_zne_metadata import PubResultZneMetadataModel
 
 
 class PubResultResilienceMetadataModel(BaseModel):

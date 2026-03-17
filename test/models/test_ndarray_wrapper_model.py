@@ -12,7 +12,7 @@
 
 """Validation tests for ndarray_wrapper_model.py classes."""
 
-from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
+from ibm_quantum_schemas.models.ndarray_wrapper import NdarrayWrapperModel
 
 
 class TestSerializeByAlias:

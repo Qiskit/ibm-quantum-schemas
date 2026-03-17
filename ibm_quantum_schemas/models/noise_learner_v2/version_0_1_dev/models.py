@@ -16,9 +16,9 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
-from ...ndarray_wrapper_model import NdarrayWrapperModel
-from ...typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
-from .layer_noise_model import (
+from ...ndarray_wrapper import NdarrayWrapperModel
+from ...typed_qpy_circuit import TypedQpyCircuitModelV13to17
+from .layer_noise import (
     LayerNoiseModel,
     LayerNoiseWrapperModel,
     PauliLindbladErrorModel,
@@ -26,8 +26,8 @@ from .layer_noise_model import (
     PauliListModel,
     PauliListWrapperModel,
 )
-from .options_model import OptionsModel, SimulatorOptionsModel
-from .results_metadata_model import InputOptionsModel, ResultsMetadataModel
+from .options import OptionsModel, SimulatorOptionsModel
+from .results_metadata import InputOptionsModel, ResultsMetadataModel
 
 
 class ParamsModel(BaseModel):

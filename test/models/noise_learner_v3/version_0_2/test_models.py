@@ -27,8 +27,8 @@ from ibm_quantum_schemas.models.noise_learner_v3.version_0_2.models import (
     TREXResultMetadataModel,
     TREXResultPostSelectionMetadataModel,
 )
-from ibm_quantum_schemas.models.qpy_model import QpyModelV13ToV17
-from ibm_quantum_schemas.models.tensor_model import F64TensorModel
+from ibm_quantum_schemas.models.qpy import QpyModelV13ToV17
+from ibm_quantum_schemas.models.tensor import F64TensorModel
 
 
 @pytest.mark.skip_if_qiskit_too_old_for_qpy

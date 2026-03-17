@@ -14,13 +14,13 @@
 
 from __future__ import annotations
 
-from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
+from ibm_quantum_schemas.models.ndarray_wrapper import NdarrayWrapperModel
 
-from .dynamical_decoupling_options_model import DynamicalDecouplingOptionsModel
-from .estimator_pub_model import EstimatorPubModel
-from .execution_options_model import ExecutionOptionsV2Model
-from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
-from .layer_noise_model_model import (
+from .dynamical_decoupling_options import DynamicalDecouplingOptionsModel
+from .estimator_pub import EstimatorPubModel
+from .execution_options import ExecutionOptionsV2Model
+from .layer_noise_learning_options import LayerNoiseLearningOptionsModel
+from .layer_noise_model import (
     LayerNoiseModelModel,
     LayerNoiseModelWrapperModel,
     PauliLindbladErrorModel,
@@ -28,19 +28,19 @@ from .layer_noise_model_model import (
     PauliListModel,
     PauliListWrapperModel,
 )
-from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
-from .noise_learner_results_model import (
+from .measure_noise_learning_options import MeasureNoiseLearningOptionsModel
+from .noise_learner_results import (
     NoiseLearnerInputOptionsModel,
     NoiseLearnerResultsMetadataModel,
     NoiseLearnerResultsModel,
 )
-from .options_model import OptionsModel
-from .params_model import ParamsModel
-from .pec_options_model import PecOptionsModel
-from .primitive_result_model import PrimitiveResultWrapperModel
-from .resilience_options_model import ResilienceOptionsModel
-from .twirling_options_model import TwirlingOptionsModel, TwirlingStrategyType
-from .zne_options_model import ExtrapolatorType, ZneOptionsModel
+from .options import OptionsModel
+from .params import ParamsModel
+from .pec_options import PecOptionsModel
+from .primitive_result import PrimitiveResultWrapperModel
+from .resilience_options import ResilienceOptionsModel
+from .twirling_options import TwirlingOptionsModel, TwirlingStrategyType
+from .zne_options import ExtrapolatorType, ZneOptionsModel
 
 __all__ = [
     "DynamicalDecouplingOptionsModel",
