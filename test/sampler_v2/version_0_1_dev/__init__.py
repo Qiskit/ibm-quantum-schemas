@@ -10,4 +10,4 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Tests for sampler_v2 version_0_1_dev models."""
+"""Tests for sampler version_0_1_dev models."""

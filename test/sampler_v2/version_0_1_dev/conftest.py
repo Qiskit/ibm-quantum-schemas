@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Shared fixtures for sampler_v2 validation tests."""
+"""Shared fixtures for sampler validation tests."""
 
 import zlib
 from io import BytesIO
