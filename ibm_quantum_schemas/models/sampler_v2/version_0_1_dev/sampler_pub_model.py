@@ -12,7 +12,9 @@
 
 """Sampler PUB Model"""
 
-from pydantic import RootModel
+from typing import Annotated
+
+from pydantic import Field, RootModel
 
 from ibm_quantum_schemas.models.ndarray_wrapper_model import NdarrayWrapperModel
 from ibm_quantum_schemas.models.typed_qpy_circuit_model import TypedQpyCircuitModelV13to17
@@ -23,7 +25,7 @@ class SamplerPubModel(
         tuple[
             TypedQpyCircuitModelV13to17 | str,
             NdarrayWrapperModel,
-            int,
+            Annotated[int, Field(gt=0)],
         ]
     ]
 ):
