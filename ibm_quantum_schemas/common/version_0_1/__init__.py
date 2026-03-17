@@ -11,11 +11,11 @@
 # that they have been altered from the originals.
 
 """
-=================================================
-Common Models (:mod:`ibm_quantum_schemas.models`)
-=================================================
+==================================================================
+Common models v0.1 (:mod:`ibm_quantum_schemas.common.version_0_1`)
+==================================================================
 
-.. currentmodule:: ibm_quantum_schemas.models
+.. currentmodule:: ibm_quantum_schemas.common.version_0_1
 
 Models that provide common functionality.
 
@@ -26,16 +26,16 @@ Classes
    :toctree: ../stubs/
    :nosignatures:
 
-   qpy_model.QpyModel
-   qpy_model.QpyModelV13ToV16
-   qpy_model.QpyModelV13ToV17
-   base_params_model.BaseParamsModel
-   pauli_lindblad_map_model.PauliLindbladMapModel
-   samplex_model.SamplexModel
-   samplex_model.SamplexModelSSV1
-   samplex_model.SamplexModelSSV1ToSSV2
-   tensor_model.TensorModel
-   tensor_model.F64TensorModel
+   QpyModel
+   QpyModelV13ToV16
+   QpyModelV13ToV17
+   BaseParamsModel
+   PauliLindbladMapModel
+   SamplexModel
+   SamplexModelSSV1
+   SamplexModelSSV1ToSSV2
+   TensorModel
+   F64TensorModel
 """
 
 from ibm_quantum_schemas.common.version_0_1.base_params import BaseParamsModel
