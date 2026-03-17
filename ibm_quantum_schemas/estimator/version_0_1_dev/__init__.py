@@ -36,8 +36,9 @@ from ibm_quantum_schemas.estimator.version_0_1_dev.measure_noise_learning_option
 )
 from ibm_quantum_schemas.estimator.version_0_1_dev.noise_learner_results import (
     NoiseLearnerInputOptionsModel,
-    NoiseLearnerResultsMetadataModel,
-    NoiseLearnerResultsModel,
+    NoiseLearnerResultMetadataModel,
+    NoiseLearnerResultModel,
+    NoiseLearnerResultWrapperModel,
 )
 from ibm_quantum_schemas.estimator.version_0_1_dev.options import OptionsModel
 from ibm_quantum_schemas.estimator.version_0_1_dev.params import ParamsModel

@@ -102,7 +102,7 @@ class ZneOptionsModel(BaseModel):
             (`PEA <https://www.nature.com/articles/s41586-023-06096-3>`_) to
             amplify noise. When this option is selected, gate twirling will always
             be used whether or not it has been
-            enabled in the options. In this technique, the twirled noise model of each each unique
+            enabled in the options. In this technique, the twirled noise model of each unique
             layer of entangling gates in your ISA circuits is learned beforehand, see
             :class:`~.LayerNoiseLearningOptions` for relevant learning options. Once complete,
             your circuits are executed at each noise factor, where every entangling layer of
@@ -110,13 +110,14 @@ class ZneOptionsModel(BaseModel):
             proportional to the corresponding learned noise model.
     """
 
-    noise_factors: Sequence[float] | None = None
+    noise_factors: Sequence[float] = (1, 3, 5)
     """Noise factors to use for noise amplification.
-
-    Defaults to ``(1, 1.5, 2, 2.5, 3)`` for PEA, and ``(1, 3, 5)`` otherwise.
     """
 
-    extrapolator: ExtrapolatorType | Sequence[ExtrapolatorType] = ("exponential", "linear")
+    extrapolator: ExtrapolatorType | Sequence[ExtrapolatorType] = (
+        "exponential",
+        "linear",
+    )
     """Extrapolator(s) to try (in order) for extrapolating to zero noise.
 
     The available options are:
@@ -139,10 +140,10 @@ class ZneOptionsModel(BaseModel):
     extrapolator success is determined heuristically.
     """
 
-    extrapolated_noise_factors: Sequence[float] = ()
+    extrapolated_noise_factors: Sequence[float] | Literal["auto"] = "auto"
     """Noise factors to evaluate the fit extrapolation models at.
 
-    Defaults to ``[0, *noise_factors]``. This
+    If "auto" then the server will set it to ``[0, *noise_factors]``. This
     option does not affect execution or model fitting in any way, it only determines the
     points at which the ``extrapolator``\\s are evaluated to be returned in the data
     fields called ``evs_extrapolated`` and ``stds_extrapolated``.
@@ -150,22 +151,19 @@ class ZneOptionsModel(BaseModel):
 
     @field_validator("noise_factors")
     @classmethod
-    def _validate_zne_noise_factors(cls, factors: Sequence[float] | None) -> Sequence[float] | None:
+    def _validate_zne_noise_factors(cls, factors: Sequence[float]) -> Sequence[float]:
         """Validate noise_factors."""
-        if factors is not None and any(i < 1 for i in factors):
+        if any(i < 1 for i in factors):
             raise ValueError("noise_factors option value must all be >= 1")
         return factors
 
     @model_validator(mode="after")
     def _validate_options(self) -> Self:
         """Set defaults and validate options."""
-        # Set default noise_factors based on amplifier if not provided
-        if self.noise_factors is None:
-            self.noise_factors = (1, 1.5, 2, 2.5, 3) if self.amplifier == "pea" else (1, 3, 5)
-
-        # Set default extrapolated_noise_factors if not provided
-        if not self.extrapolated_noise_factors:
-            self.extrapolated_noise_factors = (0, *self.noise_factors)
+        # Check that extrapolator sequence is not empty
+        if isinstance(self.extrapolator, Sequence) and not isinstance(self.extrapolator, str):
+            if len(self.extrapolator) == 0:
+                raise ValueError("extrapolator sequence cannot be empty")
 
         # Check that there are enough noise factors for all extrapolators
         required_factors = {
@@ -187,4 +185,5 @@ class ZneOptionsModel(BaseModel):
                 raise ValueError(
                     f"{extrap} requires at least {required_factors[extrap]} noise_factors"
                 )
+
         return self

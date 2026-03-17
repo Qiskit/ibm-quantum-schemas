@@ -19,20 +19,13 @@ from collections.abc import Sequence
 from pydantic import BaseModel, Field, model_validator
 
 from ibm_quantum_schemas.aliases import Self
-from ibm_quantum_schemas.estimator.version_0_1_dev.layer_noise_learning_options import (
-    LayerNoiseLearningOptionsModel,
-)
-from ibm_quantum_schemas.estimator.version_0_1_dev.layer_noise_model import (
-    LayerNoiseModelWrapperModel,
-)
-from ibm_quantum_schemas.estimator.version_0_1_dev.measure_noise_learning_options import (
-    MeasureNoiseLearningOptionsModel,
-)
-from ibm_quantum_schemas.estimator.version_0_1_dev.noise_learner_results import (
-    NoiseLearnerResultsModel,
-)
-from ibm_quantum_schemas.estimator.version_0_1_dev.pec_options import PecOptionsModel
-from ibm_quantum_schemas.estimator.version_0_1_dev.zne_options import ZneOptionsModel
+
+from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
+from .layer_noise_model_model import LayerNoiseModelWrapperModel
+from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
+from .noise_learner_results_model import NoiseLearnerResultWrapperModel
+from .pec_options_model import PecOptionsModel
+from .zne_options_model import ZneOptionsModel
 
 
 class ResilienceOptionsModel(BaseModel):
@@ -96,9 +89,9 @@ class ResilienceOptionsModel(BaseModel):
     See :class:`LayerNoiseLearningOptionsModel` for all options.
     """
 
-    layer_noise_model: NoiseLearnerResultsModel | Sequence[LayerNoiseModelWrapperModel] | None = (
-        None
-    )
+    layer_noise_model: (
+        NoiseLearnerResultWrapperModel | Sequence[LayerNoiseModelWrapperModel] | None
+    ) = None
     """A noise learner result or a sequence of LayerError objects.
 
     If ``None``, all the mitigation strategies that require noise data (e.g., PEC
