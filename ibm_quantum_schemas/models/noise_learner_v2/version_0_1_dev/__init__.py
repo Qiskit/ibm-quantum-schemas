@@ -16,8 +16,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
-from ...ndarray_wrapper import NdarrayWrapperModel
-from ...typed_qpy_circuit import TypedQpyCircuitModelV13to17
+from ibm_quantum_schemas.common.version_0_1.ndarray_wrapper import NdarrayWrapperModel
+from ibm_quantum_schemas.common.version_0_1.typed_qpy_circuit import TypedQpyCircuitModelV13to17
 from .layer_noise import (
     LayerNoiseModel,
     LayerNoiseWrapperModel,

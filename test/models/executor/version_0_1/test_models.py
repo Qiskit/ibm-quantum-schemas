@@ -31,9 +31,9 @@ from ibm_quantum_schemas.models.executor.version_0_1 import (
     QuantumProgramResultModel,
     SamplexItemModel,
 )
-from ibm_quantum_schemas.models.qpy import QpyModelV13ToV16
-from ibm_quantum_schemas.models.samplex import SamplexModelSSV1 as SamplexModel
-from ibm_quantum_schemas.models.tensor import F64TensorModel, TensorModel
+from ibm_quantum_schemas.common.version_0_1.qpy import QpyModelV13ToV16
+from ibm_quantum_schemas.common.version_0_1.samplex import SamplexModelSSV1 as SamplexModel
+from ibm_quantum_schemas.common.version_0_1.tensor import F64TensorModel, TensorModel
 
 
 @pytest.mark.parametrize(

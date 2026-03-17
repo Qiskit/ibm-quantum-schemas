@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-from ibm_quantum_schemas.models.ndarray_wrapper import NdarrayWrapperModel
+from ibm_quantum_schemas.common.version_0_1.ndarray_wrapper import NdarrayWrapperModel
 
 from .dynamical_decoupling_options import DynamicalDecouplingOptionsModel
 from .estimator_pub import EstimatorPubModel

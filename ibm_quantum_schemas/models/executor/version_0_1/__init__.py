@@ -44,11 +44,11 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 from ....aliases import Self
-from ...base_params import BaseParamsModel
-from ...pauli_lindblad_map import PauliLindbladMapModel
-from ...qpy import QpyModelV13ToV16
-from ...samplex import SamplexModelSSV1 as SamplexModel
-from ...tensor import F64TensorModel, TensorModel
+from ibm_quantum_schemas.common.version_0_1.base_params import BaseParamsModel
+from ibm_quantum_schemas.common.version_0_1.pauli_lindblad_map import PauliLindbladMapModel
+from ibm_quantum_schemas.common.version_0_1.qpy import QpyModelV13ToV16
+from ibm_quantum_schemas.common.version_0_1.samplex import SamplexModelSSV1 as SamplexModel
+from ibm_quantum_schemas.common.version_0_1.tensor import F64TensorModel, TensorModel
 
 
 class ParamsModel(BaseParamsModel):

@@ -43,9 +43,9 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, confloat
 
-from ...base_params import BaseParamsModel
-from ...qpy import QpyModelV13ToV17
-from ...tensor import F64TensorModel
+from ibm_quantum_schemas.common.version_0_1.base_params import BaseParamsModel
+from ibm_quantum_schemas.common.version_0_1.qpy import QpyModelV13ToV17
+from ibm_quantum_schemas.common.version_0_1.tensor import F64TensorModel
 
 
 class ParamsModel(BaseParamsModel):

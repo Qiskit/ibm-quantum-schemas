@@ -15,7 +15,7 @@
 import pytest
 from samplomatic.samplex import Samplex
 
-from ibm_quantum_schemas.models.samplex import SamplexModelSSV1, SamplexModelSSV1ToSSV2
+from ibm_quantum_schemas.common.version_0_1.samplex import SamplexModelSSV1, SamplexModelSSV1ToSSV2
 
 
 class TestSamplexModelSSV1:

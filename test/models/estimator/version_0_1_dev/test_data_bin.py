@@ -20,7 +20,7 @@ from ibm_quantum_schemas.models.estimator.version_0_1_dev.data_bin import (
     DataBinObjectModel,
     DataBinWrapperModel,
 )
-from ibm_quantum_schemas.models.ndarray_wrapper import NdarrayWrapperModel
+from ibm_quantum_schemas.common.version_0_1.ndarray_wrapper import NdarrayWrapperModel
 
 
 class TestDataBinObjectModelValidation:
