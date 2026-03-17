@@ -18,8 +18,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from version_0_1_dev.options import OptionsModel
-from version_0_1_dev.sampler_pub import SamplerPubModel
+from ibm_quantum_schemas.sampler_v2.version_0_1_dev.options import OptionsModel
+from ibm_quantum_schemas.sampler_v2.version_0_1_dev.sampler_pub import SamplerPubModel
 
 
 class ParamsModel(BaseModel):
