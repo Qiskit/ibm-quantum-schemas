@@ -17,8 +17,9 @@ from pydantic import ValidationError
 
 from ibm_quantum_schemas.models.estimator.version_0_1_dev.noise_learner_results_model import (
     NoiseLearnerInputOptionsModel,
-    NoiseLearnerResultsMetadataModel,
-    NoiseLearnerResultsModel,
+    NoiseLearnerResultMetadataModel,
+    NoiseLearnerResultModel,
+    NoiseLearnerResultWrapperModel,
 )
 
 
@@ -85,8 +86,8 @@ class TestNoiseLearnerInputOptionsModelValidation:
             NoiseLearnerInputOptionsModel.model_validate({})
 
 
-class TestNoiseLearnerResultsMetadataModelValidation:
-    """Test NoiseLearnerResultsMetadataModel validation."""
+class TestNoiseLearnerResultMetadataModelValidation:
+    """Test NoiseLearnerResultMetadataModel validation."""
 
     def test_valid_metadata(self):
         """Test that valid metadata is accepted."""
@@ -100,7 +101,7 @@ class TestNoiseLearnerResultsMetadataModelValidation:
                 "twirling_strategy": "active-accum",
             },
         }
-        model = NoiseLearnerResultsMetadataModel.model_validate(metadata)
+        model = NoiseLearnerResultMetadataModel.model_validate(metadata)
         assert model.backend == "ibm_brisbane"
         assert isinstance(model.input_options, NoiseLearnerInputOptionsModel)
         assert model.input_options.max_layers_to_learn == 4
@@ -121,22 +122,21 @@ class TestNoiseLearnerResultsMetadataModelValidation:
             },
         }
         with pytest.raises(ValidationError, match="Field required"):
-            NoiseLearnerResultsMetadataModel.model_validate(metadata)
+            NoiseLearnerResultMetadataModel.model_validate(metadata)
 
     def test_missing_input_options(self):
         """Test that missing input_options field is rejected."""
         metadata = {"backend": "ibm_brisbane"}
         with pytest.raises(ValidationError, match="Field required"):
-            NoiseLearnerResultsMetadataModel.model_validate(metadata)
+            NoiseLearnerResultMetadataModel.model_validate(metadata)
 
 
-class TestNoiseLearnerResultsModelValidation:
-    """Test NoiseLearnerResultsModel validation."""
+class TestNoiseLearnerResultModelValidation:
+    """Test NoiseLearnerResultModel validation."""
 
     def test_valid_results_with_data(self, valid_layer_noise_wrapper):
         """Test that valid results with data are accepted."""
         results = {
-            "schema_version": "v0.1",
             "data": [valid_layer_noise_wrapper],
             "metadata": {
                 "backend": "ibm_brisbane",
@@ -149,10 +149,9 @@ class TestNoiseLearnerResultsModelValidation:
                 },
             },
         }
-        model = NoiseLearnerResultsModel.model_validate(results)
-        assert model.schema_version == "v0.1"
+        model = NoiseLearnerResultModel.model_validate(results)
         assert len(model.data) == 1
-        assert isinstance(model.metadata, NoiseLearnerResultsMetadataModel)
+        assert isinstance(model.metadata, NoiseLearnerResultMetadataModel)
         assert model.metadata.backend == "ibm_brisbane"
         assert isinstance(model.metadata.input_options, NoiseLearnerInputOptionsModel)
         assert model.metadata.input_options.max_layers_to_learn == 4
@@ -164,7 +163,6 @@ class TestNoiseLearnerResultsModelValidation:
     def test_valid_results_with_empty_data(self):
         """Test that valid results with empty data are accepted."""
         results = {
-            "schema_version": "v0.1",
             "data": [],
             "metadata": {
                 "backend": "ibm_brisbane",
@@ -177,32 +175,12 @@ class TestNoiseLearnerResultsModelValidation:
                 },
             },
         }
-        model = NoiseLearnerResultsModel.model_validate(results)
-        assert model.schema_version == "v0.1"
+        model = NoiseLearnerResultModel.model_validate(results)
         assert len(model.data) == 0
-
-    def test_default_schema_version(self):
-        """Test that schema_version defaults to v0.1."""
-        results = {
-            "data": [],
-            "metadata": {
-                "backend": "ibm_brisbane",
-                "input_options": {
-                    "max_layers_to_learn": 4,
-                    "shots_per_randomization": 128,
-                    "num_randomizations": 32,
-                    "layer_pair_depths": [0, 1, 2],
-                    "twirling_strategy": "active",
-                },
-            },
-        }
-        model = NoiseLearnerResultsModel.model_validate(results)
-        assert model.schema_version == "v0.1"
 
     def test_missing_data_field(self):
         """Test that missing data field is rejected."""
         results = {
-            "schema_version": "v0.1",
             "metadata": {
                 "backend": "ibm_brisbane",
                 "input_options": {
@@ -215,13 +193,41 @@ class TestNoiseLearnerResultsModelValidation:
             },
         }
         with pytest.raises(ValidationError, match="Field required"):
-            NoiseLearnerResultsModel.model_validate(results)
+            NoiseLearnerResultModel.model_validate(results)
 
     def test_missing_metadata_field(self):
         """Test that missing metadata field is rejected."""
         results = {
-            "schema_version": "v0.1",
             "data": [],
         }
         with pytest.raises(ValidationError, match="Field required"):
-            NoiseLearnerResultsModel.model_validate(results)
+            NoiseLearnerResultModel.model_validate(results)
+
+
+class TestNoiseLearnerResultWrapperModelValidation:
+    """Test NoiseLearnerResultWrapperModel validation."""
+
+    def test_valid_wrapper_with_data(self, valid_layer_noise_wrapper):
+        """Test that valid wrapper with data is accepted."""
+        wrapper = {
+            "__type__": "NoiseLearnerResult",
+            "__value__": {
+                "data": [valid_layer_noise_wrapper],
+                "metadata": {
+                    "backend": "ibm_brisbane",
+                    "input_options": {
+                        "max_layers_to_learn": 4,
+                        "shots_per_randomization": 128,
+                        "num_randomizations": 32,
+                        "layer_pair_depths": [0, 1, 2],
+                        "twirling_strategy": "active-accum",
+                    },
+                },
+            },
+        }
+        model = NoiseLearnerResultWrapperModel.model_validate(wrapper)
+        assert model.type_ == "NoiseLearnerResult"
+        assert isinstance(model.value_, NoiseLearnerResultModel)
+        assert len(model.value_.data) == 1
+        assert isinstance(model.value_.metadata, NoiseLearnerResultMetadataModel)
+        assert model.value_.metadata.backend == "ibm_brisbane"

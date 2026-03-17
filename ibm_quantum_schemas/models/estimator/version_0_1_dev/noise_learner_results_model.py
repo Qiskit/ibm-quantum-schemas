@@ -10,11 +10,11 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""All models needed for NoiseLearnerResultsModel (Estimator version)"""
+"""All models needed for NoiseLearnerResultWrapperModel (Estimator version)"""
 
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from .layer_noise_model_model import LayerNoiseModelWrapperModel
 
@@ -38,7 +38,7 @@ class NoiseLearnerInputOptionsModel(BaseModel):
     """The twirling strategy in the identified layers of two-qubit twirled gates."""
 
 
-class NoiseLearnerResultsMetadataModel(BaseModel):
+class NoiseLearnerResultMetadataModel(BaseModel):
     """Metadata attached to noise learner v2 results.
 
     Contains information about the execution context and options used during
@@ -52,14 +52,21 @@ class NoiseLearnerResultsMetadataModel(BaseModel):
     """The input options used for the noise learning experiment."""
 
 
-class NoiseLearnerResultsModel(BaseModel):
+class NoiseLearnerResultModel(BaseModel):
     """A model describing the result from executing a noise learner v2 job."""
-
-    schema_version: Literal["v0.1"] = "v0.1"
-    """Schema version of the results."""
 
     data: list[LayerNoiseModelWrapperModel]
     """Result data from the noise learner v2 job."""
 
-    metadata: NoiseLearnerResultsMetadataModel
+    metadata: NoiseLearnerResultMetadataModel
     """Metadata for the noise learner v2 job."""
+
+
+class NoiseLearnerResultWrapperModel(BaseModel):
+    """A wrapper around NoiseLearnerResultModel adding redundant type information."""
+
+    type_: Literal["NoiseLearnerResult"] = Field(default="NoiseLearnerResult", alias="__type__")
+    """Redundant type information."""
+
+    value_: NoiseLearnerResultModel = Field(alias="__value__")
+    """The actual data."""

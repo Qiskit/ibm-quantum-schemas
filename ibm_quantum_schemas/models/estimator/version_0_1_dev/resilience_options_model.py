@@ -23,7 +23,7 @@ from ibm_quantum_schemas.aliases import Self
 from .layer_noise_learning_options_model import LayerNoiseLearningOptionsModel
 from .layer_noise_model_model import LayerNoiseModelWrapperModel
 from .measure_noise_learning_options_model import MeasureNoiseLearningOptionsModel
-from .noise_learner_results_model import NoiseLearnerResultsModel
+from .noise_learner_results_model import NoiseLearnerResultWrapperModel
 from .pec_options_model import PecOptionsModel
 from .zne_options_model import ZneOptionsModel
 
@@ -89,9 +89,9 @@ class ResilienceOptionsModel(BaseModel):
     See :class:`LayerNoiseLearningOptionsModel` for all options.
     """
 
-    layer_noise_model: NoiseLearnerResultsModel | Sequence[LayerNoiseModelWrapperModel] | None = (
-        None
-    )
+    layer_noise_model: (
+        NoiseLearnerResultWrapperModel | Sequence[LayerNoiseModelWrapperModel] | None
+    ) = None
     """A noise learner result or a sequence of LayerError objects.
 
     If ``None``, all the mitigation strategies that require noise data (e.g., PEC
