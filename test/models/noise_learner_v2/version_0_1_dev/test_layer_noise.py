@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.layer_noise import (
+from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.layer_noise import (
     LayerNoiseModel,
     PauliLindbladErrorWrapperModel,
 )
@@ -77,7 +77,7 @@ class TestSerializeByAlias:
 
     def test_pauli_list_wrapper_serializes_with_aliases(self):
         """Test that PauliListWrapperModel serializes with aliases."""
-        from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.layer_noise import (
+        from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.layer_noise import (
             PauliListWrapperModel,
         )
 
@@ -115,7 +115,7 @@ class TestSerializeByAlias:
         self, valid_typed_qpy_circuit_dict_v13, valid_pauli_lindblad_error
     ):
         """Test that LayerNoiseWrapperModel serializes with aliases."""
-        from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.layer_noise import (
+        from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.layer_noise import (
             LayerNoiseWrapperModel,
         )
 
@@ -142,7 +142,7 @@ class TestSerializeByAlias:
 
     def test_noise_model_serializes_with_aliases(self):
         """Test that NoiseModel serializes with aliases."""
-        from ibm_quantum_schemas.models.noise_learner_v2.version_0_1_dev.options import (
+        from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.options import (
             NoiseModel,
         )
 

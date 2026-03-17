@@ -1,6 +1,6 @@
 # This code is a Qiskit project.
 #
-# (C) Copyright IBM 2025.
+# (C) Copyright IBM 2026.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -12,12 +12,12 @@
 
 """
 ====================================================================================
-NoiseLearnerV3 v0.1 (:mod:`ibm_quantum_schemas.models.noise_learner_v3.version_0_1`)
+NoiseLearnerV3 v0.2 (:mod:`ibm_quantum_schemas.noise_learner_v3.version_0_2`)
 ====================================================================================
 
-.. currentmodule:: ibm_quantum_schemas.models.noise_learner_v3.version_0_1
+.. currentmodule:: ibm_quantum_schemas.noise_learner_v3.version_0_2
 
-Models and validation for ``NoiseLearnerV3`` ``v0.1``.
+Models and validation for ``NoiseLearnerV3`` ``v0.2``.
 
 Classes
 =======
@@ -31,33 +31,35 @@ Classes
    PostSelectionOptionsModel
    NoiseLearnerV3ResultsModel
    NoiseLearnerV3ResultModel
-   TREXResultMetadataModel
    TREXResultPostSelectionMetadataModel
-   LinbdbladResultMetadataModel
+   TREXResultMetadataModel
    LinbdbladResultPostSelectionMetadataModel
+   LinbdbladResultMetadataModel
 """
+
+from __future__ import annotations
 
 from typing import Literal
 
 from pydantic import BaseModel, Field, confloat
 
 from ibm_quantum_schemas.common.version_0_1.base_params import BaseParamsModel
-from ibm_quantum_schemas.common.version_0_1.qpy import QpyModelV13ToV16
+from ibm_quantum_schemas.common.version_0_1.qpy import QpyModelV13ToV17
 from ibm_quantum_schemas.common.version_0_1.tensor import F64TensorModel
 
 
 class ParamsModel(BaseParamsModel):
     """Schema version 1 of the inner parameters."""
 
-    schema_version: Literal["v0.1"] = "v0.1"
+    schema_version: Literal["v0.2"] = "v0.2"
 
-    instructions: QpyModelV13ToV16
+    instructions: QpyModelV13ToV17
     """The instructions targeted by the noise learner.
 
     These are embedded to a circuit prior to encoding with QPY.
     """
 
-    options: "OptionsModel"
+    options: OptionsModel
     """Options for runtime."""
 
 
@@ -92,12 +94,27 @@ class OptionsModel(BaseModel):
     post_selection: PostSelectionOptionsModel = Field(default_factory=PostSelectionOptionsModel)
     """Options for post selecting the results of noise learning circuits."""
 
+    init_qubits: bool = True
+    r"""Whether to reset the qubits to the ground state for each shot."""
+
+    rep_delay: float | None = None
+    r"""The repetition delay.
+
+    This is the delay between the end of one circuit and the start of the next within a shot loop.
+    This is only supported on backends that have ``backend.dynamic_reprate_enabled=True``. It must
+    be from the range supplied by ``backend.rep_delay_range``. When this value is ``None``, the
+    default value ``backend.default_rep_delay`` is used.
+    """
+
 
 class TREXResultPostSelectionMetadataModel(BaseModel):
     """The post selection metadata of a single TREX result of a noise learner v3 job."""
 
     fraction_kept: float = Field(ge=0, le=1)
     """The fraction of shots kept."""
+
+    success_rates: dict[int, confloat(ge=0, le=1)]
+    """The fraction of shots in which post selection successfully flipped each qubit."""
 
 
 class TREXResultMetadataModel(BaseModel):
@@ -115,6 +132,10 @@ class LinbdbladResultPostSelectionMetadataModel(BaseModel):
 
     fraction_kept: dict[int, confloat(ge=0, le=1)]  # type: ignore
     """The fraction of shots kept for each layer pair depth."""
+
+    success_rates: dict[int, dict[int, confloat(ge=0, le=1)]]
+    """The fraction of shots in which post selection successfully flipped each qubit, for
+    each layer pair depth."""
 
 
 class LinbdbladResultMetadataModel(BaseModel):
@@ -151,9 +172,8 @@ class NoiseLearnerV3ResultModel(BaseModel):
 class NoiseLearnerV3ResultsModel(BaseModel):
     """Result from executing a noise learner v3 job."""
 
-    schema_version: Literal["v0.1"] = "v0.1"
+    schema_version: Literal["v0.2"] = "v0.2"
     """Schema version of the result type."""
 
     data: list[NoiseLearnerV3ResultModel]
     """Resulting data for each item."""
-

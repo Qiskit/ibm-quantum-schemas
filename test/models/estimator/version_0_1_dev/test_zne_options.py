@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.models.estimator.version_0_1_dev.zne_options import (
+from ibm_quantum_schemas.estimator.version_0_1_dev.zne_options import (
     ZneOptionsModel,
 )
 

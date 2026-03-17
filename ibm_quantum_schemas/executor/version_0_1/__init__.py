@@ -12,10 +12,10 @@
 
 """
 ======================================================================
-Executor v0.1 (:mod:`ibm_quantum_schemas.models.executor.version_0_1`)
+Executor v0.1 (:mod:`ibm_quantum_schemas.executor.version_0_1`)
 ======================================================================
 
-.. currentmodule:: ibm_quantum_schemas.models.executor.version_0_1
+.. currentmodule:: ibm_quantum_schemas.executor.version_0_1
 
 Models and validation for ``Executor`` ``v0.1``.
 
@@ -43,7 +43,7 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from ....aliases import Self
+from ibm_quantum_schemas.aliases import Self
 from ibm_quantum_schemas.common.version_0_1.base_params import BaseParamsModel
 from ibm_quantum_schemas.common.version_0_1.pauli_lindblad_map import PauliLindbladMapModel
 from ibm_quantum_schemas.common.version_0_1.qpy import QpyModelV13ToV16
