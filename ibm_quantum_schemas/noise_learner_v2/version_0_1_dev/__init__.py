@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Models for NoiseLearnerV2 inputs and outputs"""
+"""Models for ``NoiseLearnerV2`` ``v0.1``."""
 
 from typing import Literal
 

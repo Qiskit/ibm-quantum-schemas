@@ -11,13 +11,13 @@
 # that they have been altered from the originals.
 
 """
-====================================================================================
+=============================================================================
 NoiseLearnerV3 v0.1 (:mod:`ibm_quantum_schemas.noise_learner_v3.version_0_1`)
-====================================================================================
+=============================================================================
 
 .. currentmodule:: ibm_quantum_schemas.noise_learner_v3.version_0_1
 
-Models and validation for ``NoiseLearnerV3`` ``v0.1``.
+Models for ``NoiseLearnerV3`` ``v0.1``.
 
 Classes
 =======

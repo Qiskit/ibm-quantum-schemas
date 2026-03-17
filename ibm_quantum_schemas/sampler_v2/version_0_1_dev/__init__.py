@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Sampler V2 schema models version 0.1 (dev)."""
+"""Models and validation for ``Sampler`` ``v0.1``."""
 
 from version_0_1_dev.dynamical_decoupling_options import DynamicalDecouplingOptionsModel
 from version_0_1_dev.execution_options import SamplerExecutionOptionsModel

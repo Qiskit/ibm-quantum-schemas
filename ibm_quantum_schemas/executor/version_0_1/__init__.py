@@ -11,13 +11,13 @@
 # that they have been altered from the originals.
 
 """
-======================================================================
+===============================================================
 Executor v0.1 (:mod:`ibm_quantum_schemas.executor.version_0_1`)
-======================================================================
+===============================================================
 
 .. currentmodule:: ibm_quantum_schemas.executor.version_0_1
 
-Models and validation for ``Executor`` ``v0.1``.
+Models for ``Executor`` ``v0.1``.
 
 Classes
 =======
