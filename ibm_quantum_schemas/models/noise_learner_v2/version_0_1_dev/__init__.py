@@ -10,4 +10,51 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""NoiseLearnerV2 V0.1 Models and Validation"""
+"""Models for NoiseLearnerV2 inputs and outputs"""
+
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict
+
+from ...ndarray_wrapper import NdarrayWrapperModel
+from ...typed_qpy_circuit import TypedQpyCircuitModelV13to17
+from .layer_noise import (
+    LayerNoiseModel,
+    LayerNoiseWrapperModel,
+    PauliLindbladErrorModel,
+    PauliLindbladErrorWrapperModel,
+    PauliListModel,
+    PauliListWrapperModel,
+)
+from .options import OptionsModel, SimulatorOptionsModel
+from .results_metadata import InputOptionsModel, ResultsMetadataModel
+
+
+class ParamsModel(BaseModel):
+    """A model describing the NoiseLearnerV2 program inputs, also known as "params"."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    version: Literal[2] | None = 2
+    """Version of the program."""
+
+    circuits: list[TypedQpyCircuitModelV13to17 | str]
+    """The circuits to run the noise learner program for.
+
+    The list may contain individual circuits serialized in one of the following ways:
+    - QPY format (Packaged in `TypedQpyCircuitModelV13to17`)
+    - QASM string (stored directly as a `str` in the list)
+    """
+
+    options: OptionsModel = OptionsModel()
+    """Options for the noise learner program."""
+
+
+class ResultsModel(BaseModel):
+    """A model describing the result from executing a noise learner v2 job."""
+
+    data: list[LayerNoiseWrapperModel]
+    """Result data from the noise learner v2 job."""
+
+    metadata: ResultsMetadataModel
+    """Metadata for the noise learner v2 job."""
