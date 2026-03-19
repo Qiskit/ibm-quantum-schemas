@@ -30,7 +30,7 @@ class DataBinModel(BaseModel):
     """Data bin shape."""
 
     fields: dict[str, Any]
-    """Data bin fields. Typically coontains BitArrayWrapperModel instances for
+    """Data bin fields. Typically contains ``BitArrayWrapperModel`` instances for
     classical registers, but could include other metadata."""
 
 
