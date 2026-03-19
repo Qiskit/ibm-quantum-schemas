@@ -26,6 +26,7 @@ from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.layer_noise import (
     PauliListModel,
     PauliListWrapperModel,
 )
+from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.models import ParamsModel, ResultsModel
 from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.options import (
     OptionsModel,
     SimulatorOptionsModel,
@@ -34,33 +35,3 @@ from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.results_metadata impor
     InputOptionsModel,
     ResultsMetadataModel,
 )
-
-
-class ParamsModel(BaseModel):
-    """A model describing the NoiseLearnerV2 program inputs, also known as "params"."""
-
-    model_config = ConfigDict(extra="forbid")
-
-    version: Literal[2] | None = 2
-    """Version of the program."""
-
-    circuits: list[TypedQpyCircuitModelV13to17 | str]
-    """The circuits to run the noise learner program for.
-
-    The list may contain individual circuits serialized in one of the following ways:
-    - QPY format (Packaged in `TypedQpyCircuitModelV13to17`)
-    - QASM string (stored directly as a `str` in the list)
-    """
-
-    options: OptionsModel = OptionsModel()
-    """Options for the noise learner program."""
-
-
-class ResultsModel(BaseModel):
-    """A model describing the result from executing a noise learner v2 job."""
-
-    data: list[LayerNoiseWrapperModel]
-    """Result data from the noise learner v2 job."""
-
-    metadata: ResultsMetadataModel
-    """Metadata for the noise learner v2 job."""
