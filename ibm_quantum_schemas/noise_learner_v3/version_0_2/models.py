@@ -18,7 +18,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, confloat
 
-from ibm_quantum_schemas.common.version_0_1 import (
+from ibm_quantum_schemas.common import (
     BaseParamsModel,
     F64TensorModel,
     QpyModelV13ToV17,

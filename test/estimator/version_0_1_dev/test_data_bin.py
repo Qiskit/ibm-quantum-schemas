@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.common.version_0_1.ndarray_wrapper import NdarrayWrapperModel
+from ibm_quantum_schemas.common.ndarray_wrapper import NdarrayWrapperModel
 from ibm_quantum_schemas.estimator.version_0_1_dev.data_bin import (
     DataBinModel,
     DataBinObjectModel,

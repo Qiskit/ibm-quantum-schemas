@@ -14,7 +14,7 @@
 
 from samplomatic import ChangeBasis, InjectNoise, Twirl
 
-from ibm_quantum_schemas.common.version_0_1.annotation_serializer import AnnotationSerializer
+from ibm_quantum_schemas.common.annotation_serializer import AnnotationSerializer
 
 
 class TestChangeBasis:

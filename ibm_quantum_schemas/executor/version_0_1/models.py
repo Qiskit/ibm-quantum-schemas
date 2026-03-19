@@ -18,14 +18,14 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 from ibm_quantum_schemas.aliases import Self
-from ibm_quantum_schemas.common.version_0_1 import (
+from ibm_quantum_schemas.common import (
     BaseParamsModel,
     F64TensorModel,
     PauliLindbladMapModel,
     QpyModelV13ToV16,
     TensorModel,
 )
-from ibm_quantum_schemas.common.version_0_1 import SamplexModelSSV1 as SamplexModel
+from ibm_quantum_schemas.common import SamplexModelSSV1 as SamplexModel
 
 
 class ParamsModel(BaseParamsModel):

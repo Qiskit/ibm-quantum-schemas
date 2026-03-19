@@ -10,4 +10,40 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Models providing functionality common to several programs."""
+"""
+=================================================
+Common models (:mod:`ibm_quantum_schemas.common`)
+=================================================
+
+.. currentmodule:: ibm_quantum_schemas.common
+
+Models that provide common functionality.
+
+Classes
+=======
+
+.. autosummary::
+   :toctree: ../stubs/
+   :nosignatures:
+
+   QpyModel
+   QpyModelV13ToV16
+   QpyModelV13ToV17
+   BaseParamsModel
+   PauliLindbladMapModel
+   SamplexModel
+   SamplexModelSSV1
+   SamplexModelSSV1ToSSV2
+   TensorModel
+   F64TensorModel
+"""
+
+from ibm_quantum_schemas.common.base_params import BaseParamsModel
+from ibm_quantum_schemas.common.pauli_lindblad_map import PauliLindbladMapModel
+from ibm_quantum_schemas.common.qpy import QpyModel, QpyModelV13ToV16, QpyModelV13ToV17
+from ibm_quantum_schemas.common.samplex import (
+    SamplexModel,
+    SamplexModelSSV1,
+    SamplexModelSSV1ToSSV2,
+)
+from ibm_quantum_schemas.common.tensor import F64TensorModel, TensorModel

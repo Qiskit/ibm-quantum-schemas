@@ -16,7 +16,7 @@ import numpy as np
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.common.version_0_1.tensor import F64TensorModel, TensorModel
+from ibm_quantum_schemas.common.tensor import F64TensorModel, TensorModel
 
 
 class TestTensorModel:

@@ -21,14 +21,14 @@ from pydantic import BaseModel, Field, JsonValue, model_validator
 from typing_extensions import TypeAliasType
 
 from ibm_quantum_schemas.aliases import Self
-from ibm_quantum_schemas.common.version_0_1 import (
+from ibm_quantum_schemas.common import (
     BaseParamsModel,
     F64TensorModel,
     PauliLindbladMapModel,
     QpyModelV13ToV17,
     TensorModel,
 )
-from ibm_quantum_schemas.common.version_0_1 import SamplexModelSSV1ToSSV2 as SamplexModel
+from ibm_quantum_schemas.common import SamplexModelSSV1ToSSV2 as SamplexModel
 
 # TypeAliasType is required for Pydantic to handle this recursive type correctly.
 # Note that TypeAliasType is a backport for Python<3.12, so that when drop Python 3.11 support and
