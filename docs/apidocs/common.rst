@@ -1,4 +1,4 @@
-.. automodule:: ibm_quantum_schemas.executor.version_0_2
+.. automodule:: ibm_quantum_schemas.common
    :no-members:
    :no-inherited-members:
    :no-special-members:

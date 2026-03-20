@@ -7,7 +7,7 @@ The resulting `ibm-quantum-schemas` Python package contains the versioned defini
 inputs and outputs, using the following structure:
 
 ```
-ibm_quantum_schemas.models.<program>.version_<x_y>
+ibm_quantum_schemas.<program>.version_<x_y>
 ```
 
 Please note:
