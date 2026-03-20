@@ -6,7 +6,13 @@
 
   ```
   ibm_quantum_schemas.<program>.version_<x_y>.SomeModel
-  ``` ([#113](https://github.com/Qiskit/ibm-quantum-schemas/issues/113))
+  ```
+  
+  ([#113](https://github.com/Qiskit/ibm-quantum-schemas/issues/113))
+
+### Added
+
+- `sampler` model version `0.1_dev`
 
 
 ## [0.4.20260309](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.4.20260309) - 2026-03-09
