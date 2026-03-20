@@ -7,7 +7,7 @@
   ```
   ibm_quantum_schemas.<program>.version_<x_y>.SomeModel
   ```
-  
+
   ([#113](https://github.com/Qiskit/ibm-quantum-schemas/issues/113))
 
 ### Added
