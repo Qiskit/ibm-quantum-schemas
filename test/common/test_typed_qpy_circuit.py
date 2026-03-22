@@ -1,0 +1,66 @@
+# This code is a Qiskit project.
+#
+# (C) Copyright IBM 2026.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+"""Validation tests for typed_qpy_circuit_model.py classes."""
+
+import pytest
+from pydantic import ValidationError
+
+from ibm_quantum_schemas.common import typed_qpy_circuit as qpy_model
+
+
+class TestTypedQpyCircuitModelValidation:
+    """Test TypedQpyCircuitModelV13to17 validation."""
+
+    def test_valid_typed_qpy_circuit(self, valid_typed_qpy_circuit_dict_v13):
+        """Test that valid TypedQpyCircuitModel is accepted."""
+        model = qpy_model.TypedQpyCircuitModelV13to17.model_validate(
+            valid_typed_qpy_circuit_dict_v13
+        )
+        assert model.type_ == "QuantumCircuit"
+        assert model.value_ == valid_typed_qpy_circuit_dict_v13["__value__"]
+
+    def test_invalid_type_field(self, compressed_qpy_circuit_v13):
+        """Test that wrong __type__ value is rejected."""
+        circuit_dict = {"__type__": "WrongType", "__value__": compressed_qpy_circuit_v13}
+        with pytest.raises(ValidationError, match="Input should be 'QuantumCircuit'"):
+            qpy_model.TypedQpyCircuitModelV13to17.model_validate(circuit_dict)
+
+    def test_missing_value_field(self):
+        """Test that missing __value__ field is rejected."""
+        circuit_dict = {"__type__": "QuantumCircuit"}
+        with pytest.raises(ValidationError, match="Field required"):
+            qpy_model.TypedQpyCircuitModelV13to17.model_validate(circuit_dict)
+
+    def test_invalid_base64(self):
+        """Test that invalid base64 encoding is rejected."""
+        circuit_dict = {"__type__": "QuantumCircuit", "__value__": "not-valid-base64!!!"}
+        with pytest.raises(ValidationError):
+            qpy_model.TypedQpyCircuitModelV13to17.model_validate(circuit_dict)
+
+
+class TestSerializeByAlias:
+    """Test that models with aliases serialize correctly."""
+
+    def test_typed_qpy_circuit_model_serializes_with_aliases(
+        self, valid_typed_qpy_circuit_dict_v13
+    ):
+        """Test that TypedQpyCircuitModel serializes with aliases."""
+        model = qpy_model.TypedQpyCircuitModelV13to17.model_validate(
+            valid_typed_qpy_circuit_dict_v13
+        )
+
+        serialized = model.model_dump(mode="json")
+        assert "__type__" in serialized
+        assert "__value__" in serialized
+        assert serialized["__type__"] == "QuantumCircuit"
+        assert serialized["__value__"] == valid_typed_qpy_circuit_dict_v13["__value__"]

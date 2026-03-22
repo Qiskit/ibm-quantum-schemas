@@ -1,3 +1,20 @@
+## [0.5.20260320](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.5.20260320) - 2026-03-20
+
+### Changed
+
+- The public interface has been revised and now conforms to the form:
+
+  ```
+  ibm_quantum_schemas.<program>.version_<x_y>.SomeModel
+  ```
+
+  ([#113](https://github.com/Qiskit/ibm-quantum-schemas/issues/113))
+
+### Added
+
+- `sampler` model version `0.1_dev`
+
+
 ## [0.4.20260309](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.4.20260309) - 2026-03-09
 
 ### Added
