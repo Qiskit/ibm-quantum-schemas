@@ -20,24 +20,32 @@ from datetime import datetime
 import numpy as np
 
 from ibm_quantum_schemas.common.ndarray_wrapper import NdarrayWrapperModel
-from ibm_quantum_schemas.models.sampler_v2.version_0_1_dev import (
+from ibm_quantum_schemas.sampler.version_0_1_dev.bit_array_model import (
     BitArrayModel,
     BitArrayWrapperModel,
+)
+from ibm_quantum_schemas.sampler.version_0_1_dev.data_bin_model import (
     DataBinModel,
     DataBinWrapperModel,
+)
+from ibm_quantum_schemas.sampler.version_0_1_dev.execution_span_models import (
     DoubleSliceSpanModel,
     DoubleSliceSpanWrapperModel,
-    ExecutionMetadataModel,
     ExecutionSpansModel,
     ExecutionSpansWrapperModel,
+    TwirledSliceSpanV2Model,
+    TwirledSliceSpanV2WrapperModel,
+)
+from ibm_quantum_schemas.sampler.version_0_1_dev.primitive_result_model import (
+    ExecutionMetadataModel,
     PrimitiveResultMetadataModel,
     PrimitiveResultModel,
     PrimitiveResultWrapperModel,
+)
+from ibm_quantum_schemas.sampler.version_0_1_dev.pub_result_model import (
     PubResultMetadataModel,
     PubResultModel,
     PubResultWrapperModel,
-    TwirledSliceSpanV2Model,
-    TwirledSliceSpanV2WrapperModel,
 )
 
 
