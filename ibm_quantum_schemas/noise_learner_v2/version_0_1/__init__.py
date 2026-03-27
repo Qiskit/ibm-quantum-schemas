@@ -10,7 +10,35 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Models for ``NoiseLearnerV2`` ``v0.1``."""
+"""
+=============================================================================
+NoiseLearnerV2 v0.1 (:mod:`ibm_quantum_schemas.noise_learner_v2.version_0_1`)
+=============================================================================
+
+.. currentmodule:: ibm_quantum_schemas.noise_learner_v2.version_0_1
+
+Models for ``NoiseLearnerV2`` ``v0.1``.
+
+Classes
+=======
+
+.. autosummary::
+   :toctree: ../stubs/
+   :nosignatures:
+
+   LayerNoiseModel
+   LayerNoiseWrapperModel
+   PauliLindbladErrorModel
+   PauliLindbladErrorWrapperModel
+   PauliListModel
+   PauliListWrapperModel
+   ParamsModel
+   ResultsModel
+   OptionsModel
+   SimulatorOptionsModel
+   InputOptionsModel
+   ResultsMetadataModel
+"""
 
 from ibm_quantum_schemas.noise_learner_v2.version_0_1.layer_noise import (
     LayerNoiseModel,
