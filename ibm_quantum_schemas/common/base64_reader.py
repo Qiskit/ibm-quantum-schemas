@@ -27,7 +27,7 @@ class Base64Reader(RawIOBase):
     class.
     """
 
-    def __init__(self, b64_string, chunk_chars=4096):
+    def __init__(self, b64_string: str, chunk_chars: int = 4096):
         """Initialize a new instance.
 
         Args:
@@ -57,8 +57,16 @@ class Base64Reader(RawIOBase):
         if tail:
             yield b64decode(tail)
 
-    def read(self, size=-1):
-        """Read a given number of bytes from the string."""
+    def read(self, size: int = -1):
+        """Read a given number of bytes from the string.
+
+        Args:
+            size: How many characters to read from the current position, where ``-1`` indicates to
+                read until the end of the file.
+
+        Returns:
+            The characters.
+        """
         while size < 0 or len(self._buffer) < size:
             try:
                 self._buffer += next(self._iter)
