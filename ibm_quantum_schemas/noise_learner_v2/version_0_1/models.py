@@ -36,8 +36,9 @@ class ParamsModel(BaseModel):
     """The circuits to run the noise learner program for.
 
     The list may contain individual circuits serialized in one of the following ways:
-    - QPY format (Packaged in `TypedQpyCircuitModelV13to17`)
-    - QASM string (stored directly as a `str` in the list)
+
+    * QPY format (Packaged in :class:`TypedQpyCircuitModelV13to17`)
+    * QASM string (stored directly as a ``str`` in the list)
     """
 
     options: OptionsModel = OptionsModel()
