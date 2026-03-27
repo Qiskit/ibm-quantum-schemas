@@ -84,7 +84,7 @@ conventions when developing in the repo:
    **semantic versioning** for the name of the module. For example:
 
    ```
-   from qiskit_ibmq_quantum_schemas.models.executor import version_0_1
+   from qiskit_ibmq_quantum_schemas.executor import version_0_1
    ````
 
 2. When a new version of the model for a program is started, the module name must contain the
