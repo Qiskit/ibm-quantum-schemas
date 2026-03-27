@@ -12,7 +12,7 @@
 
 """Models for ``NoiseLearnerV2`` ``v0.1``."""
 
-from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.layer_noise import (
+from ibm_quantum_schemas.noise_learner_v2.version_0_1.layer_noise import (
     LayerNoiseModel,
     LayerNoiseWrapperModel,
     PauliLindbladErrorModel,
@@ -20,12 +20,12 @@ from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.layer_noise import (
     PauliListModel,
     PauliListWrapperModel,
 )
-from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.models import ParamsModel, ResultsModel
-from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.options import (
+from ibm_quantum_schemas.noise_learner_v2.version_0_1.models import ParamsModel, ResultsModel
+from ibm_quantum_schemas.noise_learner_v2.version_0_1.options import (
     OptionsModel,
     SimulatorOptionsModel,
 )
-from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.results_metadata import (
+from ibm_quantum_schemas.noise_learner_v2.version_0_1.results_metadata import (
     InputOptionsModel,
     ResultsMetadataModel,
 )

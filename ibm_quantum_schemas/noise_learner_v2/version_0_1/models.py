@@ -17,9 +17,9 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict
 
 from ibm_quantum_schemas.common.typed_qpy_circuit import TypedQpyCircuitModelV13to17
-from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.layer_noise import LayerNoiseWrapperModel
-from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.options import OptionsModel
-from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.results_metadata import (
+from ibm_quantum_schemas.noise_learner_v2.version_0_1.layer_noise import LayerNoiseWrapperModel
+from ibm_quantum_schemas.noise_learner_v2.version_0_1.options import OptionsModel
+from ibm_quantum_schemas.noise_learner_v2.version_0_1.results_metadata import (
     ResultsMetadataModel,
 )
 
