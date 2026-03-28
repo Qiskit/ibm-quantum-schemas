@@ -37,10 +37,11 @@ class EstimatorPubModel(
     parameter values, and optional precision requirements.
 
     Tuple elements:
-    [0] circuit: The quantum circuit to execute, encoded in QPY format or as a QASM string.
-    [1] observables: The observables to measure. Can be a single observable or
-        a list of observables.
-    [2] parameter_values: Parameter values for the circuit's parameters (NumPy ndarray).
-    [3] precision: Target precision for the expectation value estimates
-        (positive float or None).
+
+    * [0] circuit: The quantum circuit to execute, encoded in QPY format or as a QASM string.
+    * [1] observables: The observables to measure. Can be a single observable or
+      a list of observables.
+    * [2] parameter_values: Parameter values for the circuit's parameters (NumPy ndarray).
+    * [3] precision: Target precision for the expectation value estimates
+      (positive float or ``None``).
     """

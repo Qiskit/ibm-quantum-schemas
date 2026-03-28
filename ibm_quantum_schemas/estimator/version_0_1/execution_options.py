@@ -26,9 +26,11 @@ class ExecutionOptionsV2Model(BaseModel):
     """Whether to reset the qubits to the ground state for each shot."""
 
     rep_delay: Annotated[float, Field(ge=0)] | None = None
-    """The repetition delay. This is the delay between a measurement and
-    the subsequent quantum circuit. This is only supported on backends that have
-    ``backend.dynamic_reprate_enabled=True``. It must be from the
+    """The repetition delay.
+    
+    This is the delay between a measurement and the subsequent quantum circuit. This is only
+    supported on backends that have ``backend.dynamic_reprate_enabled=True``. It must be from the
     range supplied by ``backend.rep_delay_range``.
+    
     Default is ``None``, in which case the server assigns ``backend.default_rep_delay``.
     """

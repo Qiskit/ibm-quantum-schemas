@@ -38,6 +38,7 @@ class SimulatorOptionsModel(BaseModel):
     """Noise model for the simulator.
 
     This option is only supported in local testing mode.
+
     Default: ``None``.
     """
 

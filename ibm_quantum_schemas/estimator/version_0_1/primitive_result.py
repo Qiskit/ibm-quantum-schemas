@@ -32,12 +32,10 @@ class PrimitiveResultMetadataModel(BaseModel):
     """Metadata for the estimator v2 job."""
 
     dynamical_decoupling: DynamicalDecouplingMetadataModel | None = None
-    """Dynamical decoupling metadata.
-    """
+    """Dynamical decoupling metadata."""
 
     twirling: TwirlingMetadataModel | None = None
-    """Pauli twirling metadata.
-    """
+    """Pauli twirling metadata."""
 
     resilience: PrimitiveResultResilienceMetadataModel | None = None
     """Metadata about resilience."""

@@ -46,8 +46,8 @@ class LayerNoiseLearningOptionsModel(BaseModel):
 
     References:
         1. E. van den Berg, Z. Minev, A. Kandala, K. Temme, *Probabilistic error
-           cancellation with sparse Pauli–Lindblad models on noisy quantum processors*,
-           Nature Physics volume 19, pages 1116–1121 (2023).
+           cancellation with sparse Pauli-Lindblad models on noisy quantum processors*,
+           Nature Physics volume 19, pages 1116-1121 (2023).
            `arXiv:2201.09866 [quant-ph] <https://arxiv.org/abs/2201.09866>`_
     """
 
@@ -80,8 +80,9 @@ class LayerNoiseLearningOptionsModel(BaseModel):
     """
 
     layer_pair_depths: list[int] = [0, 1, 2, 4, 16, 32]
-    """The circuit depths (measured in number of pairs) to use in learning
-    experiments. Pairs are used as the unit because we exploit the order-2 nature of
+    """The circuit depths (measured in number of pairs) to use in learning experiments.
+    
+    Pairs are used as the unit because we exploit the order-2 nature of
     our entangling gates in the noise learning implementation. A value of ``3``
     would correspond to 6 layers of the layer of interest, for example.
     """

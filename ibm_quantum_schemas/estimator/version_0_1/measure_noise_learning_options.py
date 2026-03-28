@@ -33,5 +33,5 @@ class MeasureNoiseLearningOptionsModel(BaseModel):
     shots_per_randomization: Annotated[int, Field(ge=1)] | Literal["auto"] = "auto"
     """The number of shots to use for the learning experiment per random circuit.
 
-    If "auto", the value will be chosen automatically based on the input PUBs.
+    If ``auto``, the value will be chosen automatically based on the input PUBs.
     """

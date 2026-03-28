@@ -37,7 +37,7 @@ class PrimitiveResultResilienceMetadataModel(BaseModel):
     """Whether PEC mitigation was applied for the job."""
 
     zne: PrimitiveResultZneMetadataModel | None = None
-    """Metadata about ZNE, applicable if `zne_mitifation` is `True`."""
+    """Metadata about ZNE, applicable if ``zne_mitifation`` is ``True``."""
 
     layer_noise_model: list[LayerNoiseModelMetadataWrapperModel] | None = None
     """Noise learner results."""

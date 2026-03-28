@@ -30,9 +30,7 @@ class TwirlingMetadataModel(BaseModel):
     """Twirling metadata."""
 
     enable_gates: bool | None = None
-    """Whether to apply 2-qubit Clifford gate twirling.
-
-    """
+    """Whether to apply 2-qubit Clifford gate twirling."""
 
     enable_measure: bool = True
     """Whether to enable twirling to measurement instructions, as long as the measurement is not
@@ -42,12 +40,12 @@ class TwirlingMetadataModel(BaseModel):
     num_randomizations: Annotated[int, Field(ge=1)] | Literal["auto"] = "auto"
     """The number of random samples to use when twirling or performing sampled mitigation.
 
-    If ``num_randomizations`` is "auto", for every pub executed ``shots`` times:
+    If ``num_randomizations`` is ``auto``, for every pub executed ``shots`` times:
 
-      * If ``shots_per_randomization`` is also "auto", ``shots_per_randomization`` is set first
-        as described below, then ``num_randomizations`` is set as
-        ``ceil(shots/shots_per_randomization)``, where ``ceil`` is the ceiling function.
-      * Otherwise, the value is set to ``ceil(shots/shots_per_randomization)``.
+    * If ``shots_per_randomization`` is also ``auto``, ``shots_per_randomization`` is set first
+      as described below, then ``num_randomizations`` is set as
+      ``ceil(shots/shots_per_randomization)``, where ``ceil`` is the ceiling function.
+    * Otherwise, the value is set to ``ceil(shots/shots_per_randomization)``.
 
     .. note::
       The ``shots`` value specified in a PUB or in the ``run()`` method is
@@ -60,12 +58,12 @@ class TwirlingMetadataModel(BaseModel):
     shots_per_randomization: Annotated[int, Field(ge=1)] | Literal["auto"] = "auto"
     """The number of shots to run for each random sample.
 
-    If "auto", for every pub executed ``shots`` times:
+    If ``auto``, for every pub executed ``shots`` times:
 
-      * If ``num_randomizations`` is also "auto", the value is set to ``64`` for PEC mitigation
-        or to ``max(64, ceil(shots / 32))`` in all other cases, where ``ceil`` is the ceiling
-        function.
-      * Otherwise, the value is set to ``ceil(shots/num_randomizations)``.
+    * If ``num_randomizations`` is also "auto", the value is set to ``64`` for PEC mitigation
+      or to ``max(64, ceil(shots / 32))`` in all other cases, where ``ceil`` is the ceiling
+      function.
+    * Otherwise, the value is set to ``ceil(shots/num_randomizations)``.
 
     .. note::
       The ``shots`` value specified in a PUB or in the ``run()`` method is
@@ -80,14 +78,14 @@ class TwirlingMetadataModel(BaseModel):
 
     Allowed values are:
 
-      * If ``"active"`` only the instruction qubits in each individual twirled
-        layer will be twirled.
-      * If ``"active-circuit"`` the union of all instruction qubits in the circuit
-        will be twirled in each twirled layer.
-      * If ``"active-accum"`` the union of instructions qubits in the circuit up to
-        the current twirled layer will be twirled in each individual twirled layer.
-      * If ``"all"`` all qubits in the input circuit will be twirled in each
-        twirled layer.
+    * If ``"active"`` only the instruction qubits in each individual twirled
+      layer will be twirled.
+    * If ``"active-circuit"`` the union of all instruction qubits in the circuit
+      will be twirled in each twirled layer.
+    * If ``"active-accum"`` the union of instructions qubits in the circuit up to
+      the current twirled layer will be twirled in each individual twirled layer.
+    * If ``"all"`` all qubits in the input circuit will be twirled in each
+      twirled layer.
     """
 
     interleave_randomizations: bool = True

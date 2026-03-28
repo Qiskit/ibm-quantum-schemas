@@ -26,14 +26,16 @@ class PecOptionsModel(BaseModel):
     """The maximum circuit sampling overhead allowed, or ``None`` for no maximum."""
 
     noise_gain: Annotated[float, Field(ge=0)] | Literal["auto"] = "auto"
-    """The amount by which to scale the noise, where:
+    """The amount by which to scale the noise.
+    
+    Where:
 
-        * A value of 0 corresponds to removing the full learned noise.
-        * A value of 1 corresponds to no removal of the learned noise.
-        * A value between 0 and 1 corresponds to partially removing the learned noise.
-        * A value greater than one corresponds to amplifying the learned noise.
+    * A value of 0 corresponds to removing the full learned noise.
+    * A value of 1 corresponds to no removal of the learned noise.
+    * A value between 0 and 1 corresponds to partially removing the learned noise.
+    * A value greater than one corresponds to amplifying the learned noise.
 
-    If "auto", the value in the range ``[0, 1]`` will be chosen automatically
+    If ``auto``, the value in the range ``[0, 1]`` will be chosen automatically
     for each input PUB based on the learned noise strength, ``max_overhead``,
     and the depth of the PUB.
     """

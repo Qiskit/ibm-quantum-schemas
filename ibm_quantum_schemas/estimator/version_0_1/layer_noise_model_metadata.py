@@ -105,7 +105,7 @@ class LayerNoiseModelMetadataModel(BaseModel):
     error: PauliLindbladErrorMetadataWrapperModel | None = None
     """The learned Pauli Lindblad error channel for this layer.
 
-    If None, the error channel is either unknown or explicitly disabled for this layer.
+    If ``None``, the error channel is either unknown or explicitly disabled for this layer.
     """
 
 

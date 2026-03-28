@@ -49,12 +49,12 @@ class TwirlingOptionsModel(BaseModel):
     num_randomizations: Annotated[int, Field(ge=1)] | Literal["auto"] = "auto"
     """The number of random samples to use when twirling or performing sampled mitigation.
 
-    If ``num_randomizations`` is "auto", for every pub executed ``shots`` times:
+    If ``num_randomizations`` is ``auto``, for every pub executed ``shots`` times:
 
-      * If ``shots_per_randomization`` is also "auto", ``shots_per_randomization`` is set first
-        as described below, then ``num_randomizations`` is set as
-        ``ceil(shots/shots_per_randomization)``, where ``ceil`` is the ceiling function.
-      * Otherwise, the value is set to ``ceil(shots/shots_per_randomization)``.
+    * If ``shots_per_randomization`` is also ``auto``, ``shots_per_randomization`` is set first
+      as described below, then ``num_randomizations`` is set as
+      ``ceil(shots/shots_per_randomization)``, where ``ceil`` is the ceiling function.
+    * Otherwise, the value is set to ``ceil(shots/shots_per_randomization)``.
 
     .. note::
       The ``shots`` value specified in a PUB or in the ``run()`` method is
@@ -67,12 +67,12 @@ class TwirlingOptionsModel(BaseModel):
     shots_per_randomization: Annotated[int, Field(ge=1)] | Literal["auto"] = "auto"
     """The number of shots to run for each random sample.
 
-    If "auto", for every pub executed ``shots`` times:
+    If ``auto``, for every pub executed ``shots`` times:
 
-      * If ``num_randomizations`` is also "auto", the value is set to ``64`` for PEC mitigation
-        or to ``max(64, ceil(shots / 32))`` in all other cases, where ``ceil`` is the ceiling
-        function.
-      * Otherwise, the value is set to ``ceil(shots/num_randomizations)``.
+    * If ``num_randomizations`` is also "auto", the value is set to ``64`` for PEC mitigation
+      or to ``max(64, ceil(shots / 32))`` in all other cases, where ``ceil`` is the ceiling
+      function.
+    * Otherwise, the value is set to ``ceil(shots/num_randomizations)``.
 
     .. note::
       The ``shots`` value specified in a PUB or in the ``run()`` method is

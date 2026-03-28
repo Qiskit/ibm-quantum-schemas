@@ -46,6 +46,4 @@ class DynamicalDecouplingMetadataModel(BaseModel):
     """
 
     scheduling_method: Literal["alap", "asap"] = "alap"
-    """Whether to schedule gates as soon as ("asap") or
-    as late as ("alap") possible.
-    """
+    """Whether to schedule gates as soon as (``asap``) or as late as (``alap``) possible."""

@@ -21,7 +21,7 @@ from ibm_quantum_schemas.common.typed_qpy_circuit import TypedQpyCircuitModel
 
 
 class PauliListModel(BaseModel):
-    """Represents a PauliList"""
+    """Represents a PauliList."""
 
     data: list[str]
     """List of Pauli string labels.
@@ -105,7 +105,7 @@ class LayerNoiseModelModel(BaseModel):
     error: PauliLindbladErrorWrapperModel | None = None
     """The learned Pauli Lindblad error channel for this layer.
 
-    If None, the error channel is either unknown or explicitly disabled for this layer.
+    If ``None``, the error channel is either unknown or explicitly disabled for this layer.
     """
 
 

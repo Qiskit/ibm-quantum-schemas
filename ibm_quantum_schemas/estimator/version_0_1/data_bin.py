@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Data bin models"""
+"""Data bin models."""
 
 from typing import Literal
 
@@ -47,7 +47,10 @@ class DataBinObjectModel(BaseModel):
 
     ensemble_standard_error: NdarrayWrapperModel | None = None
     """Standard error assuming only shot noise, computed by treating all shots
-    as a single ensemble. Returns `None` if ZNE is enabled."""
+    as a single ensemble.
+    
+    Returns ``None`` if ZNE is enabled.
+    """
 
 
 class DataBinModel(BaseModel):
