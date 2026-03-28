@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.estimator.version_0_1_dev.primitive_result_zne_metadata import (  # noqa: E501
+from ibm_quantum_schemas.estimator.version_0_1.primitive_result_zne_metadata import (  # noqa: E501
     PrimitiveResultZneMetadataModel,
 )
 

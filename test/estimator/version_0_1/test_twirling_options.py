@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.estimator.version_0_1_dev.twirling_options import (
+from ibm_quantum_schemas.estimator.version_0_1.twirling_options import (
     TwirlingOptionsModel,
 )
 

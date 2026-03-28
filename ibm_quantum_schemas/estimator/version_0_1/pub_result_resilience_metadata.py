@@ -16,11 +16,11 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
-from ibm_quantum_schemas.estimator.version_0_1_dev.layer_noise_metadata import (
+from ibm_quantum_schemas.estimator.version_0_1.layer_noise_metadata import (
     LayerNoiseMetadataModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.pec_metadata import PecMetadataModel
-from ibm_quantum_schemas.estimator.version_0_1_dev.pub_result_zne_metadata import (
+from ibm_quantum_schemas.estimator.version_0_1.pec_metadata import PecMetadataModel
+from ibm_quantum_schemas.estimator.version_0_1.pub_result_zne_metadata import (
     PubResultZneMetadataModel,
 )
 

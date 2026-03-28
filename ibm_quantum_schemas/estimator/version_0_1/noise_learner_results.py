@@ -16,7 +16,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-from ibm_quantum_schemas.estimator.version_0_1_dev.layer_noise_model import (
+from ibm_quantum_schemas.estimator.version_0_1.layer_noise_model import (
     LayerNoiseModelWrapperModel,
 )
 

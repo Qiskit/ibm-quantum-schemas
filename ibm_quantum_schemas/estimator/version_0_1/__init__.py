@@ -14,15 +14,15 @@
 
 from __future__ import annotations
 
-from ibm_quantum_schemas.estimator.version_0_1_dev.dynamical_decoupling_options import (
+from ibm_quantum_schemas.estimator.version_0_1.dynamical_decoupling_options import (
     DynamicalDecouplingOptionsModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.estimator_pub import EstimatorPubModel
-from ibm_quantum_schemas.estimator.version_0_1_dev.execution_options import ExecutionOptionsV2Model
-from ibm_quantum_schemas.estimator.version_0_1_dev.layer_noise_learning_options import (
+from ibm_quantum_schemas.estimator.version_0_1.estimator_pub import EstimatorPubModel
+from ibm_quantum_schemas.estimator.version_0_1.execution_options import ExecutionOptionsV2Model
+from ibm_quantum_schemas.estimator.version_0_1.layer_noise_learning_options import (
     LayerNoiseLearningOptionsModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.layer_noise_model import (
+from ibm_quantum_schemas.estimator.version_0_1.layer_noise_model import (
     LayerNoiseModelModel,
     LayerNoiseModelWrapperModel,
     PauliLindbladErrorModel,
@@ -30,27 +30,27 @@ from ibm_quantum_schemas.estimator.version_0_1_dev.layer_noise_model import (
     PauliListModel,
     PauliListWrapperModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.measure_noise_learning_options import (
+from ibm_quantum_schemas.estimator.version_0_1.measure_noise_learning_options import (
     MeasureNoiseLearningOptionsModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.noise_learner_results import (
+from ibm_quantum_schemas.estimator.version_0_1.noise_learner_results import (
     NoiseLearnerInputOptionsModel,
     NoiseLearnerResultMetadataModel,
     NoiseLearnerResultModel,
     NoiseLearnerResultWrapperModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.options import OptionsModel
-from ibm_quantum_schemas.estimator.version_0_1_dev.params import ParamsModel
-from ibm_quantum_schemas.estimator.version_0_1_dev.pec_options import PecOptionsModel
-from ibm_quantum_schemas.estimator.version_0_1_dev.primitive_result import (
+from ibm_quantum_schemas.estimator.version_0_1.options import OptionsModel
+from ibm_quantum_schemas.estimator.version_0_1.params import ParamsModel
+from ibm_quantum_schemas.estimator.version_0_1.pec_options import PecOptionsModel
+from ibm_quantum_schemas.estimator.version_0_1.primitive_result import (
     PrimitiveResultWrapperModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.resilience_options import ResilienceOptionsModel
-from ibm_quantum_schemas.estimator.version_0_1_dev.twirling_options import (
+from ibm_quantum_schemas.estimator.version_0_1.resilience_options import ResilienceOptionsModel
+from ibm_quantum_schemas.estimator.version_0_1.twirling_options import (
     TwirlingOptionsModel,
     TwirlingStrategyType,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.zne_options import (
+from ibm_quantum_schemas.estimator.version_0_1.zne_options import (
     ExtrapolatorType,
     ZneOptionsModel,
 )

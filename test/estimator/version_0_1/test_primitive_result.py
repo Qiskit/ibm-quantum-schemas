@@ -15,28 +15,28 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.estimator.version_0_1_dev.data_bin import (
+from ibm_quantum_schemas.estimator.version_0_1.data_bin import (
     DataBinModel,
     DataBinObjectModel,
     DataBinWrapperModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.dynamical_decoupling_metadata import (  # noqa: E501
+from ibm_quantum_schemas.estimator.version_0_1.dynamical_decoupling_metadata import (  # noqa: E501
     DynamicalDecouplingMetadataModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.primitive_result import (
+from ibm_quantum_schemas.estimator.version_0_1.primitive_result import (
     PrimitiveResultMetadataModel,
     PrimitiveResultModel,
     PrimitiveResultWrapperModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.primitive_result_resilience_metadata import (  # noqa: E501
+from ibm_quantum_schemas.estimator.version_0_1.primitive_result_resilience_metadata import (  # noqa: E501
     PrimitiveResultResilienceMetadataModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.pub_result import (
+from ibm_quantum_schemas.estimator.version_0_1.pub_result import (
     PubResultMetadataModel,
     PubResultModel,
     PubResultWrapperModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.twirling_metadata import (
+from ibm_quantum_schemas.estimator.version_0_1.twirling_metadata import (
     TwirlingMetadataModel,
 )
 

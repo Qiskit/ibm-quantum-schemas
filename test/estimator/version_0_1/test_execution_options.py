@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.estimator.version_0_1_dev.execution_options import (
+from ibm_quantum_schemas.estimator.version_0_1.execution_options import (
     ExecutionOptionsV2Model,
 )
 

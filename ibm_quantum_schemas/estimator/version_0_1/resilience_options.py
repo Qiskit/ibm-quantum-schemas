@@ -19,20 +19,20 @@ from collections.abc import Sequence
 from pydantic import BaseModel, Field, model_validator
 
 from ibm_quantum_schemas.aliases import Self
-from ibm_quantum_schemas.estimator.version_0_1_dev.layer_noise_learning_options import (
+from ibm_quantum_schemas.estimator.version_0_1.layer_noise_learning_options import (
     LayerNoiseLearningOptionsModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.layer_noise_model import (
+from ibm_quantum_schemas.estimator.version_0_1.layer_noise_model import (
     LayerNoiseModelWrapperModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.measure_noise_learning_options import (
+from ibm_quantum_schemas.estimator.version_0_1.measure_noise_learning_options import (
     MeasureNoiseLearningOptionsModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.noise_learner_results import (
+from ibm_quantum_schemas.estimator.version_0_1.noise_learner_results import (
     NoiseLearnerResultWrapperModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1_dev.pec_options import PecOptionsModel
-from ibm_quantum_schemas.estimator.version_0_1_dev.zne_options import ZneOptionsModel
+from ibm_quantum_schemas.estimator.version_0_1.pec_options import PecOptionsModel
+from ibm_quantum_schemas.estimator.version_0_1.zne_options import ZneOptionsModel
 
 
 class ResilienceOptionsModel(BaseModel):

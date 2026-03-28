@@ -17,7 +17,7 @@ from pydantic import ValidationError
 
 from ibm_quantum_schemas.common.ndarray_wrapper import NdarrayWrapperModel
 from ibm_quantum_schemas.common.typed_qpy_circuit import TypedQpyCircuitModelV13to17
-from ibm_quantum_schemas.estimator.version_0_1_dev.layer_noise_model_metadata import (  # noqa: E501
+from ibm_quantum_schemas.estimator.version_0_1.layer_noise_model_metadata import (  # noqa: E501
     LayerNoiseModelMetadataModel,
     LayerNoiseModelMetadataWrapperModel,
     PauliLindbladErrorMetadataModel,

@@ -18,7 +18,7 @@ from pydantic import Field, RootModel
 
 from ibm_quantum_schemas.common.ndarray_wrapper import NdarrayWrapperModel
 from ibm_quantum_schemas.common.typed_qpy_circuit import TypedQpyCircuitModelV13to17
-from ibm_quantum_schemas.estimator.version_0_1_dev.observables_array import ObservablesArrayModel
+from ibm_quantum_schemas.estimator.version_0_1.observables_array import ObservablesArrayModel
 
 
 class EstimatorPubModel(

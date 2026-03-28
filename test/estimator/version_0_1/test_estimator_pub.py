@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.estimator.version_0_1_dev.estimator_pub import (
+from ibm_quantum_schemas.estimator.version_0_1.estimator_pub import (
     EstimatorPubModel,
 )
 

@@ -18,8 +18,8 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from ibm_quantum_schemas.estimator.version_0_1_dev.estimator_pub import EstimatorPubModel
-from ibm_quantum_schemas.estimator.version_0_1_dev.options import OptionsModel
+from ibm_quantum_schemas.estimator.version_0_1.estimator_pub import EstimatorPubModel
+from ibm_quantum_schemas.estimator.version_0_1.options import OptionsModel
 
 
 class ParamsModel(BaseModel):

@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.estimator.version_0_1_dev.layer_noise_metadata import (
+from ibm_quantum_schemas.estimator.version_0_1.layer_noise_metadata import (
     LayerNoiseMetadataModel,
 )
 

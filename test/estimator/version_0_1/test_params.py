@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.estimator.version_0_1_dev.params import ParamsModel
+from ibm_quantum_schemas.estimator.version_0_1.params import ParamsModel
 
 
 class TestParamsModelValidation:
