@@ -10,7 +10,47 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Models for ``Estimator`` ``v0.1``."""
+"""
+=================================================================
+Estimator v0.1 (:mod:`ibm_quantum_schemas.estimator.version_0_1`)
+=================================================================
+
+.. currentmodule:: ibm_quantum_schemas.estimator.version_0_1
+
+Models for ``Estimator`` ``v0.1``.
+
+Classes
+=======
+
+.. autosummary::
+   :toctree: ../stubs/
+   :nosignatures:
+
+   DynamicalDecouplingOptionsModel
+   EstimatorPubModel
+   ExecutionOptionsV2Model
+   LayerNoiseLearningOptionsModel
+   LayerNoiseModelModel
+   LayerNoiseModelWrapperModel
+   PauliLindbladErrorModel
+   PauliLindbladErrorWrapperModel
+   PauliListModel
+   PauliListWrapperModel
+   MeasureNoiseLearningOptionsModel
+   NoiseLearnerInputOptionsModel
+   NoiseLearnerResultMetadataModel
+   NoiseLearnerResultModel
+   NoiseLearnerResultWrapperModel
+   OptionsModel
+   ParamsModel
+   PecOptionsModel
+   PrimitiveResultWrapperModel
+   ResilienceOptionsModel
+   TwirlingOptionsModel
+   TwirlingStrategyType
+   ExtrapolatorType
+   ZneOptionsModel
+"""
 
 from __future__ import annotations
 
