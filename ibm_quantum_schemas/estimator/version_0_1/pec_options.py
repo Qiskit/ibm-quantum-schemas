@@ -27,7 +27,7 @@ class PecOptionsModel(BaseModel):
 
     noise_gain: Annotated[float, Field(ge=0)] | Literal["auto"] = "auto"
     """The amount by which to scale the noise.
-    
+
     Where:
 
     * A value of 0 corresponds to removing the full learned noise.

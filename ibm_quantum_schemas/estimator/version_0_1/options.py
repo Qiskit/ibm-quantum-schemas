@@ -94,6 +94,6 @@ class OptionsModel(BaseModel):
 
     experimental: dict = {}
     """Experimental options.
-    
+
     These options are subject to change without notification, and ∫stability is not guaranteed.
     """

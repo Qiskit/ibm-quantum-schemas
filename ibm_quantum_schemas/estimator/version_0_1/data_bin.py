@@ -48,7 +48,7 @@ class DataBinObjectModel(BaseModel):
     ensemble_standard_error: NdarrayWrapperModel | None = None
     """Standard error assuming only shot noise, computed by treating all shots
     as a single ensemble.
-    
+
     Returns ``None`` if ZNE is enabled.
     """
 
