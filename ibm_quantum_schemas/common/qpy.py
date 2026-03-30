@@ -15,13 +15,14 @@
 import struct
 from io import BytesIO
 
-import pybase64
+from pybase64 import b64decode, b64encode
 from pydantic import BaseModel, Field, PrivateAttr, model_validator
 from qiskit import QuantumCircuit
 from qiskit.qpy import QPY_VERSION, dump, load
 from qiskit.qpy.formats import FILE_HEADER_V10, FILE_HEADER_V10_PACK, FILE_HEADER_V10_SIZE
 
 from ibm_quantum_schemas.common.annotation_serializer import AnnotationSerializer
+from ibm_quantum_schemas.common.base64_reader import Base64Reader
 
 ANNOTATION_FACTORIES = {"samplomatic": AnnotationSerializer}
 
@@ -40,7 +41,7 @@ class QpyModel(BaseModel):
     @model_validator(mode="after")
     def cross_validate_qpy_version(self):
         """Check that the reported version matches the encoded version."""
-        with BytesIO(pybase64.b64decode(self.circuit_b64)) as bytes_obj:
+        with Base64Reader(self.circuit_b64) as bytes_obj:
             header = FILE_HEADER_V10._make(
                 struct.unpack(
                     FILE_HEADER_V10_PACK,
@@ -72,7 +73,7 @@ class QpyModel(BaseModel):
             A quantum circuit.
         """
         if not use_cached or not hasattr(self, "_circuit"):
-            with BytesIO(pybase64.b64decode(self.circuit_b64)) as bytes_obj:
+            with BytesIO(b64decode(self.circuit_b64)) as bytes_obj:
                 self._circuit = load(bytes_obj, annotation_factories=ANNOTATION_FACTORIES)[0]
 
         return self._circuit
@@ -95,7 +96,7 @@ class QpyModel(BaseModel):
         """
         with BytesIO() as bytes_obj:
             dump(circuit, bytes_obj, version=qpy_version, annotation_factories=ANNOTATION_FACTORIES)
-            circuit_b64 = pybase64.b64encode(bytes_obj.getvalue()).decode()
+            circuit_b64 = b64encode(bytes_obj.getvalue()).decode()
 
         obj = cls(circuit_b64=circuit_b64, qpy_version=qpy_version)
         obj._circuit = circuit  # noqa: SLF001

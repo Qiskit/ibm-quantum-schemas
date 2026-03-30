@@ -12,8 +12,6 @@
 
 """Models for ``NoiseLearnerV2`` ``v0.1``."""
 
-from ibm_quantum_schemas.common.ndarray_wrapper import NdarrayWrapperModel
-from ibm_quantum_schemas.common.typed_qpy_circuit import TypedQpyCircuitModelV13to17
 from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.layer_noise import (
     LayerNoiseModel,
     LayerNoiseWrapperModel,
