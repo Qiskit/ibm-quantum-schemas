@@ -24,6 +24,8 @@ from ibm_quantum_schemas.sampler.version_0_1_dev.data_bin import DataBinWrapperM
 class PubResultMetadataModel(BaseModel):
     """Metadata for a single pub result in Sampler V2."""
 
+    model_config = ConfigDict(extra="allow")
+
     circuit_metadata: dict | None = None
     """Circuit metadata, attached by the user to the input circuit."""
 
