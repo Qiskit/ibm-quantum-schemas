@@ -105,6 +105,13 @@ class CircuitItemModel(BaseModel):
     preceding axes; expect one result per element of the leading shape.
     """
 
+    shape: list[int]
+    """The shape of this item.
+
+    This shape must extend (via broadcasting) the implicit shape of the :attr:~circuit_arguments`.
+    The non-trivial axes it introduces represent replications.
+    """
+
     chunk_size: Annotated[int, Field(ge=1)] | Literal["auto"] = "auto"
     """The maximum number circuit arguments to bind to the circuit per shot loop.
 
