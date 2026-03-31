@@ -16,13 +16,13 @@ import struct
 from collections.abc import Iterable
 from dataclasses import dataclass
 from io import BytesIO
-from typing import Self
 
 from pybase64 import b64decode, b64encode
 from pydantic import BaseModel, Field, PrivateAttr, model_validator
 from qiskit import QuantumCircuit
 from qiskit.qpy import QPY_VERSION, dump, load
 from qiskit.qpy.formats import FILE_HEADER_V10, FILE_HEADER_V10_PACK, FILE_HEADER_V10_SIZE
+from typing_extensions import Self
 
 from ibm_quantum_schemas.common.annotation_serializer import AnnotationSerializer
 from ibm_quantum_schemas.common.base64_reader import Base64Reader
