@@ -19,16 +19,17 @@ from datetime import datetime
 
 import numpy as np
 
+from ibm_quantum_schemas.common.datetime_wrapper import DatetimeWrapperModel
 from ibm_quantum_schemas.common.ndarray_wrapper import NdarrayWrapperModel
-from ibm_quantum_schemas.sampler.version_0_1_dev.bit_array_model import (
+from ibm_quantum_schemas.sampler.version_0_1_dev.bit_array import (
     BitArrayModel,
     BitArrayWrapperModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.data_bin_model import (
+from ibm_quantum_schemas.sampler.version_0_1_dev.data_bin import (
     DataBinModel,
     DataBinWrapperModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.execution_span_models import (
+from ibm_quantum_schemas.sampler.version_0_1_dev.execution_span import (
     DoubleSliceSpanModel,
     DoubleSliceSpanWrapperModel,
     ExecutionSpansModel,
@@ -36,13 +37,13 @@ from ibm_quantum_schemas.sampler.version_0_1_dev.execution_span_models import (
     TwirledSliceSpanV2Model,
     TwirledSliceSpanV2WrapperModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.primitive_result_model import (
+from ibm_quantum_schemas.sampler.version_0_1_dev.primitive_result import (
     ExecutionMetadataModel,
     PrimitiveResultMetadataModel,
     PrimitiveResultModel,
     PrimitiveResultWrapperModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.pub_result_model import (
+from ibm_quantum_schemas.sampler.version_0_1_dev.pub_result import (
     PubResultMetadataModel,
     PubResultModel,
     PubResultWrapperModel,
@@ -55,6 +56,11 @@ def encode_ndarray(arr: np.ndarray) -> str:
     np.save(buffer, arr, allow_pickle=False)
     compressed = zlib.compress(buffer.getvalue())
     return base64.b64encode(compressed).decode("utf-8")
+
+
+def wrap_datetime(dt: datetime) -> DatetimeWrapperModel:
+    """Wrap a datetime object in DatetimeWrapperModel format."""
+    return DatetimeWrapperModel(type_="datetime", value_=dt.isoformat())
 
 
 class TestBitArrayModel:
@@ -296,38 +302,36 @@ class TestExecutionSpanModels:
 
     def test_double_slice_span_model(self):
         """Test DoubleSliceSpanModel creation."""
+        start_dt = wrap_datetime(datetime(2024, 8, 20, 0, 0, 0))
+        stop_dt = wrap_datetime(datetime(2024, 8, 21, 0, 0, 0))
         span = DoubleSliceSpanModel(
-            start=datetime(2024, 8, 20, 0, 0, 0),
-            stop=datetime(2024, 8, 21, 0, 0, 0),
+            start=start_dt,
+            stop=stop_dt,
             data_slices={0: [[14], 2, 3, 1, 9]},
         )
 
-        assert span.start == datetime(2024, 8, 20, 0, 0, 0)
-        assert span.stop == datetime(2024, 8, 21, 0, 0, 0)
+        assert span.start.value_ == datetime(2024, 8, 20, 0, 0, 0).isoformat()
+        assert span.stop.value_ == datetime(2024, 8, 21, 0, 0, 0).isoformat()
         assert 0 in span.data_slices
         assert span.data_slices[0] == [[14], 2, 3, 1, 9]
 
     def test_double_slice_span_wrapper_model(self):
         """Test DoubleSliceSpanWrapperModel."""
-        from datetime import datetime
-
         span = DoubleSliceSpanModel(
-            start=datetime(2024, 8, 20),
-            stop=datetime(2024, 8, 21),
+            start=wrap_datetime(datetime(2024, 8, 20)),
+            stop=wrap_datetime(datetime(2024, 8, 21)),
             data_slices={0: [[14], 2, 3, 1, 9]},
         )
         wrapper = DoubleSliceSpanWrapperModel.model_validate({"__value__": span})
 
         assert wrapper.type_ == "DoubleSliceSpan"
-        assert wrapper.value_.start == datetime(2024, 8, 20)
+        assert wrapper.value_.start.value_ == datetime(2024, 8, 20).isoformat()
 
     def test_double_slice_span_serialization(self):
         """Test DoubleSliceSpan serialization uses aliases."""
-        from datetime import datetime
-
         span = DoubleSliceSpanModel(
-            start=datetime(2024, 8, 20),
-            stop=datetime(2024, 8, 21),
+            start=wrap_datetime(datetime(2024, 8, 20)),
+            stop=wrap_datetime(datetime(2024, 8, 21)),
             data_slices={0: [[14], 2, 3, 1, 9]},
         )
         wrapper = DoubleSliceSpanWrapperModel.model_validate({"__value__": span})
@@ -341,18 +345,16 @@ class TestExecutionSpanModels:
 
     def test_twirled_slice_span_v2_model(self):
         """Test TwirledSliceSpanV2Model creation."""
-        from datetime import datetime
-
         span = TwirledSliceSpanV2Model(
-            start=datetime(2024, 9, 20),
-            stop=datetime(2024, 9, 21),
+            start=wrap_datetime(datetime(2024, 9, 20)),
+            stop=wrap_datetime(datetime(2024, 9, 21)),
             data_slices={
                 0: [[14, 18, 21], True, 2, 3, 1, 9, 200],
                 2: [[18, 14, 19], False, 2, 3, 1, 9, 200],
             },
         )
 
-        assert span.start == datetime(2024, 9, 20)
+        assert span.start.value_ == datetime(2024, 9, 20).isoformat()
         assert 0 in span.data_slices
         assert 2 in span.data_slices
         assert span.data_slices[0][1] is True  # at_front
@@ -361,11 +363,9 @@ class TestExecutionSpanModels:
 
     def test_twirled_slice_span_v2_wrapper_model(self):
         """Test TwirledSliceSpanV2WrapperModel."""
-        from datetime import datetime
-
         span = TwirledSliceSpanV2Model(
-            start=datetime(2024, 9, 20),
-            stop=datetime(2024, 9, 21),
+            start=wrap_datetime(datetime(2024, 9, 20)),
+            stop=wrap_datetime(datetime(2024, 9, 21)),
             data_slices={0: [[14, 18, 21], True, 2, 3, 1, 9, 200]},
         )
         wrapper = TwirledSliceSpanV2WrapperModel.model_validate({"__value__": span})
@@ -375,11 +375,9 @@ class TestExecutionSpanModels:
 
     def test_execution_spans_model_with_double_slice(self):
         """Test ExecutionSpansModel with DoubleSliceSpan."""
-        from datetime import datetime
-
         span = DoubleSliceSpanModel(
-            start=datetime(2024, 8, 20),
-            stop=datetime(2024, 8, 21),
+            start=wrap_datetime(datetime(2024, 8, 20)),
+            stop=wrap_datetime(datetime(2024, 8, 21)),
             data_slices={0: [[14], 2, 3, 1, 9]},
         )
         span_wrapper = DoubleSliceSpanWrapperModel.model_validate({"__value__": span})
@@ -390,11 +388,9 @@ class TestExecutionSpanModels:
 
     def test_execution_spans_model_with_twirled_slice(self):
         """Test ExecutionSpansModel with TwirledSliceSpanV2."""
-        from datetime import datetime
-
         span = TwirledSliceSpanV2Model(
-            start=datetime(2024, 9, 20),
-            stop=datetime(2024, 9, 21),
+            start=wrap_datetime(datetime(2024, 9, 20)),
+            stop=wrap_datetime(datetime(2024, 9, 21)),
             data_slices={0: [[14, 18, 21], True, 2, 3, 1, 9, 200]},
         )
         span_wrapper = TwirledSliceSpanV2WrapperModel.model_validate({"__value__": span})
@@ -405,18 +401,16 @@ class TestExecutionSpanModels:
 
     def test_execution_spans_model_with_mixed_spans(self):
         """Test ExecutionSpansModel with both span types."""
-        from datetime import datetime
-
         double_span = DoubleSliceSpanModel(
-            start=datetime(2024, 8, 20),
-            stop=datetime(2024, 8, 21),
+            start=wrap_datetime(datetime(2024, 8, 20)),
+            stop=wrap_datetime(datetime(2024, 8, 21)),
             data_slices={0: [[14], 2, 3, 1, 9]},
         )
         double_wrapper = DoubleSliceSpanWrapperModel.model_validate({"__value__": double_span})
 
         twirled_span = TwirledSliceSpanV2Model(
-            start=datetime(2024, 9, 20),
-            stop=datetime(2024, 9, 21),
+            start=wrap_datetime(datetime(2024, 9, 20)),
+            stop=wrap_datetime(datetime(2024, 9, 21)),
             data_slices={1: [[14, 18, 21], True, 2, 3, 1, 9, 200]},
         )
         twirled_wrapper = TwirledSliceSpanV2WrapperModel.model_validate({"__value__": twirled_span})
@@ -428,11 +422,9 @@ class TestExecutionSpanModels:
 
     def test_execution_spans_wrapper_model(self):
         """Test ExecutionSpansWrapperModel."""
-        from datetime import datetime
-
         span = DoubleSliceSpanModel(
-            start=datetime(2024, 8, 20),
-            stop=datetime(2024, 8, 21),
+            start=wrap_datetime(datetime(2024, 8, 20)),
+            stop=wrap_datetime(datetime(2024, 8, 21)),
             data_slices={0: [[14], 2, 3, 1, 9]},
         )
         span_wrapper = DoubleSliceSpanWrapperModel.model_validate({"__value__": span})
@@ -445,11 +437,9 @@ class TestExecutionSpanModels:
 
     def test_execution_spans_wrapper_serialization(self):
         """Test ExecutionSpansWrapperModel serialization."""
-        from datetime import datetime
-
         span = DoubleSliceSpanModel(
-            start=datetime(2024, 8, 20),
-            stop=datetime(2024, 8, 21),
+            start=wrap_datetime(datetime(2024, 8, 20)),
+            stop=wrap_datetime(datetime(2024, 8, 21)),
             data_slices={0: [[14], 2, 3, 1, 9]},
         )
         span_wrapper = DoubleSliceSpanWrapperModel.model_validate({"__value__": span})
@@ -470,12 +460,10 @@ class TestMetadataModels:
 
     def test_execution_metadata_model_with_execution_spans(self):
         """Test ExecutionMetadataModel with proper ExecutionSpans structure."""
-        from datetime import datetime
-
         # Create a DoubleSliceSpan
         span = DoubleSliceSpanModel(
-            start=datetime(2024, 8, 20),
-            stop=datetime(2024, 8, 21),
+            start=wrap_datetime(datetime(2024, 8, 20)),
+            stop=wrap_datetime(datetime(2024, 8, 21)),
             data_slices={0: [[14], 2, 3, 1, 9]},
         )
         span_wrapper = DoubleSliceSpanWrapperModel.model_validate({"__value__": span})

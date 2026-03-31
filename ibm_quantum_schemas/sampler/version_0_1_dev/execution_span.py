@@ -14,10 +14,11 @@
 
 from __future__ import annotations
 
-from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
+
+from ibm_quantum_schemas.common.datetime_wrapper import DatetimeWrapperModel
 
 
 class DoubleSliceSpanModel(BaseModel):
@@ -28,11 +29,11 @@ class DoubleSliceSpanModel(BaseModel):
     and the rest is flattened.
     """
 
-    start: datetime
-    """The start time of the span, in UTC."""
+    start: DatetimeWrapperModel
+    """The start time of the span, in UTC, wrapped with __type__ and __value__."""
 
-    stop: datetime
-    """The stop time of the span, in UTC."""
+    stop: DatetimeWrapperModel
+    """The stop time of the span, in UTC, wrapped with __type__ and __value__."""
 
     data_slices: dict[int, list[int | list[int]]]
     """Map from pub indices to data slice tuples.
@@ -63,11 +64,11 @@ class TwirledSliceSpanV2Model(BaseModel):
     from a twirled experiment with an axis for randomizations.
     """
 
-    start: datetime
-    """The start time of the span, in UTC."""
+    start: DatetimeWrapperModel
+    """The start time of the span, in UTC, wrapped with __type__ and __value__."""
 
-    stop: datetime
-    """The stop time of the span, in UTC."""
+    stop: DatetimeWrapperModel
+    """The stop time of the span, in UTC, wrapped with __type__ and __value__."""
 
     data_slices: dict[int, list[int | list[int] | bool]]
     """Map from pub indices to data slice tuples.

@@ -18,10 +18,10 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from ibm_quantum_schemas.sampler.version_0_1_dev.execution_span_models import (
+from ibm_quantum_schemas.sampler.version_0_1_dev.execution_span import (
     ExecutionSpansWrapperModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.pub_result_model import PubResultWrapperModel
+from ibm_quantum_schemas.sampler.version_0_1_dev.pub_result import PubResultWrapperModel
 
 
 class ExecutionMetadataModel(BaseModel):
