@@ -59,6 +59,7 @@ def test_initialization_params_model(qpy_version, ssv, chunk_size):
         circuit=QpyModelV13ToV17.from_quantum_circuit(circuit, qpy_version),
         circuit_arguments=F64TensorModel.from_numpy(np.array([0.1, 0.2, 0.3], dtype=np.float64)),
         chunk_size=chunk_size,
+        shape=[],
     )
 
     circuit = QuantumCircuit(3)
@@ -123,6 +124,7 @@ def test_chunk_size_validation():
         circuit=QpyModelV13ToV17.from_quantum_circuit(circuit, 16),
         circuit_arguments=F64TensorModel.from_numpy(np.array([], dtype=np.float64)),
         chunk_size=2,
+        shape=[],
     )
 
     template, samplex = build(circuit)
@@ -148,6 +150,7 @@ def test_meas_level(meas_level):
     circuit_item = CircuitItemModel(
         circuit=QpyModelV13ToV17.from_quantum_circuit(circuit, 16),
         circuit_arguments=F64TensorModel.from_numpy(np.array([], dtype=np.float64)),
+        shape=[],
     )
 
     quantum_program = QuantumProgramModel(shots=100, items=[circuit_item], meas_level=meas_level)
