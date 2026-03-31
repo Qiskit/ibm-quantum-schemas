@@ -26,7 +26,7 @@ class NoiseModel(BaseModel):
     """Redundant type information."""
 
     value_: dict = Field(alias="__value__")
-    """The actual data: qiskit-aer dict format for the NoiseModel."""
+    """The actual data: qiskit-aer dict format for the ``NoiseModel``."""
 
 
 class SimulatorOptionsModel(BaseModel):
@@ -38,6 +38,7 @@ class SimulatorOptionsModel(BaseModel):
     """Noise model for the simulator.
 
     This option is only supported in local testing mode.
+
     Default: ``None``.
     """
 
@@ -121,6 +122,4 @@ class OptionsModel(BaseModel):
     """
 
     simulator: SimulatorOptionsModel | None = None
-    """
-    Simulator options.
-    """
+    """Simulator options."""
