@@ -15,7 +15,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev.results_metadata import (
+from ibm_quantum_schemas.noise_learner_v2.version_0_1.results_metadata import (
     InputOptionsModel,
     ResultsMetadataModel,
 )
