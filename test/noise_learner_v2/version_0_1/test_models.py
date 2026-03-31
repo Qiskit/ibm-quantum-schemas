@@ -16,7 +16,7 @@ import pytest
 from pydantic import ValidationError
 
 from ibm_quantum_schemas.common.typed_qpy_circuit import TypedQpyCircuitModelV13to17
-from ibm_quantum_schemas.noise_learner_v2.version_0_1_dev import (
+from ibm_quantum_schemas.noise_learner_v2.version_0_1 import (
     LayerNoiseWrapperModel,
     ParamsModel,
     ResultsMetadataModel,
