@@ -21,7 +21,7 @@ from ibm_quantum_schemas.common.typed_qpy_circuit import TypedQpyCircuitModel
 
 
 class PauliListModel(BaseModel):
-    """Represents a PauliList"""
+    """Represents a PauliList."""
 
     data: list[str]
     """List of Pauli string labels.
@@ -71,7 +71,7 @@ class PauliLindbladErrorModel(BaseModel):
 
 
 class PauliLindbladErrorWrapperModel(BaseModel):
-    """A wrapper around PauliLindbladErrorModel adding redundant type information."""
+    """A wrapper around :class:`PauliLindbladErrorModel` adding redundant type information."""
 
     model_config = ConfigDict(serialize_by_alias=True)
 
@@ -108,12 +108,12 @@ class LayerNoiseModel(BaseModel):
     error: PauliLindbladErrorWrapperModel | None = None
     """The learned Pauli Lindblad error channel for this layer.
 
-    If None, the error channel is either unknown or explicitly disabled for this layer.
+    If ``None``, the error channel is either unknown or explicitly disabled for this layer.
     """
 
 
 class LayerNoiseWrapperModel(BaseModel):
-    """A wrapper around LayerNoiseModel adding redundant type information."""
+    """A wrapper around :class:`LayerNoiseModel` adding redundant type information."""
 
     model_config = ConfigDict(serialize_by_alias=True)
 
