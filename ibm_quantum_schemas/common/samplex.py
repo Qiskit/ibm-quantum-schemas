@@ -103,6 +103,6 @@ class SamplexModelSSV1ToSSV2(SamplexModel):
 
 
 class SamplexModelSSV1ToSSV3(SamplexModel):
-    """A samplex model constrained to use samplex serialization versions (SSV) 1 or 3."""
+    """A samplex model constrained to use samplex serialization versions (SSV) 1 to 3."""
 
     ssv: int = Field(ge=1, le=3)
