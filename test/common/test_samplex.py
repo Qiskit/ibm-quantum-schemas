@@ -14,25 +14,12 @@
 
 import pytest
 from samplomatic.samplex import Samplex
-from samplomatic.ssv import SSV
 
 from ibm_quantum_schemas.common.samplex import (
     SamplexModelSSV1,
     SamplexModelSSV1ToSSV2,
     SamplexModelSSV1ToSSV3,
 )
-
-
-def get_ssv_version(highest_value: int | None = None) -> int:
-    """Returns the largest SSV available with the installed version of Samplomatic.
-
-    Args:
-        highest_value: If it would return an ssv version larger than `highest_value`, return
-            `highest_value` instead.
-    """
-    if highest_value is None:
-        return SSV
-    return SSV if SSV <= highest_value else highest_value
 
 
 class TestSamplexModelSSV1:
@@ -55,7 +42,7 @@ class TestSamplexModelSSV1ToSSV2:
     """Test the SamplexModelSSV1ToSSV2 model"""
 
     @pytest.mark.skip_if_samplomatic_too_old_for_ssv
-    @pytest.mark.parametrize("ssv", range(1, get_ssv_version(2) + 1))
+    @pytest.mark.parametrize("ssv", [1, 2])
     def test_roundtrip(self, ssv):
         """Test that round trips work correctly."""
         samplex = Samplex()
@@ -66,7 +53,7 @@ class TestSamplexModelSSV1ToSSV3:
     """Test the SamplexModelSSV1ToSSV3 model"""
 
     @pytest.mark.skip_if_samplomatic_too_old_for_ssv
-    @pytest.mark.parametrize("ssv", range(1, get_ssv_version(3) + 1))
+    @pytest.mark.parametrize("ssv", [1, 2, 3])
     def test_roundtrip(self, ssv):
         """Test that round trips work correctly."""
         samplex = Samplex()
