@@ -232,6 +232,13 @@ def test_result_item_with_metadata():
     assert result_item.metadata.stretch_values == [stretch]
 
 
+@pytest.mark.parametrize("role", [None, "estimator-v2", "sampler-v2"])
+def test_semantic_role(role):
+    """Test that all semantic roles that we care about are accepted."""
+    program = QuantumProgramModel(shots=100, items=[], semantic_role=role)
+    assert program.semantic_role == role
+
+
 def test_passthrough_data_leaf_types():
     """Test that all leaf types are accepted."""
     tensor = TensorModel.from_numpy(np.array([1.0, 2.0], dtype=np.float64))
@@ -266,6 +273,15 @@ def test_passthrough_data_mixed_nesting():
     }
     program = QuantumProgramModel(shots=100, items=[], passthrough_data=passthrough_data)
     assert program.passthrough_data == passthrough_data
+
+
+@pytest.mark.parametrize("role", [None, "estimator-v2", "sampler-v2"])
+def test_result_with_semantic_role(role):
+    """Test QuantumProgramResultItemModel with semantic_role."""
+    result = QuantumProgramResultModel(
+        data=[], metadata=MetadataModel(chunk_timing=[]), semantic_role=role
+    )
+    assert result.semantic_role == role
 
 
 def test_passthrough_data_on_result_model():
