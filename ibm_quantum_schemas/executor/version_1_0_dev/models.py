@@ -200,8 +200,8 @@ class QuantumProgramModel(BaseModel):
         description=(
             "Semantic role indicating how execution results may be post-processed by runtime "
             "client adapters. Reserved system values include 'sampler-v2' and 'estimator-v2', and "
-            "are subject to change without notice. For internal use only; users should not set or "
-            "modify this value."
+            "are subject to change without notice. Third party clients should not set or depend on "
+            "this value."
         ),
         examples=["sampler-v2", "estimator-v2"],
     )
@@ -356,8 +356,8 @@ class QuantumProgramResultModel(BaseModel):
         description=(
             "Semantic role indicating how execution results may be post-processed by runtime "
             "client adapters. Reserved system values include 'sampler-v2' and 'estimator-v2', and "
-            "are subject to change without notice. For internal use only; users should not set or "
-            "modify this value."
+            "are subject to change without notice. Third party clients should not set or depend on "
+            "this value."
         ),
         examples=["sampler-v2", "estimator-v2"],
     )
