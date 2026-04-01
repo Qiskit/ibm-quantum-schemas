@@ -21,7 +21,7 @@ from qiskit.qpy import dump
 from samplomatic import ChangeBasis, InjectNoise, Twirl
 
 from ibm_quantum_schemas.common.qpy import (
-    QpyCircuitListModelV13ToV17,
+    QpyDataV13ToV17Model,
     QpyModelV13ToV16,
     QpyModelV13ToV17,
     extract_qpy_info,
@@ -134,7 +134,7 @@ class TestQpyModelV13ToV17:
             QpyModelV13ToV17.from_quantum_circuit(circuit, qpy_version)
 
 
-class TestQpyCircuitListModelV13ToV17:
+class TestQpyDataV13ToV17Model:
     """Tests for ``QpyModelV13ToV17``."""
 
     @pytest.mark.skip_if_qiskit_too_old_for_qpy
@@ -147,13 +147,17 @@ class TestQpyCircuitListModelV13ToV17:
         circuit0.measure_all()
 
         circuit1 = QuantumCircuit(2)
-        circuit0.h(0)
-        circuit0.measure_all()
+        circuit1.h(0)
+        circuit1.measure_all()
 
         circuits = [circuit0, circuit1]
 
-        encoded = QpyCircuitListModelV13ToV17.from_quantum_circuits(circuits, qpy_version)
-        circuits_out = encoded.to_quantum_circuits()
+        encoded = QpyDataV13ToV17Model[QuantumCircuit].from_python(circuits, qpy_version)
+
+        assert encoded.num_programs == 2
+        assert encoded.qpy_version == qpy_version
+
+        circuits_out = encoded.to_python()
 
         assert circuits == circuits_out
 
@@ -168,8 +172,8 @@ class TestQpyCircuitListModelV13ToV17:
             circuit.cx(1, 2)
         circuit.measure_all()
 
-        encoded = QpyCircuitListModelV13ToV17.from_quantum_circuits([circuit], qpy_version)
-        circuits_out = encoded.to_quantum_circuits()
+        encoded = QpyDataV13ToV17Model.from_python([circuit], qpy_version)
+        circuits_out = encoded.to_python()
 
         assert len(circuits_out) == 1
         assert circuit == circuits_out[0]
@@ -183,4 +187,4 @@ class TestQpyCircuitListModelV13ToV17:
         circuit.measure_all()
 
         with pytest.raises(ValueError):
-            QpyCircuitListModelV13ToV17.from_quantum_circuits([circuit], qpy_version)
+            QpyDataV13ToV17Model.from_python([circuit], qpy_version)
