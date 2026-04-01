@@ -29,7 +29,6 @@ classifiers = [
 dependencies = [
     "pydantic>=2.11,<3.0.0",
     "qiskit>=2.2.0,<3.0.0",
-    "samplomatic>=0.17.0",
     "pybase64>=1.3.0"
 ]
 
@@ -48,6 +47,7 @@ dev = [
     "pytest",                     # For running tests
     "pytest-error-for-skips",     # Plugin to turn skips into errors
     "ruff",                       # Formatter and linter
+    "samplomatic>=0.12.0",        # For running
     "towncrier",                  # Changelog management
 ]
 
