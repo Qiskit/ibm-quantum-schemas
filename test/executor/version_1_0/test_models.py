@@ -20,7 +20,7 @@ from qiskit.circuit import Parameter, QuantumCircuit
 from samplomatic import Twirl, build
 
 from ibm_quantum_schemas.common.qpy import QpyModelV13ToV17
-from ibm_quantum_schemas.common.samplex import SamplexModelSSV1ToSSV2 as SamplexModel
+from ibm_quantum_schemas.common.samplex import SamplexModelSSV1ToSSV3 as SamplexModel
 from ibm_quantum_schemas.common.tensor import F64TensorModel, TensorModel
 from ibm_quantum_schemas.executor.version_1_0_dev import (
     ChunkPart,
@@ -43,7 +43,7 @@ from ibm_quantum_schemas.executor.version_1_0_dev import (
 @pytest.mark.skip_if_samplomatic_too_old_for_ssv
 @pytest.mark.parametrize(
     "qpy_version,ssv,chunk_size",
-    [(13, 2, 2), (14, 1, 2), (15, 2, 2), (16, 1, 2), (17, 2, 2), (16, 1, "auto"), (16, 2, "auto")],
+    [(13, 3, 2), (14, 1, 2), (15, 2, 2), (16, 1, 2), (17, 3, 2), (16, 1, "auto"), (16, 2, "auto")],
 )
 def test_initialization_params_model(qpy_version, ssv, chunk_size):
     """Test initialization for ``ParamsModel`` and related models."""
