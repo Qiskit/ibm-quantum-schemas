@@ -198,9 +198,9 @@ class QuantumProgramModel(BaseModel):
     semantic_role: str | None = Field(
         default=None,
         description=(
-            "Semantic role indicating how execution results may be post-processed by runtime client"
-            " adapters. Reserved system values include 'sampler-v2' and 'estimator-v2', and are "
-            "subject to change without notice. For internal use only; users should not set or "
+            "Semantic role indicating how execution results may be post-processed by runtime "
+            "client adapters. Reserved system values include 'sampler-v2' and 'estimator-v2', and "
+            "are subject to change without notice. For internal use only; users should not set or "
             "modify this value."
         ),
         examples=["sampler-v2", "estimator-v2"],
@@ -354,9 +354,9 @@ class QuantumProgramResultModel(BaseModel):
     semantic_role: str | None = Field(
         default=None,
         description=(
-            "Semantic role indicating how execution results may be post-processed by runtime client"
-            " adapters. Reserved system values include 'sampler-v2' and 'estimator-v2', and are "
-            "subject to change without notice. For internal use only; users should not set or "
+            "Semantic role indicating how execution results may be post-processed by runtime "
+            "client adapters. Reserved system values include 'sampler-v2' and 'estimator-v2', and "
+            "are subject to change without notice. For internal use only; users should not set or "
             "modify this value."
         ),
         examples=["sampler-v2", "estimator-v2"],
