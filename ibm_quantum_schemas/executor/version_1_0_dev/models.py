@@ -148,6 +148,10 @@ class QuantumProgramModel(BaseModel):
     """The number of shots for each individually bound circuit."""
 
     circuits: QpyDataV13ToV17Model[QuantumCircuit]
+    """One quantum circuit for every element of ``items``.
+    
+    These are stored outside of ``items`` to cosituate them inside of one QPY blob.
+    """
 
     items: list[Annotated[CircuitItemModel | SamplexItemModel, Field(discriminator="item_type")]]
     """Items of the program."""
