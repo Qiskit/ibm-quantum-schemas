@@ -19,7 +19,7 @@ import pytest
 from qiskit.circuit import Parameter, QuantumCircuit
 from samplomatic import Twirl, build
 
-from ibm_quantum_schemas.common.qpy import QpyDataV13ToV17Model
+from ibm_quantum_schemas.common.qpy import QpyDataV13ToV17Model as QpyDataModel
 from ibm_quantum_schemas.common.samplex import SamplexModelSSV1ToSSV3 as SamplexModel
 from ibm_quantum_schemas.common.tensor import F64TensorModel, TensorModel
 from ibm_quantum_schemas.executor.version_1_0_dev import (
@@ -39,7 +39,7 @@ from ibm_quantum_schemas.executor.version_1_0_dev import (
 )
 
 
-def _minimal_quantum_program(**kwargs):
+def _minimal_quantum_program(**kwargs) -> QuantumProgramModel:
     """Create a QuantumProgramModel with one minimal circuit item."""
     circuit = QuantumCircuit(1)
     circuit_item = CircuitItemModel(
@@ -47,7 +47,7 @@ def _minimal_quantum_program(**kwargs):
     )
     return QuantumProgramModel(
         shots=100,
-        circuits=QpyDataV13ToV17Model.from_python([circuit], 16),
+        circuits=QpyDataModel.from_python([circuit], 16),
         items=[circuit_item],
         **kwargs,
     )
@@ -95,7 +95,7 @@ def test_initialization_params_model(qpy_version, ssv, chunk_size):
 
     quantum_program = QuantumProgramModel(
         shots=1000,
-        circuits=QpyDataV13ToV17Model.from_python([circuit0, template], qpy_version),
+        circuits=QpyDataModel.from_python([circuit0, template], qpy_version),
         items=[circuit_item, samplex_item],
     )
     params_model = ParamsModel(quantum_program=quantum_program, options=options)
@@ -168,7 +168,7 @@ def test_chunk_size_validation():
     with pytest.raises(ValueError, match="all items must specify one or the other"):
         QuantumProgramModel(
             shots=1000,
-            circuits=QpyDataV13ToV17Model.from_python([circuit, template], 16),
+            circuits=QpyDataModel.from_python([circuit, template], 16),
             items=[circuit_item, samplex_item],
         )
 
@@ -185,7 +185,7 @@ def test_meas_level(meas_level):
 
     quantum_program = QuantumProgramModel(
         shots=100,
-        circuits=QpyDataV13ToV17Model.from_python([circuit], 16),
+        circuits=QpyDataModel.from_python([circuit], 16),
         items=[circuit_item],
         meas_level=meas_level,
     )
@@ -270,7 +270,7 @@ def test_result_item_with_metadata():
 @pytest.mark.parametrize("role", [None, "estimator-v2", "sampler-v2"])
 def test_semantic_role(role):
     """Test that all semantic roles that we care about are accepted."""
-    program = QuantumProgramModel(shots=100, items=[], semantic_role=role)
+    program = _minimal_quantum_program(semantic_role=role)
     assert program.semantic_role == role
 
 
