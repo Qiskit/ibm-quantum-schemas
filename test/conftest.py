@@ -51,9 +51,7 @@ def pytest_runtest_setup(item):
     if item.get_closest_marker("skip_if_samplomatic_too_old_for_ssv") is not None:
         ssv = item.callspec.params.get("ssv")
         if ssv is not None and ssv > SSV:
-            pytest.skip(
-                f"ssv={ssv} exceeds SSV={QPY_VERSION}, a newer version of samplomatic is required."
-            )
+            pytest.skip(f"ssv={ssv} exceeds SSV={SSV}, a newer version of samplomatic is required.")
 
 
 @pytest.fixture

@@ -53,5 +53,6 @@ from ibm_quantum_schemas.common.samplex import (
     SamplexModel,
     SamplexModelSSV1,
     SamplexModelSSV1ToSSV2,
+    SamplexModelSSV1ToSSV3,
 )
 from ibm_quantum_schemas.common.tensor import F64TensorModel, TensorModel
