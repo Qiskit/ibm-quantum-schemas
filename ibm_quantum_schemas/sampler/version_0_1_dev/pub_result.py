@@ -43,12 +43,12 @@ class PubResultModel(BaseModel):
     """Metadata for the sampler v2 job."""
 
 
-class PubResultWrapperModel(BaseModel):
-    """Pub result wrapper model class."""
+class SamplerPubResultWrapperModel(BaseModel):
+    """Sampler pub result wrapper model class."""
 
     model_config = ConfigDict(serialize_by_alias=True)
 
-    type_: Literal["PubResult"] = Field(default="PubResult", alias="__type__")
+    type_: Literal["SamplerPubResult"] = Field(default="SamplerPubResult", alias="__type__")
     """Redundant type information."""
 
     value_: PubResultModel = Field(alias="__value__")

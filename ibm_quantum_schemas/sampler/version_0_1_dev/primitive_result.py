@@ -21,7 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from ibm_quantum_schemas.sampler.version_0_1_dev.execution_span import (
     ExecutionSpansWrapperModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.pub_result import PubResultWrapperModel
+from ibm_quantum_schemas.sampler.version_0_1_dev.pub_result import SamplerPubResultWrapperModel
 
 
 class ExecutionMetadataModel(BaseModel):
@@ -49,7 +49,7 @@ class PrimitiveResultMetadataModel(BaseModel):
 class PrimitiveResultModel(BaseModel):
     """A model describing the Sampler V2 program output."""
 
-    pub_results: list[PubResultWrapperModel]
+    pub_results: list[SamplerPubResultWrapperModel]
     """Result data from the sampler v2 job."""
 
     metadata: PrimitiveResultMetadataModel

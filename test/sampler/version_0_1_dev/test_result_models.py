@@ -46,7 +46,7 @@ from ibm_quantum_schemas.sampler.version_0_1_dev.primitive_result import (
 from ibm_quantum_schemas.sampler.version_0_1_dev.pub_result import (
     PubResultMetadataModel,
     PubResultModel,
-    PubResultWrapperModel,
+    SamplerPubResultWrapperModel,
 )
 
 
@@ -207,10 +207,10 @@ class TestPubResultModel:
         data_bin_wrapper = DataBinWrapperModel.model_validate({"__value__": data_bin})
         metadata = PubResultMetadataModel()
         pub_result = PubResultModel(data=data_bin_wrapper, metadata=metadata)
-        wrapper = PubResultWrapperModel.model_validate({"__value__": pub_result})
+        wrapper = SamplerPubResultWrapperModel.model_validate({"__value__": pub_result})
 
         serialized = wrapper.model_dump(by_alias=True)
-        assert serialized["__type__"] == "PubResult"
+        assert serialized["__type__"] == "SamplerPubResult"
         assert "__value__" in serialized
 
 
@@ -244,7 +244,7 @@ class TestPrimitiveResultModel:
         data_bin_wrapper = DataBinWrapperModel.model_validate({"__value__": data_bin})
         pub_metadata = PubResultMetadataModel()
         pub_result = PubResultModel(data=data_bin_wrapper, metadata=pub_metadata)
-        pub_result_wrapper = PubResultWrapperModel.model_validate({"__value__": pub_result})
+        pub_result_wrapper = SamplerPubResultWrapperModel.model_validate({"__value__": pub_result})
 
         # Create primitive result with proper ExecutionSpans
         spans_model = ExecutionSpansModel(spans=[])
@@ -272,7 +272,7 @@ class TestPrimitiveResultModel:
 
         pub_metadata = PubResultMetadataModel(num_randomizations=16)
         pub_result = PubResultModel(data=data_bin_wrapper, metadata=pub_metadata)
-        pub_result_wrapper = PubResultWrapperModel.model_validate({"__value__": pub_result})
+        pub_result_wrapper = SamplerPubResultWrapperModel.model_validate({"__value__": pub_result})
 
         # Create proper ExecutionSpans
         spans_model = ExecutionSpansModel(spans=[])
@@ -293,7 +293,7 @@ class TestPrimitiveResultModel:
 
         # Verify nested structure
         pub_result_data = serialized["__value__"]["pub_results"][0]
-        assert pub_result_data["__type__"] == "PubResult"
+        assert pub_result_data["__type__"] == "SamplerPubResult"
         assert pub_result_data["__value__"]["metadata"]["num_randomizations"] == 16
 
 
