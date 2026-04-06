@@ -1,0 +1,129 @@
+# This code is a Qiskit project.
+#
+# (C) Copyright IBM 2026.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+"""All models needed for LayerNoiseModel (Estimator version)"""
+
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, Field
+
+from ibm_quantum_schemas.common.ndarray_wrapper import NdarrayWrapperModel
+from ibm_quantum_schemas.common.typed_qpy_circuit import TypedQpyCircuitModel
+
+
+class PauliListModel(BaseModel):
+    """Represents a PauliList."""
+
+    data: list[str]
+    """List of Pauli string labels.
+
+    Each string is a Pauli operator label (e.g., "IXYZ", "ZZII") representing
+    the Pauli generators. The strings use the standard Pauli notation where
+    I=identity, X/Y/Z are the Pauli matrices, and optional phase prefixes
+    (+, -, i, -i) indicate the global phase.
+    """
+
+
+class PauliListWrapperModel(BaseModel):
+    """A wrapper around PauliListModel adding redundant type information."""
+
+    model_config = ConfigDict(serialize_by_alias=True)
+
+    type_: Literal["settings"] = Field(default="settings", alias="__type__")
+    """Redundant type information."""
+
+    module_: Literal["qiskit.quantum_info.operators.symplectic.pauli_list"] = Field(
+        default="qiskit.quantum_info.operators.symplectic.pauli_list", alias="__module__"
+    )
+    """Redundant type information."""
+
+    class_: Literal["PauliList"] = Field(default="PauliList", alias="__class__")
+    """Redundant type information."""
+
+    value_: PauliListModel = Field(alias="__value__")
+    """The actual data."""
+
+
+class PauliLindbladErrorModel(BaseModel):
+    """The Pauli Lindblad error data."""
+
+    generators: PauliListWrapperModel
+    """The Pauli Lindblad generators as a PauliList.
+
+    Contains the Pauli operators that generate the error channel.
+    """
+
+    rates: NdarrayWrapperModel
+    """The rates associated with each Pauli Lindblad generator.
+
+    A NumPy ndarray containing float values with the same length as the generators list.
+    Each rate corresponds to the strength of the corresponding generator in the error channel.
+    """
+
+
+class PauliLindbladErrorWrapperModel(BaseModel):
+    """A wrapper around PauliLindbladErrorModel adding redundant type information."""
+
+    model_config = ConfigDict(serialize_by_alias=True)
+
+    type_: Literal["_json"] = Field(default="_json", alias="__type__")
+    """Redundant type information."""
+
+    module_: Literal["qiskit_ibm_runtime.utils.noise_learner_result"] = Field(
+        default="qiskit_ibm_runtime.utils.noise_learner_result", alias="__module__"
+    )
+    """Redundant type information."""
+
+    class_: Literal["PauliLindbladError"] = Field(default="PauliLindbladError", alias="__class__")
+    """Redundant type information."""
+
+    value_: PauliLindbladErrorModel = Field(alias="__value__")
+    """The actual data."""
+
+
+class LayerNoiseModelModel(BaseModel):
+    """The error data."""
+
+    circuit: TypedQpyCircuitModel
+    """The quantum circuit whose noise has been learned, encoded in QPY format."""
+
+    qubits: list[int]
+    """The physical qubit labels for this layer.
+
+    Maps the circuit qubits to physical backend qubits.
+    """
+
+    error: PauliLindbladErrorWrapperModel | None = None
+    """The learned Pauli Lindblad error channel for this layer.
+
+    If ``None``, the error channel is either unknown or explicitly disabled for this layer.
+    """
+
+
+class LayerNoiseModelWrapperModel(BaseModel):
+    """A wrapper around LayerNoiseModel adding redundant type information."""
+
+    model_config = ConfigDict(serialize_by_alias=True)
+
+    type_: Literal["_json"] = Field(default="_json", alias="__type__")
+    """Redundant type information."""
+
+    module_: Literal["qiskit_ibm_runtime.utils.noise_learner_result"] = Field(
+        default="qiskit_ibm_runtime.utils.noise_learner_result", alias="__module__"
+    )
+    """Redundant type information."""
+
+    class_: Literal["LayerError"] = Field(default="LayerError", alias="__class__")
+    """Redundant type information."""
+
+    value_: LayerNoiseModelModel = Field(alias="__value__")
+    """The actual data."""

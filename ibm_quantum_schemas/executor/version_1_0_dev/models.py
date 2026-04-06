@@ -28,7 +28,7 @@ from ibm_quantum_schemas.common import (
     QpyModelV13ToV17,
     TensorModel,
 )
-from ibm_quantum_schemas.common import SamplexModelSSV1ToSSV2 as SamplexModel
+from ibm_quantum_schemas.common import SamplexModelSSV1ToSSV3 as SamplexModel
 
 # TypeAliasType is required for Pydantic to handle this recursive type correctly.
 # Note that TypeAliasType is a backport for Python<3.12, so that when drop Python 3.11 support and
@@ -103,6 +103,13 @@ class CircuitItemModel(BaseModel):
 
     The last axis is over ``circuit.parameters``. Execution broadcasts over the
     preceding axes; expect one result per element of the leading shape.
+    """
+
+    shape: list[int]
+    """The shape of this item.
+
+    This shape must extend (via broadcasting) the implicit shape of the :attr:~circuit_arguments`.
+    The non-trivial axes it introduces represent replications.
     """
 
     chunk_size: Annotated[int, Field(ge=1)] | Literal["auto"] = "auto"
@@ -187,6 +194,17 @@ class QuantumProgramModel(BaseModel):
 
     items: list[Annotated[CircuitItemModel | SamplexItemModel, Field(discriminator="item_type")]]
     """Items of the program."""
+
+    semantic_role: str | None = Field(
+        default=None,
+        description=(
+            "Semantic role indicating how execution results may be post-processed by runtime "
+            "client adapters. Reserved system values include 'sampler-v2' and 'estimator-v2', and "
+            "are subject to change without notice. Third party clients should not set or depend on "
+            "this value."
+        ),
+        examples=["sampler-v2", "estimator-v2"],
+    )
 
     @model_validator(mode="after")
     def check_chunk_sizes_are_consistent(self):
@@ -332,3 +350,14 @@ class QuantumProgramResultModel(BaseModel):
 
     passthrough_data: DataTree = None
     """Arbitrary nested data passed through execution without modification."""
+
+    semantic_role: str | None = Field(
+        default=None,
+        description=(
+            "Semantic role indicating how execution results may be post-processed by runtime "
+            "client adapters. Reserved system values include 'sampler-v2' and 'estimator-v2', and "
+            "are subject to change without notice. Third party clients should not set or depend on "
+            "this value."
+        ),
+        examples=["sampler-v2", "estimator-v2"],
+    )
