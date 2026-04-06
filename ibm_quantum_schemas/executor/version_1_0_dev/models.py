@@ -195,16 +195,12 @@ class QuantumProgramModel(BaseModel):
     items: list[Annotated[CircuitItemModel | SamplexItemModel, Field(discriminator="item_type")]]
     """Items of the program."""
 
-    semantic_role: str | None = Field(
-        default=None,
-        description=(
-            "Semantic role indicating how execution results may be post-processed by runtime "
-            "client adapters. Reserved system values include 'sampler-v2' and 'estimator-v2', and "
-            "are subject to change without notice. Third party clients should not set or depend on "
-            "this value."
-        ),
-        examples=["sampler-v2", "estimator-v2"],
-    )
+    semantic_role: str | None = Field(default=None, examples=["sampler-v2", "estimator-v2"])
+    """Semantic role indicating how execution results may be post-processed by runtime clients.
+
+    Reserved system values include 'sampler-v2' and 'estimator-v2', and are subject to change
+    without notice. Third party clients should not set or depend on this value.
+    """
 
     @model_validator(mode="after")
     def check_chunk_sizes_are_consistent(self):
@@ -351,13 +347,9 @@ class QuantumProgramResultModel(BaseModel):
     passthrough_data: DataTree = None
     """Arbitrary nested data passed through execution without modification."""
 
-    semantic_role: str | None = Field(
-        default=None,
-        description=(
-            "Semantic role indicating how execution results may be post-processed by runtime "
-            "client adapters. Reserved system values include 'sampler-v2' and 'estimator-v2', and "
-            "are subject to change without notice. Third party clients should not set or depend on "
-            "this value."
-        ),
-        examples=["sampler-v2", "estimator-v2"],
-    )
+    semantic_role: str | None = Field(default=None, examples=["sampler-v2", "estimator-v2"])
+    """Semantic role indicating how execution results may be post-processed by runtime clients.
+
+    Reserved system values include 'sampler-v2' and 'estimator-v2', and are subject to change
+    without notice. Third party clients should not set or depend on this value.
+    """
