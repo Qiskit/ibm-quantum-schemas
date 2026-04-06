@@ -90,7 +90,10 @@ class OptionsModel(BaseModel):
 
 
 class CircuitItemModel(BaseModel):
-    """Execution specifications for a single quantum circuit."""
+    """Execution specifications for a single quantum circuit.
+
+    The circuit for each item is store separately in ``QuantumProgramModel``.
+    """
 
     item_type: Literal["circuit"] = "circuit"
     """The type of quantum program item."""
@@ -120,7 +123,10 @@ class CircuitItemModel(BaseModel):
 
 
 class SamplexItemModel(BaseModel):
-    """Execution specifications for a single quantum circuit."""
+    """Execution specifications for a single quantum circuit.
+
+    The circuit for each item is store separately in ``QuantumProgramModel``.
+    """
 
     item_type: Literal["samplex"] = "samplex"
     """The type of quantum program item."""
