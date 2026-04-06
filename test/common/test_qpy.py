@@ -152,7 +152,7 @@ class TestQpyDataV13ToV17Model:
 
         circuits = [circuit0, circuit1]
 
-        encoded = QpyDataV13ToV17Model[QuantumCircuit].from_python(circuits, qpy_version)
+        encoded = QpyDataV13ToV17Model.from_python(circuits, qpy_version)
 
         assert encoded.num_programs == 2
         assert encoded.qpy_version == qpy_version
