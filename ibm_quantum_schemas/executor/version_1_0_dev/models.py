@@ -18,14 +18,14 @@ import datetime
 from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, JsonValue, model_validator
+from qiskit import QuantumCircuit
 from typing_extensions import TypeAliasType
 
-from ibm_quantum_schemas.aliases import Self
 from ibm_quantum_schemas.common import (
     BaseParamsModel,
     F64TensorModel,
     PauliLindbladMapModel,
-    QpyModelV13ToV17,
+    QpyDataV13ToV17Model,
     TensorModel,
 )
 from ibm_quantum_schemas.common import SamplexModelSSV1ToSSV3 as SamplexModel
@@ -90,13 +90,13 @@ class OptionsModel(BaseModel):
 
 
 class CircuitItemModel(BaseModel):
-    """Execution specifications for a single quantum circuit."""
+    """Execution specifications for a single quantum circuit.
+
+    The circuit for each item is store separately in ``QuantumProgramModel``.
+    """
 
     item_type: Literal["circuit"] = "circuit"
     """The type of quantum program item."""
-
-    circuit: QpyModelV13ToV17
-    """A QPY-encoded circuit."""
 
     circuit_arguments: F64TensorModel
     """Arguments to the parameters of the circuit.
@@ -121,29 +121,15 @@ class CircuitItemModel(BaseModel):
     session exection mode.
     """
 
-    @model_validator(mode="after")
-    def cross_validate(self) -> Self:
-        """Check for mutual compatibility of types and shapes of attributes."""
-        circuit = self.circuit.to_quantum_circuit(use_cached=True)
-
-        num_parameters = self.circuit_arguments.shape[-1] if self.circuit_arguments.shape else 0
-        if num_parameters != circuit.num_parameters:
-            raise ValueError(
-                f"The size of the last axis of circuit arguments, {num_parameters}, does not "
-                f"match the number of parameters of the circuit, {circuit.num_parameters}."
-            )
-
-        return self
-
 
 class SamplexItemModel(BaseModel):
-    """Execution specifications for a single quantum circuit."""
+    """Execution specifications for a single quantum circuit.
+
+    The circuit for each item is store separately in ``QuantumProgramModel``.
+    """
 
     item_type: Literal["samplex"] = "samplex"
     """The type of quantum program item."""
-
-    circuit: QpyModelV13ToV17
-    """A QPY-encoded circuit."""
 
     samplex: SamplexModel
     """A JSON-encoded samplex."""
@@ -167,30 +153,18 @@ class SamplexItemModel(BaseModel):
     session exection mode.
     """
 
-    @model_validator(mode="after")
-    def cross_validate(self) -> Self:
-        """Check for mutual compatibility of types and shapes of attributes."""
-        circuit = self.circuit.to_quantum_circuit(use_cached=True)
-        samplex = self.samplex.to_samplex(use_cached=True)
-
-        if specs := samplex.outputs().get_specs("parameter_values"):
-            num_output_params = specs[0].shape[-1]
-        else:
-            num_output_params = 0
-        if (num_samplex_out := num_output_params) != circuit.num_parameters:
-            raise ValueError(
-                f"The number of samplex output parameters, {num_samplex_out}, does not match the "
-                f"number of parameters of the circuit, {circuit.num_parameters}."
-            )
-
-        return self
-
 
 class QuantumProgramModel(BaseModel):
     """Model to store a quantum program."""
 
     shots: int = Field(ge=1)
     """The number of shots for each individually bound circuit."""
+
+    circuits: QpyDataV13ToV17Model[QuantumCircuit]
+    """One quantum circuit for every element of ``items``.
+
+    These are stored outside of ``items`` to cosituate them inside of one QPY blob.
+    """
 
     items: list[Annotated[CircuitItemModel | SamplexItemModel, Field(discriminator="item_type")]]
     """Items of the program."""
@@ -210,6 +184,17 @@ class QuantumProgramModel(BaseModel):
             raise ValueError(
                 "Some quantum program items specified an integer-valued 'chunk_size' while others "
                 "specified 'auto', but all items must specify one or the other."
+            )
+
+        return self
+
+    @model_validator(mode="after")
+    def check_circuit_count_is_consistent(self):
+        """Check that there is one circuit for every item."""
+        if self.circuits.num_programs != len(self.items):
+            raise ValueError(
+                "There must be exactly one circuit for every program item, but there are "
+                f"{self.circuits.num_programs} circuits and {len(self.items)} items."
             )
 
         return self
