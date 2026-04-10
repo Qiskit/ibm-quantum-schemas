@@ -199,7 +199,7 @@ class QuantumProgramModel(BaseModel):
 
         return self
 
-    meas_level: Literal["classified", "kerneled", "avg_kerneled"] = "classified"
+    meas_level: Literal["classified", "kerneled", "avg_kerneled", "both"] = "classified"
     """The level at which to return all classical register measurement results.
 
     This option sets the return type of all classical registers in all quantum program items and
@@ -214,6 +214,7 @@ class QuantumProgramModel(BaseModel):
      - "avg_kerneled": Classical register data is returned as a complex array with the intrinsic
          shape ``(creg_size,)``, where data is equivalent to "kerneled" except additionally averaged
          over shots.
+     - "both": Both classified and kerneled data is returned for every classical register.
     """
 
     passthrough_data: DataTree = None
