@@ -173,7 +173,7 @@ def test_chunk_size_validation():
         )
 
 
-@pytest.mark.parametrize("meas_level", ["classified", "kerneled", "avg_kerneled"])
+@pytest.mark.parametrize("meas_level", ["classified", "kerneled", "avg_kerneled", "combined"])
 def test_meas_level(meas_level):
     """Test that meas_level can be set to all valid values."""
     circuit = QuantumCircuit(3)
