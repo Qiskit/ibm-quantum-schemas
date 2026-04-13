@@ -12,9 +12,11 @@
 
 """Data bin models for Sampler V2."""
 
-from typing import Any, Literal
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
+
+from ibm_quantum_schemas.sampler.version_0_1_dev.bit_array import BitArrayWrapperModel
 
 
 class DataBinModel(BaseModel):
@@ -29,9 +31,9 @@ class DataBinModel(BaseModel):
     shape: tuple[int, ...]
     """Data bin shape."""
 
-    fields: dict[str, Any]
-    """Data bin fields. Typically contains ``BitArrayWrapperModel`` instances for
-    classical registers, but could include other metadata."""
+    fields: dict[str, BitArrayWrapperModel]
+    """Data bin fields. Contains ``BitArrayWrapperModel`` instances for
+    classical registers."""
 
 
 class DataBinWrapperModel(BaseModel):
