@@ -127,12 +127,14 @@ class TestDataBinModel:
             field_names=["meas"],
             field_types=["<class 'qiskit.primitives.containers.bit_array.BitArray'>"],
             shape=(1,),
-            fields={"meas": bit_array_wrapper.model_dump(by_alias=True)},
+            fields={"meas": bit_array_wrapper},
         )
 
         assert data_bin.shape == (1,)
         assert "meas" in data_bin.field_names
         assert "meas" in data_bin.fields
+        assert isinstance(data_bin.fields["meas"], BitArrayWrapperModel)
+        assert data_bin.fields["meas"].type_ == "BitArray"
 
     def test_data_bin_wrapper_model_with_defaults(self):
         """Test DataBinWrapperModel with default type."""
@@ -165,6 +167,30 @@ class TestDataBinModel:
         assert "value_" not in serialized
         assert serialized["__type__"] == "DataBin"
         assert serialized["__value__"]["shape"] == [2, 3]
+
+    def test_data_bin_with_complex_ndarray(self):
+        """Test DataBinModel with complex-valued ndarray (kerneled measurements)."""
+        # Create a complex128 array (simulating kerneled measurement data)
+        complex_arr = np.random.random((10, 1)) + 1j * np.random.random((10, 1))
+        complex_arr = complex_arr.astype(np.complex128)
+        encoded = encode_ndarray(complex_arr)
+
+        # Create ndarray wrapper
+        ndarray_wrapper = NdarrayWrapperModel.model_validate({"__value__": encoded})
+
+        # Create DataBin with complex ndarray field
+        data_bin = DataBinModel(
+            field_names=["meas"],
+            field_types=["<class 'numpy.ndarray'>"],
+            shape=(10,),
+            fields={"meas": ndarray_wrapper},
+        )
+
+        assert data_bin.shape == (10,)
+        assert "meas" in data_bin.field_names
+        assert "meas" in data_bin.fields
+        assert isinstance(data_bin.fields["meas"], NdarrayWrapperModel)
+        assert data_bin.fields["meas"].type_ == "ndarray"
 
 
 class TestPubResultModel:

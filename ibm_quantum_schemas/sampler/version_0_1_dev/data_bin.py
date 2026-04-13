@@ -16,6 +16,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from ibm_quantum_schemas.common.ndarray_wrapper import NdarrayWrapperModel
 from ibm_quantum_schemas.sampler.version_0_1_dev.bit_array import BitArrayWrapperModel
 
 
@@ -31,9 +32,9 @@ class DataBinModel(BaseModel):
     shape: tuple[int, ...]
     """Data bin shape."""
 
-    fields: dict[str, BitArrayWrapperModel]
-    """Data bin fields. Contains ``BitArrayWrapperModel`` instances for
-    classical registers."""
+    fields: dict[str, BitArrayWrapperModel | NdarrayWrapperModel]
+    """Data bin fields. Contains ``BitArrayWrapperModel`` or ``NdarrayWrapperModel``
+    instances for each classical register, according to the measurement type."""
 
 
 class DataBinWrapperModel(BaseModel):
