@@ -19,8 +19,8 @@ import pytest
 from qiskit.circuit import Parameter, QuantumCircuit
 from samplomatic import Twirl, build
 
-from ibm_quantum_schemas.common.qpy import QpyModelV13ToV17
-from ibm_quantum_schemas.common.samplex import SamplexModelSSV1ToSSV2 as SamplexModel
+from ibm_quantum_schemas.common.qpy import QpyDataV13ToV17Model as QpyDataModel
+from ibm_quantum_schemas.common.samplex import SamplexModelSSV1ToSSV3 as SamplexModel
 from ibm_quantum_schemas.common.tensor import F64TensorModel, TensorModel
 from ibm_quantum_schemas.executor.version_1_0_dev import (
     ChunkPart,
@@ -39,40 +39,52 @@ from ibm_quantum_schemas.executor.version_1_0_dev import (
 )
 
 
+def _minimal_quantum_program(**kwargs) -> QuantumProgramModel:
+    """Create a QuantumProgramModel with one minimal circuit item."""
+    circuit = QuantumCircuit(1)
+    circuit_item = CircuitItemModel(
+        circuit_arguments=F64TensorModel.from_numpy(np.array([], dtype=np.float64)), shape=()
+    )
+    return QuantumProgramModel(
+        shots=100,
+        circuits=QpyDataModel.from_python([circuit], 16),
+        items=[circuit_item],
+        **kwargs,
+    )
+
+
 @pytest.mark.skip_if_qiskit_too_old_for_qpy
 @pytest.mark.skip_if_samplomatic_too_old_for_ssv
 @pytest.mark.parametrize(
     "qpy_version,ssv,chunk_size",
-    [(13, 2, 2), (14, 1, 2), (15, 2, 2), (16, 1, 2), (17, 2, 2), (16, 1, "auto"), (16, 2, "auto")],
+    [(13, 3, 2), (14, 1, 2), (15, 2, 2), (16, 1, 2), (17, 3, 2), (16, 1, "auto"), (16, 2, "auto")],
 )
 def test_initialization_params_model(qpy_version, ssv, chunk_size):
     """Test initialization for ``ParamsModel`` and related models."""
     options = OptionsModel()
 
-    circuit = QuantumCircuit(3)
-    circuit.rx(Parameter("theta"), 0)
-    circuit.rz(Parameter("phi"), 0)
-    circuit.rx(Parameter("lam"), 0)
-    circuit.cx(0, 1)
-    circuit.measure_all()
+    circuit0 = QuantumCircuit(3)
+    circuit0.rx(Parameter("theta"), 0)
+    circuit0.rz(Parameter("phi"), 0)
+    circuit0.rx(Parameter("lam"), 0)
+    circuit0.cx(0, 1)
+    circuit0.measure_all()
     circuit_item = CircuitItemModel(
-        circuit=QpyModelV13ToV17.from_quantum_circuit(circuit, qpy_version),
         circuit_arguments=F64TensorModel.from_numpy(np.array([0.1, 0.2, 0.3], dtype=np.float64)),
         chunk_size=chunk_size,
         shape=[],
     )
 
-    circuit = QuantumCircuit(3)
-    with circuit.box([Twirl()]):
-        circuit.rx(Parameter("theta"), 0)
-        circuit.rz(Parameter("phi"), 0)
-        circuit.rx(Parameter("lam"), 0)
-        circuit.cx(0, 1)
-    with circuit.box([Twirl()]):
-        circuit.measure_all()
-    template, samplex = build(circuit)
+    circuit1 = QuantumCircuit(3)
+    with circuit1.box([Twirl()]):
+        circuit1.rx(Parameter("theta"), 0)
+        circuit1.rz(Parameter("phi"), 0)
+        circuit1.rx(Parameter("lam"), 0)
+        circuit1.cx(0, 1)
+    with circuit1.box([Twirl()]):
+        circuit1.measure_all()
+    template, samplex = build(circuit1)
     samplex_item = SamplexItemModel(
-        circuit=QpyModelV13ToV17.from_quantum_circuit(template, qpy_version),
         samplex=SamplexModel.from_samplex(samplex, ssv=ssv),
         samplex_arguments={
             "parameter_values": TensorModel.from_numpy(np.array([0.1, 0.2, 0.3], dtype=np.float64))
@@ -81,7 +93,11 @@ def test_initialization_params_model(qpy_version, ssv, chunk_size):
         chunk_size=chunk_size,
     )
 
-    quantum_program = QuantumProgramModel(shots=1000, items=[circuit_item, samplex_item])
+    quantum_program = QuantumProgramModel(
+        shots=1000,
+        circuits=QpyDataModel.from_python([circuit0, template], qpy_version),
+        items=[circuit_item, samplex_item],
+    )
     params_model = ParamsModel(quantum_program=quantum_program, options=options)
 
     assert params_model.schema_version == "v1.0"
@@ -89,6 +105,19 @@ def test_initialization_params_model(qpy_version, ssv, chunk_size):
     assert params_model.options == options
     assert quantum_program.meas_level == "classified"
     assert quantum_program.passthrough_data is None
+
+    assert quantum_program.circuits.to_python() == [circuit0, template]
+    assert len(quantum_program.items) == 2
+
+    item0 = quantum_program.items[0]
+    assert np.array_equal(item0.circuit_arguments.to_numpy(), [0.1, 0.2, 0.3])
+    assert item0.chunk_size == chunk_size
+
+    item1 = quantum_program.items[1]
+    assert list(item1.samplex_arguments) == ["parameter_values"]
+    assert np.array_equal(item1.samplex_arguments["parameter_values"].to_numpy(), [0.1, 0.2, 0.3])
+    assert item1.chunk_size == chunk_size
+    assert item1.shape == [200, 300]
 
 
 def test_initialization_results_model():
@@ -121,7 +150,6 @@ def test_chunk_size_validation():
     """Test initialization for ``ParamsModel`` and related models."""
     circuit = QuantumCircuit(3)
     circuit_item = CircuitItemModel(
-        circuit=QpyModelV13ToV17.from_quantum_circuit(circuit, 16),
         circuit_arguments=F64TensorModel.from_numpy(np.array([], dtype=np.float64)),
         chunk_size=2,
         shape=[],
@@ -129,7 +157,6 @@ def test_chunk_size_validation():
 
     template, samplex = build(circuit)
     samplex_item = SamplexItemModel(
-        circuit=QpyModelV13ToV17.from_quantum_circuit(template, 16),
         samplex=SamplexModel.from_samplex(samplex, ssv=1),
         samplex_arguments={
             "parameter_values": TensorModel.from_numpy(np.array([], dtype=np.float64))
@@ -139,21 +166,29 @@ def test_chunk_size_validation():
     )
 
     with pytest.raises(ValueError, match="all items must specify one or the other"):
-        QuantumProgramModel(shots=1000, items=[circuit_item, samplex_item])
+        QuantumProgramModel(
+            shots=1000,
+            circuits=QpyDataModel.from_python([circuit, template], 16),
+            items=[circuit_item, samplex_item],
+        )
 
 
-@pytest.mark.parametrize("meas_level", ["classified", "kerneled", "avg_kerneled"])
+@pytest.mark.parametrize("meas_level", ["classified", "kerneled", "avg_kerneled", "both"])
 def test_meas_level(meas_level):
     """Test that meas_level can be set to all valid values."""
     circuit = QuantumCircuit(3)
     circuit.measure_all()
     circuit_item = CircuitItemModel(
-        circuit=QpyModelV13ToV17.from_quantum_circuit(circuit, 16),
         circuit_arguments=F64TensorModel.from_numpy(np.array([], dtype=np.float64)),
         shape=[],
     )
 
-    quantum_program = QuantumProgramModel(shots=100, items=[circuit_item], meas_level=meas_level)
+    quantum_program = QuantumProgramModel(
+        shots=100,
+        circuits=QpyDataModel.from_python([circuit], 16),
+        items=[circuit_item],
+        meas_level=meas_level,
+    )
 
     assert quantum_program.meas_level == meas_level
 
@@ -232,27 +267,34 @@ def test_result_item_with_metadata():
     assert result_item.metadata.stretch_values == [stretch]
 
 
+@pytest.mark.parametrize("role", [None, "estimator-v2", "sampler-v2"])
+def test_semantic_role(role):
+    """Test that all semantic roles that we care about are accepted."""
+    program = _minimal_quantum_program(semantic_role=role)
+    assert program.semantic_role == role
+
+
 def test_passthrough_data_leaf_types():
     """Test that all leaf types are accepted."""
     tensor = TensorModel.from_numpy(np.array([1.0, 2.0], dtype=np.float64))
 
     # Test each leaf type individually
     for passthrough_data in [tensor, "hello", 3.14, 42, True, False, None]:
-        program = QuantumProgramModel(shots=100, items=[], passthrough_data=passthrough_data)
+        program = _minimal_quantum_program(passthrough_data=passthrough_data)
         assert program.passthrough_data == passthrough_data
 
 
 def test_passthrough_data_nested_list():
     """Test nested lists in DataTree."""
     passthrough_data = [1, 2.0, "three", [4, [5, 6]]]
-    program = QuantumProgramModel(shots=100, items=[], passthrough_data=passthrough_data)
+    program = _minimal_quantum_program(passthrough_data=passthrough_data)
     assert program.passthrough_data == passthrough_data
 
 
 def test_passthrough_data_nested_dict():
     """Test nested dicts in DataTree."""
     passthrough_data = {"a": 1, "b": {"c": 2.0, "d": {"e": "nested"}}}
-    program = QuantumProgramModel(shots=100, items=[], passthrough_data=passthrough_data)
+    program = _minimal_quantum_program(passthrough_data=passthrough_data)
     assert program.passthrough_data == passthrough_data
 
 
@@ -264,8 +306,17 @@ def test_passthrough_data_mixed_nesting():
         "metadata": {"name": "test", "count": 42},
         "values": [1, 2.0, [3, {"nested": tensor}]],
     }
-    program = QuantumProgramModel(shots=100, items=[], passthrough_data=passthrough_data)
+    program = _minimal_quantum_program(passthrough_data=passthrough_data)
     assert program.passthrough_data == passthrough_data
+
+
+@pytest.mark.parametrize("role", [None, "estimator-v2", "sampler-v2"])
+def test_result_with_semantic_role(role):
+    """Test QuantumProgramResultItemModel with semantic_role."""
+    result = QuantumProgramResultModel(
+        data=[], metadata=MetadataModel(chunk_timing=[]), semantic_role=role
+    )
+    assert result.semantic_role == role
 
 
 def test_passthrough_data_on_result_model():
@@ -283,7 +334,7 @@ def test_passthrough_data_serialization_roundtrip():
     """Test that DataTree survives JSON serialization roundtrip."""
     tensor = TensorModel.from_numpy(np.array([1.0, 2.0], dtype=np.float64))
     passthrough_data = {"tensor": tensor, "nested": [1, {"inner": "value"}]}
-    program = QuantumProgramModel(shots=100, items=[], passthrough_data=passthrough_data)
+    program = _minimal_quantum_program(passthrough_data=passthrough_data)
 
     json_str = program.model_dump_json()
     restored = QuantumProgramModel.model_validate_json(json_str)

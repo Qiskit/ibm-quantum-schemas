@@ -26,6 +26,8 @@ Classes
    :toctree: ../stubs/
    :nosignatures:
 
+   QpyDataModel
+   QpyDataV13ToV17Model
    QpyModel
    QpyModelV13ToV16
    QpyModelV13ToV17
@@ -40,10 +42,17 @@ Classes
 
 from ibm_quantum_schemas.common.base_params import BaseParamsModel
 from ibm_quantum_schemas.common.pauli_lindblad_map import PauliLindbladMapModel
-from ibm_quantum_schemas.common.qpy import QpyModel, QpyModelV13ToV16, QpyModelV13ToV17
+from ibm_quantum_schemas.common.qpy import (
+    QpyDataModel,
+    QpyDataV13ToV17Model,
+    QpyModel,
+    QpyModelV13ToV16,
+    QpyModelV13ToV17,
+)
 from ibm_quantum_schemas.common.samplex import (
     SamplexModel,
     SamplexModelSSV1,
     SamplexModelSSV1ToSSV2,
+    SamplexModelSSV1ToSSV3,
 )
 from ibm_quantum_schemas.common.tensor import F64TensorModel, TensorModel
