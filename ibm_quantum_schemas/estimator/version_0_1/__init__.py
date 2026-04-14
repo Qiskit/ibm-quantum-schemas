@@ -42,6 +42,7 @@ Classes
    NoiseLearnerResultModel
    NoiseLearnerResultWrapperModel
    OptionsModel
+   SimulatorOptionsModel
    ParamsModel
    PecOptionsModel
    PrimitiveResultWrapperModel
@@ -79,7 +80,10 @@ from ibm_quantum_schemas.estimator.version_0_1.noise_learner_results import (
     NoiseLearnerResultModel,
     NoiseLearnerResultWrapperModel,
 )
-from ibm_quantum_schemas.estimator.version_0_1.options import OptionsModel
+from ibm_quantum_schemas.estimator.version_0_1.options import (
+    OptionsModel,
+    SimulatorOptionsModel,
+)
 from ibm_quantum_schemas.estimator.version_0_1.params import ParamsModel
 from ibm_quantum_schemas.estimator.version_0_1.pec_options import PecOptionsModel
 from ibm_quantum_schemas.estimator.version_0_1.primitive_result import (

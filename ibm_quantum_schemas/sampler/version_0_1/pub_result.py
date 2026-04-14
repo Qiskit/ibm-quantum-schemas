@@ -18,7 +18,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from ibm_quantum_schemas.sampler.version_0_1_dev.data_bin import DataBinWrapperModel
+from ibm_quantum_schemas.sampler.version_0_1.data_bin import DataBinWrapperModel
 
 
 class PubResultMetadataModel(BaseModel):

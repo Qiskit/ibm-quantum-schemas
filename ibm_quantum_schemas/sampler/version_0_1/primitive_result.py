@@ -18,10 +18,10 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from ibm_quantum_schemas.sampler.version_0_1_dev.execution_span import (
+from ibm_quantum_schemas.sampler.version_0_1.execution_span import (
     ExecutionSpansWrapperModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.pub_result import SamplerPubResultWrapperModel
+from ibm_quantum_schemas.sampler.version_0_1.pub_result import SamplerPubResultWrapperModel
 
 
 class ExecutionMetadataModel(BaseModel):
@@ -31,6 +31,7 @@ class ExecutionMetadataModel(BaseModel):
     """Execution span information wrapped in ExecutionSpans container.
 
     Contains a list of execution spans, where each span can be either:
+
     - DoubleSliceSpan: for non-twirled execution
     - TwirledSliceSpanV2: for twirled execution with pub_shots tracking
     """

@@ -10,5 +10,6 @@
    noise_learner_v3_0_1
    noise_learner_v3_0_2
    estimator_0_1
+   sampler_0_1
    noise_learner_v2_0_1
    common

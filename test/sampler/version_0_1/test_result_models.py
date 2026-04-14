@@ -21,15 +21,15 @@ import numpy as np
 
 from ibm_quantum_schemas.common.datetime_wrapper import DatetimeWrapperModel
 from ibm_quantum_schemas.common.ndarray_wrapper import NdarrayWrapperModel
-from ibm_quantum_schemas.sampler.version_0_1_dev.bit_array import (
+from ibm_quantum_schemas.sampler.version_0_1.bit_array import (
     BitArrayModel,
     BitArrayWrapperModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.data_bin import (
+from ibm_quantum_schemas.sampler.version_0_1.data_bin import (
     DataBinModel,
     DataBinWrapperModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.execution_span import (
+from ibm_quantum_schemas.sampler.version_0_1.execution_span import (
     DoubleSliceSpanModel,
     DoubleSliceSpanWrapperModel,
     ExecutionSpansModel,
@@ -37,13 +37,13 @@ from ibm_quantum_schemas.sampler.version_0_1_dev.execution_span import (
     TwirledSliceSpanV2Model,
     TwirledSliceSpanV2WrapperModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.primitive_result import (
+from ibm_quantum_schemas.sampler.version_0_1.primitive_result import (
     ExecutionMetadataModel,
     PrimitiveResultMetadataModel,
     PrimitiveResultModel,
     PrimitiveResultWrapperModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.pub_result import (
+from ibm_quantum_schemas.sampler.version_0_1.pub_result import (
     PubResultMetadataModel,
     PubResultModel,
     SamplerPubResultWrapperModel,

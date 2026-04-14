@@ -46,9 +46,7 @@ class DynamicalDecouplingOptionsModel(BaseModel):
     """
 
     scheduling_method: Literal["alap", "asap"] = "alap"
-    """Whether to schedule gates as soon as ("asap") or
-    as late as ("alap") possible.
-    """
+    """Whether to schedule gates as soon as (``asap``) or as late as (``alap``) possible."""
 
     skip_reset_qubits: bool = False
     """Whether to insert DD on idle periods that immediately follow initialized/reset qubits.
