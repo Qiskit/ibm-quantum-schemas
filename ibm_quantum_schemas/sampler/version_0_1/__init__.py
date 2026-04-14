@@ -10,7 +10,32 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Models and validation for ``Sampler`` ``v0.1``."""
+"""
+=============================================================
+Sampler v0.1 (:mod:`ibm_quantum_schemas.sampler.version_0_1`)
+=============================================================
+
+.. currentmodule:: ibm_quantum_schemas.sampler.version_0_1
+
+Models for ``Sampler`` ``v0.1``.
+
+Classes
+=======
+
+.. autosummary::
+   :toctree: ../stubs/
+   :nosignatures:
+
+   DynamicalDecouplingOptionsModel
+   SamplerExecutionOptionsModel
+   OptionsModel
+   ParamsModel
+   SamplerPubModel
+   NoiseModel
+   SimulatorOptionsModel
+   TwirlingOptionsModel
+   TwirlingStrategyType
+"""
 
 from ibm_quantum_schemas.sampler.version_0_1.dynamical_decoupling_options import (
     DynamicalDecouplingOptionsModel,
