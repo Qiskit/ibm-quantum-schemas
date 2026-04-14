@@ -1,3 +1,12 @@
+## [0.6.20260414](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.6.20260414) - 2026-04-14
+
+### Added
+
+- ``noise-learner`` model version ``0.1``. ([#124](https://github.com/Qiskit/ibm-quantum-schemas/issues/124))
+- ``estimator`` model version ``0.1``. ([#125](https://github.com/Qiskit/ibm-quantum-schemas/issues/125))
+- ``sampler`` model version ``0.1``. ([#137](https://github.com/Qiskit/ibm-quantum-schemas/issues/137))
+
+
 ## [0.5.20260320](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.5.20260320) - 2026-03-20
 
 ### Changed
