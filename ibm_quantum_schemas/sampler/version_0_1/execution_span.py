@@ -30,18 +30,19 @@ class DoubleSliceSpanModel(BaseModel):
     """
 
     start: DatetimeWrapperModel
-    """The start time of the span, in UTC, wrapped with __type__ and __value__."""
+    """The start time of the span, in UTC, wrapped with ``__type__`` and ``__value__``."""
 
     stop: DatetimeWrapperModel
-    """The stop time of the span, in UTC, wrapped with __type__ and __value__."""
+    """The stop time of the span, in UTC, wrapped with ``__type__`` and ``__value__``."""
 
     data_slices: dict[int, list[int | list[int]]]
     """Map from pub indices to data slice tuples.
 
-    Each value is a list: [shape_list, arg_start, arg_stop, shot_start, shot_stop]
-    - shape_list: list[int] - shape tuple including shots dimension
-    - arg_start, arg_stop: int - slice bounds for flattened parameter values
-    - shot_start, shot_stop: int - slice bounds for shots dimension
+    Each value is a list: ``[shape_list, arg_start, arg_stop, shot_start, shot_stop]``
+
+    - shape_list: ``list[int]`` - shape tuple including shots dimension
+    - arg_start, arg_stop: ``int`` - slice bounds for flattened parameter values
+    - shot_start, shot_stop: ``int`` - slice bounds for shots dimension
     """
 
 
@@ -65,21 +66,22 @@ class TwirledSliceSpanV2Model(BaseModel):
     """
 
     start: DatetimeWrapperModel
-    """The start time of the span, in UTC, wrapped with __type__ and __value__."""
+    """The start time of the span, in UTC, wrapped with ``__type__`` and ``__value__``."""
 
     stop: DatetimeWrapperModel
-    """The stop time of the span, in UTC, wrapped with __type__ and __value__."""
+    """The stop time of the span, in UTC, wrapped with ``__type__`` and ``__value__``."""
 
     data_slices: dict[int, list[int | list[int] | bool]]
     """Map from pub indices to data slice tuples.
 
     Each value is a list:
-    [shape_list, at_front, shape_start, shape_stop, shot_start, shot_stop, pub_shots]
-    - shape_list: list[int] - twirled shape tuple including twirling axis and shots
-    - at_front: bool - whether randomizations axis is at front of shape
-    - shape_start, shape_stop: int - slice bounds for flattened shape (excluding shots)
-    - shot_start, shot_stop: int - slice bounds for shots per randomization
-    - pub_shots: int - number of shots requested for the pub
+    ``[shape_list, at_front, shape_start, shape_stop, shot_start, shot_stop, pub_shots]``
+
+    - shape_list: ``list[int]`` - twirled shape tuple including twirling axis and shots
+    - at_front: ``bool`` - whether randomizations axis is at front of shape
+    - shape_start, shape_stop: ``int`` - slice bounds for flattened shape (excluding shots)
+    - shot_start, shot_stop: ``int`` - slice bounds for shots per randomization
+    - pub_shots: ``int`` - number of shots requested for the pub
     """
 
 
@@ -103,7 +105,7 @@ class ExecutionSpansModel(BaseModel):
     """
 
     spans: list[DoubleSliceSpanWrapperModel | TwirledSliceSpanV2WrapperModel]
-    """List of execution spans, each wrapped with __type__ and __value__."""
+    """List of execution spans, each wrapped with ``__type__`` and ``__value__``."""
 
 
 class ExecutionSpansWrapperModel(BaseModel):

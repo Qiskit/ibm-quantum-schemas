@@ -34,7 +34,8 @@ class SamplerPubModel(
     A PUB encapsulates a single quantum circuit along with parameter values and shots.
 
     Tuple elements:
-    [0] circuit: The quantum circuit to execute, encoded in QPY format or as a QASM string.
-    [1] parameter_values: Parameter values for the circuit's parameters (NumPy ndarray).
-    [2] shots: The number of shots to execute for this PUB.
+
+    - [0] circuit: The quantum circuit to execute, encoded in QPY format or as a QASM string.
+    - [1] parameter_values: Parameter values for the circuit's parameters (NumPy ndarray).
+    - [2] shots: The number of shots to execute for this PUB.
     """

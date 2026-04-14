@@ -34,8 +34,7 @@ class OptionsModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     default_shots: Annotated[int, Field(ge=1)] = 4096
-    """The default number of shots to use if none are specified in the PUBs
-    or in the run method.
+    """The default number of shots to use if none are specified in the PUBs or in the run method.
 
     Each Sampler PUB can specify its own shots. If the ``run()`` method
     is given shots, then that value is used for all PUBs in the ``run()``
@@ -69,6 +68,7 @@ class OptionsModel(BaseModel):
     """
 
     experimental: dict = {}
-    """Experimental options. These options are subject to change without notification, and
-    stability is not guaranteed.
+    """Experimental options.
+
+    These options are subject to change without notification, and stability is not guaranteed.
     """

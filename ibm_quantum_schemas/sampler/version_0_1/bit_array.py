@@ -22,8 +22,8 @@ from ibm_quantum_schemas.common.ndarray_wrapper import NdarrayWrapperModel
 class BitArrayModel(BaseModel):
     """Bit array model class.
 
-    A BitArray represents measurement outcomes as a packed binary array.
-    The underlying data is stored as an ndarray of uint8 values.
+    A ``BitArray`` represents measurement outcomes as a packed binary array.
+    The underlying data is stored as an ``ndarray`` of ``uint8`` values.
     """
 
     num_bits: int

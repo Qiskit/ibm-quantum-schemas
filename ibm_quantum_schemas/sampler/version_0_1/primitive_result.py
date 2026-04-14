@@ -31,6 +31,7 @@ class ExecutionMetadataModel(BaseModel):
     """Execution span information wrapped in ExecutionSpans container.
 
     Contains a list of execution spans, where each span can be either:
+
     - DoubleSliceSpan: for non-twirled execution
     - TwirledSliceSpanV2: for twirled execution with pub_shots tracking
     """

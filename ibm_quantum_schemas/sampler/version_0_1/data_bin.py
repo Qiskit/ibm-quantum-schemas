@@ -33,8 +33,11 @@ class DataBinModel(BaseModel):
     """Data bin shape."""
 
     fields: dict[str, BitArrayWrapperModel | NdarrayWrapperModel]
-    """Data bin fields. Contains ``BitArrayWrapperModel`` or ``NdarrayWrapperModel``
-    instances for each classical register, according to the measurement type."""
+    """Data bin fields.
+
+    Contains ``BitArrayWrapperModel`` or ``NdarrayWrapperModel`` instances for each classical
+    register, according to the measurement type.
+    """
 
 
 class DataBinWrapperModel(BaseModel):
