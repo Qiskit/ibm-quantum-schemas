@@ -12,20 +12,20 @@
 
 """Models and validation for ``Sampler`` ``v0.1``."""
 
-from ibm_quantum_schemas.sampler.version_0_1_dev.dynamical_decoupling_options import (
+from ibm_quantum_schemas.sampler.version_0_1.dynamical_decoupling_options import (
     DynamicalDecouplingOptionsModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.execution_options import (
+from ibm_quantum_schemas.sampler.version_0_1.execution_options import (
     SamplerExecutionOptionsModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.options import OptionsModel
-from ibm_quantum_schemas.sampler.version_0_1_dev.params import ParamsModel
-from ibm_quantum_schemas.sampler.version_0_1_dev.sampler_pub import SamplerPubModel
-from ibm_quantum_schemas.sampler.version_0_1_dev.simulator_options import (
+from ibm_quantum_schemas.sampler.version_0_1.options import OptionsModel
+from ibm_quantum_schemas.sampler.version_0_1.params import ParamsModel
+from ibm_quantum_schemas.sampler.version_0_1.sampler_pub import SamplerPubModel
+from ibm_quantum_schemas.sampler.version_0_1.simulator_options import (
     NoiseModel,
     SimulatorOptionsModel,
 )
-from ibm_quantum_schemas.sampler.version_0_1_dev.twirling_options import (
+from ibm_quantum_schemas.sampler.version_0_1.twirling_options import (
     TwirlingOptionsModel,
     TwirlingStrategyType,
 )

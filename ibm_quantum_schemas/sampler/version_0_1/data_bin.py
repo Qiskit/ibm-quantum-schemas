@@ -17,7 +17,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 from ibm_quantum_schemas.common.ndarray_wrapper import NdarrayWrapperModel
-from ibm_quantum_schemas.sampler.version_0_1_dev.bit_array import BitArrayWrapperModel
+from ibm_quantum_schemas.sampler.version_0_1.bit_array import BitArrayWrapperModel
 
 
 class DataBinModel(BaseModel):
