@@ -115,10 +115,21 @@ numerical connection between Python package versions and the schema versions the
    For example, `0.1.20260122`.
 
 2. Release candidate versions must be published when a new version of the model for a program is
-   considered in the final stages of being stable, by appending the suffic `rc1` to the version
-   identifier. For example, `0.1.20260122rc1`.
+   considered in the final stages of being stable, by:
+   * removing the `_dev` suffix from the schemas that are to be released.
+   * appending the suffix `rcN` to the `minor` version identifier, and not using `micro` version.
 
-   This signals the version is a [pre-release], allowing consumers to prepare for its usage.
+   For example, `0.2rc1` (if the current version is `0.1.yyyymmdd`).
+
+   This signals the version is a [pre-release], allowing consumers to prepare for its usage. This
+   version will not be picked up by `pip` unless specified fully, and allows for consumers to test
+   it and prepare themselves. If further changes to the package modules are needed, they should be
+   incorporated directly into the schemas, and subsequent release candidates (for example, `0.2rc2`)
+   should be released.
+
+   Once the release candidates have been tested and are considered fully finalized, a new release
+   following the conventions described in point 1 should be made, finalizing the cycle.
+
 
 ### Releasing a new version
 
@@ -136,3 +147,5 @@ git push origin release-0.1.20260122
 
 Merge the PR into `main` and then use the GitHub UI to create a new release, copying the new
 changelog section into the body. This will trigger a job to publish to `PyPI`.
+
+[pre-release]: https://packaging.python.org/en/latest/specifications/version-specifiers/#pre-releases
