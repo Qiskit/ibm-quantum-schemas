@@ -1,6 +1,8 @@
 ## [0.7rc1](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.7rc1) - 2026-04-16
 
-No significant changes.
+### Changed
+
+- Added `ChunkPart` range info to `executor` model version `1.0_dev`
 
 
 ## [0.6.20260414](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.6.20260414) - 2026-04-14
