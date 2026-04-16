@@ -306,7 +306,7 @@ class ChunkPart(BaseModel):
     This range has entries ``(start_idx, stop_idx, step)`` that slice the flattened shape of the
     corresponding quantum program item, after the ``permutation`` has been applied. That is,
     this part corresponds to the data elements ``flatten(permute(arr))[start_idx:stop_idx:step]``
-    for some data array ``arr`` whose shape matches the correspoding item shape. The lower index
+    for some data array ``arr`` whose shape matches the corresponding item shape. The lower index
     is inclusive, and the upper index is exclusive.
 
     It should hold that ``size == max(0, ceil((stop_idx - start_idx) / step))``.
