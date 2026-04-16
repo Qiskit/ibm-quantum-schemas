@@ -17,10 +17,11 @@ from __future__ import annotations
 import datetime
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, Field, JsonValue, model_validator
+from pydantic import BaseModel, Field, JsonValue, field_validator, model_validator
 from qiskit import QuantumCircuit
 from typing_extensions import TypeAliasType
 
+from ibm_quantum_schemas.aliases import Self
 from ibm_quantum_schemas.common import (
     BaseParamsModel,
     F64TensorModel,
@@ -291,6 +292,53 @@ class ChunkPart(BaseModel):
     For example, if a quantum program item has shape ``(10, 5)``, then it has a total of ``50``
     elements, so that if this ``size`` is ``10``, it constitutes 20% of the total work for the item.
     """
+
+    permutation: list[int]
+    """A permutation vector of the item shape before slicing elements with the ``element_range``.
+
+    This list should hold contiguous integers starting at 0, in some order. The convention is
+    that ``permuted_shape[i] = shape[permutation[i]]`` for every dimension index ``i``.
+    """
+
+    element_range: tuple[int, int, int]
+    """Which elements of the item were executed in this chunk part.
+
+    This range has entries ``(start_idx, stop_idx, step)`` that slice the flattened shape of the
+    corresponding quantum program item, after the ``permutation`` has been applied. That is,
+    this part corresponds to the data elements ``flatten(permute(arr))[start_idx:stop_idx:step]``
+    for some data array ``arr`` whose shape matches the corresponding item shape. The lower index
+    is inclusive, the upper index is exclusive, and the step must be positive.
+
+    It should hold that ``size == max(0, ceil((stop_idx - start_idx) / step))``.
+    """
+
+    @field_validator("permutation", mode="after")
+    @classmethod
+    def must_be_permutation_of_range(cls, value):
+        """Check that we have a valid permutation vector."""
+        if set(value) != set(range(len(value))):
+            raise ValueError(f"Must be a permutation of [0, 1, ..., {len(value) - 1}].")
+        return value
+
+    @field_validator("element_range", mode="after")
+    @classmethod
+    def must_be_a_valid_range(cls, value):
+        """Check that we have a valid range tuple."""
+        start, stop, step = value
+        if start < 0 or stop < start or step < 1:
+            raise ValueError("Must be a valid range.")
+        return value
+
+    @model_validator(mode="after")
+    def cross_validate(self) -> Self:
+        """Check for mutual compatibility of types and shapes of attributes."""
+        if len(range(*self.element_range)) != self.size:
+            raise ValueError(
+                f"The start, stop, and step integers, {tuple(self.element_range)}, "
+                f"are inconsistent with the total size, {self.size}."
+            )
+
+        return self
 
 
 class ChunkSpan(BaseModel):
