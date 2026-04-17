@@ -2,7 +2,7 @@
 
 ### Changed
 
-- Added `ChunkPart` range info to `executor` model version `1.0_dev`
+- Removed `_dev` tag from `executor` model version `1.0_dev`
 
 
 ## [0.6.20260414](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.6.20260414) - 2026-04-14
