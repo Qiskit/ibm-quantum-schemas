@@ -1,3 +1,8 @@
+## [0.7.20260419](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.7.20260419) - 2026-04-17
+
+No significant changes.
+
+
 ## [0.6.20260414](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.6.20260414) - 2026-04-14
 
 ### Added
