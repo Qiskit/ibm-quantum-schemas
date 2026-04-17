@@ -41,7 +41,7 @@ Classes
    ChunkPart
 """
 
-from ibm_quantum_schemas.executor.version_1_0_dev.models import (
+from ibm_quantum_schemas.executor.version_1_0.models import (
     ChunkPart,
     ChunkSpan,
     CircuitItemModel,

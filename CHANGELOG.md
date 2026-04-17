@@ -1,7 +1,8 @@
-## [0.7.20260419](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.7.20260419) - 2026-04-17
+## [0.7.20260419](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.7.20260419) - 2026-04-19
 
-No significant changes.
+### Added
 
+- ``executor`` model version ``0.1``. ([#143](https://github.com/Qiskit/ibm-quantum-schemas/issues/143))
 
 ## [0.6.20260414](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.6.20260414) - 2026-04-14
 
