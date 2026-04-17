@@ -22,7 +22,7 @@ from samplomatic import Twirl, build
 from ibm_quantum_schemas.common.qpy import QpyDataV13ToV17Model as QpyDataModel
 from ibm_quantum_schemas.common.samplex import SamplexModelSSV1ToSSV3 as SamplexModel
 from ibm_quantum_schemas.common.tensor import F64TensorModel, TensorModel
-from ibm_quantum_schemas.executor.version_1_0_dev import (
+from ibm_quantum_schemas.executor.version_1_0 import (
     ChunkPart,
     ChunkSpan,
     CircuitItemModel,
