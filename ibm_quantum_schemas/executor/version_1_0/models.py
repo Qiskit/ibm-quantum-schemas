@@ -21,7 +21,6 @@ from pydantic import BaseModel, Field, JsonValue, field_validator, model_validat
 from qiskit import QuantumCircuit
 from typing_extensions import TypeAliasType
 
-from ibm_quantum_schemas.aliases import Self
 from ibm_quantum_schemas.common import (
     BaseParamsModel,
     F64TensorModel,
@@ -286,7 +285,7 @@ class ChunkPart(BaseModel):
     idx_item: int
     """The index of an item in a quantum program."""
 
-    size: int
+    size: int = Field(ge=0)
     """The number of elements from the quantum program item that were executed.
 
     For example, if a quantum program item has shape ``(10, 5)``, then it has a total of ``50``
@@ -294,51 +293,28 @@ class ChunkPart(BaseModel):
     """
 
     permutation: list[int]
-    """A permutation vector of the item shape before slicing elements with the ``element_range``.
+    """A permutation vector of the item shape before slicing elements.
 
     This list should hold contiguous integers starting at 0, in some order. The convention is
     that ``permuted_shape[i] = shape[permutation[i]]`` for every dimension index ``i``.
     """
 
-    element_range: tuple[int, int, int]
-    """Which elements of the item were executed in this chunk part.
+    start_idx: int = Field(ge=0)
+    """The starting index of the item elements that were executed in this chunk part.
 
-    This range has entries ``(start_idx, stop_idx, step)`` that slice the flattened shape of the
+    This part slices the elements ``(start_idx, start_idx + 1, ..., start_idx + size -1)`` of the
     corresponding quantum program item, after the ``permutation`` has been applied. That is,
-    this part corresponds to the data elements ``flatten(permute(arr))[start_idx:stop_idx:step]``
-    for some data array ``arr`` whose shape matches the corresponding item shape. The lower index
-    is inclusive, the upper index is exclusive, and the step must be positive.
-
-    It should hold that ``size == max(0, ceil((stop_idx - start_idx) / step))``.
+    this part corresponds to the data elements ``flatten(permute(arr))[start_idx:start_idx+size]``
+    for some data array ``arr`` whose shape matches the corresponding item shape.
     """
 
     @field_validator("permutation", mode="after")
     @classmethod
-    def must_be_permutation_of_range(cls, value):
+    def must_be_valid_permutation_vector(cls, value):
         """Check that we have a valid permutation vector."""
         if set(value) != set(range(len(value))):
             raise ValueError(f"Must be a permutation of [0, 1, ..., {len(value) - 1}].")
         return value
-
-    @field_validator("element_range", mode="after")
-    @classmethod
-    def must_be_a_valid_range(cls, value):
-        """Check that we have a valid range tuple."""
-        start, stop, step = value
-        if start < 0 or stop < start or step < 1:
-            raise ValueError("Must be a valid range.")
-        return value
-
-    @model_validator(mode="after")
-    def cross_validate(self) -> Self:
-        """Check for mutual compatibility of types and shapes of attributes."""
-        if len(range(*self.element_range)) != self.size:
-            raise ValueError(
-                f"The start, stop, and step integers, {tuple(self.element_range)}, "
-                f"are inconsistent with the total size, {self.size}."
-            )
-
-        return self
 
 
 class ChunkSpan(BaseModel):
