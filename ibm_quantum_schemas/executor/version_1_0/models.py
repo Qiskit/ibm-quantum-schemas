@@ -292,20 +292,22 @@ class ChunkPart(BaseModel):
     elements, so that if this ``size`` is ``10``, it constitutes 20% of the total work for the item.
     """
 
-    permutation: list[int]
-    """A permutation vector of the item shape before slicing elements.
-
-    This list should hold contiguous integers starting at 0, in some order. The convention is
-    that ``permuted_shape[i] = shape[permutation[i]]`` for every dimension index ``i``.
-    """
-
-    start_idx: int = Field(ge=0)
+    idx_start: int = Field(ge=0)
     """The starting index of the item elements that were executed in this chunk part.
 
     This part slices the elements ``(start_idx, start_idx + 1, ..., start_idx + size -1)`` of the
     corresponding quantum program item, after the ``permutation`` has been applied. That is,
     this part corresponds to the data elements ``flatten(permute(arr))[start_idx:start_idx+size]``
     for some data array ``arr`` whose shape matches the corresponding item shape.
+    """
+
+    permutation: list[int]
+    """A permutation vector of the item shape before slicing elements.
+
+    This list should hold contiguous integers starting at 0, in some order. The convention is
+    that ``permuted_shape[i] = shape[permutation[i]]`` for every dimension index ``i``. This field
+    exists because the executor implementation may permute input shape axes to improve
+    performance.
     """
 
     @field_validator("permutation", mode="after")
