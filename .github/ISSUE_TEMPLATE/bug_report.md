@@ -21,3 +21,7 @@ type: Bug
 
 
 **Additional Information**
+
+- **ibm-quantum-schemas version**:
+- **Python version**:
+- **Operating system**:
