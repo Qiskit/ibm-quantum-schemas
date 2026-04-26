@@ -26,7 +26,7 @@ from ibm_quantum_schemas.common import (
 
 
 class ParamsModel(BaseParamsModel):
-    """Schema version 1 of the inner parameters."""
+    """A model describing the Noise Learner V3 program inputs."""
 
     schema_version: Literal["v0.2"] = "v0.2"
 
