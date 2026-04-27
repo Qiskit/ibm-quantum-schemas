@@ -1,0 +1,27 @@
+---
+name: Bug report
+about: Create a report to help us improve
+title: ''
+labels: bug
+assignees: ''
+type: Bug
+
+---
+
+**Describe the bug**
+
+
+**Steps to reproduce**
+
+
+**Expected behavior**
+
+
+**Suggested solutions**
+
+
+**Additional Information**
+
+- **ibm-quantum-schemas version**:
+- **Python version**:
+- **Operating system**:
