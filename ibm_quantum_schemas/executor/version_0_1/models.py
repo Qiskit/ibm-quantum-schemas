@@ -29,7 +29,7 @@ from ibm_quantum_schemas.common import SamplexModelSSV1 as SamplexModel
 
 
 class ParamsModel(BaseParamsModel):
-    """Schema version 1 of the inner parameters."""
+    """A model describing the Executor program inputs."""
 
     schema_version: Literal["v0.1"] = "v0.1"
 

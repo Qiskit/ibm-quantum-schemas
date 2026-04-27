@@ -25,7 +25,7 @@ from ibm_quantum_schemas.noise_learner_v2.version_0_1.results_metadata import (
 
 
 class ParamsModel(BaseModel):
-    """A model describing the NoiseLearnerV2 program inputs, also known as "params"."""
+    """A model describing the NoiseLearnerV2 program inputs."""
 
     model_config = ConfigDict(extra="forbid")
 
