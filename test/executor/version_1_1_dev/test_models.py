@@ -20,7 +20,7 @@ from qiskit.circuit import Parameter, QuantumCircuit
 from samplomatic import Twirl, build
 
 from ibm_quantum_schemas.common.qpy import QpyDataV13ToV17Model as QpyDataModel
-from ibm_quantum_schemas.common.samplex import SamplexModelSSV1ToSSV3 as SamplexModel
+from ibm_quantum_schemas.common.samplex import SamplexModelSSV1ToSSV4 as SamplexModel
 from ibm_quantum_schemas.common.tensor import F64TensorModel, TensorModel
 from ibm_quantum_schemas.executor.version_1_1_dev import (
     ChunkPart,
@@ -57,7 +57,7 @@ def _minimal_quantum_program(**kwargs) -> QuantumProgramModel:
 @pytest.mark.skip_if_samplomatic_too_old_for_ssv
 @pytest.mark.parametrize(
     "qpy_version,ssv,chunk_size",
-    [(13, 3, 2), (14, 1, 2), (15, 2, 2), (16, 1, 2), (17, 3, 2), (16, 1, "auto"), (16, 2, "auto")],
+    [(13, 4, 2), (14, 1, 2), (15, 2, 2), (16, 1, 2), (17, 4, 2), (16, 1, "auto"), (16, 2, "auto")],
 )
 def test_initialization_params_model(qpy_version, ssv, chunk_size):
     """Test initialization for ``ParamsModel`` and related models."""
@@ -157,7 +157,7 @@ def test_chunk_size_validation():
 
     template, samplex = build(circuit)
     samplex_item = SamplexItemModel(
-        samplex=SamplexModel.from_samplex(samplex, ssv=1),
+        samplex=SamplexModel.from_samplex(samplex, ssv=4),
         samplex_arguments={
             "parameter_values": TensorModel.from_numpy(np.array([], dtype=np.float64))
         },
