@@ -19,6 +19,7 @@ from ibm_quantum_schemas.common.samplex import (
     SamplexModelSSV1,
     SamplexModelSSV1ToSSV2,
     SamplexModelSSV1ToSSV3,
+    SamplexModelSSV1ToSSV4,
 )
 
 
@@ -58,3 +59,13 @@ class TestSamplexModelSSV1ToSSV3:
         """Test that round trips work correctly."""
         samplex = Samplex()
         SamplexModelSSV1ToSSV3.from_samplex(samplex, ssv=ssv).to_samplex()
+
+class TestSamplexModelSSV1ToSSV4:
+    """Test the SamplexModelSSV1ToSSV4 model"""
+
+    @pytest.mark.skip_if_samplomatic_too_old_for_ssv
+    @pytest.mark.parametrize("ssv", [1, 2, 3])
+    def test_roundtrip(self, ssv):
+        """Test that round trips work correctly."""
+        samplex = Samplex()
+        SamplexModelSSV1ToSSV4.from_samplex(samplex, ssv=ssv).to_samplex()
