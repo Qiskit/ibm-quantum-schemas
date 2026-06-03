@@ -60,6 +60,7 @@ class TestSamplexModelSSV1ToSSV3:
         samplex = Samplex()
         SamplexModelSSV1ToSSV3.from_samplex(samplex, ssv=ssv).to_samplex()
 
+
 class TestSamplexModelSSV1ToSSV4:
     """Test the SamplexModelSSV1ToSSV4 model"""
 
