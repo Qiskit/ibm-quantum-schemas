@@ -159,7 +159,7 @@ def test_chunk_size_validation(ssv):
 
     template, samplex = build(circuit)
     samplex_item = SamplexItemModel(
-        samplex=SamplexModel.from_samplex(samplex, ssv=4),
+        samplex=SamplexModel.from_samplex(samplex, ssv=ssv),
         samplex_arguments={
             "parameter_values": TensorModel.from_numpy(np.array([], dtype=np.float64))
         },
