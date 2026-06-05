@@ -146,7 +146,9 @@ def test_initialization_results_model():
     assert results.passthrough_data is None
 
 
-def test_chunk_size_validation():
+@pytest.mark.skip_if_samplomatic_too_old_for_ssv
+@pytest.mark.parametrize("ssv", [4])
+def test_chunk_size_validation(ssv):
     """Test initialization for ``ParamsModel`` and related models."""
     circuit = QuantumCircuit(3)
     circuit_item = CircuitItemModel(
