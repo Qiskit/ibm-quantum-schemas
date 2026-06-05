@@ -147,7 +147,7 @@ def test_initialization_results_model():
 
 
 @pytest.mark.skip_if_samplomatic_too_old_for_ssv
-@pytest.mark.parametrize("ssv", [4])
+@pytest.mark.parametrize("ssv", [1, 2, 3, 4])
 def test_chunk_size_validation(ssv):
     """Test initialization for ``ParamsModel`` and related models."""
     circuit = QuantumCircuit(3)
