@@ -1,10 +1,5 @@
 ## [0.8.20260622](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.8.20260622) - 2026-06-05
 
-No significant changes.
-
-
-## [0.8rc1](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.8rc1) - 2026-06-04
-
 ### Added
 
 - ``executor`` model version ``1.1``. ([#149](https://github.com/Qiskit/ibm-quantum-schemas/issues/143))
