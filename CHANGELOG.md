@@ -2,7 +2,7 @@
 
 ### Added
 
-- ``executor`` model version ``1.1``. ([#149](https://github.com/Qiskit/ibm-quantum-schemas/issues/143))
+- ``executor`` model version ``1.1``. ([#149](https://github.com/Qiskit/ibm-quantum-schemas/issues/149))
 
 
 ## [0.7.20260419](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.7.20260419) - 2026-04-19
