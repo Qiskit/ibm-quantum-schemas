@@ -111,7 +111,7 @@ def test_chunk_size_validation():
     """Test initialization for ``ParamsModel`` and related models."""
     circuit = QuantumCircuit(3)
     circuit_item = CircuitItemModel(
-        circuit=QpyModelV13ToV16.from_quantum_circuit(circuit, 16),
+        circuit=QpyModelV13ToV16.from_quantum_circuit(circuit, qpy_version=16),
         circuit_arguments=F64TensorModel.from_numpy(np.array([], dtype=np.float64)),
         chunk_size=2,
     )

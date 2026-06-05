@@ -117,19 +117,21 @@ def test_initialization_results_model():
 
 
 @pytest.mark.skip_if_samplomatic_too_old_for_ssv
+@pytest.mark.skip_if_qiskit_too_old_for_qpy
 @pytest.mark.parametrize("ssv", [1, 2])
-def test_chunk_size_validation(ssv):
+@pytest.mark.parametrize("qpy_version", [16, 17])
+def test_chunk_size_validation(ssv, qpy_version):
     """Test initialization for ``ParamsModel`` and related models."""
     circuit = QuantumCircuit(3)
     circuit_item = CircuitItemModel(
-        circuit=QpyModelV13ToV17.from_quantum_circuit(circuit, 16),
+        circuit=QpyModelV13ToV17.from_quantum_circuit(circuit, qpy_version=qpy_version),
         circuit_arguments=F64TensorModel.from_numpy(np.array([], dtype=np.float64)),
         chunk_size=2,
     )
 
     template, samplex = build(circuit)
     samplex_item = SamplexItemModel(
-        circuit=QpyModelV13ToV17.from_quantum_circuit(template, 16),
+        circuit=QpyModelV13ToV17.from_quantum_circuit(template, qpy_version=qpy_version),
         samplex=SamplexModel.from_samplex(samplex, ssv=ssv),
         samplex_arguments={
             "parameter_values": TensorModel.from_numpy(np.array([], dtype=np.float64))
