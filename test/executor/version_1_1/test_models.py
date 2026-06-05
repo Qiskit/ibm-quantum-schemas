@@ -146,7 +146,11 @@ def test_initialization_results_model():
     assert results.passthrough_data is None
 
 
-def test_chunk_size_validation():
+@pytest.mark.skip_if_samplomatic_too_old_for_ssv
+@pytest.mark.skip_if_qiskit_too_old_for_qpy
+@pytest.mark.parametrize("ssv", [1, 2, 3, 4])
+@pytest.mark.parametrize("qpy_version", [16, 17])
+def test_chunk_size_validation(ssv, qpy_version):
     """Test initialization for ``ParamsModel`` and related models."""
     circuit = QuantumCircuit(3)
     circuit_item = CircuitItemModel(
@@ -157,7 +161,7 @@ def test_chunk_size_validation():
 
     template, samplex = build(circuit)
     samplex_item = SamplexItemModel(
-        samplex=SamplexModel.from_samplex(samplex, ssv=4),
+        samplex=SamplexModel.from_samplex(samplex, ssv=ssv),
         samplex_arguments={
             "parameter_values": TensorModel.from_numpy(np.array([], dtype=np.float64))
         },
@@ -168,7 +172,7 @@ def test_chunk_size_validation():
     with pytest.raises(ValueError, match="all items must specify one or the other"):
         QuantumProgramModel(
             shots=1000,
-            circuits=QpyDataModel.from_python([circuit, template], 16),
+            circuits=QpyDataModel.from_python([circuit, template], qpy_version=qpy_version),
             items=[circuit_item, samplex_item],
         )
 
