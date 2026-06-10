@@ -55,6 +55,7 @@ class PostSelectionOptionsModel(BaseModel):
     strategy: Literal["node", "edge"] = "node"
     """The strategy used to decide if a shot should be kept or discarded."""
 
+
 class PostCircuitBitFlipChecksOptionsModel(BaseModel):
     """Options to apply post-circuit bit-flip checks to the results of noise learning circuits."""
 
@@ -104,10 +105,14 @@ class PreCircuitBitFlipChecksOptionsModel(BaseModel):
 class BitFlipChecksOptionsModel(BaseModel):
     """Options to apply bit-flip checks to the results of noise learning circuits."""
 
-    pre_circuit: PreCircuitBitFlipChecksOptionsModel = Field(default_factory=PreCircuitBitFlipChecksOptionsModel)
+    pre_circuit: PreCircuitBitFlipChecksOptionsModel = Field(
+        default_factory=PreCircuitBitFlipChecksOptionsModel
+    )
     """Options to apply pre-circuit bit-flip checks to the results of noise learning circuits."""
 
-    post_circuit: PostCircuitBitFlipChecksOptionsModel = Field(default_factory=PostCircuitBitFlipChecksOptionsModel)
+    post_circuit: PostCircuitBitFlipChecksOptionsModel = Field(
+        default_factory=PostCircuitBitFlipChecksOptionsModel
+    )
     """Options to apply post-circuit bit-flip checks to the results of noise learning circuits."""
 
 
