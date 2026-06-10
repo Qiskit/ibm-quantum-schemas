@@ -94,7 +94,7 @@ class PreCircuitBitFlipChecksOptionsModel(BaseModel):
     strategy: Literal["node", "edge"] = "node"
     """The strategy used to decide if a shot should be kept or discarded.
 
-    The available startegies are:
+    The available strategies are:
 
     * ``'node'``: Discard every shot where one or more bits failed to flip. Keep every other shot.
     * ``'edge'``: Discard every shot where there exists a pair of neighbouring qubits for which
