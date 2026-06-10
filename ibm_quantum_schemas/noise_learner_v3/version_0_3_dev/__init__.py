@@ -39,15 +39,15 @@ Classes
 
 from ibm_quantum_schemas.noise_learner_v3.version_0_3_dev.models import (
     BitFlipChecksOptionsModel,
-    PreCircuitBitFlipChecksOptionsModel,
-    PostCircuitBitFlipChecksOptionsModel,
     LinbdbladResultMetadataModel,
     LinbdbladResultPostSelectionMetadataModel,
     NoiseLearnerV3ResultModel,
     NoiseLearnerV3ResultsModel,
     OptionsModel,
     ParamsModel,
+    PostCircuitBitFlipChecksOptionsModel,
     PostSelectionOptionsModel,
+    PreCircuitBitFlipChecksOptionsModel,
     TREXResultMetadataModel,
     TREXResultPostSelectionMetadataModel,
 )

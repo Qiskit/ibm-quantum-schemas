@@ -20,15 +20,15 @@ from ibm_quantum_schemas.common.qpy import QpyModelV13ToV17
 from ibm_quantum_schemas.common.tensor import F64TensorModel
 from ibm_quantum_schemas.noise_learner_v3.version_0_3_dev import (
     BitFlipChecksOptionsModel,
-    PreCircuitBitFlipChecksOptionsModel,
-    PostCircuitBitFlipChecksOptionsModel,
     LinbdbladResultMetadataModel,
     LinbdbladResultPostSelectionMetadataModel,
     NoiseLearnerV3ResultModel,
     NoiseLearnerV3ResultsModel,
     OptionsModel,
     ParamsModel,
+    PostCircuitBitFlipChecksOptionsModel,
     PostSelectionOptionsModel,
+    PreCircuitBitFlipChecksOptionsModel,
     TREXResultMetadataModel,
     TREXResultPostSelectionMetadataModel,
 )
@@ -65,9 +65,13 @@ def test_initialization_params_model_with_non_default_options(qpy_version):
         rep_delay=1e-9,
         post_selection=PostSelectionOptionsModel(enable=True, x_pulse_type="rx", strategy="edge"),
         bit_flip_checks=BitFlipChecksOptionsModel(
-            pre_circuit=PreCircuitBitFlipChecksOptionsModel(enable=True, x_pulse_type="rx", strategy="edge"),
-            post_circuit=PostCircuitBitFlipChecksOptionsModel(enable=True, x_pulse_type="rx", strategy="edge"),
-        )
+            pre_circuit=PreCircuitBitFlipChecksOptionsModel(
+                enable=True, x_pulse_type="rx", strategy="edge"
+            ),
+            post_circuit=PostCircuitBitFlipChecksOptionsModel(
+                enable=True, x_pulse_type="rx", strategy="edge"
+            ),
+        ),
     )
 
     circuit = QuantumCircuit(3)
