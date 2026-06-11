@@ -37,7 +37,7 @@ Classes
    LinbdbladResultMetadataModel
 """
 
-from ibm_quantum_schemas.noise_learner_v3.version_0_3_dev.models import (
+from ibm_quantum_schemas.noise_learner_v3.version_0_3.models import (
     BitFlipChecksOptionsModel,
     LinbdbladResultMetadataModel,
     LinbdbladResultPostSelectionMetadataModel,
