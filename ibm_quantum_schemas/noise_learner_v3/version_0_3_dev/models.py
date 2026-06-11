@@ -56,6 +56,66 @@ class PostSelectionOptionsModel(BaseModel):
     """The strategy used to decide if a shot should be kept or discarded."""
 
 
+class PostCircuitBitFlipChecksOptionsModel(BaseModel):
+    """Options to apply post-circuit bit-flip checks to the results of noise learning circuits."""
+
+    enable: bool = False
+    """Whether to apply post-circuit bit-flip checks.
+
+    If ``False``, all the other fields will be ignored.
+    """
+
+    x_pulse_type: Literal["xslow", "rx"] = "xslow"
+    """The type of the X-pulse used for the post-circuit bit-flip checks."""
+
+    strategy: Literal["node", "edge"] = "node"
+    """The strategy used to decide if a shot should be kept or discarded.
+
+    The available strategies are:
+
+    * ``'node'``: Discard every shot where one or more bits failed to flip. Keep every other shot.
+    * ``'edge'``: Discard every shot where there exists a pair of neighbouring qubits for which
+      both of the bits failed to flip. Keep every other shot.
+    """
+
+
+class PreCircuitBitFlipChecksOptionsModel(BaseModel):
+    """Options to apply pre-circuit bit-flip checks to the results of noise learning circuits."""
+
+    enable: bool = False
+    """Whether to apply pre-circuit bit-flip checks.
+
+    If ``False``, all the other fields will be ignored.
+    """
+
+    x_pulse_type: Literal["xslow", "rx"] = "xslow"
+    """The type of the X-pulse used for the pre-circuit bit-flip checks."""
+
+    strategy: Literal["node", "edge"] = "node"
+    """The strategy used to decide if a shot should be kept or discarded.
+
+    The available strategies are:
+
+    * ``'node'``: Discard every shot where one or more bits failed to flip. Keep every other shot.
+    * ``'edge'``: Discard every shot where there exists a pair of neighbouring qubits for which
+      both of the bits failed to flip. Keep every other shot.
+    """
+
+
+class BitFlipChecksOptionsModel(BaseModel):
+    """Options to apply bit-flip checks to the results of noise learning circuits."""
+
+    pre_circuit: PreCircuitBitFlipChecksOptionsModel = Field(
+        default_factory=PreCircuitBitFlipChecksOptionsModel
+    )
+    """Options to apply pre-circuit bit-flip checks to the results of noise learning circuits."""
+
+    post_circuit: PostCircuitBitFlipChecksOptionsModel = Field(
+        default_factory=PostCircuitBitFlipChecksOptionsModel
+    )
+    """Options to apply post-circuit bit-flip checks to the results of noise learning circuits."""
+
+
 class OptionsModel(BaseModel):
     """Runtime options with all fields set."""
 
@@ -67,6 +127,9 @@ class OptionsModel(BaseModel):
 
     layer_pair_depths: list[int] = [0, 1, 2, 4, 16, 32]
     """The circuit depths (measured in number of pairs) to use in Pauli Lindblad experiments."""
+
+    bit_flip_checks: BitFlipChecksOptionsModel = Field(default_factory=BitFlipChecksOptionsModel)
+    """Options to apply bit-flip checks to the results of noise learning circuits."""
 
     post_selection: PostSelectionOptionsModel = Field(default_factory=PostSelectionOptionsModel)
     """Options for post selecting the results of noise learning circuits."""
