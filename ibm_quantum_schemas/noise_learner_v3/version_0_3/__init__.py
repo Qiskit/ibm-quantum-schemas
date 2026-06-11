@@ -12,10 +12,10 @@
 
 """
 =============================================================================
-NoiseLearnerV3 v0.3 (:mod:`ibm_quantum_schemas.noise_learner_v3.version_0_3_dev`)
+NoiseLearnerV3 v0.3 (:mod:`ibm_quantum_schemas.noise_learner_v3.version_0_3`)
 =============================================================================
 
-.. currentmodule:: ibm_quantum_schemas.noise_learner_v3.version_0_3_dev
+.. currentmodule:: ibm_quantum_schemas.noise_learner_v3.version_0_3
 
 Models for ``NoiseLearnerV3`` ``v0.3``.
 
@@ -29,6 +29,9 @@ Classes
    ParamsModel
    OptionsModel
    PostSelectionOptionsModel
+   BitFlipChecksOptionsModel
+   PreCircuitBitFlipChecksOptionsModel
+   PostCircuitBitFlipChecksOptionsModel
    NoiseLearnerV3ResultsModel
    NoiseLearnerV3ResultModel
    TREXResultPostSelectionMetadataModel
@@ -37,7 +40,7 @@ Classes
    LinbdbladResultMetadataModel
 """
 
-from ibm_quantum_schemas.noise_learner_v3.version_0_3_dev.models import (
+from ibm_quantum_schemas.noise_learner_v3.version_0_3.models import (
     BitFlipChecksOptionsModel,
     LinbdbladResultMetadataModel,
     LinbdbladResultPostSelectionMetadataModel,
