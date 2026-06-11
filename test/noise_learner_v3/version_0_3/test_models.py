@@ -18,7 +18,7 @@ from qiskit.circuit import QuantumCircuit
 
 from ibm_quantum_schemas.common.qpy import QpyModelV13ToV17
 from ibm_quantum_schemas.common.tensor import F64TensorModel
-from ibm_quantum_schemas.noise_learner_v3.version_0_3_dev import (
+from ibm_quantum_schemas.noise_learner_v3.version_0_3 import (
     BitFlipChecksOptionsModel,
     LinbdbladResultMetadataModel,
     LinbdbladResultPostSelectionMetadataModel,
