@@ -1,4 +1,5 @@
 ## [0.9rc1](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.9rc1) - 2026-06-11
+### Added
 
 - ``noise-learner-v3`` model version ``0.3``. ([#151](https://github.com/Qiskit/ibm-quantum-schemas/issues/151))
 
