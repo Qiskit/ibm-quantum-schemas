@@ -38,6 +38,8 @@ Classes
    SamplexModelSSV1ToSSV2
    TensorModel
    F64TensorModel
+   CompressableTensorModel
+   F64CompressableTensorModel
 """
 
 from ibm_quantum_schemas.common.base_params import BaseParamsModel
@@ -56,4 +58,9 @@ from ibm_quantum_schemas.common.samplex import (
     SamplexModelSSV1ToSSV3,
     SamplexModelSSV1ToSSV4,
 )
-from ibm_quantum_schemas.common.tensor import F64TensorModel, TensorModel
+from ibm_quantum_schemas.common.tensor import (
+    CompressableTensorModel,
+    F64CompressableTensorModel,
+    F64TensorModel,
+    TensorModel,
+)

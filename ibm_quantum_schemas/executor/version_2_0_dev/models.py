@@ -24,20 +24,27 @@ from typing_extensions import TypeAliasType
 from ibm_quantum_schemas.aliases import Self
 from ibm_quantum_schemas.common import (
     BaseParamsModel,
-    F64TensorModel,
+    CompressableTensorModel,
+    F64CompressableTensorModel,
     PauliLindbladMapModel,
     QpyDataV13ToV17Model,
-    TensorModel,
 )
 from ibm_quantum_schemas.common import SamplexModelSSV1ToSSV4 as SamplexModel
 
 # TypeAliasType is required for Pydantic to handle this recursive type correctly.
 # Note that TypeAliasType is a backport for Python<3.12, so that when drop Python 3.11 support and
 # lower, this can be updated to `type DataTree = ...`.
-# TensorModel must come before dict so Pydantic tries it first during deserialization.
+# CompressableTensorModel must come before dict so Pydantic tries it first during deserialization.
 DataTree = TypeAliasType(
     "DataTree",
-    list["DataTree"] | TensorModel | dict[str, "DataTree"] | str | float | int | bool | None,
+    list["DataTree"]
+    | CompressableTensorModel
+    | dict[str, "DataTree"]
+    | str
+    | float
+    | int
+    | bool
+    | None,
 )
 """Arbitrary nesting of lists and dicts with typed leaves."""
 
@@ -99,7 +106,7 @@ class CircuitItemModel(BaseModel):
     item_type: Literal["circuit"] = "circuit"
     """The type of quantum program item."""
 
-    circuit_arguments: F64TensorModel
+    circuit_arguments: F64CompressableTensorModel
     """Arguments to the parameters of the circuit.
 
     The last axis is over ``circuit.parameters``. Execution broadcasts over the
@@ -135,7 +142,7 @@ class SamplexItemModel(BaseModel):
     samplex: SamplexModel
     """A JSON-encoded samplex."""
 
-    samplex_arguments: dict[str, bool | int | PauliLindbladMapModel | TensorModel]
+    samplex_arguments: dict[str, bool | int | PauliLindbladMapModel | CompressableTensorModel]
     """Arguments to the samplex."""
 
     shape: list[int]
@@ -273,7 +280,7 @@ class ItemMetadataModel(BaseModel):
 class QuantumProgramResultItemModel(BaseModel):
     """Results for a single quantum program item."""
 
-    results: dict[str, TensorModel]
+    results: dict[str, CompressableTensorModel]
     """A map from results to their tensor values."""
 
     metadata: ItemMetadataModel

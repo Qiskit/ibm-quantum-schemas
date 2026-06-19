@@ -105,3 +105,59 @@ class F64TensorModel(TensorModel):
     """Model of tensor data specialized to f64."""
 
     dtype: Literal["f64"] = "f64"
+
+
+class CompressableTensorModel(TensorModel):
+    """Model of tensor data specialized to compressable types."""
+
+    compressed: bool = True
+    """Whether the data has been compressed or not."""
+
+    @classmethod
+    def from_numpy(cls, array: np.ndarray, compress: bool = True):
+        """Instantiate from a NumPy array."""
+        if array.dtype == np.dtype(np.float64):
+            dtype = "f64"
+            data = pybase64.b64encode(array.astype("<f8").tobytes())
+        elif array.dtype == np.dtype(np.bool_):
+            dtype = "bool"
+            packed = np.packbits(array.astype(np.uint8), bitorder="little")
+            data = pybase64.b64encode(packed.tobytes())
+        elif array.dtype == np.dtype(np.uint8):
+            dtype = "u8"
+            data = pybase64.b64encode(array.astype("<u1").tobytes())
+        elif array.dtype == np.dtype(np.complex128):
+            dtype = "c128"
+            data = pybase64.b64encode(array.astype("<c16").tobytes())
+        else:
+            raise ValueError(
+                f"Unexpected NumPy dtype '{array.dtype}', one of {get_args(SupportedDtypes)} "
+                "expected."
+            )
+
+        return cls(data=data, shape=array.shape, dtype=dtype, compressed=compress)
+
+    def to_numpy(self) -> np.ndarray:
+        """Convert to a NumPy Array."""
+        shape = tuple(self.shape)
+        raw = pybase64.b64decode(self.data)
+
+        if self.dtype == "f64":
+            return np.frombuffer(raw, dtype="<f8").reshape(shape)
+        elif self.dtype == "bool":
+            # Total number of elements from shape
+            total = np.prod(shape, dtype=int)
+            unpacked = np.unpackbits(np.frombuffer(raw, dtype=np.uint8), bitorder="little")[:total]
+            return unpacked.astype(bool).reshape(shape)
+        elif self.dtype == "u8":
+            return np.frombuffer(raw, dtype="<u1").reshape(shape)
+        elif self.dtype == "c128":
+            return np.frombuffer(raw, dtype="<c16").reshape(shape)
+
+        raise ValueError(f"dtype {self.dtype} not understood.")
+
+
+class F64CompressableTensorModel(CompressableTensorModel):
+    """Model of compressable tensor data specialized to f64."""
+
+    dtype: Literal["f64"] = "f64"
