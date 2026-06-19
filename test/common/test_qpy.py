@@ -21,6 +21,7 @@ from qiskit.qpy import dump
 from samplomatic import ChangeBasis, InjectNoise, Twirl
 
 from ibm_quantum_schemas.common.qpy import (
+    CompressableQpyDataV13ToV17Model,
     QpyDataV13ToV17Model,
     QpyModelV13ToV16,
     QpyModelV13ToV17,
@@ -188,3 +189,67 @@ class TestQpyDataV13ToV17Model:
 
         with pytest.raises(ValueError):
             QpyDataV13ToV17Model.from_python([circuit], qpy_version)
+
+
+class TestCompressableQpyDataV13ToV17Model:
+    """Tests for ``CompressableQpyDataV13ToV17Model``."""
+
+    @pytest.mark.skip_if_qiskit_too_old_for_qpy
+    @pytest.mark.parametrize("qpy_version", [13, 14, 15, 16, 17])
+    @pytest.mark.parametrize("compress", [True, False])
+    def test_roundtrip(self, qpy_version, compress):
+        """Test that round trips work correctly."""
+        circuit0 = QuantumCircuit(3)
+        circuit0.h(0)
+        circuit0.cx(0, 1)
+        circuit0.measure_all()
+
+        circuit1 = QuantumCircuit(2)
+        circuit1.h(0)
+        circuit1.measure_all()
+
+        circuits = [circuit0, circuit1]
+
+        encoded = CompressableQpyDataV13ToV17Model.from_python(
+            circuits, qpy_version, compress=compress
+        )
+
+        assert encoded.num_programs == 2
+        assert encoded.qpy_version == qpy_version
+        assert encoded.compressed == compress
+
+        circuits_out = encoded.to_python()
+
+        assert circuits == circuits_out
+
+    @pytest.mark.skip_if_qiskit_too_old_for_qpy
+    @pytest.mark.parametrize("qpy_version", [15, 16, 17])
+    @pytest.mark.parametrize("compress", [True, False])
+    def test_roundtrip_with_annotations(self, qpy_version, compress):
+        """Test that round trips work correctly for circuits with annotated boxes."""
+        circuit = QuantumCircuit(3)
+        circuit.h(0)
+        circuit.cx(0, 1)
+        with circuit.box([Twirl(), InjectNoise("ref"), ChangeBasis()]):
+            circuit.cx(1, 2)
+        circuit.measure_all()
+
+        encoded = CompressableQpyDataV13ToV17Model.from_python(
+            [circuit], qpy_version, compress=compress
+        )
+        circuits_out = encoded.to_python()
+
+        assert encoded.compressed == compress
+        assert len(circuits_out) == 1
+        assert circuit == circuits_out[0]
+
+    @pytest.mark.parametrize("qpy_version", [12, 18])
+    def test_unsupported_versions_raise(self, qpy_version):
+        """Test that unsupported versions raise."""
+        circuit = QuantumCircuit(3)
+        circuit.h(0)
+        circuit.cx(0, 1)
+        circuit.measure_all()
+
+        with pytest.raises(ValueError):
+            CompressableQpyDataV13ToV17Model.from_python([circuit], qpy_version)
