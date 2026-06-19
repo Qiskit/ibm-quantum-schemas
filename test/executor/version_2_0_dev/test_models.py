@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Tests for 1.1 models."""
+"""Tests for 2.0 models."""
 
 import datetime
 
