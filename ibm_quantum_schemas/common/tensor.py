@@ -13,6 +13,7 @@
 """TensorModel"""
 
 import math
+import zlib
 from typing import Literal, TypeAlias, get_args
 
 import numpy as np
@@ -118,29 +119,34 @@ class CompressableTensorModel(TensorModel):
         """Instantiate from a NumPy array."""
         if array.dtype == np.dtype(np.float64):
             dtype = "f64"
-            data = pybase64.b64encode(array.astype("<f8").tobytes())
+            data = array.astype("<f8").tobytes()
         elif array.dtype == np.dtype(np.bool_):
             dtype = "bool"
-            packed = np.packbits(array.astype(np.uint8), bitorder="little")
-            data = pybase64.b64encode(packed.tobytes())
+            data = np.packbits(array.astype(np.uint8), bitorder="little").tobytes()
         elif array.dtype == np.dtype(np.uint8):
             dtype = "u8"
-            data = pybase64.b64encode(array.astype("<u1").tobytes())
+            data = array.astype("<u1").tobytes()
         elif array.dtype == np.dtype(np.complex128):
             dtype = "c128"
-            data = pybase64.b64encode(array.astype("<c16").tobytes())
+            data = array.astype("<c16").tobytes()
         else:
             raise ValueError(
                 f"Unexpected NumPy dtype '{array.dtype}', one of {get_args(SupportedDtypes)} "
                 "expected."
             )
 
+        if compress:
+            data = zlib.compress(data)
+
+        data = pybase64.b64encode(data).decode("utf-8")
         return cls(data=data, shape=array.shape, dtype=dtype, compressed=compress)
 
     def to_numpy(self) -> np.ndarray:
         """Convert to a NumPy Array."""
         shape = tuple(self.shape)
         raw = pybase64.b64decode(self.data)
+        if self.compressed:
+            raw = zlib.decompress(raw)
 
         if self.dtype == "f64":
             return np.frombuffer(raw, dtype="<f8").reshape(shape)
@@ -155,6 +161,21 @@ class CompressableTensorModel(TensorModel):
             return np.frombuffer(raw, dtype="<c16").reshape(shape)
 
         raise ValueError(f"dtype {self.dtype} not understood.")
+
+    @model_validator(mode="after")
+    def check_sizes(self):
+        """Cross-validate that all sizes are consistent."""
+        raw = pybase64.b64decode(self.data)
+        if self.compressed:
+            raw = zlib.decompress(raw)
+
+        elem_size = self._ELEM_SIZE_LOOKUP[self.dtype]
+        if math.ceil(len(raw) / elem_size) != math.prod(self.shape):
+            raise ValueError(
+                f"Data length {len(raw)} is inconsistent with shape {self.shape} packed at "
+                f"{elem_size} bytes per element."
+            )
+        return self
 
 
 class F64CompressableTensorModel(CompressableTensorModel):
