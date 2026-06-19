@@ -31,6 +31,8 @@ Classes
    QpyModel
    QpyModelV13ToV16
    QpyModelV13ToV17
+   CompressableQpyDataModel
+   CompressableQpyDataV13ToV17Model
    BaseParamsModel
    PauliLindbladMapModel
    SamplexModel
@@ -45,6 +47,8 @@ Classes
 from ibm_quantum_schemas.common.base_params import BaseParamsModel
 from ibm_quantum_schemas.common.pauli_lindblad_map import PauliLindbladMapModel
 from ibm_quantum_schemas.common.qpy import (
+    CompressableQpyDataModel,
+    CompressableQpyDataV13ToV17Model,
     QpyDataModel,
     QpyDataV13ToV17Model,
     QpyModel,

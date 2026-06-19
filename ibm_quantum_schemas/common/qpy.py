@@ -13,6 +13,7 @@
 """QpyModel"""
 
 import struct
+import zlib
 from dataclasses import dataclass
 from io import BytesIO
 from typing import Generic, TypeVar
@@ -137,6 +138,90 @@ class QpyDataModel(BaseModel, Generic[T]):
         return obj
 
 
+class CompressableQpyDataModel(QpyDataModel[T], Generic[T]):
+    """QPY-encoded Qiskit objects with optional compression."""
+
+    compressed: bool = False
+    """Whether the data has been compressed."""
+
+    @model_validator(mode="after")
+    def cross_validate_qpy_info(self):
+        """Check that the encoded qpy information matches expectations."""
+        if self.compressed:
+            b64_data = b64decode(self.b64_data)
+            decompressed_data = zlib.decompress(b64_data)
+            b64_data = b64encode(decompressed_data).decode()
+        else:
+            b64_data = self.b64_data
+
+        qpy_info = extract_qpy_info(b64_data)
+        if qpy_info.qpy_version != self.qpy_version:
+            raise ValueError(
+                f"The qpy_version is {self.qpy_version} but the encoded QPY "
+                f"version is {qpy_info.qpy_version}."
+            )
+        if qpy_info.num_programs != self.num_programs:
+            raise ValueError(
+                f"num_programs={self.num_programs}, but the encoded QPY "
+                f"has {qpy_info.num_programs} elements"
+            )
+        return self
+
+    def to_python(self, use_cached: bool = False) -> list[T]:
+        """Return a Python representation of the encoded data in the model.
+
+        When ``use_cached`` is false, or when no cached version exists, :attr:`~b64_data` is
+        decoded and loaded into a new Python instance. Users of this class are responsible for
+        managing cached instances of the Python data and possible side-effects of their mutations.
+
+        Args:
+            use_cached: Whether to return the cached instance (if it exists).
+
+        Returns:
+            Python data.
+        """
+        if not use_cached or not hasattr(self, "_python_data"):
+            raw_data = b64decode(self.b64_data)
+            if self.compressed:
+                raw_data = zlib.decompress(raw_data)
+            with BytesIO(raw_data) as bytes_obj:
+                self._python_data = load(bytes_obj, annotation_factories=ANNOTATION_FACTORIES)
+
+        return self._python_data
+
+    @classmethod
+    def from_python(
+        cls, data: list[T], qpy_version: int = QPY_VERSION, compress: bool = True
+    ) -> Self:
+        """Create a model instance from Python data of the correct type.
+
+        The returned instance owns a reference to the provided data. This instance may be
+        returned by :meth:`~to_python` depending on the value of ``use_cached``.
+        Users of this class are responsible for managing cached instances of the data and
+        possible side-effects of their mutations.
+
+        Args:
+            data: The data to base64 encode in the new model instance.
+            qpy_version: The QPY version to encode with.
+            compress: Whether to compress the encoded data.
+
+        Returns:
+            A new model instance.
+        """
+        with BytesIO() as bytes_obj:
+            dump(data, bytes_obj, version=qpy_version, annotation_factories=ANNOTATION_FACTORIES)
+            raw_data = bytes_obj.getvalue()
+            if compress:
+                raw_data = zlib.compress(raw_data)
+            b64_data = b64encode(raw_data).decode("utf-8")
+
+        obj = cls(
+            b64_data=b64_data, qpy_version=qpy_version, num_programs=len(data), compressed=compress
+        )
+        obj._python_data = data  # noqa: SLF001
+        return obj
+
+
 # This class does not use/inherit QpyDataModel for historical reasons. Since some program models
 # depend on it, we leave it as-is.
 class QpyModel(BaseModel):
@@ -223,5 +308,11 @@ class QpyModelV13ToV17(QpyModel):
 
 class QpyDataV13ToV17Model(QpyDataModel[T], Generic[T]):
     """QPY encoded circuit list with restricted version range."""
+
+    qpy_version: int = Field(ge=13, le=17)
+
+
+class CompressableQpyDataV13ToV17Model(CompressableQpyDataModel[T], Generic[T]):
+    """Compressable QPY encoded circuit list with restricted version range."""
 
     qpy_version: int = Field(ge=13, le=17)
