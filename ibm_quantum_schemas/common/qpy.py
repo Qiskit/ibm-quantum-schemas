@@ -45,22 +45,34 @@ class QpyInfo:
     """The number of independent components inside the file."""
 
 
-def extract_qpy_info(qpy_b64: str) -> QpyInfo:
+def extract_qpy_info(qpy_b64: str, compressed: bool = False) -> QpyInfo:
     """Return information about a QPY binary stream.
 
     Args:
         qpy_b64: A QPY file encoded as a base64 string.
+        compressed: Whether the data has been compressed.
 
     Returns:
         Information about the QPY content.
     """
     with Base64Reader(qpy_b64) as bytes_obj:
-        header = FILE_HEADER_V10._make(
-            struct.unpack(
-                FILE_HEADER_V10_PACK,
-                bytes_obj.read(FILE_HEADER_V10_SIZE),
-            )
-        )
+        if compressed:
+            decompressor = zlib.decompressobj()
+            raw_header = b""
+            while len(raw_header) < FILE_HEADER_V10_SIZE:
+                chunk = bytes_obj.read()
+                if not chunk:
+                    break
+                raw_header += decompressor.decompress(chunk)
+
+            if len(raw_header) < FILE_HEADER_V10_SIZE:
+                raw_header += decompressor.flush()
+
+            raw_header = raw_header[:FILE_HEADER_V10_SIZE]
+        else:
+            raw_header = bytes_obj.read(FILE_HEADER_V10_SIZE)
+
+        header = FILE_HEADER_V10._make(struct.unpack(FILE_HEADER_V10_PACK, raw_header))
     return QpyInfo(header.qpy_version, header.num_programs)
 
 
@@ -147,14 +159,7 @@ class CompressableQpyDataModel(QpyDataModel[T], Generic[T]):
     @model_validator(mode="after")
     def cross_validate_qpy_info(self):
         """Check that the encoded qpy information matches expectations."""
-        if self.compressed:
-            b64_data = b64decode(self.b64_data)
-            decompressed_data = zlib.decompress(b64_data)
-            b64_data = b64encode(decompressed_data).decode()
-        else:
-            b64_data = self.b64_data
-
-        qpy_info = extract_qpy_info(b64_data)
+        qpy_info = extract_qpy_info(self.b64_data, compressed=self.compressed)
         if qpy_info.qpy_version != self.qpy_version:
             raise ValueError(
                 f"The qpy_version is {self.qpy_version} but the encoded QPY "
