@@ -28,16 +28,18 @@ from ibm_quantum_schemas.common import (
     CompressableTensorModel,
     F64CompressableTensorModel,
     PauliLindbladMapModel,
+    TensorModel,
 )
 from ibm_quantum_schemas.common import SamplexModelSSV1ToSSV4 as SamplexModel
 
 # TypeAliasType is required for Pydantic to handle this recursive type correctly.
 # Note that TypeAliasType is a backport for Python<3.12, so that when drop Python 3.11 support and
 # lower, this can be updated to `type DataTree = ...`.
-# CompressableTensorModel must come before dict so Pydantic tries it first during deserialization.
+# TensorModel must come before dict so Pydantic tries it first during deserialization.
 DataTree = TypeAliasType(
     "DataTree",
     list["DataTree"]
+    | TensorModel
     | CompressableTensorModel
     | dict[str, "DataTree"]
     | str
