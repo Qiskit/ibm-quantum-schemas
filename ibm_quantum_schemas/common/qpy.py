@@ -58,21 +58,21 @@ def extract_qpy_info(qpy_b64: str, compressed: bool = False) -> QpyInfo:
     with Base64Reader(qpy_b64) as bytes_obj:
         if compressed:
             decompressor = zlib.decompressobj()
-            raw_header = b""
-            while len(raw_header) < FILE_HEADER_V10_SIZE:
+            buffer = b""
+            while len(buffer) < FILE_HEADER_V10_SIZE:
                 chunk = bytes_obj.read()
                 if not chunk:
                     break
-                raw_header += decompressor.decompress(chunk)
+                buffer += decompressor.decompress(chunk)
 
-            if len(raw_header) < FILE_HEADER_V10_SIZE:
-                raw_header += decompressor.flush()
+            if len(buffer) < FILE_HEADER_V10_SIZE:
+                buffer += decompressor.flush()
 
-            raw_header = raw_header[:FILE_HEADER_V10_SIZE]
+            buffer = buffer[:FILE_HEADER_V10_SIZE]
         else:
-            raw_header = bytes_obj.read(FILE_HEADER_V10_SIZE)
+            buffer = bytes_obj.read(FILE_HEADER_V10_SIZE)
 
-        header = FILE_HEADER_V10._make(struct.unpack(FILE_HEADER_V10_PACK, raw_header))
+        header = FILE_HEADER_V10._make(struct.unpack(FILE_HEADER_V10_PACK, buffer))
     return QpyInfo(header.qpy_version, header.num_programs)
 
 
