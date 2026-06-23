@@ -60,8 +60,7 @@ def extract_qpy_info(qpy_b64: str, compressed: bool = False) -> QpyInfo:
             decompressor = zlib.decompressobj()
             buffer = b""
             while len(buffer) < FILE_HEADER_V10_SIZE:
-                chunk = bytes_obj.read(4096)
-                if not chunk:
+                if not (chunk := bytes_obj.read(4096)):
                     break
                 buffer += decompressor.decompress(chunk)
             buffer = buffer[:FILE_HEADER_V10_SIZE]
