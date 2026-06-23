@@ -304,6 +304,6 @@ class QpyDataV13ToV17Model(QpyDataModel[T], Generic[T]):
 
 
 class CompressedQpyDataV13ToV17Model(CompressedQpyDataModel[T], Generic[T]):
-    """Compressable QPY encoded circuit list with restricted version range."""
+    """Compressed QPY encoded circuit list with restricted version range."""
 
     qpy_version: int = Field(ge=13, le=17)
