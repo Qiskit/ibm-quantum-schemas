@@ -19,9 +19,9 @@ import pytest
 from qiskit.circuit import Parameter, QuantumCircuit
 from samplomatic import Twirl, build
 
-from ibm_quantum_schemas.common.qpy import QpyDataV13ToV17Model as QpyDataModel
+from ibm_quantum_schemas.common.qpy import CompressedQpyDataV13ToV17Model as QpyDataModel
 from ibm_quantum_schemas.common.samplex import SamplexModelSSV1ToSSV4 as SamplexModel
-from ibm_quantum_schemas.common.tensor import F64TensorModel, TensorModel
+from ibm_quantum_schemas.common.tensor import CompressedTensorModel, F64CompressedTensorModel
 from ibm_quantum_schemas.executor.version_2_0_dev import (
     ChunkPart,
     ChunkSpan,
@@ -43,7 +43,8 @@ def _minimal_quantum_program(**kwargs) -> QuantumProgramModel:
     """Create a QuantumProgramModel with one minimal circuit item."""
     circuit = QuantumCircuit(1)
     circuit_item = CircuitItemModel(
-        circuit_arguments=F64TensorModel.from_numpy(np.array([], dtype=np.float64)), shape=()
+        circuit_arguments=F64CompressedTensorModel.from_numpy(np.array([], dtype=np.float64)),
+        shape=(),
     )
     return QuantumProgramModel(
         shots=100,
@@ -70,7 +71,9 @@ def test_initialization_params_model(qpy_version, ssv, chunk_size):
     circuit0.cx(0, 1)
     circuit0.measure_all()
     circuit_item = CircuitItemModel(
-        circuit_arguments=F64TensorModel.from_numpy(np.array([0.1, 0.2, 0.3], dtype=np.float64)),
+        circuit_arguments=F64CompressedTensorModel.from_numpy(
+            np.array([0.1, 0.2, 0.3], dtype=np.float64)
+        ),
         chunk_size=chunk_size,
         shape=[],
     )
@@ -87,7 +90,9 @@ def test_initialization_params_model(qpy_version, ssv, chunk_size):
     samplex_item = SamplexItemModel(
         samplex=SamplexModel.from_samplex(samplex, ssv=ssv),
         samplex_arguments={
-            "parameter_values": TensorModel.from_numpy(np.array([0.1, 0.2, 0.3], dtype=np.float64))
+            "parameter_values": CompressedTensorModel.from_numpy(
+                np.array([0.1, 0.2, 0.3], dtype=np.float64)
+            )
         },
         shape=(200, 300),
         chunk_size=chunk_size,
@@ -124,8 +129,8 @@ def test_initialization_results_model():
     """Test initialization for ``QuantumProgramResultModel`` and related models."""
     result_item = QuantumProgramResultItemModel(
         results={
-            "alpha": TensorModel.from_numpy(np.array([0.1, 0.2], dtype=np.float64)),
-            "beta": TensorModel.from_numpy(np.array([0.3, 0.4, 0.5], dtype=np.float64)),
+            "alpha": CompressedTensorModel.from_numpy(np.array([0.1, 0.2], dtype=np.float64)),
+            "beta": CompressedTensorModel.from_numpy(np.array([0.3, 0.4, 0.5], dtype=np.float64)),
         },
         metadata=ItemMetadataModel(),
     )
@@ -154,7 +159,7 @@ def test_chunk_size_validation(ssv, qpy_version):
     """Test initialization for ``ParamsModel`` and related models."""
     circuit = QuantumCircuit(3)
     circuit_item = CircuitItemModel(
-        circuit_arguments=F64TensorModel.from_numpy(np.array([], dtype=np.float64)),
+        circuit_arguments=F64CompressedTensorModel.from_numpy(np.array([], dtype=np.float64)),
         chunk_size=2,
         shape=[],
     )
@@ -163,7 +168,7 @@ def test_chunk_size_validation(ssv, qpy_version):
     samplex_item = SamplexItemModel(
         samplex=SamplexModel.from_samplex(samplex, ssv=ssv),
         samplex_arguments={
-            "parameter_values": TensorModel.from_numpy(np.array([], dtype=np.float64))
+            "parameter_values": CompressedTensorModel.from_numpy(np.array([], dtype=np.float64))
         },
         shape=(),
         chunk_size="auto",
@@ -183,7 +188,7 @@ def test_meas_level(meas_level):
     circuit = QuantumCircuit(3)
     circuit.measure_all()
     circuit_item = CircuitItemModel(
-        circuit_arguments=F64TensorModel.from_numpy(np.array([], dtype=np.float64)),
+        circuit_arguments=F64CompressedTensorModel.from_numpy(np.array([], dtype=np.float64)),
         shape=[],
     )
 
@@ -262,7 +267,7 @@ def test_result_item_with_metadata():
 
     result_item = QuantumProgramResultItemModel(
         results={
-            "counts": TensorModel.from_numpy(np.array([100, 200], dtype=np.float64)),
+            "counts": CompressedTensorModel.from_numpy(np.array([100, 200], dtype=np.float64)),
         },
         metadata=item_metadata,
     )
@@ -280,7 +285,7 @@ def test_semantic_role(role):
 
 def test_passthrough_data_leaf_types():
     """Test that all leaf types are accepted."""
-    tensor = TensorModel.from_numpy(np.array([1.1, 2.0], dtype=np.float64))
+    tensor = CompressedTensorModel.from_numpy(np.array([1.1, 2.0], dtype=np.float64))
 
     # Test each leaf type individually
     for passthrough_data in [tensor, "hello", 3.14, 42, True, False, None]:
@@ -303,8 +308,8 @@ def test_passthrough_data_nested_dict():
 
 
 def test_passthrough_data_mixed_nesting():
-    """Test mixed lists and dicts with TensorModel leaves."""
-    tensor = TensorModel.from_numpy(np.array([1.1, 2.0, 3.0], dtype=np.float64))
+    """Test mixed lists and dicts with CompressableTensorModel leaves."""
+    tensor = CompressedTensorModel.from_numpy(np.array([1.1, 2.0, 3.0], dtype=np.float64))
     passthrough_data = {
         "tensors": [tensor, tensor],
         "metadata": {"name": "test", "count": 42},
@@ -325,7 +330,7 @@ def test_result_with_semantic_role(role):
 
 def test_passthrough_data_on_result_model():
     """Test passthrough_data on QuantumProgramResultModel."""
-    tensor = TensorModel.from_numpy(np.array([1.1, 2.0], dtype=np.float64))
+    tensor = CompressedTensorModel.from_numpy(np.array([1.1, 2.0], dtype=np.float64))
     passthrough_data = {"result_tensor": tensor, "info": ["a", "b", 3]}
 
     result = QuantumProgramResultModel(
@@ -336,7 +341,7 @@ def test_passthrough_data_on_result_model():
 
 def test_passthrough_data_serialization_roundtrip():
     """Test that DataTree survives JSON serialization roundtrip."""
-    tensor = TensorModel.from_numpy(np.array([1.1, 2.0], dtype=np.float64))
+    tensor = CompressedTensorModel.from_numpy(np.array([1.1, 2.0], dtype=np.float64))
     passthrough_data = {"tensor": tensor, "nested": [1, {"inner": "value"}]}
     program = _minimal_quantum_program(passthrough_data=passthrough_data)
 

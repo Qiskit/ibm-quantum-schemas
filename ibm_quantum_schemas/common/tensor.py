@@ -13,14 +13,77 @@
 """TensorModel"""
 
 import math
+import zlib
 from typing import Literal, TypeAlias, get_args
 
 import numpy as np
 import pybase64
 from pydantic import BaseModel, model_validator
+from typing_extensions import Buffer
 
 SupportedDtypes: TypeAlias = Literal["f64", "bool", "u8", "c128"]
 """The data types supported by :class:`~TensorModel`."""
+
+
+def _from_buffer(raw: Buffer, dtype: SupportedDtypes, shape: tuple[int, ...]) -> np.ndarray:
+    """Convert a buffer of bytes into a NumPy array of the specified dtype and shape.
+
+    Args:
+        raw: The buffer of bytes to convert.
+        dtype: The data type of the resulting NumPy array.
+        shape: The shape of the resulting NumPy array.
+
+    Returns:
+        A NumPy array of the specified dtype and shape.
+
+    Raises:
+        ValueError: If the dtype is not supported.
+    """
+    if dtype == "f64":
+        return np.frombuffer(raw, dtype="<f8").reshape(shape)
+    elif dtype == "bool":
+        # Total number of elements from shape
+        total = np.prod(shape, dtype=int)
+        unpacked = np.unpackbits(np.frombuffer(raw, dtype=np.uint8), bitorder="little")[:total]
+        return unpacked.astype(bool).reshape(shape)
+    elif dtype == "u8":
+        return np.frombuffer(raw, dtype="<u1").reshape(shape)
+    elif dtype == "c128":
+        return np.frombuffer(raw, dtype="<c16").reshape(shape)
+
+    raise ValueError(f"dtype {dtype} not understood.")
+
+
+def _get_dtype_and_bytes(array: np.ndarray) -> tuple[SupportedDtypes, bytes]:
+    """Get the dtype string and bytes representation of a NumPy array.
+
+    Args:
+        array: The NumPy array to convert.
+
+    Returns:
+        A tuple containing the dtype string and the bytes representation of the array.
+
+    Raises:
+        ValueError: If the dtype of the array is not supported.
+    """
+    if array.dtype == np.dtype(np.float64):
+        dtype = "f64"
+        byte_data = array.astype("<f8").tobytes()
+    elif array.dtype == np.dtype(np.bool_):
+        dtype = "bool"
+        byte_data = np.packbits(array.astype(np.uint8), bitorder="little").tobytes()
+    elif array.dtype == np.dtype(np.uint8):
+        dtype = "u8"
+        byte_data = array.astype("<u1").tobytes()
+    elif array.dtype == np.dtype(np.complex128):
+        dtype = "c128"
+        byte_data = array.astype("<c16").tobytes()
+    else:
+        raise ValueError(
+            f"Unexpected NumPy dtype '{array.dtype}', one of {get_args(SupportedDtypes)} "
+            "expected."
+        )
+    return dtype, byte_data
 
 
 class TensorModel(BaseModel):
@@ -44,45 +107,15 @@ class TensorModel(BaseModel):
     @classmethod
     def from_numpy(cls, array: np.ndarray):
         """Instantiate from a NumPy array."""
-        if array.dtype == np.dtype(np.float64):
-            dtype = "f64"
-            data = pybase64.b64encode(array.astype("<f8").tobytes())
-        elif array.dtype == np.dtype(np.bool_):
-            dtype = "bool"
-            packed = np.packbits(array.astype(np.uint8), bitorder="little")
-            data = pybase64.b64encode(packed.tobytes())
-        elif array.dtype == np.dtype(np.uint8):
-            dtype = "u8"
-            data = pybase64.b64encode(array.astype("<u1").tobytes())
-        elif array.dtype == np.dtype(np.complex128):
-            dtype = "c128"
-            data = pybase64.b64encode(array.astype("<c16").tobytes())
-        else:
-            raise ValueError(
-                f"Unexpected NumPy dtype '{array.dtype}', one of {get_args(SupportedDtypes)} "
-                "expected."
-            )
-
-        return cls(data=data, shape=array.shape, dtype=dtype)
+        dtype, data = _get_dtype_and_bytes(array)
+        encoded_data = pybase64.b64encode(data).decode("utf-8")
+        return cls(data=encoded_data, shape=array.shape, dtype=dtype)
 
     def to_numpy(self) -> np.ndarray:
         """Convert to a NumPy Array."""
         shape = tuple(self.shape)
         raw = pybase64.b64decode(self.data)
-
-        if self.dtype == "f64":
-            return np.frombuffer(raw, dtype="<f8").reshape(shape)
-        elif self.dtype == "bool":
-            # Total number of elements from shape
-            total = np.prod(shape, dtype=int)
-            unpacked = np.unpackbits(np.frombuffer(raw, dtype=np.uint8), bitorder="little")[:total]
-            return unpacked.astype(bool).reshape(shape)
-        elif self.dtype == "u8":
-            return np.frombuffer(raw, dtype="<u1").reshape(shape)
-        elif self.dtype == "c128":
-            return np.frombuffer(raw, dtype="<c16").reshape(shape)
-
-        raise ValueError(f"dtype {self.dtype} not understood.")
+        return _from_buffer(raw, self.dtype, shape)
 
     @model_validator(mode="after")
     def check_sizes(self):
@@ -103,5 +136,40 @@ class TensorModel(BaseModel):
 
 class F64TensorModel(TensorModel):
     """Model of tensor data specialized to f64."""
+
+    dtype: Literal["f64"] = "f64"
+
+
+class CompressedTensorModel(TensorModel):
+    """Model of compressed tensor data."""
+
+    @classmethod
+    def from_numpy(cls, array: np.ndarray):
+        """Instantiate from a NumPy array."""
+        dtype, data = _get_dtype_and_bytes(array)
+        encoded_data = pybase64.b64encode(zlib.compress(data)).decode("utf-8")
+        return cls(data=encoded_data, shape=array.shape, dtype=dtype)
+
+    def to_numpy(self) -> np.ndarray:
+        """Convert to a NumPy Array."""
+        shape = tuple(self.shape)
+        raw = zlib.decompress(pybase64.b64decode(self.data))
+        return _from_buffer(raw, self.dtype, shape)
+
+    @model_validator(mode="after")
+    def check_sizes(self):
+        """Cross-validate that all sizes are consistent."""
+        raw = zlib.decompress(pybase64.b64decode(self.data))
+        elem_size = self._ELEM_SIZE_LOOKUP[self.dtype]
+        if math.ceil(len(raw) / elem_size) != math.prod(self.shape):
+            raise ValueError(
+                f"Data length {len(raw)} is inconsistent with shape {self.shape} packed at "
+                f"{elem_size} bytes per element."
+            )
+        return self
+
+
+class F64CompressedTensorModel(CompressedTensorModel):
+    """Model of compressed tensor data specialized to f64."""
 
     dtype: Literal["f64"] = "f64"

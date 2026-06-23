@@ -13,6 +13,7 @@
 """QpyModel"""
 
 import struct
+import zlib
 from dataclasses import dataclass
 from io import BytesIO
 from typing import Generic, TypeVar
@@ -44,22 +45,32 @@ class QpyInfo:
     """The number of independent components inside the file."""
 
 
-def extract_qpy_info(qpy_b64: str) -> QpyInfo:
+def extract_qpy_info(qpy_b64: str, compressed: bool = False) -> QpyInfo:
     """Return information about a QPY binary stream.
 
     Args:
         qpy_b64: A QPY file encoded as a base64 string.
+        compressed: Whether the data has been compressed.
 
     Returns:
         Information about the QPY content.
     """
     with Base64Reader(qpy_b64) as bytes_obj:
-        header = FILE_HEADER_V10._make(
-            struct.unpack(
-                FILE_HEADER_V10_PACK,
-                bytes_obj.read(FILE_HEADER_V10_SIZE),
-            )
-        )
+        # to avoid reading the full string into memory for compressed data,
+        # read in as chunks of 4096 bytes and decompress until the buffer
+        # contains `FILE_HEADER_V10`
+        if compressed:
+            decompressor = zlib.decompressobj()
+            buffer = b""
+            while len(buffer) < FILE_HEADER_V10_SIZE:
+                if not (chunk := bytes_obj.read(4096)):
+                    break
+                buffer += decompressor.decompress(chunk)
+            buffer = buffer[:FILE_HEADER_V10_SIZE]
+        else:
+            buffer = bytes_obj.read(FILE_HEADER_V10_SIZE)
+
+        header = FILE_HEADER_V10._make(struct.unpack(FILE_HEADER_V10_PACK, buffer))
     return QpyInfo(header.qpy_version, header.num_programs)
 
 
@@ -131,6 +142,71 @@ class QpyDataModel(BaseModel, Generic[T]):
         with BytesIO() as bytes_obj:
             dump(data, bytes_obj, version=qpy_version, annotation_factories=ANNOTATION_FACTORIES)
             b64_data = b64encode(bytes_obj.getvalue()).decode()
+
+        obj = cls(b64_data=b64_data, qpy_version=qpy_version, num_programs=len(data))
+        obj._python_data = data  # noqa: SLF001
+        return obj
+
+
+class CompressedQpyDataModel(QpyDataModel[T], Generic[T]):
+    """QPY-encoded Qiskit objects with compression."""
+
+    @model_validator(mode="after")
+    def cross_validate_qpy_info(self):
+        """Check that the encoded qpy information matches expectations."""
+        qpy_info = extract_qpy_info(self.b64_data, compressed=True)
+        if qpy_info.qpy_version != self.qpy_version:
+            raise ValueError(
+                f"The qpy_version is {self.qpy_version} but the encoded QPY "
+                f"version is {qpy_info.qpy_version}."
+            )
+        if qpy_info.num_programs != self.num_programs:
+            raise ValueError(
+                f"num_programs={self.num_programs}, but the encoded QPY "
+                f"has {qpy_info.num_programs} elements"
+            )
+        return self
+
+    def to_python(self, use_cached: bool = False) -> list[T]:
+        """Return a Python representation of the encoded data in the model.
+
+        When ``use_cached`` is false, or when no cached version exists, :attr:`~b64_data` is
+        decoded and loaded into a new Python instance. Users of this class are responsible for
+        managing cached instances of the Python data and possible side-effects of their mutations.
+
+        Args:
+            use_cached: Whether to return the cached instance (if it exists).
+
+        Returns:
+            Python data.
+        """
+        if not use_cached or not hasattr(self, "_python_data"):
+            raw_data = zlib.decompress(b64decode(self.b64_data))
+            with BytesIO(raw_data) as bytes_obj:
+                self._python_data = load(bytes_obj, annotation_factories=ANNOTATION_FACTORIES)
+
+        return self._python_data
+
+    @classmethod
+    def from_python(cls, data: list[T], qpy_version: int = QPY_VERSION) -> Self:
+        """Create a model instance from Python data of the correct type.
+
+        The returned instance owns a reference to the provided data. This instance may be
+        returned by :meth:`~to_python` depending on the value of ``use_cached``.
+        Users of this class are responsible for managing cached instances of the data and
+        possible side-effects of their mutations.
+
+        Args:
+            data: The data to base64 encode in the new model instance.
+            qpy_version: The QPY version to encode with.
+
+        Returns:
+            A new model instance.
+        """
+        with BytesIO() as bytes_obj:
+            dump(data, bytes_obj, version=qpy_version, annotation_factories=ANNOTATION_FACTORIES)
+            raw_data = zlib.compress(bytes_obj.getvalue())
+            b64_data = b64encode(raw_data).decode("utf-8")
 
         obj = cls(b64_data=b64_data, qpy_version=qpy_version, num_programs=len(data))
         obj._python_data = data  # noqa: SLF001
@@ -223,5 +299,11 @@ class QpyModelV13ToV17(QpyModel):
 
 class QpyDataV13ToV17Model(QpyDataModel[T], Generic[T]):
     """QPY encoded circuit list with restricted version range."""
+
+    qpy_version: int = Field(ge=13, le=17)
+
+
+class CompressedQpyDataV13ToV17Model(CompressedQpyDataModel[T], Generic[T]):
+    """Compressed QPY encoded circuit list with restricted version range."""
 
     qpy_version: int = Field(ge=13, le=17)

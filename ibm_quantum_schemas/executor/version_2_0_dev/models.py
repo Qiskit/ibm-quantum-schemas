@@ -24,9 +24,10 @@ from typing_extensions import TypeAliasType
 from ibm_quantum_schemas.aliases import Self
 from ibm_quantum_schemas.common import (
     BaseParamsModel,
-    F64TensorModel,
+    CompressedQpyDataV13ToV17Model,
+    CompressedTensorModel,
+    F64CompressedTensorModel,
     PauliLindbladMapModel,
-    QpyDataV13ToV17Model,
     TensorModel,
 )
 from ibm_quantum_schemas.common import SamplexModelSSV1ToSSV4 as SamplexModel
@@ -37,7 +38,15 @@ from ibm_quantum_schemas.common import SamplexModelSSV1ToSSV4 as SamplexModel
 # TensorModel must come before dict so Pydantic tries it first during deserialization.
 DataTree = TypeAliasType(
     "DataTree",
-    list["DataTree"] | TensorModel | dict[str, "DataTree"] | str | float | int | bool | None,
+    list["DataTree"]
+    | TensorModel
+    | CompressedTensorModel
+    | dict[str, "DataTree"]
+    | str
+    | float
+    | int
+    | bool
+    | None,
 )
 """Arbitrary nesting of lists and dicts with typed leaves."""
 
@@ -99,7 +108,7 @@ class CircuitItemModel(BaseModel):
     item_type: Literal["circuit"] = "circuit"
     """The type of quantum program item."""
 
-    circuit_arguments: F64TensorModel
+    circuit_arguments: F64CompressedTensorModel
     """Arguments to the parameters of the circuit.
 
     The last axis is over ``circuit.parameters``. Execution broadcasts over the
@@ -135,7 +144,7 @@ class SamplexItemModel(BaseModel):
     samplex: SamplexModel
     """A JSON-encoded samplex."""
 
-    samplex_arguments: dict[str, bool | int | PauliLindbladMapModel | TensorModel]
+    samplex_arguments: dict[str, bool | int | PauliLindbladMapModel | CompressedTensorModel]
     """Arguments to the samplex."""
 
     shape: list[int]
@@ -161,7 +170,7 @@ class QuantumProgramModel(BaseModel):
     shots: int = Field(ge=1)
     """The number of shots for each individually bound circuit."""
 
-    circuits: QpyDataV13ToV17Model[QuantumCircuit]
+    circuits: CompressedQpyDataV13ToV17Model[QuantumCircuit]
     """One quantum circuit for every element of ``items``.
 
     These are stored outside of ``items`` to cosituate them inside of one QPY blob.
@@ -273,7 +282,7 @@ class ItemMetadataModel(BaseModel):
 class QuantumProgramResultItemModel(BaseModel):
     """Results for a single quantum program item."""
 
-    results: dict[str, TensorModel]
+    results: dict[str, CompressedTensorModel]
     """A map from results to their tensor values."""
 
     metadata: ItemMetadataModel
