@@ -140,36 +140,26 @@ class F64TensorModel(TensorModel):
     dtype: Literal["f64"] = "f64"
 
 
-class CompressableTensorModel(TensorModel):
-    """Model of tensor data specialized to compressable types."""
-
-    compressed: bool = True
-    """Whether the data has been compressed or not."""
+class CompressedTensorModel(TensorModel):
+    """Model of compressed tensor data."""
 
     @classmethod
-    def from_numpy(cls, array: np.ndarray, compress: bool = True):
+    def from_numpy(cls, array: np.ndarray):
         """Instantiate from a NumPy array."""
         dtype, data = _get_dtype_and_bytes(array)
-        if compress:
-            data = zlib.compress(data)
-        encoded_data = pybase64.b64encode(data).decode("utf-8")
-        return cls(data=encoded_data, shape=array.shape, dtype=dtype, compressed=compress)
+        encoded_data = pybase64.b64encode(zlib.compress(data)).decode("utf-8")
+        return cls(data=encoded_data, shape=array.shape, dtype=dtype)
 
     def to_numpy(self) -> np.ndarray:
         """Convert to a NumPy Array."""
         shape = tuple(self.shape)
-        raw = pybase64.b64decode(self.data)
-        if self.compressed:
-            raw = zlib.decompress(raw)
+        raw = zlib.decompress(pybase64.b64decode(self.data))
         return _from_buffer(raw, self.dtype, shape)
 
     @model_validator(mode="after")
     def check_sizes(self):
         """Cross-validate that all sizes are consistent."""
-        raw = pybase64.b64decode(self.data)
-        if self.compressed:
-            raw = zlib.decompress(raw)
-
+        raw = zlib.decompress(pybase64.b64decode(self.data))
         elem_size = self._ELEM_SIZE_LOOKUP[self.dtype]
         if math.ceil(len(raw) / elem_size) != math.prod(self.shape):
             raise ValueError(
@@ -179,7 +169,7 @@ class CompressableTensorModel(TensorModel):
         return self
 
 
-class F64CompressableTensorModel(CompressableTensorModel):
-    """Model of compressable tensor data specialized to f64."""
+class F64CompressedTensorModel(CompressedTensorModel):
+    """Model of compressed tensor data specialized to f64."""
 
     dtype: Literal["f64"] = "f64"

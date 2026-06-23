@@ -31,8 +31,8 @@ Classes
    QpyModel
    QpyModelV13ToV16
    QpyModelV13ToV17
-   CompressableQpyDataModel
-   CompressableQpyDataV13ToV17Model
+   CompressedQpyDataModel
+   CompressedQpyDataV13ToV17Model
    BaseParamsModel
    PauliLindbladMapModel
    SamplexModel
@@ -40,15 +40,15 @@ Classes
    SamplexModelSSV1ToSSV2
    TensorModel
    F64TensorModel
-   CompressableTensorModel
-   F64CompressableTensorModel
+   CompressedTensorModel
+   F64CompressedTensorModel
 """
 
 from ibm_quantum_schemas.common.base_params import BaseParamsModel
 from ibm_quantum_schemas.common.pauli_lindblad_map import PauliLindbladMapModel
 from ibm_quantum_schemas.common.qpy import (
-    CompressableQpyDataModel,
-    CompressableQpyDataV13ToV17Model,
+    CompressedQpyDataModel,
+    CompressedQpyDataV13ToV17Model,
     QpyDataModel,
     QpyDataV13ToV17Model,
     QpyModel,
@@ -63,8 +63,8 @@ from ibm_quantum_schemas.common.samplex import (
     SamplexModelSSV1ToSSV4,
 )
 from ibm_quantum_schemas.common.tensor import (
-    CompressableTensorModel,
-    F64CompressableTensorModel,
+    CompressedTensorModel,
+    F64CompressedTensorModel,
     F64TensorModel,
     TensorModel,
 )

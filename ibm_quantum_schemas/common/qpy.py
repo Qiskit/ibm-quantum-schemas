@@ -56,6 +56,9 @@ def extract_qpy_info(qpy_b64: str, compressed: bool = False) -> QpyInfo:
         Information about the QPY content.
     """
     with Base64Reader(qpy_b64) as bytes_obj:
+        # to avoid reading the full string into memory for compressed data,
+        # read in as chunks of 4096 bytes and decompress until the buffer
+        # contains `FILE_HEADER_V10`
         if compressed:
             decompressor = zlib.decompressobj()
             buffer = b""
@@ -145,16 +148,13 @@ class QpyDataModel(BaseModel, Generic[T]):
         return obj
 
 
-class CompressableQpyDataModel(QpyDataModel[T], Generic[T]):
-    """QPY-encoded Qiskit objects with optional compression."""
-
-    compressed: bool = False
-    """Whether the data has been compressed."""
+class CompressedQpyDataModel(QpyDataModel[T], Generic[T]):
+    """QPY-encoded Qiskit objects with compression."""
 
     @model_validator(mode="after")
     def cross_validate_qpy_info(self):
         """Check that the encoded qpy information matches expectations."""
-        qpy_info = extract_qpy_info(self.b64_data, compressed=self.compressed)
+        qpy_info = extract_qpy_info(self.b64_data, compressed=True)
         if qpy_info.qpy_version != self.qpy_version:
             raise ValueError(
                 f"The qpy_version is {self.qpy_version} but the encoded QPY "
@@ -181,18 +181,14 @@ class CompressableQpyDataModel(QpyDataModel[T], Generic[T]):
             Python data.
         """
         if not use_cached or not hasattr(self, "_python_data"):
-            raw_data = b64decode(self.b64_data)
-            if self.compressed:
-                raw_data = zlib.decompress(raw_data)
+            raw_data = zlib.decompress(b64decode(self.b64_data))
             with BytesIO(raw_data) as bytes_obj:
                 self._python_data = load(bytes_obj, annotation_factories=ANNOTATION_FACTORIES)
 
         return self._python_data
 
     @classmethod
-    def from_python(
-        cls, data: list[T], qpy_version: int = QPY_VERSION, compress: bool = True
-    ) -> Self:
+    def from_python(cls, data: list[T], qpy_version: int = QPY_VERSION) -> Self:
         """Create a model instance from Python data of the correct type.
 
         The returned instance owns a reference to the provided data. This instance may be
@@ -203,21 +199,16 @@ class CompressableQpyDataModel(QpyDataModel[T], Generic[T]):
         Args:
             data: The data to base64 encode in the new model instance.
             qpy_version: The QPY version to encode with.
-            compress: Whether to compress the encoded data.
 
         Returns:
             A new model instance.
         """
         with BytesIO() as bytes_obj:
             dump(data, bytes_obj, version=qpy_version, annotation_factories=ANNOTATION_FACTORIES)
-            raw_data = bytes_obj.getvalue()
-            if compress:
-                raw_data = zlib.compress(raw_data)
+            raw_data = zlib.compress(bytes_obj.getvalue())
             b64_data = b64encode(raw_data).decode("utf-8")
 
-        obj = cls(
-            b64_data=b64_data, qpy_version=qpy_version, num_programs=len(data), compressed=compress
-        )
+        obj = cls(b64_data=b64_data, qpy_version=qpy_version, num_programs=len(data))
         obj._python_data = data  # noqa: SLF001
         return obj
 
@@ -312,7 +303,7 @@ class QpyDataV13ToV17Model(QpyDataModel[T], Generic[T]):
     qpy_version: int = Field(ge=13, le=17)
 
 
-class CompressableQpyDataV13ToV17Model(CompressableQpyDataModel[T], Generic[T]):
+class CompressedQpyDataV13ToV17Model(CompressedQpyDataModel[T], Generic[T]):
     """Compressable QPY encoded circuit list with restricted version range."""
 
     qpy_version: int = Field(ge=13, le=17)

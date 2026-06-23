@@ -24,9 +24,9 @@ from typing_extensions import TypeAliasType
 from ibm_quantum_schemas.aliases import Self
 from ibm_quantum_schemas.common import (
     BaseParamsModel,
-    CompressableQpyDataV13ToV17Model,
-    CompressableTensorModel,
-    F64CompressableTensorModel,
+    CompressedQpyDataV13ToV17Model,
+    CompressedTensorModel,
+    F64CompressedTensorModel,
     PauliLindbladMapModel,
     TensorModel,
 )
@@ -40,7 +40,7 @@ DataTree = TypeAliasType(
     "DataTree",
     list["DataTree"]
     | TensorModel
-    | CompressableTensorModel
+    | CompressedTensorModel
     | dict[str, "DataTree"]
     | str
     | float
@@ -108,7 +108,7 @@ class CircuitItemModel(BaseModel):
     item_type: Literal["circuit"] = "circuit"
     """The type of quantum program item."""
 
-    circuit_arguments: F64CompressableTensorModel
+    circuit_arguments: F64CompressedTensorModel
     """Arguments to the parameters of the circuit.
 
     The last axis is over ``circuit.parameters``. Execution broadcasts over the
@@ -144,7 +144,7 @@ class SamplexItemModel(BaseModel):
     samplex: SamplexModel
     """A JSON-encoded samplex."""
 
-    samplex_arguments: dict[str, bool | int | PauliLindbladMapModel | CompressableTensorModel]
+    samplex_arguments: dict[str, bool | int | PauliLindbladMapModel | CompressedTensorModel]
     """Arguments to the samplex."""
 
     shape: list[int]
@@ -170,7 +170,7 @@ class QuantumProgramModel(BaseModel):
     shots: int = Field(ge=1)
     """The number of shots for each individually bound circuit."""
 
-    circuits: CompressableQpyDataV13ToV17Model[QuantumCircuit]
+    circuits: CompressedQpyDataV13ToV17Model[QuantumCircuit]
     """One quantum circuit for every element of ``items``.
 
     These are stored outside of ``items`` to cosituate them inside of one QPY blob.
@@ -282,7 +282,7 @@ class ItemMetadataModel(BaseModel):
 class QuantumProgramResultItemModel(BaseModel):
     """Results for a single quantum program item."""
 
-    results: dict[str, CompressableTensorModel]
+    results: dict[str, CompressedTensorModel]
     """A map from results to their tensor values."""
 
     metadata: ItemMetadataModel
