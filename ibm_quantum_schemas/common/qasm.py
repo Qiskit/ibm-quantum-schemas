@@ -15,7 +15,7 @@
 from typing import Generic, TypeVar
 
 import qiskit.qasm3 as qasm3
-from pydantic import BaseModel, PrivateAttr
+from pydantic import BaseModel, Field, PrivateAttr
 from qiskit import QuantumCircuit
 from typing_extensions import Self
 
@@ -34,6 +34,9 @@ class OpenQasm3DataModel(BaseModel, Generic[T]):
 
     num_qubits: list[int]
     """The number of qubits for each Qiskit object."""
+
+    num_programs: int = Field(ge=1)
+    """The number of distinct elements in the Python encoding."""
 
     _python_data: list[T] = PrivateAttr()
 
@@ -74,6 +77,6 @@ class OpenQasm3DataModel(BaseModel, Generic[T]):
         """
         encoded_data = [qasm3.dumps(i, annotation_handlers=ANNOTATION_FACTORIES) for i in data]
         num_qubits = [i.num_qubits for i in data]
-        obj = cls(data=encoded_data, num_qubits=num_qubits)
+        obj = cls(data=encoded_data, num_qubits=num_qubits, num_programs=len(data))
         obj._python_data = data  # noqa: SLF001
         return obj

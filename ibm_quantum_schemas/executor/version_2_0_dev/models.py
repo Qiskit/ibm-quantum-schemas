@@ -27,8 +27,8 @@ from ibm_quantum_schemas.common import (
     CompressedQpyDataV13ToV17Model,
     CompressedTensorModel,
     F64CompressedTensorModel,
+    OpenQasm3DataModel,
     PauliLindbladMapModel,
-    TensorModel,
 )
 from ibm_quantum_schemas.common import SamplexModelSSV1ToSSV4 as SamplexModel
 
@@ -39,7 +39,6 @@ from ibm_quantum_schemas.common import SamplexModelSSV1ToSSV4 as SamplexModel
 DataTree = TypeAliasType(
     "DataTree",
     list["DataTree"]
-    | TensorModel
     | CompressedTensorModel
     | dict[str, "DataTree"]
     | str
@@ -170,10 +169,10 @@ class QuantumProgramModel(BaseModel):
     shots: int = Field(ge=1)
     """The number of shots for each individually bound circuit."""
 
-    circuits: CompressedQpyDataV13ToV17Model[QuantumCircuit]
+    circuits: CompressedQpyDataV13ToV17Model[QuantumCircuit] | OpenQasm3DataModel[QuantumCircuit]
     """One quantum circuit for every element of ``items``.
 
-    These are stored outside of ``items`` to cosituate them inside of one QPY blob.
+    These are stored outside of ``items`` to cosituate them inside of one QPY / OpenQASM3 blob.
     """
 
     items: list[Annotated[CircuitItemModel | SamplexItemModel, Field(discriminator="item_type")]]
