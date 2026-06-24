@@ -29,7 +29,7 @@ from typing_extensions import Self
 from ibm_quantum_schemas.common.annotation_serializer import AnnotationSerializer
 from ibm_quantum_schemas.common.base64_reader import Base64Reader
 
-ANNOTATION_FACTORIES = {"samplomatic": AnnotationSerializer}
+ANNOTATION_FACTORIES = {"samplomatic": AnnotationSerializer().as_qpy()}
 
 T = TypeVar("T", bound=QPY_SUPPORTED_TYPES)
 

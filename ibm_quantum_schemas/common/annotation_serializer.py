@@ -15,9 +15,10 @@
 import io
 import struct
 from collections import namedtuple
-from typing import Any, cast
+from types import NotImplementedType
+from typing import cast
 
-from qiskit.circuit.annotation import Annotation, QPYSerializer
+from qiskit.circuit.annotation import Annotation, OpenQASM3Serializer
 from samplomatic.annotations import ChangeBasis, InjectNoise, Twirl
 from samplomatic.annotations.change_basis_mode import ChangeBasisLiteral
 from samplomatic.annotations.decomposition_mode import DecompositionLiteral
@@ -45,10 +46,10 @@ TWIRL_ANNOTATION = namedtuple(
 )
 
 
-class AnnotationSerializer(QPYSerializer):
+class AnnotationSerializer(OpenQASM3Serializer):
     """Serializer for annotations in the 'samplomatic' namespace."""
 
-    def dump_annotation(self, namespace: str, annotation: Any) -> bytes:
+    def dump(self, annotation: Annotation) -> str | NotImplementedType:
         """Dump annotation."""
         annotation_name = type(annotation).__name__.encode()
         samplomatic_annotation = (
@@ -61,12 +62,12 @@ class AnnotationSerializer(QPYSerializer):
             annotation_raw = struct.pack(
                 CHANGE_BASIS_ANNOTATION_PACK, len(decomposition), len(mode), len(ref)
             )
-            return samplomatic_annotation + annotation_raw + decomposition + mode + ref
+            return (samplomatic_annotation + annotation_raw + decomposition + mode + ref).decode()
         if isinstance(annotation, InjectNoise):
             ref = annotation.ref.encode()
             modifier_ref = annotation.modifier_ref.encode()
             annotation_raw = struct.pack(INJECT_NOISE_ANNOTATION_PACK, len(ref), len(modifier_ref))
-            return samplomatic_annotation + annotation_raw + ref + modifier_ref
+            return (samplomatic_annotation + annotation_raw + ref + modifier_ref).decode()
         if isinstance(annotation, Twirl):
             group = annotation.group.encode()
             dressing = annotation.dressing.encode()
@@ -74,12 +75,14 @@ class AnnotationSerializer(QPYSerializer):
             annotation_raw = struct.pack(
                 TWIRL_ANNOTATION_PACK, len(group), len(dressing), len(decomposition)
             )
-            return samplomatic_annotation + annotation_raw + group + dressing + decomposition
+            return (
+                samplomatic_annotation + annotation_raw + group + dressing + decomposition
+            ).decode()
         return NotImplemented
 
-    def load_annotation(self, payload: bytes) -> Annotation:
+    def load(self, namespace: str, payload: str) -> Annotation | NotImplementedType:
         """Load annotation."""
-        buff = io.BytesIO(payload)
+        buff = io.BytesIO(payload.encode())
         annotation = SAMPLOMATIC_ANNOTATION._make(
             struct.unpack(SAMPLOMATIC_ANNOTATION_PACK, buff.read(SAMPLOMATIC_ANNOTATION_SIZE))
         )
@@ -118,3 +121,4 @@ class AnnotationSerializer(QPYSerializer):
             dressing = cast(DressingLiteral, buff.read(twirl.dressing_size).decode())
             decomposition = cast(DecompositionLiteral, buff.read(twirl.decomposition_size).decode())
             return Twirl(group, dressing, decomposition)
+        return NotImplemented

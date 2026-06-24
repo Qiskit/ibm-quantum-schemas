@@ -26,8 +26,8 @@ class TestChangeBasis:
         namespace = "samplomatic.change_basis"
 
         serializer = AnnotationSerializer()
-        payload = serializer.dump_annotation(namespace, annotation)
-        annotation_out = serializer.load_annotation(payload)
+        payload = serializer.dump(annotation)
+        annotation_out = serializer.load(namespace, payload)
 
         assert annotation == annotation_out
 
@@ -41,8 +41,8 @@ class TestInjectNoise:
         namespace = "samplomatic.inject_noise"
 
         serializer = AnnotationSerializer()
-        payload = serializer.dump_annotation(namespace, annotation)
-        annotation_out = serializer.load_annotation(payload)
+        payload = serializer.dump(annotation)
+        annotation_out = serializer.load(namespace, payload)
 
         assert annotation == annotation_out
 
@@ -56,7 +56,7 @@ class TestTwirl:
         namespace = "samplomatic.twirl"
 
         serializer = AnnotationSerializer()
-        payload = serializer.dump_annotation(namespace, annotation)
-        annotation_out = serializer.load_annotation(payload)
+        payload = serializer.dump(annotation)
+        annotation_out = serializer.load(namespace, payload)
 
         assert annotation == annotation_out
