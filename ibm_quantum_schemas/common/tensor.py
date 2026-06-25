@@ -191,25 +191,7 @@ class CompressedTensorModel(TensorModel):
         return self
 
 
-class BoolCompressedTensorModel(CompressedTensorModel):
-    """Model of compressed tensor data specialized to bool."""
-
-    dtype: Literal["bool"] = "bool"
-
-
-class C128CompressedTensorModel(CompressedTensorModel):
-    """Model of compressed tensor data specialized to c128."""
-
-    dtype: Literal["c128"] = "c128"
-
-
 class F64CompressedTensorModel(CompressedTensorModel):
     """Model of compressed tensor data specialized to f64."""
 
     dtype: Literal["f64"] = "f64"
-
-
-class U8CompressedTensorModel(CompressedTensorModel):
-    """Model of compressed tensor data specialized to u8."""
-
-    dtype: Literal["u8"] = "u8"

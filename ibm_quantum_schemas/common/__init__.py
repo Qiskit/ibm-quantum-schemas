@@ -41,10 +41,7 @@ Classes
    TensorModel
    F64TensorModel
    CompressedTensorModel
-   BoolCompressedTensorModel
-   C128CompressedTensorModel
    F64CompressedTensorModel
-   U8CompressedTensorModel
 """
 
 from ibm_quantum_schemas.common.base_params import BaseParamsModel
@@ -66,11 +63,8 @@ from ibm_quantum_schemas.common.samplex import (
     SamplexModelSSV1ToSSV4,
 )
 from ibm_quantum_schemas.common.tensor import (
-    BoolCompressedTensorModel,
-    C128CompressedTensorModel,
     CompressedTensorModel,
     F64CompressedTensorModel,
     F64TensorModel,
     TensorModel,
-    U8CompressedTensorModel,
 )
