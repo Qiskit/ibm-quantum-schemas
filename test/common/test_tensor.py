@@ -23,24 +23,11 @@ from ibm_quantum_schemas.common.tensor import (
     TensorModel,
 )
 
-supported_dtypes = [np.uint8, np.float64, np.bool_, np.complex128]
-supported_dtypes_extended = [
-    np.uint8,
-    np.uint16,
-    np.uint32,
-    np.uint64,
-    np.float32,
-    np.float64,
-    np.bool_,
-    np.complex64,
-    np.complex128,
-]
-
 
 class TestTensorModel:
     """Tests for ``TensorModel``."""
 
-    @pytest.mark.parametrize("dtype", supported_dtypes)
+    @pytest.mark.parametrize("dtype", [np.uint8, np.float64, np.bool_, np.complex128])
     def test_roundtrip(self, dtype):
         """Test that round trips work correctly."""
         array = np.array(range(16), dtype=dtype).reshape((4, 1, 2, 2))
@@ -79,7 +66,20 @@ class TestF64TensorModel:
 class TestCompressedTensorModel:
     """Tests for ``CompressedTensorModel``."""
 
-    @pytest.mark.parametrize("dtype", supported_dtypes_extended)
+    @pytest.mark.parametrize(
+        "dtype",
+        [
+            np.uint8,
+            np.uint16,
+            np.uint32,
+            np.uint64,
+            np.float32,
+            np.float64,
+            np.bool_,
+            np.complex64,
+            np.complex128,
+        ],
+    )
     def test_roundtrip(self, dtype):
         """Test that round trips work correctly."""
         array = np.array(range(16), dtype=dtype).reshape((4, 1, 2, 2))

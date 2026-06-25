@@ -158,7 +158,7 @@ class CompressedTensorModel(TensorModel):
         if array_dtype == np.dtype(np.bool_):
             data = np.packbits(array.astype(np.uint8), bitorder="little").tobytes()
         else:
-            data = array.astype(f"<{array_dtype.str[1:]}").tobytes()
+            data = array.astype(f"<{array_dtype.kind}{array_dtype.itemsize}").tobytes()
         encoded_data = pybase64.b64encode(zlib.compress(data)).decode("utf-8")
         return cls(data=encoded_data, shape=array.shape, dtype=dtype)
 
