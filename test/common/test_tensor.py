@@ -17,10 +17,13 @@ import pytest
 from pydantic import ValidationError
 
 from ibm_quantum_schemas.common.tensor import (
+    BoolCompressedTensorModel,
+    C128CompressedTensorModel,
     CompressedTensorModel,
     F64CompressedTensorModel,
     F64TensorModel,
     TensorModel,
+    U8CompressedTensorModel,
 )
 
 
@@ -84,6 +87,46 @@ class TestCompressedTensorModel:
             CompressedTensorModel.from_numpy(array)
 
 
+class TestBoolCompressedTensorModel:
+    """Tests for ``TestBoolCompressedTensorModel``."""
+
+    def test_roundtrip(self):
+        """Test that round trips work correctly."""
+        array = np.array(range(16), dtype=np.bool_).reshape((4, 1, 2, 2))
+        encoded = BoolCompressedTensorModel.from_numpy(array)
+        array_out = encoded.to_numpy()
+
+        assert np.all(array == array_out)
+
+    @pytest.mark.parametrize("dtype", [np.uint8, np.complex128])
+    def test_raises(self, dtype):
+        """Test that it raises."""
+        array = np.array(range(16), dtype=dtype)
+
+        with pytest.raises(ValidationError):
+            BoolCompressedTensorModel.from_numpy(array)
+
+
+class TestC128CompressedTensorModel:
+    """Tests for ``TestC128CompressedTensorModel``."""
+
+    def test_roundtrip(self):
+        """Test that round trips work correctly."""
+        array = np.array(range(16), dtype=np.complex128).reshape((4, 1, 2, 2))
+        encoded = C128CompressedTensorModel.from_numpy(array)
+        array_out = encoded.to_numpy()
+
+        assert np.all(array == array_out)
+
+    @pytest.mark.parametrize("dtype", [np.uint8, np.bool_])
+    def test_raises(self, dtype):
+        """Test that it raises."""
+        array = np.array(range(16), dtype=dtype)
+
+        with pytest.raises(ValidationError):
+            C128CompressedTensorModel.from_numpy(array)
+
+
 class TestF64CompressedTensorModel:
     """Tests for ``F64CompressedTensorModel``."""
 
@@ -102,3 +145,23 @@ class TestF64CompressedTensorModel:
 
         with pytest.raises(ValidationError):
             F64CompressedTensorModel.from_numpy(array)
+
+
+class TestU8CompressedTensorModel:
+    """Tests for ``TestU8CompressedTensorModel``."""
+
+    def test_roundtrip(self):
+        """Test that round trips work correctly."""
+        array = np.array(range(16), dtype=np.uint8).reshape((4, 1, 2, 2))
+        encoded = U8CompressedTensorModel.from_numpy(array)
+        array_out = encoded.to_numpy()
+
+        assert np.all(array == array_out)
+
+    @pytest.mark.parametrize("dtype", [np.float64, np.bool_])
+    def test_raises(self, dtype):
+        """Test that it raises."""
+        array = np.array(range(16), dtype=dtype)
+
+        with pytest.raises(ValidationError):
+            U8CompressedTensorModel.from_numpy(array)
