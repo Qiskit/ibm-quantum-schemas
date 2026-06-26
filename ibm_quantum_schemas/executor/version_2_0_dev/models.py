@@ -28,7 +28,6 @@ from ibm_quantum_schemas.common import (
     CompressedTensorModel,
     F64CompressedTensorModel,
     PauliLindbladMapModel,
-    TensorModel,
 )
 from ibm_quantum_schemas.common import SamplexModelSSV1ToSSV4 as SamplexModel
 
@@ -39,7 +38,6 @@ from ibm_quantum_schemas.common import SamplexModelSSV1ToSSV4 as SamplexModel
 DataTree = TypeAliasType(
     "DataTree",
     list["DataTree"]
-    | TensorModel
     | CompressedTensorModel
     | dict[str, "DataTree"]
     | str
