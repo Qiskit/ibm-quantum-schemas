@@ -18,8 +18,8 @@ from samplomatic import ChangeBasis, InjectNoise, Twirl
 from ibm_quantum_schemas.common.qasm import OpenQasm3DataModel
 
 
-class TestQpyDataV13ToV17Model:
-    """Tests for ``QpyModelV13ToV17``."""
+class TestOpenQasm3DataModel:
+    """Tests for ``OpenQasm3DataModel``."""
 
     def test_roundtrip(self):
         """Test that round trips work correctly."""
