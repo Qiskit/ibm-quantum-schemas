@@ -161,9 +161,11 @@ class CompressedTensorModel(TensorModel):
         """Cross-validate that all sizes are consistent."""
         raw = zlib.decompress(pybase64.b64decode(self.data))
         elem_size = self._ELEM_SIZE_LOOKUP[self.dtype]
-        if math.ceil(len(raw) / elem_size) != math.prod(self.shape):
+        len_data = len(raw)
+
+        if math.ceil(math.prod(self.shape) * elem_size) != len_data:
             raise ValueError(
-                f"Data length {len(raw)} is inconsistent with shape {self.shape} packed at "
+                f"Data length {len_data} is inconsistent with shape {self.shape} packed at "
                 f"{elem_size} bytes per element."
             )
         return self

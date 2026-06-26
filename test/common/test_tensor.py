@@ -83,6 +83,15 @@ class TestCompressedTensorModel:
         with pytest.raises(ValueError, match="Unexpected NumPy dtype 'int64'"):
             CompressedTensorModel.from_numpy(array)
 
+    def test_bool_array(self):
+        """Test that bool arrays work correctly."""
+        array = np.array([[False], [True], [True]])
+        encoded = CompressedTensorModel.from_numpy(array)
+        array_out = encoded.to_numpy()
+
+        assert np.all(array == array_out)
+        assert array.dtype == array_out.dtype
+
 
 class TestF64CompressedTensorModel:
     """Tests for ``F64CompressedTensorModel``."""
