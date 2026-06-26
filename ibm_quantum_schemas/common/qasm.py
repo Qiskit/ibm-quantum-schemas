@@ -13,10 +13,11 @@
 """OpenQASM3Model"""
 
 from typing import Generic, TypeVar
+from uuid import UUID
 
 import qiskit.qasm3 as qasm3
 from pydantic import BaseModel, Field, PrivateAttr
-from qiskit import QuantumCircuit
+from qiskit.circuit import Parameter, QuantumCircuit
 from typing_extensions import Self
 
 from ibm_quantum_schemas.common.annotation_serializer import AnnotationSerializer
@@ -34,6 +35,9 @@ class OpenQasm3DataModel(BaseModel, Generic[T]):
 
     num_qubits: list[int]
     """The number of qubits for each Qiskit object."""
+
+    uuids: list[list[UUID]]
+    """Cached UUIDs of parameters."""
 
     num_programs: int = Field(ge=1)
     """The number of distinct elements in the Python encoding."""
@@ -54,10 +58,19 @@ class OpenQasm3DataModel(BaseModel, Generic[T]):
             Python data.
         """
         if not use_cached or not hasattr(self, "_python_data"):
-            self._python_data = [
-                qasm3.loads(circ, num_qubits=n_q, annotation_handlers=ANNOTATION_FACTORIES)
-                for circ, n_q in zip(self.data, self.num_qubits)
-            ]
+            data = []
+            for qasm_circ, num_qubits, uuids in zip(self.data, self.num_qubits, self.uuids):
+                python_circ = qasm3.loads(
+                    qasm_circ, num_qubits=num_qubits, annotation_handlers=ANNOTATION_FACTORIES
+                )
+                # OpenQASM3.0 workaround to ensure parameters match the original encoding
+                replacements = {
+                    param: Parameter(name=param.name, uuid=uuid)
+                    for param, uuid in zip(python_circ.parameters, uuids)
+                }
+                data.append(python_circ.assign_parameters(replacements))
+            self._python_data = data
+
         return self._python_data
 
     @classmethod
@@ -75,8 +88,10 @@ class OpenQasm3DataModel(BaseModel, Generic[T]):
         Returns:
             A new model instance.
         """
-        encoded_data = [qasm3.dumps(i, annotation_handlers=ANNOTATION_FACTORIES) for i in data]
+        qasm_exported = qasm3.Exporter(annotation_handlers=ANNOTATION_FACTORIES)
+        encoded_data = [qasm_exported.dumps(i) for i in data]
         num_qubits = [i.num_qubits for i in data]
-        obj = cls(data=encoded_data, num_qubits=num_qubits, num_programs=len(data))
+        uuids = [[p.uuid for p in i.parameters] for i in data]
+        obj = cls(data=encoded_data, num_qubits=num_qubits, uuids=uuids, num_programs=len(data))
         obj._python_data = data  # noqa: SLF001
         return obj

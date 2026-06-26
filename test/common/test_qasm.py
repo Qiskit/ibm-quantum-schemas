@@ -12,7 +12,7 @@
 
 """Tests for OpenQASM3 models."""
 
-from qiskit.circuit import QuantumCircuit
+from qiskit.circuit import Parameter, QuantumCircuit
 from samplomatic import ChangeBasis, InjectNoise, Twirl
 
 from ibm_quantum_schemas.common.qasm import OpenQasm3DataModel
@@ -32,7 +32,10 @@ class TestQpyDataV13ToV17Model:
         circuit1.h(0)
         circuit1.measure_all()
 
-        circuits = [circuit0, circuit1]
+        circuit2 = QuantumCircuit(1)
+        circuit2.rx(Parameter("theta"), 0)
+
+        circuits = [circuit0, circuit1, circuit2]
 
         encoded = OpenQasm3DataModel.from_python(circuits)
 
