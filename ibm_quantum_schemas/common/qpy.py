@@ -179,13 +179,10 @@ class CompressedQpyDataModel(QpyDataModel[T], Generic[T]):
 
         Args:
             use_cached: Whether to return the cached instance (if it exists).
-            metadata_deserializer: An optional JSONDecoder class
-                that will be used for the ``cls`` kwarg on the internal
-                ``json.load`` call used to deserialize the JSON payload used for
-                the ``.metadata`` attribute for any programs in the QPY file.
-                If this is not specified the circuit metadata will
-                be parsed as JSON with the stdlib ``json.load()`` function using
-                the default ``JSONDecoder`` class.
+            metadata_deserializer: An optional :class:`json.JSONDecoder` class
+                that will be forwarded to :func:`qiskit.qpy.load`` when deserializing QPY data.
+                In particular, this controls how JSON-serialized circuit metadata are 
+                instantiated into Python objects at load time.
 
         Returns:
             Python data.
