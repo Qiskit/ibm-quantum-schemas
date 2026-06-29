@@ -50,7 +50,7 @@ class AnnotationSerializer(QPYSerializer):
     """Serializer for annotations in the 'samplomatic' namespace.
 
     Note: this serializer is intended for QPY data models.
-    For OpenQASM3.0 models, please refer to :class:`~OpenQASM3AnnotationSerializer`.
+    For OpenQASM 3 models, please refer to :class:`~OpenQASM3AnnotationSerializer`.
     """
 
     def dump_annotation(self, namespace: str, annotation: Any) -> bytes:
