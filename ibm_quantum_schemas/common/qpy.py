@@ -16,6 +16,7 @@ import struct
 import zlib
 from dataclasses import dataclass
 from io import BytesIO
+from json import JSONDecoder, JSONEncoder
 from typing import Generic, TypeVar
 
 from pybase64 import b64decode, b64encode
@@ -167,7 +168,9 @@ class CompressedQpyDataModel(QpyDataModel[T], Generic[T]):
             )
         return self
 
-    def to_python(self, use_cached: bool = False) -> list[T]:
+    def to_python(
+        self, use_cached: bool = False, metadata_deserializer: type[JSONDecoder] | None = None
+    ) -> list[T]:
         """Return a Python representation of the encoded data in the model.
 
         When ``use_cached`` is false, or when no cached version exists, :attr:`~b64_data` is
@@ -176,6 +179,13 @@ class CompressedQpyDataModel(QpyDataModel[T], Generic[T]):
 
         Args:
             use_cached: Whether to return the cached instance (if it exists).
+            metadata_deserializer: An optional JSONDecoder class
+                that will be used for the ``cls`` kwarg on the internal
+                ``json.load`` call used to deserialize the JSON payload used for
+                the ``.metadata`` attribute for any programs in the QPY file.
+                If this is not specified the circuit metadata will
+                be parsed as JSON with the stdlib ``json.load()`` function using
+                the default ``JSONDecoder`` class.
 
         Returns:
             Python data.
@@ -183,12 +193,21 @@ class CompressedQpyDataModel(QpyDataModel[T], Generic[T]):
         if not use_cached or not hasattr(self, "_python_data"):
             raw_data = zlib.decompress(b64decode(self.b64_data))
             with BytesIO(raw_data) as bytes_obj:
-                self._python_data = load(bytes_obj, annotation_factories=ANNOTATION_FACTORIES)
+                self._python_data = load(
+                    bytes_obj,
+                    metadata_deserializer=metadata_deserializer,
+                    annotation_factories=ANNOTATION_FACTORIES,
+                )
 
         return self._python_data
 
     @classmethod
-    def from_python(cls, data: list[T], qpy_version: int = QPY_VERSION) -> Self:
+    def from_python(
+        cls,
+        data: list[T],
+        qpy_version: int = QPY_VERSION,
+        metadata_serializer: type[JSONEncoder] | None = None,
+    ) -> Self:
         """Create a model instance from Python data of the correct type.
 
         The returned instance owns a reference to the provided data. This instance may be
@@ -199,12 +218,22 @@ class CompressedQpyDataModel(QpyDataModel[T], Generic[T]):
         Args:
             data: The data to base64 encode in the new model instance.
             qpy_version: The QPY version to encode with.
+            metadata_serializer: An optional JSONEncoder class that
+                will be passed the ``.metadata`` attribute for each program in ``programs`` and will
+                be used as the ``cls`` kwarg on the `json.dump()`` call to JSON serialize that
+                dictionary.
 
         Returns:
             A new model instance.
         """
         with BytesIO() as bytes_obj:
-            dump(data, bytes_obj, version=qpy_version, annotation_factories=ANNOTATION_FACTORIES)
+            dump(
+                data,
+                bytes_obj,
+                version=qpy_version,
+                metadata_serializer=metadata_serializer,
+                annotation_factories=ANNOTATION_FACTORIES,
+            )
             raw_data = zlib.compress(bytes_obj.getvalue())
             b64_data = b64encode(raw_data).decode("utf-8")
 
