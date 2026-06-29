@@ -12,7 +12,10 @@
 
 """Tests for QPY models."""
 
+from dataclasses import dataclass
 from io import BytesIO
+from json import JSONDecoder, JSONEncoder
+from typing import Any
 from zlib import compress
 
 import pytest
@@ -256,3 +259,66 @@ class TestCompressedQpyDataV13ToV17Model:
 
         with pytest.raises(ValueError):
             CompressedQpyDataV13ToV17Model.from_python([circuit], qpy_version)
+
+    @pytest.mark.skip_if_qiskit_too_old_for_qpy
+    @pytest.mark.parametrize("qpy_version", [13, 14, 15, 16, 17])
+    def test_custom_serializers(self, qpy_version):
+        """Test that custom serializers work correctly."""
+
+        @dataclass
+        class Foo:
+            """Custom metadata class for testing."""
+
+            val: int
+
+        class FooEncoder(JSONEncoder):
+            """Called to encode `Foo` object."""
+
+            def default(self, obj: Any) -> Any:
+                if isinstance(obj, Foo):
+                    out_val = {
+                        "val": obj.val,
+                    }
+                    return {"__type__": "Foo", "__value__": out_val}
+                return super().default(obj)
+
+        class FooDecoder(JSONDecoder):
+            """Called to decode `Foo` object."""
+
+            def __init__(self, *args: Any, **kwargs: Any):
+                super().__init__(object_hook=self.object_hook, *args, **kwargs)
+
+            def object_hook(self, obj: Any) -> Any:
+                if "__type__" in obj:
+                    obj_type = obj["__type__"]
+                    obj_val = obj["__value__"]
+                    if obj_type == "Foo":
+                        return Foo(**obj_val)
+                return obj
+
+        metadata = {"experiment_type": Foo(1)}
+
+        circuit0 = QuantumCircuit(3, metadata=metadata)
+        circuit0.h(0)
+        circuit0.cx(0, 1)
+        circuit0.measure_all()
+
+        with pytest.raises(TypeError, match="Object of type Foo is not JSON serializable"):
+            encoded = CompressedQpyDataV13ToV17Model.from_python(
+                [circuit0],
+                qpy_version,
+            )
+
+        encoded = CompressedQpyDataV13ToV17Model.from_python(
+            [circuit0],
+            qpy_version,
+            metadata_serializer=FooEncoder,
+        )
+
+        assert encoded.num_programs == 1
+        assert encoded.qpy_version == qpy_version
+
+        (circuit0_out,) = encoded.to_python(metadata_deserializer=FooDecoder)
+
+        assert circuit0 == circuit0_out
+        assert circuit0.metadata == circuit0_out.metadata
