@@ -68,17 +68,7 @@ class TestCompressedTensorModel:
 
     @pytest.mark.parametrize(
         "dtype",
-        [
-            np.uint8,
-            np.uint16,
-            np.uint32,
-            np.uint64,
-            np.float32,
-            np.float64,
-            np.bool_,
-            np.complex64,
-            np.complex128,
-        ],
+        _SUPPORTED_DTYPE_MAP.keys()
     )
     def test_roundtrip(self, dtype):
         """Test that round trips work correctly."""
