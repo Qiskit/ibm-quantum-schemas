@@ -24,15 +24,19 @@ SupportedDtypes: TypeAlias = Literal["f64", "bool", "u8", "c128"]
 """The data types supported by :class:`~TensorModel`."""
 
 SupportedDtypesExtended: TypeAlias = Literal[
-    "f16", "f32", "f64", "bool", "u8", "u16", "u32", "u64", "c64", "c128"
+    "f16", "f32", "f64", "bool", "i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64", "c64", "c128"
 ]
 """The data types supported by :class:`~CompressedTensorModel`."""
 
-_SUPPORTED_DTYPE_MAP: dict[np.dtype, SupportedDtypesExtended] = {
+SUPPORTED_DTYPE_EXTENDED_MAP: dict[np.dtype, SupportedDtypesExtended] = {
     np.dtype(np.bool): "bool",
     np.dtype(np.float16): "f16",
     np.dtype(np.float32): "f32",
     np.dtype(np.float64): "f64",
+    np.dtype(np.int8): "i8",
+    np.dtype(np.int16): "i16",
+    np.dtype(np.int32): "i32",
+    np.dtype(np.int64): "i64",
     np.dtype(np.uint8): "u8",
     np.dtype(np.uint16): "u16",
     np.dtype(np.uint32): "u32",
@@ -40,6 +44,7 @@ _SUPPORTED_DTYPE_MAP: dict[np.dtype, SupportedDtypesExtended] = {
     np.dtype(np.complex64): "c64",
     np.dtype(np.complex128): "c128",
 }
+"""A map from NumPy dtypes to :type:`~SupportedDtypesExtended`."""
 
 
 class TensorModel(BaseModel):
@@ -133,6 +138,10 @@ class CompressedTensorModel(TensorModel):
         "f16": 2,
         "f32": 4,
         "f64": 8,
+        "i8": 1,
+        "i16": 2,
+        "i32": 4,
+        "i64": 8,
         "u8": 1,
         "u16": 2,
         "u32": 4,
@@ -141,6 +150,7 @@ class CompressedTensorModel(TensorModel):
         "c64": 8,
         "c128": 16,
     }
+    """A lookup table for the element sizes of :type:`~SupportedDtypesExtended`."""
 
     dtype: SupportedDtypesExtended
     """The data type of the tensor."""
@@ -149,7 +159,7 @@ class CompressedTensorModel(TensorModel):
     def from_numpy(cls, array: np.ndarray):
         """Instantiate from a NumPy array."""
         array_dtype = array.dtype
-        dtype = _SUPPORTED_DTYPE_MAP.get(array_dtype)
+        dtype = SUPPORTED_DTYPE_EXTENDED_MAP.get(array_dtype)
         if dtype is None:
             raise ValueError(
                 f"Unexpected NumPy dtype '{array_dtype}', one of "

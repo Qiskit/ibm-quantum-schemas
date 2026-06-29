@@ -17,6 +17,7 @@ import pytest
 from pydantic import ValidationError
 
 from ibm_quantum_schemas.common.tensor import (
+    SUPPORTED_DTYPE_EXTENDED_MAP,
     CompressedTensorModel,
     F64CompressedTensorModel,
     F64TensorModel,
@@ -66,10 +67,7 @@ class TestF64TensorModel:
 class TestCompressedTensorModel:
     """Tests for ``CompressedTensorModel``."""
 
-    @pytest.mark.parametrize(
-        "dtype",
-        _SUPPORTED_DTYPE_MAP.keys()
-    )
+    @pytest.mark.parametrize("dtype", SUPPORTED_DTYPE_EXTENDED_MAP.keys())
     def test_roundtrip(self, dtype):
         """Test that round trips work correctly."""
         array = np.array(range(16), dtype=dtype).reshape((4, 1, 2, 2))
@@ -81,9 +79,9 @@ class TestCompressedTensorModel:
 
     def test_raises(self):
         """Test that it raises."""
-        array = np.array(range(16), dtype=int)
+        array = np.array(range(16), dtype=str)
 
-        with pytest.raises(ValueError, match="Unexpected NumPy dtype 'int64'"):
+        with pytest.raises(ValueError, match="Unexpected NumPy dtype"):
             CompressedTensorModel.from_numpy(array)
 
     def test_bool_array(self):
