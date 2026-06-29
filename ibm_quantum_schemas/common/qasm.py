@@ -83,7 +83,7 @@ class OpenQasm3DataModel(BaseModel, Generic[T]):
         possible side-effects of their mutations.
 
         Args:
-            data: The data to base64 encode in the new model instance.
+            data: The data to string encode in the new model instance.
 
         Returns:
             A new model instance.
