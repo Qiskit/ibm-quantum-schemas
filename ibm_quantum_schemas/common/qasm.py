@@ -20,9 +20,9 @@ from pydantic import BaseModel, Field, PrivateAttr
 from qiskit.circuit import Parameter, QuantumCircuit
 from typing_extensions import Self
 
-from ibm_quantum_schemas.common.annotation_serializer import AnnotationSerializer
+from ibm_quantum_schemas.common.annotation_serializer import OpenQASM3AnnotationSerializer
 
-ANNOTATION_FACTORIES = {"samplomatic": AnnotationSerializer()}
+ANNOTATION_FACTORIES = {"samplomatic": OpenQASM3AnnotationSerializer()}
 
 T = TypeVar("T", bound=QuantumCircuit)
 
