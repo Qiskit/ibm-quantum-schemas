@@ -215,10 +215,10 @@ class CompressedQpyDataModel(QpyDataModel[T], Generic[T]):
         Args:
             data: The data to base64 encode in the new model instance.
             qpy_version: The QPY version to encode with.
-            metadata_serializer: An optional JSONEncoder class that
-                will be passed the ``.metadata`` attribute for each program in ``programs`` and will
-                be used as the ``cls`` kwarg on the `json.dump()`` call to JSON serialize that
-                dictionary.
+            metadata_serializer: An optional :class:`json.JSONEncoder` class that
+                will be passed to :func:`qiskit.qpy.dump` during QPY serialization. In particular,
+                this encoder overrides the default behaviour of converting Python objects 
+                into JSON data.
 
         Returns:
             A new model instance.
