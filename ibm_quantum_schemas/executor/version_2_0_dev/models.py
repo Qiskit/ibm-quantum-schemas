@@ -24,13 +24,13 @@ from typing_extensions import TypeAliasType
 from ibm_quantum_schemas.aliases import Self
 from ibm_quantum_schemas.common import (
     BaseParamsModel,
-    CompressedQpyDataV13ToV17Model,
+    CompressedQpyDataModel,
     CompressedTensorModel,
     F64CompressedTensorModel,
     OpenQasm3DataModel,
     PauliLindbladMapModel,
+    SamplexModel,
 )
-from ibm_quantum_schemas.common import SamplexModelSSV1ToSSV4 as SamplexModel
 
 # TypeAliasType is required for Pydantic to handle this recursive type correctly.
 # Note that TypeAliasType is a backport for Python<3.12, so that when drop Python 3.11 support and
@@ -169,7 +169,7 @@ class QuantumProgramModel(BaseModel):
     shots: int = Field(ge=1)
     """The number of shots for each individually bound circuit."""
 
-    circuits: CompressedQpyDataV13ToV17Model[QuantumCircuit] | OpenQasm3DataModel[QuantumCircuit]
+    circuits: CompressedQpyDataModel[QuantumCircuit] | OpenQasm3DataModel[QuantumCircuit]
     """One quantum circuit for every element of ``items``.
 
     These are stored outside of ``items`` to cosituate them inside of one QPY / OpenQASM3 blob.
