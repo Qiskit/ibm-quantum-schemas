@@ -24,7 +24,7 @@ from typing_extensions import TypeAliasType
 from ibm_quantum_schemas.aliases import Self
 from ibm_quantum_schemas.common import (
     BaseParamsModel,
-    CompressedQpyDataV13ToV17Model,
+    CompressedQpyDataModel,
     CompressedTensorModel,
     F64CompressedTensorModel,
     PauliLindbladMapModel,
@@ -168,7 +168,7 @@ class QuantumProgramModel(BaseModel):
     shots: int = Field(ge=1)
     """The number of shots for each individually bound circuit."""
 
-    circuits: CompressedQpyDataV13ToV17Model[QuantumCircuit]
+    circuits: CompressedQpyDataModel[QuantumCircuit]
     """One quantum circuit for every element of ``items``.
 
     These are stored outside of ``items`` to cosituate them inside of one QPY blob.
