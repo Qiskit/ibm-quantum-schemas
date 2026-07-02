@@ -126,7 +126,7 @@ class AnnotationSerializer(QPYSerializer):
 
 
 class OpenQASM3AnnotationSerializer(OpenQASM3Serializer):
-    """Serializer for annotations in the 'samplomatic' namespace.\
+    """Serializer for annotations in the 'samplomatic' namespace.
 
     Note: this serializer is intended for OpenQASM 3 data models.
     For QPY models, please refer to :class:`~AnnotationSerializer`.
