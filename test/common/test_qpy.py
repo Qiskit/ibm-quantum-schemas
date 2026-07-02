@@ -25,7 +25,7 @@ from qiskit.qpy import dump
 from samplomatic import ChangeBasis, InjectNoise, Twirl
 
 from ibm_quantum_schemas.common.qpy import (
-    CompressedQpyDataV13ToV17Model,
+    CompressedQpyDataModel,
     QpyDataV13ToV17Model,
     QpyModelV13ToV16,
     QpyModelV13ToV17,
@@ -199,8 +199,8 @@ class TestQpyDataV13ToV17Model:
             QpyDataV13ToV17Model.from_python([circuit], qpy_version)
 
 
-class TestCompressedQpyDataV13ToV17Model:
-    """Tests for ``CompressedQpyDataV13ToV17Model``."""
+class TestCompressedQpyDataModel:
+    """Tests for ``CompressedQpyDataModel``."""
 
     @pytest.mark.skip_if_qiskit_too_old_for_qpy
     @pytest.mark.parametrize("qpy_version", [13, 14, 15, 16, 17])
@@ -217,7 +217,7 @@ class TestCompressedQpyDataV13ToV17Model:
 
         circuits = [circuit0, circuit1]
 
-        encoded = CompressedQpyDataV13ToV17Model.from_python(
+        encoded = CompressedQpyDataModel.from_python(
             circuits,
             qpy_version,
         )
@@ -240,7 +240,7 @@ class TestCompressedQpyDataV13ToV17Model:
             circuit.cx(1, 2)
         circuit.measure_all()
 
-        encoded = CompressedQpyDataV13ToV17Model.from_python(
+        encoded = CompressedQpyDataModel.from_python(
             [circuit],
             qpy_version,
         )
@@ -258,7 +258,7 @@ class TestCompressedQpyDataV13ToV17Model:
         circuit.measure_all()
 
         with pytest.raises(ValueError):
-            CompressedQpyDataV13ToV17Model.from_python([circuit], qpy_version)
+            CompressedQpyDataModel.from_python([circuit], qpy_version)
 
     @pytest.mark.skip_if_qiskit_too_old_for_qpy
     @pytest.mark.parametrize("qpy_version", [13, 14, 15, 16, 17])
@@ -304,12 +304,12 @@ class TestCompressedQpyDataV13ToV17Model:
         circuit0.measure_all()
 
         with pytest.raises(TypeError, match="Object of type Foo is not JSON serializable"):
-            encoded = CompressedQpyDataV13ToV17Model.from_python(
+            encoded = CompressedQpyDataModel.from_python(
                 [circuit0],
                 qpy_version,
             )
 
-        encoded = CompressedQpyDataV13ToV17Model.from_python(
+        encoded = CompressedQpyDataModel.from_python(
             [circuit0],
             qpy_version,
             metadata_serializer=FooEncoder,
