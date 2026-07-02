@@ -16,7 +16,7 @@ from typing import Generic, TypeVar
 from uuid import UUID
 
 import qiskit.qasm3 as qasm3
-from pydantic import BaseModel, Field, PrivateAttr
+from pydantic import BaseModel, PrivateAttr
 from qiskit.circuit import Parameter, QuantumCircuit
 from typing_extensions import Self
 
@@ -33,16 +33,18 @@ class OpenQasm3DataModel(BaseModel, Generic[T]):
     data: list[str]
     """Data of the OpenQASM3 serialization of some Qiskit objects."""
 
-    num_qubits: list[int]
-    """The number of qubits for each Qiskit object."""
+    num_qubits: list[int | None] | None = None
+    """The number of physical/virtual qubits for each Qiskit object."""
 
-    uuids: list[list[UUID]]
-    """Cached UUIDs of parameters."""
-
-    num_programs: int = Field(ge=1)
-    """The number of distinct elements in the Python encoding."""
+    _uuids: list[list[UUID]] = PrivateAttr()
+    """Parameter UUIDs cached from Python to ensure parameters match the original encoding."""
 
     _python_data: list[T] = PrivateAttr()
+
+    @property
+    def num_programs(self) -> int:
+        """The number of distinct elements in the Python encoding."""
+        return len(self.data)
 
     def to_python(self, use_cached: bool = False) -> list[T]:
         """Return a Python representation of the encoded data in the model.
@@ -59,16 +61,19 @@ class OpenQasm3DataModel(BaseModel, Generic[T]):
         """
         if not use_cached or not hasattr(self, "_python_data"):
             data = []
-            for qasm_circ, num_qubits, uuids in zip(self.data, self.num_qubits, self.uuids):
+            for idx, qasm_circ in enumerate(self.data):
+                num_qubits = self.num_qubits[idx] if self.num_qubits else None
                 python_circ = qasm3.loads(
                     qasm_circ, num_qubits=num_qubits, annotation_handlers=ANNOTATION_FACTORIES
                 )
-                # OpenQASM3.0 workaround to ensure parameters match the original encoding
-                replacements = {
-                    param: Parameter(name=param.name, uuid=uuid)
-                    for param, uuid in zip(python_circ.parameters, uuids)
-                }
-                data.append(python_circ.assign_parameters(replacements))
+                if hasattr(self, "_uuids"):
+                    # OpenQASM3.0 workaround to ensure parameters match the original encoding
+                    replacements = {
+                        param: Parameter(name=param.name, uuid=uuid)
+                        for param, uuid in zip(python_circ.parameters, self._uuids[idx])
+                    }
+                    python_circ = python_circ.assign_parameters(replacements)
+                data.append(python_circ)
             self._python_data = data
 
         return self._python_data
@@ -91,7 +96,8 @@ class OpenQasm3DataModel(BaseModel, Generic[T]):
         qasm_exported = qasm3.Exporter(annotation_handlers=ANNOTATION_FACTORIES)
         encoded_data = [qasm_exported.dumps(i) for i in data]
         num_qubits = [i.num_qubits for i in data]
-        uuids = [[p.uuid for p in i.parameters] for i in data]
-        obj = cls(data=encoded_data, num_qubits=num_qubits, uuids=uuids, num_programs=len(data))
+        obj = cls(data=encoded_data, num_qubits=num_qubits)
         obj._python_data = data  # noqa: SLF001
+        uuids = [[p.uuid for p in i.parameters] for i in data]
+        obj._uuids = uuids  # noqa: SLF001
         return obj

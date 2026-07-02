@@ -23,7 +23,7 @@ class TestOpenQasm3DataModel:
 
     def test_roundtrip(self):
         """Test that round trips work correctly."""
-        circuit0 = QuantumCircuit(3)
+        circuit0 = QuantumCircuit(2)
         circuit0.h(0)
         circuit0.cx(0, 1)
         circuit0.measure_all()
@@ -38,10 +38,17 @@ class TestOpenQasm3DataModel:
         circuits = [circuit0, circuit1, circuit2]
 
         encoded = OpenQasm3DataModel.from_python(circuits)
-
         circuits_out = encoded.to_python()
-
         assert circuits == circuits_out
+
+        # testing direct initialization
+        encoded_data = OpenQasm3DataModel(data=encoded.data)
+        circuit0_out = encoded_data.to_python()[0]
+        assert circuit0_out == circuit0
+
+        encoded_num_qubits = OpenQasm3DataModel(data=encoded.data, num_qubits=encoded.num_qubits)
+        circuit1_out = encoded_num_qubits.to_python()[1]
+        assert circuit1_out == circuit1
 
     def test_roundtrip_with_annotations(self):
         """Test that round trips work correctly for circuits with annotated boxes."""
