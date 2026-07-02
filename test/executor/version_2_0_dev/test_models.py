@@ -19,8 +19,8 @@ import pytest
 from qiskit.circuit import Parameter, QuantumCircuit
 from samplomatic import Twirl, build
 
-from ibm_quantum_schemas.common.qpy import CompressedQpyDataV13ToV17Model as QpyDataModel
-from ibm_quantum_schemas.common.samplex import SamplexModelSSV1ToSSV4 as SamplexModel
+from ibm_quantum_schemas.common.qpy import CompressedQpyDataModel as QpyDataModel
+from ibm_quantum_schemas.common.samplex import SamplexModel
 from ibm_quantum_schemas.common.tensor import CompressedTensorModel, F64CompressedTensorModel
 from ibm_quantum_schemas.executor.version_2_0_dev import (
     ChunkPart,
