@@ -49,8 +49,10 @@ TWIRL_ANNOTATION = namedtuple(
 class AnnotationSerializer(QPYSerializer):
     """Serializer for annotations in the 'samplomatic' namespace.
 
-    Note: this serializer is intended for QPY data models.
-    For OpenQASM 3 models, please refer to :class:`~OpenQASM3AnnotationSerializer`.
+    .. note::
+
+        This serializer is intended for QPY data models.
+        For OpenQASM 3 models, please refer to :class:`~OpenQASM3AnnotationSerializer`.
     """
 
     def dump_annotation(self, namespace: str, annotation: Any) -> bytes:
@@ -128,8 +130,10 @@ class AnnotationSerializer(QPYSerializer):
 class OpenQASM3AnnotationSerializer(OpenQASM3Serializer):
     """Serializer for annotations in the 'samplomatic' namespace.
 
-    Note: this serializer is intended for OpenQASM 3 data models.
-    For QPY models, please refer to :class:`~AnnotationSerializer`.
+    .. note::
+
+        This serializer is intended for OpenQASM 3 data models.
+        For QPY models, please refer to :class:`~AnnotationSerializer`.
     """
 
     def dump(self, annotation: Annotation) -> str | NotImplementedType:
