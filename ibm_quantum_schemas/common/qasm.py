@@ -40,7 +40,7 @@ class OpenQasm3DataModel(BaseModel, Generic[T]):
 
     @property
     def num_programs(self) -> int:
-        """The number of distinct elements in the Python encoding."""
+        """The number of programs in this encoded circuit."""
         return len(self.data)
 
     def to_python(self, use_cached: bool = False) -> list[T]:
