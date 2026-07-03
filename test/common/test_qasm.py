@@ -46,10 +46,6 @@ class TestOpenQasm3DataModel:
         circuit0_out = encoded_data.to_python()[0]
         assert circuit0_out == circuit0
 
-        encoded_num_qubits = OpenQasm3DataModel(data=encoded.data, num_qubits=encoded.num_qubits)
-        circuit1_out = encoded_num_qubits.to_python()[1]
-        assert circuit1_out == circuit1
-
     def test_roundtrip_with_annotations(self):
         """Test that round trips work correctly for circuits with annotated boxes."""
         circuit = QuantumCircuit(3)

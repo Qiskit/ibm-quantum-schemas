@@ -28,13 +28,10 @@ T = TypeVar("T", bound=QuantumCircuit)
 
 
 class OpenQasm3DataModel(BaseModel, Generic[T]):
-    """OpenQASM3-encoded Qiskit objects."""
+    """OpenQASM3-encoded objects."""
 
     data: list[str]
-    """Data of the OpenQASM3 serialization of some Qiskit objects."""
-
-    num_qubits: list[int | None] | None = None
-    """The number of physical/virtual qubits for each Qiskit object."""
+    """A list of OpenQASM3 serialized programs."""
 
     _uuids: list[list[UUID]] = PrivateAttr()
     """Parameter UUIDs cached from Python to ensure parameters match the original encoding."""
@@ -62,10 +59,7 @@ class OpenQasm3DataModel(BaseModel, Generic[T]):
         if not use_cached or not hasattr(self, "_python_data"):
             data = []
             for idx, qasm_circ in enumerate(self.data):
-                num_qubits = self.num_qubits[idx] if self.num_qubits else None
-                python_circ = qasm3.loads(
-                    qasm_circ, num_qubits=num_qubits, annotation_handlers=ANNOTATION_FACTORIES
-                )
+                python_circ = qasm3.loads(qasm_circ, annotation_handlers=ANNOTATION_FACTORIES)
                 if hasattr(self, "_uuids"):
                     # OpenQASM3.0 workaround to ensure parameters match the original encoding
                     replacements = {
@@ -95,8 +89,7 @@ class OpenQasm3DataModel(BaseModel, Generic[T]):
         """
         qasm_exported = qasm3.Exporter(annotation_handlers=ANNOTATION_FACTORIES)
         encoded_data = [qasm_exported.dumps(i) for i in data]
-        num_qubits = [i.num_qubits for i in data]
-        obj = cls(data=encoded_data, num_qubits=num_qubits)
+        obj = cls(data=encoded_data)
         obj._python_data = data  # noqa: SLF001
         uuids = [[p.uuid for p in i.parameters] for i in data]
         obj._uuids = uuids  # noqa: SLF001
