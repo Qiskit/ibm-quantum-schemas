@@ -14,7 +14,10 @@
 
 from samplomatic import ChangeBasis, InjectNoise, Twirl
 
-from ibm_quantum_schemas.common.annotation_serializer import AnnotationSerializer
+from ibm_quantum_schemas.common.annotation_serializer import (
+    AnnotationSerializer,
+    OpenQASM3AnnotationSerializer,
+)
 
 
 class TestChangeBasis:
@@ -25,9 +28,15 @@ class TestChangeBasis:
         annotation = ChangeBasis()
         namespace = "samplomatic.change_basis"
 
-        serializer = AnnotationSerializer()
-        payload = serializer.dump_annotation(namespace, annotation)
-        annotation_out = serializer.load_annotation(payload)
+        qpy_serializer = AnnotationSerializer()
+        payload = qpy_serializer.dump_annotation(namespace, annotation)
+        annotation_out = qpy_serializer.load_annotation(payload)
+
+        assert annotation == annotation_out
+
+        qasm_serializer = OpenQASM3AnnotationSerializer()
+        payload = qasm_serializer.dump(annotation)
+        annotation_out = qasm_serializer.load("", payload)
 
         assert annotation == annotation_out
 
@@ -40,9 +49,15 @@ class TestInjectNoise:
         annotation = InjectNoise("ref")
         namespace = "samplomatic.inject_noise"
 
-        serializer = AnnotationSerializer()
-        payload = serializer.dump_annotation(namespace, annotation)
-        annotation_out = serializer.load_annotation(payload)
+        qpy_serializer = AnnotationSerializer()
+        payload = qpy_serializer.dump_annotation(namespace, annotation)
+        annotation_out = qpy_serializer.load_annotation(payload)
+
+        assert annotation == annotation_out
+
+        qasm_serializer = OpenQASM3AnnotationSerializer()
+        payload = qasm_serializer.dump(annotation)
+        annotation_out = qasm_serializer.load("", payload)
 
         assert annotation == annotation_out
 
@@ -55,8 +70,14 @@ class TestTwirl:
         annotation = Twirl()
         namespace = "samplomatic.twirl"
 
-        serializer = AnnotationSerializer()
-        payload = serializer.dump_annotation(namespace, annotation)
-        annotation_out = serializer.load_annotation(payload)
+        qpy_serializer = AnnotationSerializer()
+        payload = qpy_serializer.dump_annotation(namespace, annotation)
+        annotation_out = qpy_serializer.load_annotation(payload)
+
+        assert annotation == annotation_out
+
+        qasm_serializer = OpenQASM3AnnotationSerializer()
+        payload = qasm_serializer.dump(annotation)
+        annotation_out = qasm_serializer.load("", payload)
 
         assert annotation == annotation_out

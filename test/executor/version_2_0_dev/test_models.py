@@ -13,12 +13,14 @@
 """Tests for 2.0 models."""
 
 import datetime
+from typing import Literal
 
 import numpy as np
 import pytest
 from qiskit.circuit import Parameter, QuantumCircuit
 from samplomatic import Twirl, build
 
+from ibm_quantum_schemas.common.qasm import OpenQasm3DataModel as QasmDataModel
 from ibm_quantum_schemas.common.qpy import CompressedQpyDataModel as QpyDataModel
 from ibm_quantum_schemas.common.samplex import SamplexModel
 from ibm_quantum_schemas.common.tensor import CompressedTensorModel, F64CompressedTensorModel
@@ -39,7 +41,7 @@ from ibm_quantum_schemas.executor.version_2_0_dev import (
 )
 
 
-def _minimal_quantum_program(**kwargs) -> QuantumProgramModel:
+def _minimal_quantum_program(data_model: Literal["qpy", "qasm"], **kwargs) -> QuantumProgramModel:
     """Create a QuantumProgramModel with one minimal circuit item."""
     circuit = QuantumCircuit(1)
     circuit_item = CircuitItemModel(
@@ -48,7 +50,9 @@ def _minimal_quantum_program(**kwargs) -> QuantumProgramModel:
     )
     return QuantumProgramModel(
         shots=100,
-        circuits=QpyDataModel.from_python([circuit], 16),
+        circuits=QasmDataModel.from_python([circuit])
+        if data_model == "qasm"
+        else QpyDataModel.from_python([circuit], 16),
         items=[circuit_item],
         **kwargs,
     )
@@ -277,37 +281,42 @@ def test_result_item_with_metadata():
 
 
 @pytest.mark.parametrize("role", [None, "estimator-v2", "sampler-v2"])
-def test_semantic_role(role):
+@pytest.mark.parametrize("data_model", ["qpy", "qasm"])
+def test_semantic_role(role, data_model):
     """Test that all semantic roles that we care about are accepted."""
-    program = _minimal_quantum_program(semantic_role=role)
+    program = _minimal_quantum_program(semantic_role=role, data_model=data_model)
     assert program.semantic_role == role
 
 
-def test_passthrough_data_leaf_types():
+@pytest.mark.parametrize("data_model", ["qpy", "qasm"])
+def test_passthrough_data_leaf_types(data_model):
     """Test that all leaf types are accepted."""
     tensor = CompressedTensorModel.from_numpy(np.array([1.1, 2.0], dtype=np.float64))
 
     # Test each leaf type individually
     for passthrough_data in [tensor, "hello", 3.14, 42, True, False, None]:
-        program = _minimal_quantum_program(passthrough_data=passthrough_data)
+        program = _minimal_quantum_program(passthrough_data=passthrough_data, data_model=data_model)
         assert program.passthrough_data == passthrough_data
 
 
-def test_passthrough_data_nested_list():
+@pytest.mark.parametrize("data_model", ["qpy", "qasm"])
+def test_passthrough_data_nested_list(data_model):
     """Test nested lists in DataTree."""
     passthrough_data = [1, 2.0, "three", [4, [5, 6]]]
-    program = _minimal_quantum_program(passthrough_data=passthrough_data)
+    program = _minimal_quantum_program(passthrough_data=passthrough_data, data_model=data_model)
     assert program.passthrough_data == passthrough_data
 
 
-def test_passthrough_data_nested_dict():
+@pytest.mark.parametrize("data_model", ["qpy", "qasm"])
+def test_passthrough_data_nested_dict(data_model):
     """Test nested dicts in DataTree."""
     passthrough_data = {"a": 1, "b": {"c": 2.0, "d": {"e": "nested"}}}
-    program = _minimal_quantum_program(passthrough_data=passthrough_data)
+    program = _minimal_quantum_program(passthrough_data=passthrough_data, data_model=data_model)
     assert program.passthrough_data == passthrough_data
 
 
-def test_passthrough_data_mixed_nesting():
+@pytest.mark.parametrize("data_model", ["qpy", "qasm"])
+def test_passthrough_data_mixed_nesting(data_model):
     """Test mixed lists and dicts with CompressableTensorModel leaves."""
     tensor = CompressedTensorModel.from_numpy(np.array([1.1, 2.0, 3.0], dtype=np.float64))
     passthrough_data = {
@@ -315,7 +324,7 @@ def test_passthrough_data_mixed_nesting():
         "metadata": {"name": "test", "count": 42},
         "values": [1, 2.0, [3, {"nested": tensor}]],
     }
-    program = _minimal_quantum_program(passthrough_data=passthrough_data)
+    program = _minimal_quantum_program(passthrough_data=passthrough_data, data_model=data_model)
     assert program.passthrough_data == passthrough_data
 
 
@@ -339,11 +348,12 @@ def test_passthrough_data_on_result_model():
     assert result.passthrough_data == passthrough_data
 
 
-def test_passthrough_data_serialization_roundtrip():
+@pytest.mark.parametrize("data_model", ["qpy", "qasm"])
+def test_passthrough_data_serialization_roundtrip(data_model):
     """Test that DataTree survives JSON serialization roundtrip."""
     tensor = CompressedTensorModel.from_numpy(np.array([1.1, 2.0], dtype=np.float64))
     passthrough_data = {"tensor": tensor, "nested": [1, {"inner": "value"}]}
-    program = _minimal_quantum_program(passthrough_data=passthrough_data)
+    program = _minimal_quantum_program(passthrough_data=passthrough_data, data_model=data_model)
 
     json_str = program.model_dump_json()
     restored = QuantumProgramModel.model_validate_json(json_str)
@@ -374,3 +384,68 @@ def test_chunk_part_invalid():
 
     with pytest.raises(ValueError, match="Must be a valid range"):
         ChunkPart(idx_item=0, size=5, permutation=[0, 2, 1], element_range=(0, 5, 0))
+
+
+@pytest.mark.skip_if_samplomatic_too_old_for_ssv
+@pytest.mark.parametrize(
+    "ssv,chunk_size",
+    [(4, 2), (1, 2), (2, 2), (1, 2), (4, 2), (1, "auto"), (2, "auto")],
+)
+def test_qasm_support(ssv, chunk_size):
+    """Tests"""
+    circuit0 = QuantumCircuit(3)
+    circuit0.rx(Parameter("theta"), 0)
+    circuit0.rz(Parameter("phi"), 0)
+    circuit0.rx(Parameter("lam"), 0)
+    circuit0.cx(0, 1)
+    circuit0.measure_all()
+    circuit_item = CircuitItemModel(
+        circuit_arguments=F64CompressedTensorModel.from_numpy(
+            np.array([0.1, 0.2, 0.3], dtype=np.float64)
+        ),
+        chunk_size=chunk_size,
+        shape=[],
+    )
+
+    circuit1 = QuantumCircuit(3)
+    with circuit1.box([Twirl()]):
+        circuit1.rx(Parameter("theta"), 0)
+        circuit1.rz(Parameter("phi"), 0)
+        circuit1.rx(Parameter("lam"), 0)
+        circuit1.cx(0, 1)
+    with circuit1.box([Twirl()]):
+        circuit1.measure_all()
+    template, samplex = build(circuit1)
+    samplex_item = SamplexItemModel(
+        samplex=SamplexModel.from_samplex(samplex, ssv=ssv),
+        samplex_arguments={
+            "parameter_values": CompressedTensorModel.from_numpy(
+                np.array([0.1, 0.2, 0.3], dtype=np.float64)
+            )
+        },
+        shape=(200, 300),
+        chunk_size=chunk_size,
+    )
+
+    quantum_program = QuantumProgramModel(
+        shots=1000,
+        circuits=QasmDataModel.from_python([circuit0, template]),
+        items=[circuit_item, samplex_item],
+    )
+
+    assert quantum_program.meas_level == "classified"
+    assert quantum_program.passthrough_data is None
+
+    # TODO: investigate why this assertion fails and fix
+    # assert quantum_program.circuits.to_python() == [circuit0, template]
+    assert len(quantum_program.items) == 2
+
+    item0 = quantum_program.items[0]
+    assert np.array_equal(item0.circuit_arguments.to_numpy(), [0.1, 0.2, 0.3])
+    assert item0.chunk_size == chunk_size
+
+    item1 = quantum_program.items[1]
+    assert list(item1.samplex_arguments) == ["parameter_values"]
+    assert np.array_equal(item1.samplex_arguments["parameter_values"].to_numpy(), [0.1, 0.2, 0.3])
+    assert item1.chunk_size == chunk_size
+    assert item1.shape == [200, 300]

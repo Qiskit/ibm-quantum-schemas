@@ -26,6 +26,7 @@ Classes
    :toctree: ../stubs/
    :nosignatures:
 
+   OpenQasm3DataModel
    QpyDataModel
    QpyDataV13ToV17Model
    QpyModel
@@ -45,6 +46,7 @@ Classes
 
 from ibm_quantum_schemas.common.base_params import BaseParamsModel
 from ibm_quantum_schemas.common.pauli_lindblad_map import PauliLindbladMapModel
+from ibm_quantum_schemas.common.qasm import OpenQasm3DataModel
 from ibm_quantum_schemas.common.qpy import (
     CompressedQpyDataModel,
     QpyDataModel,
