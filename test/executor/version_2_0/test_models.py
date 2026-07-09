@@ -24,7 +24,7 @@ from ibm_quantum_schemas.common.qasm import OpenQasm3DataModel as QasmDataModel
 from ibm_quantum_schemas.common.qpy import CompressedQpyDataModel as QpyDataModel
 from ibm_quantum_schemas.common.samplex import SamplexModel
 from ibm_quantum_schemas.common.tensor import CompressedTensorModel, F64CompressedTensorModel
-from ibm_quantum_schemas.executor.version_2_0_dev import (
+from ibm_quantum_schemas.executor.version_2_0 import (
     ChunkPart,
     ChunkSpan,
     CircuitItemModel,

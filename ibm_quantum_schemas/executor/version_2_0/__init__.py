@@ -11,11 +11,11 @@
 # that they have been altered from the originals.
 
 """
-===================================================================
-Executor v2.0 (:mod:`ibm_quantum_schemas.executor.version_2_0_dev`)
-===================================================================
+===============================================================
+Executor v2.0 (:mod:`ibm_quantum_schemas.executor.version_2_0`)
+===============================================================
 
-.. currentmodule:: ibm_quantum_schemas.executor.version_2_0_dev
+.. currentmodule:: ibm_quantum_schemas.executor.version_2_0
 
 Models for ``Executor`` ``v2.0``.
 
@@ -41,7 +41,7 @@ Classes
    ChunkPart
 """
 
-from ibm_quantum_schemas.executor.version_2_0_dev.models import (
+from ibm_quantum_schemas.executor.version_2_0.models import (
     ChunkPart,
     ChunkSpan,
     CircuitItemModel,
