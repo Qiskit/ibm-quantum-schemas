@@ -1,4 +1,0 @@
-.. automodule:: ibm_quantum_schemas.noise_learner_v3.version_0_3
-   :no-members:
-   :no-inherited-members:
-   :no-special-members:
