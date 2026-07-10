@@ -29,7 +29,7 @@ language = "en"
 # The short X.Y version
 version = ""
 # The full version, including alpha/beta/rc tags
-release = "0.9.20260612"
+release = "0.10rc1"
 
 # -- General configuration ---------------------------------------------------
 
