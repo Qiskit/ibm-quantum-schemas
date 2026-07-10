@@ -1,4 +1,4 @@
-## [0.10rc1](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.10rc1) - 2026-07-09
+## [0.10rc1](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.10rc1) - 2026-07-10
 
 ### Added
 
