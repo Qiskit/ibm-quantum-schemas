@@ -26,25 +26,69 @@ Classes
    :toctree: ../stubs/
    :nosignatures:
 
+   BitArrayModel
+   BitArrayWrapperModel
+   DataBinModel
+   DataBinWrapperModel
+   DoubleSliceSpanModel
+   DoubleSliceSpanWrapperModel
    DynamicalDecouplingOptionsModel
+   ExecutionMetadataModel
+   ExecutionSpansModel
+   ExecutionSpansWrapperModel
    SamplerExecutionOptionsModel
+   NoiseModel
    OptionsModel
    ParamsModel
+   PrimitiveResultMetadataModel
+   PrimitiveResultModel
+   PrimitiveResultWrapperModel
+   PubResultMetadataModel
+   PubResultModel
    SamplerPubModel
-   NoiseModel
+   SamplerPubResultWrapperModel
    SimulatorOptionsModel
+   TwirledSliceSpanV2Model
+   TwirledSliceSpanV2WrapperModel
    TwirlingOptionsModel
    TwirlingStrategyType
 """
 
+from ibm_quantum_schemas.sampler.version_0_1.bit_array import (
+    BitArrayModel,
+    BitArrayWrapperModel,
+)
+from ibm_quantum_schemas.sampler.version_0_1.data_bin import (
+    DataBinModel,
+    DataBinWrapperModel,
+)
 from ibm_quantum_schemas.sampler.version_0_1.dynamical_decoupling_options import (
     DynamicalDecouplingOptionsModel,
 )
 from ibm_quantum_schemas.sampler.version_0_1.execution_options import (
     SamplerExecutionOptionsModel,
 )
+from ibm_quantum_schemas.sampler.version_0_1.execution_span import (
+    DoubleSliceSpanModel,
+    DoubleSliceSpanWrapperModel,
+    ExecutionSpansModel,
+    ExecutionSpansWrapperModel,
+    TwirledSliceSpanV2Model,
+    TwirledSliceSpanV2WrapperModel,
+)
 from ibm_quantum_schemas.sampler.version_0_1.options import OptionsModel
 from ibm_quantum_schemas.sampler.version_0_1.params import ParamsModel
+from ibm_quantum_schemas.sampler.version_0_1.primitive_result import (
+    ExecutionMetadataModel,
+    PrimitiveResultMetadataModel,
+    PrimitiveResultModel,
+    PrimitiveResultWrapperModel,
+)
+from ibm_quantum_schemas.sampler.version_0_1.pub_result import (
+    PubResultMetadataModel,
+    PubResultModel,
+    SamplerPubResultWrapperModel,
+)
 from ibm_quantum_schemas.sampler.version_0_1.sampler_pub import SamplerPubModel
 from ibm_quantum_schemas.sampler.version_0_1.simulator_options import (
     NoiseModel,
