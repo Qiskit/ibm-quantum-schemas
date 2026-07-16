@@ -28,6 +28,7 @@ Classes
 
    LayerNoiseModel
    LayerNoiseWrapperModel
+   NoiseModel
    PauliLindbladErrorModel
    PauliLindbladErrorWrapperModel
    PauliListModel
@@ -50,6 +51,7 @@ from ibm_quantum_schemas.noise_learner_v2.version_0_1.layer_noise import (
 )
 from ibm_quantum_schemas.noise_learner_v2.version_0_1.models import ParamsModel, ResultsModel
 from ibm_quantum_schemas.noise_learner_v2.version_0_1.options import (
+    NoiseModel,
     OptionsModel,
     SimulatorOptionsModel,
 )

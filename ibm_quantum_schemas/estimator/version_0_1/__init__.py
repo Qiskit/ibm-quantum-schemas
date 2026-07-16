@@ -26,27 +26,55 @@ Classes
    :toctree: ../stubs/
    :nosignatures:
 
+   DataBinObjectModel
+   DataBinModel
+   DataBinWrapperModel
+   DynamicalDecouplingMetadataModel
    DynamicalDecouplingOptionsModel
    EstimatorPubModel
    ExecutionOptionsV2Model
    LayerNoiseLearningOptionsModel
+   LayerNoiseMetadataModel
+   LayerNoiseModelMetadataModel
+   LayerNoiseModelMetadataWrapperModel
    LayerNoiseModelModel
    LayerNoiseModelWrapperModel
-   PauliLindbladErrorModel
-   PauliLindbladErrorWrapperModel
-   PauliListModel
-   PauliListWrapperModel
    MeasureNoiseLearningOptionsModel
+   NoiseModel
    NoiseLearnerInputOptionsModel
    NoiseLearnerResultMetadataModel
    NoiseLearnerResultModel
    NoiseLearnerResultWrapperModel
+   ObservableModel
+   ObservablesArrayModel
    OptionsModel
-   SimulatorOptionsModel
    ParamsModel
+   PauliLindbladErrorMetadataModel
+   PauliLindbladErrorMetadataWrapperModel
+   PauliLindbladErrorModel
+   PauliLindbladErrorWrapperModel
+   PauliListMetadataModel
+   PauliListMetadataWrapperModel
+   PauliListModel
+   PauliListWrapperModel
+   PauliString
+   PecMetadataModel
    PecOptionsModel
+   PrimitiveResultExtrapolatorType
+   PrimitiveResultMetadataModel
+   PrimitiveResultModel
+   PrimitiveResultResilienceMetadataModel
    PrimitiveResultWrapperModel
+   PrimitiveResultZneMetadataModel
+   PubResultExtrapolatorType
+   PubResultMetadataModel
+   PubResultModel
+   PubResultResilienceMetadataModel
+   PubResultWrapperModel
+   PubResultZneMetadataModel
    ResilienceOptionsModel
+   SimulatorOptionsModel
+   TwirlingMetadataModel
    TwirlingOptionsModel
    TwirlingStrategyType
    ExtrapolatorType
@@ -55,6 +83,14 @@ Classes
 
 from __future__ import annotations
 
+from ibm_quantum_schemas.estimator.version_0_1.data_bin import (
+    DataBinModel,
+    DataBinObjectModel,
+    DataBinWrapperModel,
+)
+from ibm_quantum_schemas.estimator.version_0_1.dynamical_decoupling_metadata import (
+    DynamicalDecouplingMetadataModel,
+)
 from ibm_quantum_schemas.estimator.version_0_1.dynamical_decoupling_options import (
     DynamicalDecouplingOptionsModel,
 )
@@ -63,6 +99,9 @@ from ibm_quantum_schemas.estimator.version_0_1.execution_options import Executio
 from ibm_quantum_schemas.estimator.version_0_1.layer_noise_learning_options import (
     LayerNoiseLearningOptionsModel,
 )
+from ibm_quantum_schemas.estimator.version_0_1.layer_noise_metadata import (
+    LayerNoiseMetadataModel,
+)
 from ibm_quantum_schemas.estimator.version_0_1.layer_noise_model import (
     LayerNoiseModelModel,
     LayerNoiseModelWrapperModel,
@@ -70,6 +109,14 @@ from ibm_quantum_schemas.estimator.version_0_1.layer_noise_model import (
     PauliLindbladErrorWrapperModel,
     PauliListModel,
     PauliListWrapperModel,
+)
+from ibm_quantum_schemas.estimator.version_0_1.layer_noise_model_metadata import (
+    LayerNoiseModelMetadataModel,
+    LayerNoiseModelMetadataWrapperModel,
+    PauliLindbladErrorMetadataModel,
+    PauliLindbladErrorMetadataWrapperModel,
+    PauliListMetadataModel,
+    PauliListMetadataWrapperModel,
 )
 from ibm_quantum_schemas.estimator.version_0_1.measure_noise_learning_options import (
     MeasureNoiseLearningOptionsModel,
@@ -80,16 +127,45 @@ from ibm_quantum_schemas.estimator.version_0_1.noise_learner_results import (
     NoiseLearnerResultModel,
     NoiseLearnerResultWrapperModel,
 )
+from ibm_quantum_schemas.estimator.version_0_1.observables_array import (
+    ObservableModel,
+    ObservablesArrayModel,
+    PauliString,
+)
 from ibm_quantum_schemas.estimator.version_0_1.options import (
     OptionsModel,
     SimulatorOptionsModel,
 )
 from ibm_quantum_schemas.estimator.version_0_1.params import ParamsModel
+from ibm_quantum_schemas.estimator.version_0_1.pec_metadata import PecMetadataModel
 from ibm_quantum_schemas.estimator.version_0_1.pec_options import PecOptionsModel
 from ibm_quantum_schemas.estimator.version_0_1.primitive_result import (
+    PrimitiveResultMetadataModel,
+    PrimitiveResultModel,
     PrimitiveResultWrapperModel,
 )
+from ibm_quantum_schemas.estimator.version_0_1.primitive_result_resilience_metadata import (
+    PrimitiveResultResilienceMetadataModel,
+)
+from ibm_quantum_schemas.estimator.version_0_1.primitive_result_zne_metadata import (
+    PrimitiveResultExtrapolatorType,
+    PrimitiveResultZneMetadataModel,
+)
+from ibm_quantum_schemas.estimator.version_0_1.pub_result import (
+    PubResultMetadataModel,
+    PubResultModel,
+    PubResultWrapperModel,
+)
+from ibm_quantum_schemas.estimator.version_0_1.pub_result_resilience_metadata import (
+    PubResultResilienceMetadataModel,
+)
+from ibm_quantum_schemas.estimator.version_0_1.pub_result_zne_metadata import (
+    PubResultExtrapolatorType,
+    PubResultZneMetadataModel,
+)
 from ibm_quantum_schemas.estimator.version_0_1.resilience_options import ResilienceOptionsModel
+from ibm_quantum_schemas.estimator.version_0_1.simulator_options import NoiseModel
+from ibm_quantum_schemas.estimator.version_0_1.twirling_metadata import TwirlingMetadataModel
 from ibm_quantum_schemas.estimator.version_0_1.twirling_options import (
     TwirlingOptionsModel,
     TwirlingStrategyType,
