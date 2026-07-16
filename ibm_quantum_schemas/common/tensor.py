@@ -29,7 +29,7 @@ SupportedDtypesExtended: TypeAlias = Literal[
 """The data types supported by :class:`~CompressedTensorModel`."""
 
 SUPPORTED_DTYPE_EXTENDED_MAP: dict[np.dtype, SupportedDtypesExtended] = {
-    np.dtype(np.bool): "bool",
+    np.dtype(np.bool_): "bool",
     np.dtype(np.float16): "f16",
     np.dtype(np.float32): "f32",
     np.dtype(np.float64): "f64",
