@@ -1,5 +1,9 @@
 ## [0.10rc2](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.10rc2) - 2026-07-17
 
+### Changed
+
+- The public interface of ``estimator`` ``0.1``, ``noise_learner_v2`` ``0.1`` and ``sampler`` ``0.1`` now contains all their items.
+
 ### Added
 
 - ``executor`` model version ``2.0``. ([#151](https://github.com/Qiskit/ibm-quantum-schemas/issues/157))
