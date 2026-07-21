@@ -2,7 +2,7 @@
 
 ### Changed
 
-- The public interface of ``estimator`` ``0.1``, ``noise_learner_v2`` ``0.1`` and ``sampler`` ``0.1`` now contains all their items.
+- The public interface of ``estimator`` version ``0.1``, ``noise_learner_v2`` version ``0.1``, and ``sampler`` version ``0.1`` now contains all their items.
 
 ### Added
 
