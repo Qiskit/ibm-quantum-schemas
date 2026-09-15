@@ -112,12 +112,11 @@ class TestZneOptionsModelValidation:
         ):
             ZneOptionsModel.model_validate(options)
 
-    def test_sufficient_noise_factors_for_fallback(self):
-        """Test that fallback only requires 1 noise_factor."""
+    def test_insufficient_noise_factors_for_fallback(self):
+        """Test that fallback requires at least 2 noise_factors."""
         options = {"extrapolator": "fallback", "noise_factors": [1]}
-        model = ZneOptionsModel.model_validate(options)
-        assert model.extrapolator == "fallback"
-        assert model.noise_factors == [1]
+        with pytest.raises(ValidationError, match="fallback requires at least 2 noise_factors"):
+            ZneOptionsModel.model_validate(options)
 
     def test_empty_extrapolated_noise_factors(self):
         """Test that empty extrapolated_noise_factors is accepted."""
