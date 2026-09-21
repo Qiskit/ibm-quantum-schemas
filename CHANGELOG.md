@@ -1,3 +1,11 @@
+## [0.12.20260921](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.12.20260921) - 2026-09-21
+
+### Fixed
+
+- The ``fallback`` extrapolator in :class:`.ZneOptionsModel` now requires at least 2
+  noise factors. Previously it only required 1. ([#199](https://github.com/Qiskit/ibm-quantum-schemas/issues/199))
+
+
 ## [0.11.20260824](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.11.20260824) - 2026-08-24
 
 ### Added
