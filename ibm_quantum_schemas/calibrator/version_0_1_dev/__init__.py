@@ -11,11 +11,11 @@
 # that they have been altered from the originals.
 
 """
-===================================================================
-Calibrator v0.1 (:mod:`ibm_quantum_schemas.calibrator.version_0_1`)
-===================================================================
+=======================================================================
+Calibrator v0.1 (:mod:`ibm_quantum_schemas.calibrator.version_0_1_dev`)
+=======================================================================
 
-.. currentmodule:: ibm_quantum_schemas.calibrator.version_0_1
+.. currentmodule:: ibm_quantum_schemas.calibrator.version_0_1_dev
 
 Models for ``Calibrator`` ``v0.1``.
 
@@ -31,7 +31,7 @@ Classes
    ParamsModel
 """
 
-from ibm_quantum_schemas.calibrator.version_0_1.models import (
+from ibm_quantum_schemas.calibrator.version_0_1_dev.models import (
     CalibratorResultModel,
     OptionsModel,
     ParamsModel,
