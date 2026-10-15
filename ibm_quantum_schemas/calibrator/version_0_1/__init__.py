@@ -31,7 +31,7 @@ Classes
    ParamsModel
 """
 
-from ibm_quantum_schemas.calibrator.version_0_1_dev.models import (
+from ibm_quantum_schemas.calibrator.version_0_1.models import (
     CalibratorResultModel,
     OptionsModel,
     ParamsModel,
