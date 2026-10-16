@@ -1,3 +1,10 @@
+## [0.13.20261016](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.13.20261016) - 2026-10-16
+
+### Added
+
+- ``calibrator`` model version ``0.1``. ([#202](https://github.com/Qiskit/ibm-quantum-schemas/pull/202))
+
+
 ## [0.12.20260921](https://github.com/Qiskit/ibm-quantum-schemas/tree/0.12.20260921) - 2026-09-21
 
 ### Fixed
