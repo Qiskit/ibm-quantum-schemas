@@ -12,10 +12,10 @@
 
 """
 ===================================================================
-Calibrator v0.2 (:mod:`ibm_quantum_schemas.calibrator.version_0_2`)
+Calibrator v0.2 (:mod:`ibm_quantum_schemas.calibrator.version_0_2_dev`)
 ===================================================================
 
-.. currentmodule:: ibm_quantum_schemas.calibrator.version_0_2
+.. currentmodule:: ibm_quantum_schemas.calibrator.version_0_2_dev
 
 Models for ``Calibrator`` ``v0.2``.
 
@@ -36,7 +36,7 @@ Classes
    TwoQubitOptions
 """
 
-from ibm_quantum_schemas.calibrator.version_0_2.models import (
+from ibm_quantum_schemas.calibrator.version_0_2_dev.models import (
     CalibratorResultModel,
     OneAndTwoQubitOptions,
     OptionsModel,

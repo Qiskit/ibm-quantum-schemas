@@ -14,7 +14,7 @@
 
 import datetime
 
-from ibm_quantum_schemas.calibrator.version_0_2 import (
+from ibm_quantum_schemas.calibrator.version_0_2_dev import (
     CalibratorResultModel,
     OneAndTwoQubitOptions,
     OptionsModel,
