@@ -249,7 +249,7 @@ class TestCompressedQpyDataModel:
         assert len(circuits_out) == 1
         assert circuit == circuits_out[0]
 
-    @pytest.mark.parametrize("qpy_version", [12, 18])
+    @pytest.mark.parametrize("qpy_version", [12, 1000])
     def test_unsupported_versions_raise(self, qpy_version):
         """Test that unsupported versions raise."""
         circuit = QuantumCircuit(3)

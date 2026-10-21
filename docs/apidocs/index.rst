@@ -6,6 +6,7 @@
    :maxdepth: 1
 
    calibrator_0_1
+   calibrator_0_2
    executor_0_1
    executor_0_2
    executor_1_0
