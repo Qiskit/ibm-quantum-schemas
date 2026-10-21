@@ -152,6 +152,8 @@ class QpyDataModel(BaseModel, Generic[T]):
 class CompressedQpyDataModel(QpyDataModel[T], Generic[T]):
     """QPY-encoded Qiskit objects with compression."""
 
+    qpy_version: int = Field(ge=13, le=17)
+
     @model_validator(mode="after")
     def cross_validate_qpy_info(self):
         """Check that the encoded qpy information matches expectations."""
