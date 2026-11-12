@@ -22,7 +22,7 @@ from typing import Generic, TypeVar
 from pybase64 import b64decode, b64encode
 from pydantic import BaseModel, Field, PrivateAttr, model_validator
 from qiskit import QuantumCircuit
-from qiskit.qpy import QPY_VERSION, dump, load
+from qiskit.qpy import QPY_COMPATIBILITY_VERSION, QPY_VERSION, dump, load
 from qiskit.qpy.formats import FILE_HEADER_V10, FILE_HEADER_V10_PACK, FILE_HEADER_V10_SIZE
 from qiskit.qpy.interface import QPY_SUPPORTED_TYPES
 from typing_extensions import Self
@@ -73,6 +73,20 @@ def extract_qpy_info(qpy_b64: str, compressed: bool = False) -> QpyInfo:
 
         header = FILE_HEADER_V10._make(struct.unpack(FILE_HEADER_V10_PACK, buffer))
     return QpyInfo(header.qpy_version, header.num_programs)
+
+
+def _get_max_qpy_version(model_cls: type[BaseModel]) -> int | None:
+    """Return the maximum allowed QPY version for a model class, if defined."""
+    field_info = model_cls.model_fields.get("qpy_version")
+    if field_info is None:
+        return None
+    max_version = None
+    for m in field_info.metadata:
+        if hasattr(m, "le") and m.le is not None:
+            max_version = m.le if max_version is None else min(max_version, m.le)
+        if hasattr(m, "lt") and m.lt is not None:
+            max_version = (m.lt - 1) if max_version is None else min(max_version, m.lt - 1)
+    return max_version
 
 
 class QpyDataModel(BaseModel, Generic[T]):
@@ -287,7 +301,7 @@ class QpyModel(BaseModel):
         return self._circuit
 
     @classmethod
-    def from_quantum_circuit(cls, circuit: QuantumCircuit, qpy_version: int = QPY_VERSION) -> Self:
+    def from_quantum_circuit(cls, circuit: QuantumCircuit, qpy_version: int | None = None) -> Self:
         """Create a model instance from a quantum circuit.
 
         The returned instance owns a reference to the provided circuit. This instance may be
@@ -297,11 +311,23 @@ class QpyModel(BaseModel):
 
         Args:
             circuit: The circuit to encode into the model.
-            qpy_version: The QPY version to encode with.
+            qpy_version: The QPY version to encode with. If not specified, defaults to the
+                minimum of Qiskit's latest QPY version and the maximum version supported
+                by the model.
 
         Returns:
             A new model instance.
         """
+        if qpy_version is None:
+            max_version = _get_max_qpy_version(cls)
+            qpy_version = min(QPY_VERSION, max_version) if max_version is not None else QPY_VERSION
+
+        if qpy_version < QPY_COMPATIBILITY_VERSION or qpy_version > QPY_VERSION:
+            raise ValueError(
+                f"The qpy_version is {qpy_version} but it must be between "
+                f"{QPY_COMPATIBILITY_VERSION} and {QPY_VERSION}."
+            )
+
         with BytesIO() as bytes_obj:
             dump(circuit, bytes_obj, version=qpy_version, annotation_factories=ANNOTATION_FACTORIES)
             circuit_b64 = b64encode(bytes_obj.getvalue()).decode()
