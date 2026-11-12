@@ -20,13 +20,15 @@ from zlib import compress
 
 import pytest
 from pybase64 import b64encode
+from pydantic import Field
 from qiskit.circuit import QuantumCircuit
-from qiskit.qpy import dump
+from qiskit.qpy import QPY_COMPATIBILITY_VERSION, QPY_VERSION, dump
 from samplomatic import ChangeBasis, InjectNoise, Tag, Twirl
 
 from ibm_quantum_schemas.common.qpy import (
     CompressedQpyDataModel,
     QpyDataV13ToV17Model,
+    QpyModel,
     QpyModelV13ToV16,
     QpyModelV13ToV17,
     extract_qpy_info,
@@ -53,8 +55,65 @@ def test_extract_qpy_info(qpy_version, num_circuits, compressed):
     assert info.num_programs == num_circuits
 
 
+class TestQpyModel:
+    """Tests for ``QpyModel``."""
+
+    def test_default_version(self):
+        """Test that default qpy_version is QPY_VERSION."""
+        circuit = QuantumCircuit(2)
+        circuit.h(0)
+        circuit.cx(0, 1)
+
+        encoded = QpyModel.from_quantum_circuit(circuit)
+        assert encoded.qpy_version == QPY_VERSION
+        assert encoded.to_quantum_circuit() == circuit
+
+    @pytest.mark.parametrize(
+        "qpy_version",
+        [QPY_COMPATIBILITY_VERSION - 1, QPY_VERSION + 1],
+    )
+    def test_unsupported_versions_raise(self, qpy_version):
+        """Test that versions outside Qiskit compatibility range raise ValueError."""
+        circuit = QuantumCircuit(2)
+        circuit.h(0)
+
+        msg = (
+            f"The qpy_version is {qpy_version} but it must be between "
+            f"{QPY_COMPATIBILITY_VERSION} and {QPY_VERSION}."
+        )
+        with pytest.raises(ValueError, match=msg):
+            QpyModel.from_quantum_circuit(circuit, qpy_version)
+
+    def test_default_version_below_compatibility_raises(self):
+        """Test that when model max version is below compatibility version, default raises."""
+
+        class SubModel(QpyModel):
+            qpy_version: int = Field(ge=1, le=QPY_COMPATIBILITY_VERSION - 1)
+
+        circuit = QuantumCircuit(2)
+        circuit.h(0)
+
+        invalid_v = QPY_COMPATIBILITY_VERSION - 1
+        msg = (
+            f"The qpy_version is {invalid_v} but it must be between "
+            f"{QPY_COMPATIBILITY_VERSION} and {QPY_VERSION}."
+        )
+        with pytest.raises(ValueError, match=msg):
+            SubModel.from_quantum_circuit(circuit)
+
+
 class TestQpyModelV13ToV16:
     """Tests for ``QpyModelV13ToV16``."""
+
+    def test_default_version(self):
+        """Test that default qpy_version is min(QPY_VERSION, 16)."""
+        circuit = QuantumCircuit(2)
+        circuit.h(0)
+        circuit.cx(0, 1)
+
+        encoded = QpyModelV13ToV16.from_quantum_circuit(circuit)
+        assert encoded.qpy_version == min(QPY_VERSION, 16)
+        assert encoded.to_quantum_circuit() == circuit
 
     @pytest.mark.skip_if_qiskit_too_old_for_qpy
     @pytest.mark.parametrize("qpy_version", [13, 14, 15, 16])
@@ -100,6 +159,16 @@ class TestQpyModelV13ToV16:
 
 class TestQpyModelV13ToV17:
     """Tests for ``QpyModelV13ToV17``."""
+
+    def test_default_version(self):
+        """Test that default qpy_version is min(QPY_VERSION, 17)."""
+        circuit = QuantumCircuit(2)
+        circuit.h(0)
+        circuit.cx(0, 1)
+
+        encoded = QpyModelV13ToV17.from_quantum_circuit(circuit)
+        assert encoded.qpy_version == min(QPY_VERSION, 17)
+        assert encoded.to_quantum_circuit() == circuit
 
     @pytest.mark.skip_if_qiskit_too_old_for_qpy
     @pytest.mark.parametrize("qpy_version", [13, 14, 15, 16, 17])
